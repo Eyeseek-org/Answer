@@ -1,9 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Staatliches&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@100;200;300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: white;
+  background: #141414;
+  font-family: Inter, sans-serif !important;
 }
 
 a {
@@ -21,6 +28,18 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: #141414;
   }
+}
+
+
+
+.select-category {
+  width: 100%;
+  color: black;
+}
+
+* {
+  margin: 0;
+  padding: 0;
 }
