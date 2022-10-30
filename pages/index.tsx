@@ -101,11 +101,11 @@ const Home: NextPage = () => {
         <LandingSvg width={'100%'} height={'100%'}/>
         {/* <ImageBox><Image src={Eye1} alt='Eye1' width={'1000px'} /></ImageBox> */}
         <Features />
-        <Categories>
+        {/* <Categories>
             {cats.map((cat) =>
-             <div key={cat}>{cat === category ? <Cat onClick={handleCat(cat)}>{cat}</Cat> : <ACat  onClick={()=>{handleCat(cat)}}>{cat}</ACat>}</div>
+             <div key={cat}>{cat === category ? <Cat onClick={()=>handleCat(cat)}>{cat}</Cat> : <ACat  onClick={()=>{handleCat(cat)}}>{cat}</ACat>}</div>
         )}
-        </Categories>
+        </Categories> */}
         <LatestProjects data={projects} my={false}/>
         <EyeSevenBox>
         <Image src={Eye7} alt="Eye7" width={"350px"} height={"30px"} />
