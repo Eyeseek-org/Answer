@@ -60,7 +60,7 @@ const ApproveButton = (sum) => {
 
 
     const decimals = 18;
-    const input = (sum.sum);
+    const input = Number.isNaN(sum.sum) ? 0 : sum.sum;
     const amount = BigNumber.from(input).mul(BigNumber.from(10).pow(decimals));
 
     const dec = utils.formatUnits(amount, decimals);
@@ -104,7 +104,7 @@ const ApproveButton = (sum) => {
             width={'200px'} 
             disabled={!write} 
             onClick={() => handleApprove()} 
-            text={<Approve><div>Approve</div><Amount>${sum.sum}</Amount></Approve>} /> 
+            text={<Approve><div>Approve</div><Amount>${input}</Amount></Approve>} />
         }
     </Container>
 }
