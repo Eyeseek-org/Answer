@@ -82,6 +82,7 @@ const Create = ({ setStep }) => {
         try {
             await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, {
                 "pid": pid,
+                "state": 1 // Set active
             }, moralisHeaders)
             setSuccess(true)
             setError(false)
