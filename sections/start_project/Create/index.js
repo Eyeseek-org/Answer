@@ -60,7 +60,7 @@ const texts = {
 
 const Create = ({ setStep }) => {
     const { appState } = useApp();
-    const { pTitle, pDesc, category, subcategory, pm1, pType,rewards, pImageUrl } = appState;
+    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl } = appState;
     const [ev, setEv] = useState(false)
     const [error, setError] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -70,17 +70,37 @@ const Create = ({ setStep }) => {
         setStep((prev) => (prev -= 1));
     }
 
-    console.log(rewards)
-
-    // Blockchain specific
-    // TBD thrid value from event object is the PID, need to parse it from it and transform to a number
-    const { address, isDisconnected } = useAccount()
-    const { chain } = useNetwork()
-    const useEv = (event) => { 
-        setEv(true) 
-        console.log(event)
+    const moralisHeaders = {
+        headers: {
+            "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
+            "Content-Type": "application/json"
+        }
     }
 
+    // Update project with PID retrieved from blockchain
+    const handleUpdateMoralis = async (pid) => {
+        try {
+            await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, {
+                "pid": pid,
+            }, moralisHeaders)
+            setSuccess(true)
+            setError(false)
+        } catch (error) {
+            console.log(error)
+            setError(true)
+        }
+    }
+
+    // Blockchain specific
+    const { address, isDisconnected } = useAccount()
+    const { chain } = useNetwork()
+    const useEv = (event) => {
+        if (Array.isArray(event) && event[2]) {
+            const pid = parseInt(event[2]);
+            handleUpdateMoralis(pid);
+        }
+        setEv(true);
+    }
 
     const { config } = usePrepareContractWrite({
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
@@ -94,12 +114,6 @@ const Create = ({ setStep }) => {
     const handleContract = async () => { write?.() }
 
     const handleMoralis = async () => {
-        const head = {
-            headers: {
-                "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-                "Content-Type": "application/json"
-            }
-        }
         try {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project`, {
                 "title": pTitle,
@@ -113,7 +127,7 @@ const Create = ({ setStep }) => {
                 "bookmarks": [address], // Add owner to bookmark
                 "rewards": rewards,
                 "imageUrl": pImageUrl
-            }, head)
+            }, moralisHeaders)
             setOid(res.data.objectId)
             setSuccess(true)
             setError(false)
@@ -137,7 +151,6 @@ const Create = ({ setStep }) => {
     })
 
     // TBD Array with rewards -> Push to the DB
-    // Take PID from the event and PUT Moralis API with the update
     // Needed to lock user on screen until this is done
 
     return (
