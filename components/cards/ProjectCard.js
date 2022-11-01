@@ -5,6 +5,7 @@ import ImgSkeleton from '../skeletons/ImgSkeleton'
 import Tag from "../../components/typography/Tag"
 import donation from '../../abi/donation.json'
 import { useContractRead } from 'wagmi'
+import { BlockchainIcon, StreamIcon } from '../icons/Landing'
 
 const A = styled(Link)`
     &:hover{
@@ -78,7 +79,14 @@ const Days = styled.div`
     top: 5px;
 `
 
-const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl }) => {
+const ProjectType = styled.div`
+  position: absolute;
+  left: 0;
+  font-family: 'Neucha';
+  top: 0;
+`
+
+const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType }) => {
 
     var bal = '0'
     var days = '0'
@@ -128,6 +136,9 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     return <A href={link}>
         <Container>
             <Days>{days}d</Days>
+            <ProjectType>
+                    {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
+             </ProjectType>
             <div> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'300px'} height={'300px'} />}</div>
             <Row>
                 <Row>

@@ -102,7 +102,6 @@ const ApproveButton = (sum) => {
         {address && 
          <Button 
             width={'200px'} 
-            disabled={!write} 
             onClick={() => handleApprove()} 
             text={<Approve><div>Approve</div><Amount>${input}</Amount></Approve>} />
         }

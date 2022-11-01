@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 import {useState} from 'react'
+import axios from 'axios'
+import { moralisApiConfig } from '../../data/moralisApiConfig'
+import { useEffect } from 'react'
+import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing'
 
 const Container = styled.div`
     position: absolute;
@@ -30,6 +34,10 @@ const I = styled.div`
         font-weight: bold;
         cursor: pointer;
     }
+`
+
+const TokenItem = styled(I)`
+
 `
 
 const Modal = styled.div`  
@@ -80,41 +88,96 @@ const ImageBox = styled.div`
     z-index: 5;
 `
 
+const TypeBox = styled.div`
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+`
+
+const NumberBox = styled.div`
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+`
+
 // Display rewards
 // Add reward types and other metadata
-const RewardList = () => {
+const RewardList = ({oid}) => {
     const [modal, setModal] = useState(false)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState("")
+    const [rewards, setRewards] = useState([])
+    const [tokenReward, setTokenReward] = useState([])
     const [type, setType] = useState('Microfund')
+    const [pledged, setPledge] = useState()
+    const [cap, setCap] = useState()
+    const [apiError, setApiError] = useState(false)
 
-    const showModal = (title,description,amount, type) => {
+    const showModal = (title,description,amount, type, pledged, cap) => {
         setModal(true)
         setTitle(title)
         setDescription(description)
         setAmount(amount)
         setType(type)
+        setPledge(pledged)
+        setCap(cap)
     }
 
-    const Item = ({item, title, description, amount}) => {
-        return <I onMouseEnter={()=>{showModal(title, description, amount)}} onMouseLeave={()=>{setModal(false)}}>{item}</I>
+
+    const getRewards = async () => {
+        try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${oid}"}`,moralisApiConfig)
+            setRewards(res.data.results)
+            setApiError(false)
+        } catch (err) {
+            console.log(err)
+            setApiError(true)
+        }
     }
 
+    const getTokenReward = async () => {
+        try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/TokenReward?where={"project":"${oid}"}`,moralisApiConfig)
+            setTokenReward(res.data.results)
+            setApiError(false)
+        } catch (err) {
+            console.log(err)
+            setApiError(true)
+        }
+    }
+
+    useEffect(() => {
+        getRewards()
+        getTokenReward()
+    }, [])
+
+    const Item = ({title, description, amount, type, cap, pledged}) => {
+        return <I onMouseEnter={()=>{showModal(title, description, amount, type, cap, pledged)}} onMouseLeave={()=>{setModal(false)}}>{title}</I>
+    }
+
+    /// TBD switched numbers - total vs pledged
+    /// TBD incorrect icons
     return <>
     {modal && 
         <Modal>
              <Row><ModalTitle>{title}</ModalTitle><ModalAmount>${amount}</ModalAmount></Row>
             <ModalDesc>{description}</ModalDesc>
+             <NumberBox> {pledged} of {cap} </NumberBox>
+            <TypeBox>{type === 'Donate' ? <BlockchainIcon width={30}/> : <StreamIcon width={30}/>}</TypeBox>
         </Modal>}
-    
     <Container>
        <Title>Rewards</Title>
-        <Item item='idsadsadsadsadtem' title='title' description='description' amount='amount' type='Microfund'/>
-        <Item item='itedssadsadsadm' title='title' description='description' amount='amount' type='Microfund'/>
-        <Item item='itdsadasem' title='title' description='description' amount='amount' type='Microfund'/>
-        <Item item='item' title='title' description='description' amount='amount' type='Microfund'/>
-        <Item item='item' title='title' description='description' amount='amount' type='Microfund'/>
+       {rewards.map((reward, index) => {
+              return <Item key={index} title={reward.title} description={reward.description} amount={reward.amount} type={reward.type} cap={reward.cap} pledged={reward.pledged} />
+       })}
+       <Title>Token reward</Title>
+       {tokenReward.map((reward, index) => {
+              return <TokenItem key={index} amount={reward.tokenAmount} title={'Token offered'}>
+                    Token offered 
+                    Multiple rows to add
+              </TokenItem>
+       })}
     </Container></>
 }
 

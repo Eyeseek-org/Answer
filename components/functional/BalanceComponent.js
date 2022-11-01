@@ -11,7 +11,7 @@ const BalanceComponent = ({token, address, amount}) => {
 
     const {data} = useBalance({
         addressOrName: address,
-       // token: token,
+        token: token
       })
      // TBD Finish tier - format number to 2 decimals, compare amount to balance, color red if insufficient
 

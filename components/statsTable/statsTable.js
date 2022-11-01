@@ -246,5 +246,3 @@ const StatsTable = () => {
 }
 
 export default StatsTable;
-
-// Path: components/statsTable/statsTable.js

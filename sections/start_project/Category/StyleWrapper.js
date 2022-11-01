@@ -21,8 +21,6 @@ export const SiteContainer = styled.div`
 `
 
 export const NextButton = styled.button`
-  background-color: #3c4048;
-  padding: 10px 20px;
   border-radius: 5px;
   background-color: #7bd3d3;
   border-radius: 8px;
@@ -37,7 +35,7 @@ export const NextButton = styled.button`
   height: 40px;
   line-height: 20px;
   list-style: none;
-  margin: 0;
+  margin-top: 15px;
   outline: none;
   padding: 10px 16px;
   position: relative;
@@ -51,6 +49,14 @@ export const NextButton = styled.button`
 
   &:hover {
     background-color: #9bffff;
+  }
+`
+
+export const ErrButton = styled(NextButton)`
+  background: rgba(97, 0, 0, 0.5);
+  color: gray;
+  &:hover {
+    background: rgba(97, 0, 0, 0.5);
   }
 `
 

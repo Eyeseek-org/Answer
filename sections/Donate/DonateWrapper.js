@@ -19,13 +19,24 @@ const DonateButtonWrapper = styled.div`
 `;
 
 
-const DonateWrapper = ({amountM, amountD, pid, blockchain}) => {
+const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
     const { address } = useAccount();
     const token = process.env.NEXT_PUBLIC_AD_TOKEN
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [project, setProject] = useState([])
     const [oid, setOid] = useState()
     const [bookmarks, setBookmarks] = useState()
+    const [curr, setCurr] = useState(0)
+
+    const handleCurrency = (currency) => {
+        if (currency === 'USDC') {
+            setCurr(0)
+        } else if (currency === 'DAI') {
+            setCurr(1)
+        } else if (currency === 'USDT') {
+            setCurr(2)
+        }
+    }
 
     const moralisConfig = {
         headers: {
@@ -34,11 +45,12 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain}) => {
         }
       }
 
+    // TBD hardcoded currency for now
     const { config, error } = usePrepareContractWrite({
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
         functionName: 'contribute',
-        args: [amountM, amountD, pid],
+        args: [amountM, amountD, pid, curr],
     });
 
     const { write, isSuccess, data } = useContractWrite(config);
@@ -69,6 +81,7 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain}) => {
 
     useEffect(() => {
         getProjectDetail(pid)
+        handleCurrency()
     }, [])
 
 
@@ -83,7 +96,6 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain}) => {
 
     return <div>
         <DonateButtonWrapper>
-            {pid}
             {isSuccess ? <SuccessIcon /> : (
                 <>
                     {address &&
@@ -97,7 +109,7 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain}) => {
             <div>
                 {!isSuccess && (
                     <>
-                        {error ? <Button text='Donate' width={'200px'} error /> : <Button disabled={!write} onClick={() => handleSubmit?.()} text='Send funds' width={'200px'} />}
+                        {error ? <Button text='Donate' width={'200px'} error /> : <Button onClick={() => handleSubmit?.()} text='Send funds' width={'200px'} />}
                     </>
                 )}{(!error && isSuccess) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>

@@ -18,8 +18,6 @@ const ProjectBox = styled.div`
 /// @notice "my" indicates whether component visualized in context of MyProjects or Landing page
 const LatestProjects = ({ data, my}) => {
 
-    // TBD filter for personalization
-    console.log(data)
     const filteredFirst = data.slice(0, 6)
     const filteredSecond = data.slice(7, 13)
     const filteredThird = data.slice(14, 20)
@@ -36,6 +34,7 @@ const LatestProjects = ({ data, my}) => {
                             subcategory={project.subcategory}
                             imageUrl={project.imageUrl}
                             link={`/project/${project.objectId}`}
+                            pType={project.type}
                             pid={project.pid}
                         />
                     })}
@@ -50,6 +49,7 @@ const LatestProjects = ({ data, my}) => {
                             subcategory={project.subcategory}
                             imageUrl={project.imageUrl}
                             link={`/project/${project.objectId}`}
+                            pType={project.type}
                             pid={project.pid}
                         />
                     })}
@@ -64,6 +64,7 @@ const LatestProjects = ({ data, my}) => {
                             subcategory={project.subcategory}
                             imageUrl={project.imageUrl}
                             link={`/project/${project.objectId}`}
+                            pType={project.type}
                             pid={project.pid}
                         />
                     })}
