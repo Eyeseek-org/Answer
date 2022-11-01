@@ -1,6 +1,6 @@
 import Image from "next/image"
 import styled from "styled-components"
-import { useState, Suspense } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 
 import Tag from "../../components/typography/Tag"
@@ -9,27 +9,16 @@ import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
 import { CancelIcon, VerifiedIcon, RewardIcon, UpdateSvg } from '../../components/icons/Common'
 import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
-import dynamic from 'next/dynamic'
 import donation from '../../abi/donation.json'
-import { useContractWrite, useNetwork, useContractEvent, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, useNetwork, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi'
 import UpdateCreate from './UpdateCreate'
-import { useMoralisFile } from "react-moralis"
 
-const RewardCreate = dynamic(() => import('./RewardCreate'), {
-  suspense: false,
-})
+import RewardCreate from "./RewardCreate"
+import UpdateOverview from "./UpdateOverview"
+import RewardList from "./RewardList"
+import ProjectDetailRight from "./ProjectDetailRight"
+import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
 
-const UpdateOverview = dynamic(() => import('./UpdateOverview'), {
-  suspense: false,
-})
-
-const RewardList = dynamic(() => import('./RewardList'), {
-  suspense: false,
-})
-
-const ProjectDetailRight = dynamic(() => import('./ProjectDetailRight'), {
-  suspense: false,
-})
 
 const Container = styled.div`
   position: relative;
@@ -60,6 +49,13 @@ const AbsoluteBox = styled.div`
   left: -20px;
   top: -30px;
   z-index: 1;
+`
+
+const ProjectType = styled.div`
+  position: absolute;
+  left: 0;
+  font-family: 'Neucha';
+  top: 0;
 `
 
 const Categories = styled.div`
@@ -130,7 +126,8 @@ const Inactive = styled.div`
 `
 
 // @param "my" indicates whether component visualized in context of MyProjects or Landing page
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, my, state }) => {
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, my, state, pType, owner }) => {
+  const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
   const [rewardTooltip, setRewardTooltip] = useState(false)
@@ -140,8 +137,6 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [canceled, setCanceled] = useState(false)
   const [error, setError] = useState(false)
   const { chain } = useNetwork()
-
-  console.log(imageUrl)
 
 
   // TBD add prepare contract write - To make blockchain part work
@@ -177,8 +172,10 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   })
 
   const cancel = async (oid) => {
-    write?.()
+    await write?.()
     await cancelMoralis(oid);
+    // Temporary
+    setCanceled(true); 
   }
 
   const handleCancelNotifications = async () => {
@@ -203,7 +200,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
     }
   }
 
-  return  <Suspense fallback={`...`}>
+  return  <>
     <Container>
       {my ? <SectionTitle title={'Active project'} subtitle={title} /> : <SectionTitle title={"Project detail"} subtitle={title} />}
     {mode === 'Overview' ? <DetailBox>
@@ -215,6 +212,9 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
             <></>
           }
           {isError && <>Error</>}</AbsoluteBox>
+        <ProjectType>
+          {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
+        </ProjectType>
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}
         {my && <ActionPanel>
           {cancelTooltip && <Tooltip margin={'25px'} text='Cancel project' />}
@@ -222,33 +222,26 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           {updateTooltip && <Tooltip margin={'25px'} text='Send project update to users' />}
           <IconWrapper onClick={() => { setMode('Update') }} onMouseEnter={() => { setUpdateTooltip(true) }} onMouseLeave={() => {setUpdateTooltip(false)}}><UpdateSvg width={75} /></IconWrapper>
           <IconWrapper onClick={() => { setMode('Reward') }} onMouseEnter={() => { setRewardTooltip(true) }} onMouseLeave={() => {setRewardTooltip(false)}}><RewardIcon width={25} /></IconWrapper>
-          {!canceled && !isLoading ? <>
-            {chain && chain.name === 'Mumbai' ?
-              <IconWrapper onClick={() => { cancel(objectId, pid) }} onMouseEnter={() => { setCancelTooltip(true) }} onMouseLeave={() => { setCancelTooltip(false) }}>
-                <CancelIcon width={30} />
-              </IconWrapper> :
               <IconWrapper onMouseEnter={() => { setCancelTooltip(true) }} onMouseLeave={() => { setCancelTooltip(false) }}>
-                {cancelTooltip && <Tooltip text='Switch to Mumbai' />}
                 <CancelIcon width={30} />
               </IconWrapper>
-            }</> : <></>}
         </ActionPanel>}
         <LeftPart>
-          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={500} height={500} />}
+          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={400} height={400} />}
           <Categories>
             {category && <Tag tag={category} color={"#000850"} />}
             {subcategory && <Tag tag={subcategory} color={"#035201"} />}
           </Categories>
           <Desc>{description}</Desc>
         </LeftPart>
-        {state === 1 ? <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} /> : <Inactive>Inactive</Inactive>}
-        <RewardList/>
+        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} /> }
+        <RewardList oid={objectId}/>
       </DetailBox> : null}
       {mode === 'Reward' && <RewardCreate objectId={objectId} bookmarks={bookmarks} title={title}/>}
       {mode === 'Update' && <UpdateCreate objectId={objectId} bookmarks={bookmarks} title={title}/>}
     </Container>
   <UpdateOverview objectId={objectId}/>
-  </Suspense>
+  </>
 }
 
 export default ProjectDetail

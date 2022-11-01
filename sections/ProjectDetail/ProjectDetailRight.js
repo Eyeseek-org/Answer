@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import donation from '../../abi/donation.json'
-import { useContractRead } from 'wagmi'
+import { useContractRead, useAccount } from 'wagmi'
 import Link from 'next/link'
+import {useState} from 'react'
 
 import ButtonAlt from "../../components/buttons/ButtonAlt"
 import Socials from '../../components/buttons/Socials'
@@ -60,13 +61,23 @@ const ButtonBox = styled.div`
   margin-top: 4%;
 `
 
-const ProjectDetailRight = ({pid, objectId, bookmarks}) => {
+const Backers = styled.div`
+    color: #B0F6FF;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.9;
+    }
+`
 
-    var bal = '0'
-    var microInvolved = '0'
-    var days = '0'
-    var max = '0'
-    var backing ='0'
+const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
+    const {address} = useAccount()
+    const [management, setManagement] = useState(false)
+
+    var bal = 'n/a'
+    var microInvolved = 'n/a'
+    var days = 'n/a'
+    var max = 'n/a'
+    var backing ='n/a'
 
     const micros = useContractRead({
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
@@ -149,7 +160,9 @@ const ProjectDetailRight = ({pid, objectId, bookmarks}) => {
     return <RightPart>
         <div>
             <Row title={bal} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
-            <Row title={backing} desc={`backers`} color="white" />
+            <Row title={backing} desc={
+                <Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
+            color="white" />
             <Row title={microInvolved} desc={`microfunds active`} color="white" />
             <FlexRow>
                 <Row title={days} desc={`days to go`} color="white" />
@@ -157,11 +170,12 @@ const ProjectDetailRight = ({pid, objectId, bookmarks}) => {
             </FlexRow>
         </div>
         <ButtonBox>
-        <Link href={`/donate/${pid}`}>
-            <ButtonAlt
-                width={'100%'}
-                text="Fund it!"
-            /></Link> 
+        {pType === 'Standard' && <Link href={`/donate/${pid}`}>
+            <ButtonAlt width={'100%'} text="Fund it!"/> 
+        </Link>}
+        {pType === 'Stream' && owner !== address && <Link href={`/stream/${objectId}`}>
+           <ButtonAlt width={'100%'} text="Stream!!"/>
+        </Link>}
         </ButtonBox>
     </RightPart>
 }

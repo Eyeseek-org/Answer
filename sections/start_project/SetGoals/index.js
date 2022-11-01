@@ -1,32 +1,47 @@
 import { useApp } from "../../utils/appContext";
 import InputContainer from '../../../components/form/InputContainer'
-import { TellContainer,Mandatory } from "../TellStory/StyleWrapper";
-import { ImageContainer, MilestoneContainer, MilestoneTitle, MainMilestoneContainer, MilestoneHeader, CancelButton, Label, SelectionWrapper } from "./StyleWrapper";
+import { TellContainer } from "../TellStory/StyleWrapper";
+import { ImageContainer, MilestoneContainer, MilestoneTitle, MainMilestoneContainer, MilestoneHeader, CancelButton, Label, SelectionWrapper, BlockchainDesc, StreamAnnouncement } from "./StyleWrapper";
 import { ButtonContainer, DisButton, MainContainer, NextButton } from "../Category/StyleWrapper";
-import ImageSelect from "../../../components/ImageSelect";
 import SectionTitle from "../../../components/typography/SectionTitle";
 import {useSwitchNetwork, useNetwork } from "wagmi";
 import styled from 'styled-components'
 import Image from "next/image";
 import {blockchains} from '../../../data/blockchains'
+import { Col, Row } from "../../../components/format/Row";
+import Lottie from "react-lottie";
+import octa from '../../../data/animations/octa.json'
+
 
 const ImgActiveBox = styled.div`
   opacity: 1;
 `
 
 const ImgBox = styled.div`
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: pointer;
 `
+
+// Animation configs 
+const octaAnim = {
+  loop: true,
+  autoplay: true,
+  animationData: octa,
+  rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 const RenderBlockchain = () => {
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
   return (
     <ImageContainer>
-      <Label>Blockchain: </Label>
-
-
+      <Col>
+        <Label>Blockchain</Label>
+        <BlockchainDesc>Destination for your payoff</BlockchainDesc>
+      </Col>
+      <Row>
       {blockchains.map((bc, index) => {
         const { logo, chainId } = bc;
         return  <>
@@ -36,32 +51,7 @@ const RenderBlockchain = () => {
                   }
                 </>
         })}
-    
-    </ImageContainer>
-  );
-};
-
-const RenderCurrency = () => {
-  const { appState, setAppState } = useApp();
-  const { currency } = appState;
-
-  const handleClick = (bc) => {
-    const data = currency.map((x) => {
-      x.active = x.title == bc.title;
-
-      return x;
-    });
-    setAppState((prev) => ({ ...prev, currency: data }));
-  };
-
-  return (
-    <ImageContainer>
-      <Label>Currency: </Label>
-      {currency.map((bc, index) => {
-        const { title, logo, chainId, active } = bc;
-
-        return <ImageSelect logo={logo} key={index} active={active} onClick={() => handleClick(bc)} />;
-      })}
+    </Row>
     </ImageContainer>
   );
 };
@@ -90,8 +80,6 @@ const RenderMilestones = () => {
 
   return milestones.map((ms, index) => {
     const { amount, description } = ms;
-
-    /// TBD pass all milestones into the states -> Add milestones into the DB
 
     return (
       <MainMilestoneContainer key={index}>
@@ -125,7 +113,9 @@ const RenderMilestones = () => {
 
 const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { isNext, pm1 } = { ...appState };
+  const { isNext, pm1, pm1Desc, pType } = { ...appState };
+  const { chain } = useNetwork()
+  const {switchNetwork} = useSwitchNetwork();
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));
@@ -139,18 +129,44 @@ const SetGoals = ({ setStep }) => {
   return (
     <MainContainer>
       <SectionTitle title={'Set funding goals'} subtitle={'Define project allocations'}/>
-      <TellContainer>
+      {pType !== 'Stream' ? <TellContainer>
         <SelectionWrapper>
           <RenderBlockchain />
-          <RenderCurrency />
         </SelectionWrapper>
-        <RenderMilestones />
-        {pm1 < 1000 && <Mandatory>At least 1 milestone is needed, $1000 minimum</Mandatory>}
+        <MainMilestoneContainer>
+        <MilestoneHeader>
+          <MilestoneTitle>Funding goal</MilestoneTitle>
+        </MilestoneHeader>
+
+        <MilestoneContainer>
+          <InputContainer 
+            label={'Amount'} 
+            placeholder={'Enter the amount'} 
+            description={'Set amount to reach the funding milestone'} 
+            onChange={(e) => setAppState((prev) => ({ ...prev, pm1: e.target.value }))}
+            type={'number'}
+          />
+          <InputContainer 
+            label={'Describe goal spending'} 
+            placeholder={'Material for the project construction, hire 2 workers, etc.'} 
+            description={'Describe how exactly are you going to use resources for this milestone'}
+            onChange={(e) => setAppState((prev) => ({ ...prev, pm1Desc: e.target.value }))}
+            type={'textArea'}
+          />
+        </MilestoneContainer>
+      </MainMilestoneContainer>
+        {pm1 < 1000 && <>At least 1 milestone is needed, $1000 minimum</>}
         <ButtonContainer>
           <NextButton onClick={handleBack}>Back</NextButton>
           {pm1 >= 1000 ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton>Next</DisButton>}
         </ButtonContainer>
-      </TellContainer>
+      </TellContainer> : 
+      <StreamAnnouncement><Lottie height={100} width={100} options={octaAnim} /><div>MVP stage: Supported only Polygon for money streaming type</div>
+        <ButtonContainer>
+          <NextButton onClick={handleBack}>Back</NextButton>
+          {chain.id !== 80001 ? <NextButton onClick={()=>{switchNetwork(80001)}}>Switch to Polygon</NextButton> : <NextButton onClick={handleClick}>Next</NextButton>}
+        </ButtonContainer>
+      </StreamAnnouncement>}
     </MainContainer>
   );
 };

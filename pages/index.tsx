@@ -36,6 +36,7 @@ const Categories = styled.div`
     gap: 4%;
     justify-content: center;
 `
+
 const Cat = styled.div`
     font-size: 1em;
     font-family: 'Montserrat';
@@ -110,9 +111,6 @@ const Home: NextPage = () => {
         <EyeSevenBox>
         <Image src={Eye7} alt="Eye7" width={"350px"} height={"30px"} />
         </EyeSevenBox>
-
-
-
         <Footer />
         {/* <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-TKH8YE4L07"

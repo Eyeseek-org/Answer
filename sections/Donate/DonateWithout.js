@@ -116,7 +116,7 @@ const DonateWithout = ({ pid, currency, blockchain }) => {
             <li>Funded amount must be approved before sending to the Eyeseek contract</li>
         </FormInfo>
 
-        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid} blockchain={blockchain}/>
+        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid} blockchain={blockchain} currency={currency}/>
     </>
 }
 

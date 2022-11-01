@@ -82,8 +82,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <meta name="theme-color" content="#317EFB" />
               </Head>
               <AppProvider>
-                <Loading>
                   <Header />
+                  <Loading>
                   <Component {...pageProps} />
                 </Loading>
               </AppProvider>

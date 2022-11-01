@@ -25,6 +25,8 @@ const Project: NextPage = () => {
       "verified",
       "state",
       "imageUrl",
+      "type",
+      "owner",
       "pid"
       //@ts-ignore
     ]), [], { autoFetch: true },
@@ -39,6 +41,8 @@ const Project: NextPage = () => {
   const [pid, setPid] = useState()
   const [bookmarks, setBookmarks] = useState([])
   const [status, setStatus] = useState(0)
+  const [pType, setPType] = useState("Standard")
+  const [owner, setOwner] = useState("Owner")
 
   const getData = async () => {
     try {
@@ -51,6 +55,8 @@ const Project: NextPage = () => {
       await setVerified(fetchDetail[0].verified)
       await setStatus(fetchDetail[0].state)
       await setImageUrl(fetchDetail[0].imageUrl)
+      await setPType(fetchDetail[0].type)
+      await setOwner(fetchDetail[0].owner)
     } catch (error) {
       console.log(error)
     }
@@ -76,6 +82,8 @@ const Project: NextPage = () => {
           state={status}
           pid={pid}
           objectId={objectId}
+          owner={owner}
+          pType={pType}
         />
       </Container>
     </>

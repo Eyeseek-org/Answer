@@ -13,7 +13,7 @@ import { Row } from "../../../components/format/Row";
 
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { isNext, pType, rewards } = { ...appState };
+  const { isNext, pType, rewards, tokenReward } = { ...appState };
   const [rType, setRType] = useState(true)
   const [microTooltip, setMicroTooltip] = useState(false)
   const [reward, setReward] = useState({
@@ -21,12 +21,9 @@ const SetRewards = ({ setStep }) => {
     description: "Reward 1 description",
     amount: 100,
     type: { rType },  // OR Donate OR Stream 
-    tokenAmount: "address", // optional 
-    tokenName: "name", // optional
-    tokenUrl: "url", // optional
   })
   const [donationTooltip, setDonationTooltip] = useState(false)
-  const [tokenReward, setTokenReward] = useState(false)
+  const [showToken,setShowToken] = useState(false)
 
   const [showReward, setShowReward] = useState(false)
 
@@ -50,7 +47,7 @@ const SetRewards = ({ setStep }) => {
   //TBD - Object is override with each change, function is needed to fix
 
   return (<>
-    <SectionTitle title='Offer rewards for backers' />
+    <SectionTitle title='Offer rewards for backers' subtitle='' />
     <MainContainer>
       <RewardContainer>
         <NextButton onClick={() => setShowReward(!showReward)}>{showReward ? <>Remove reward</> : <>Add reward (optional)</>}</NextButton>
@@ -61,7 +58,7 @@ const SetRewards = ({ setStep }) => {
                 {microTooltip && <Tooltip text={'Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.'} />}
                 {donationTooltip && <Tooltip text={'Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.'} />}
               </TooltipBox>
-              <RewardDesc>Offer rewards to the backers on your own responsibility</RewardDesc>
+              <RewardDesc>Offer rewards to the backers on your own responsibility and effort. Eyeseek will provide addresses of backers, rest is on you.</RewardDesc>
             </TabRow>
             <InputContainer
               label={'Title'}
@@ -110,32 +107,32 @@ const SetRewards = ({ setStep }) => {
             />
           </MilestoneContainer>
         </MainMilestoneContainer>}
-        <br></br>
-        <NextButton onClick={() => setTokenReward(!tokenReward)}>Token reward (optional)</NextButton>
-        {tokenReward && <MainMilestoneContainer>  <RewardDesc>Create a pool with custom ERC20 token, which distributes rewards proportionally to all involved backers</RewardDesc>
+      {pType !== 'Stream' ? <><NextButton onClick={() => setShowToken(!showToken)}>Token reward (optional)</NextButton>
+        {showToken && <MainMilestoneContainer><RewardDesc>Create a pool with custom ERC20 token, our smart contract distributes automatically rewards proportionally to all involved backers after project success.</RewardDesc>
           <MilestoneContainer>
               <InputContainer
                 label={'Token name'}
                 placeholder={'EYE'}
                 description={'Name of the reward token you will offer to backers'}
-                onChange={(e)=>{setReward({reward: {tokenName: e.target.value}})}}
+                onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {name: e.target.value }}))}
                 type={'text'}
               />
               <InputContainer
                 label={'Token address'}
-                placeholder={'Polygon/Fantom/BNB explorer URL'}
-                onChange={(e)=>{setReward({reward: {tokenAddress: e.target.value}})}}
-                description={'Block explorer URL to verify token'}
+                placeholder={'Token address'}
+                onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {address: e.target.value }}))}
+                description={'Token address verifiable on blockchain explorer'}
                 type={'text'}
               />
               <InputContainer
                 label={'Total amount'}
                 placeholder={'10000'}
-                onChange={(e)=>{setReward({reward: {tokenAmount: e.target.value}})}}
+                onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {amount: e.target.value }}))}
                 description={'Total amount of reward tokens proportionally distributed to the backers'}
                 type={'number'}
               />
             </MilestoneContainer></MainMilestoneContainer>}
+            </> : null}
         <ButtonRow>
           <NextButton onClick={handleBack}>Back</NextButton>
           <NextButton onClick={handleClick}>Next</NextButton>

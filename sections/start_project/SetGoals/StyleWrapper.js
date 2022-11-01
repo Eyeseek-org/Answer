@@ -17,7 +17,7 @@ export const ImageContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 15px;
+  gap: 15%;
   margin-bottom: 2%;
 `;
 
@@ -70,3 +70,17 @@ export const CancelButton = styled.button`
     cursor: pointer;
   }
 `;
+
+export const BlockchainDesc = styled.div`
+  font-size: 0.7em;
+`
+
+export const StreamAnnouncement = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.1em;
+  font-family: 'Neucha';
+  margin-right: 17%;
+  margin-left: 17%;
+`

@@ -63,7 +63,10 @@ export const Ok = styled.div`
 
 export const Err = styled.div`
     color: red;
-    text-align: left;
+    text-align: right;
+    font-family: 'Neucha';
+    margin-top: 2%;
+    font-size: 0.9em;
 `
 
 export const Summary = styled.div`
