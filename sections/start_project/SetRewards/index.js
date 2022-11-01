@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useApp } from "../../utils/appContext";
 
 import SectionTitle from "../../../components/typography/SectionTitle";
-import { RewardContainer, ButtonRow, TabRow, TooltipBox, IconBox } from "./StyleWrapper";
+import { RewardContainer, ButtonRow, TabRow, TooltipBox, IconBox,RewardDesc } from "./StyleWrapper";
 import { MainContainer, NextButton } from "../Category/StyleWrapper";
 import InputContainer from "../../../components/form/InputContainer";
 import Tab from "../../../components/form/Tab";
-import { MainMilestoneContainer, MilestoneContainer } from "../SetGoals/StyleWrapper";
+import { MainMilestoneContainer, MilestoneContainer  } from "../SetGoals/StyleWrapper";
 import Tooltip from "../../../components/Tooltip";
 import { InfoIcon } from "../../../components/icons/Common";
 import { Row } from "../../../components/format/Row";
@@ -14,7 +14,7 @@ import { Row } from "../../../components/format/Row";
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { isNext, pType, rewards } = { ...appState };
-  const [rType, setRType] = useState('Microfund')
+  const [rType, setRType] = useState(true)
   const [microTooltip, setMicroTooltip] = useState(false)
   const [reward, setReward] = useState({
     title: "Reward 1",
@@ -56,37 +56,13 @@ const SetRewards = ({ setStep }) => {
         <NextButton onClick={() => setShowReward(!showReward)}>{showReward ? <>Remove reward</> : <>Add reward (optional)</>}</NextButton>
         {showReward && <MainMilestoneContainer>
           <MilestoneContainer>
-            <TabRow> {pType === 'Standard' && <Tab o1={'Microfund'} o2={'Direct donate'} onClick={() => { setRType('Donate') }} />}
+            <TabRow> {pType === 'Standard' && <Tab  act={rType} o1={'Microfund'} o2={'Direct donate'} onClick={() => { setRType(!rType) }} />}
               <TooltipBox>
                 {microTooltip && <Tooltip text={'Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.'} />}
                 {donationTooltip && <Tooltip text={'Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.'} />}
               </TooltipBox>
+              <RewardDesc>Offer rewards to the backers on your own responsibility</RewardDesc>
             </TabRow>
-            {rType === 'Microfund' && <InputContainer
-              label={'Amount'}
-              placeholder={'1000'}
-              onChange={(e)=>{setReward({reward: {amount: e.target.value}})}}
-              description={
-                <Row>Microfund cap amount
-                  <IconBox onMouseEnter={() => setMicroTooltip(true)} onMouseLeave={() => setMicroTooltip(false)}>
-                    <InfoIcon width={15} />
-                  </IconBox>
-                </Row>}
-              type={'number'}
-            />}
-            {rType === 'Donate' && <InputContainer
-              label={'Amount'}
-              placeholder={'1000'}
-              onChange={(e)=>{setReward({reward: {amount: e.target.value}})}}
-              description={
-                <Row>Backed amount
-                  <IconBox onMouseEnter={() => setDonationTooltip(true)} onMouseLeave={() => setDonationTooltip(false)}>
-                    <InfoIcon width={15} />
-                  </IconBox>
-                </Row>}
-              type={'number'}
-            />}
-
             <InputContainer
               label={'Title'}
               placeholder={'Godspeed'}
@@ -101,8 +77,43 @@ const SetRewards = ({ setStep }) => {
               onChange={(e)=>{setReward({reward: {description: e.target.value}})}}
               type={'text'}
             />
-            <button onClick={() => setTokenReward(!tokenReward)}>Token reward</button>
-            {tokenReward && <>
+          {rType ? <InputContainer
+              label={'Amount'}
+              placeholder={'1000'}
+              onChange={(e)=>{setReward({reward: {amount: e.target.value}})}}
+              description={
+                <Row>Required microfund cap pledge
+                  <IconBox onMouseEnter={() => setMicroTooltip(true)} onMouseLeave={() => setMicroTooltip(false)}>
+                    <InfoIcon width={15} />
+                  </IconBox>
+                </Row>}
+              type={'number'}
+            />
+            : <InputContainer
+              label={'Amount'}
+              placeholder={'1000'}
+              onChange={(e)=>{setReward({reward: {amount: e.target.value}})}}
+              description={
+                <Row>Backed amount
+                  <IconBox onMouseEnter={() => setDonationTooltip(true)} onMouseLeave={() => setDonationTooltip(false)}>
+                    <InfoIcon width={15} />
+                  </IconBox>
+                </Row>}
+              type={'number'}
+            />}
+            <InputContainer
+              label={'Reward #'}
+              placeholder={'100'}
+              description={'Maximum number of offered rewards'}
+              onChange={(e)=>{setReward({reward: {cap: e.target.value}})}}
+              type={'number'}
+            />
+          </MilestoneContainer>
+        </MainMilestoneContainer>}
+        <br></br>
+        <NextButton onClick={() => setTokenReward(!tokenReward)}>Token reward (optional)</NextButton>
+        {tokenReward && <MainMilestoneContainer>  <RewardDesc>Create a pool with custom ERC20 token, which distributes rewards proportionally to all involved backers</RewardDesc>
+          <MilestoneContainer>
               <InputContainer
                 label={'Token name'}
                 placeholder={'EYE'}
@@ -124,9 +135,7 @@ const SetRewards = ({ setStep }) => {
                 description={'Total amount of reward tokens proportionally distributed to the backers'}
                 type={'number'}
               />
-            </>}
-          </MilestoneContainer>
-        </MainMilestoneContainer>}
+            </MilestoneContainer></MainMilestoneContainer>}
         <ButtonRow>
           <NextButton onClick={handleBack}>Back</NextButton>
           <NextButton onClick={handleClick}>Next</NextButton>

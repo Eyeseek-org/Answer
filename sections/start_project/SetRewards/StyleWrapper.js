@@ -23,6 +23,10 @@ export const TabRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+
+  }
 `
 
 export const TooltipBox = styled.div`
@@ -34,4 +38,15 @@ export const TooltipBox = styled.div`
 
 export const IconBox = styled.div`
   margin-left: 2px;
+`
+
+export const RewardDesc = styled.div`
+    font-size: 0.8em;
+    font-family: 'Montserrat';
+    border-bottom: 1px solid #3a3a3a;
+    padding-bottom: 2%;
+    @media (max-width: 768px) {
+      width: 100%;
+      margin-top: 5%;
+    }
 `

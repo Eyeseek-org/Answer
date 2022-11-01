@@ -3,14 +3,10 @@ import { useState, createContext, useContext } from "react";
 export const AppContext = createContext({});
 export const AppProvider = (props) => {
   const [appState, setAppState] = useState({
-    blockchains: [
-      { title: "Polygon", logo: "/icons/polygon.png", chainId: "", active: true },
-      { title: "Fantom", logo: "/icons/fantom.png", chainId: "", active: false },
-      { title: "BinanceChain", logo: "/icons/binance.png", chainId: "", active: false },
-    ],
     currency: [
-      { title: "USDC", logo: "/icons/usdc.png", chainId: "", active: true },
-    //Descoped temporarily  { title: "USDT", logo: "/icons/usdt.png", chainId: "", active: false },
+      { title: "USDC", logo: "/icons/usdc.png", active: true },
+      { title: "USDT", logo: "/icons/usdt.png", active: false },
+      { title: "DAI", logo: "/icons/dai.png", active: false },
     ],
     milestones: [],
     rewards: [{
@@ -18,6 +14,7 @@ export const AppProvider = (props) => {
       description: "Jesus will smile on you",
       amount: 100,
       type: "Donate",  // OR Donate OR Stream // OR Microfund
+      cap: 100,
       tokenAmount: "10", // optional 
       tokenName: "EYE", // optional
       tokenUrl: "https://polygonscan.com/token/0x2791bca1f2de4661ed88a30c99a7a9449aa84174", // optional
@@ -28,8 +25,10 @@ export const AppProvider = (props) => {
     pSocial: "https://twitter.com/d3v_library",
     pType: "Standard", // Stream vs Standard
     pImageUrl: "",
-    cateogry: null,
-    subcategory: null
+    pm1: 1000,
+    pmDesc: 'Some description',
+    cateogry: "Games",
+    subcategory: "Board"
   });
 
   return (
