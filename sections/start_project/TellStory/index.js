@@ -95,7 +95,6 @@ const TellStory = ({ setStep }) => {
             );
           })}
         </FormStyle>
-        {pSocial === "" && <Mandatory>All fields all mandatory</Mandatory>}
         <ButtonContainer>
           <NextButton onClick={handleBack}>Back</NextButton>
         <NextButton onClick={formik.submitForm}>Next</NextButton>

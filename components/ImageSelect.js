@@ -12,14 +12,6 @@ export const InactiveImage = styled.img`
 `;
 
 const ImageSelect = ({ active, logo, onClick }) => {
-  const handleClick = (bc) => {
-    const data = blockchains.map((x) => {
-      x.active = x.title == bc.title;
-
-      return x;
-    });
-    setAppState((prev) => ({ ...prev, blockchains: data }));
-  };
 
   if (active) return <Image src={logo} onClick={onClick} />;
   return <InactiveImage src={logo} onClick={onClick} />;

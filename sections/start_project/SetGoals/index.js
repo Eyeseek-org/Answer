@@ -5,28 +5,38 @@ import { ImageContainer, MilestoneContainer, MilestoneTitle, MainMilestoneContai
 import { ButtonContainer, DisButton, MainContainer, NextButton } from "../Category/StyleWrapper";
 import ImageSelect from "../../../components/ImageSelect";
 import SectionTitle from "../../../components/typography/SectionTitle";
+import {useSwitchNetwork, useNetwork } from "wagmi";
+import styled from 'styled-components'
+import Image from "next/image";
+import {blockchains} from '../../../data/blockchains'
+
+const ImgActiveBox = styled.div`
+  opacity: 1;
+`
+
+const ImgBox = styled.div`
+  opacity: 0.5;
+  cursor: pointer;
+`
 
 const RenderBlockchain = () => {
-  const { appState, setAppState } = useApp();
-  const { blockchains } = appState;
-
-  const handleClick = (bc) => {
-    const data = blockchains.map((x) => {
-      x.active = x.title == bc.title;
-
-      return x;
-    });
-    setAppState((prev) => ({ ...prev, blockchains: data }));
-  };
-
+  const { chain } = useNetwork()
+  const {switchNetwork} = useSwitchNetwork();
   return (
     <ImageContainer>
       <Label>Blockchain: </Label>
-      {blockchains.map((bc, index) => {
-        const { title, logo, chainId, active } = bc;
 
-        return <ImageSelect logo={logo} key={index} active={active} onClick={() => handleClick(bc)} />;
-      })}
+
+      {blockchains.map((bc, index) => {
+        const { logo, chainId } = bc;
+        return  <>
+                  {chain.id === chainId ? 
+                      <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
+                      <ImgBox onClick={()=>{switchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
+                  }
+                </>
+        })}
+    
     </ImageContainer>
   );
 };
@@ -95,14 +105,14 @@ const RenderMilestones = () => {
             label={'Amount'} 
             placeholder={'Enter the amount'} 
             description={'Set amount to reach the funding milestone'} 
-            onChange={(e) => setAppState((prev) => ({ ...prev, pm1: e.target.value }))}
+            onChange={(e) => setAppState((prev) => ({ ...prev, amount: e.target.value }))}
             type={'number'}
           />
           <InputContainer 
             label={'Describe goal spending'} 
             placeholder={'Material for the project construction, hire 2 workers, etc.'} 
             description={'Describe how exactly are you going to use resources for this milestone'}
-            onChange={(e) => setAppState((prev) => ({ ...prev, pm1desc: e.target.value }))}
+            onChange={(e) => setAppState((prev) => ({ ...prev, description: e.target.value }))}
             type={'textArea'}
           />
 

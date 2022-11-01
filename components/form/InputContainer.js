@@ -4,11 +4,17 @@ import {useState} from "react";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 80px;
+  gap: 15%;
   font-family: "Montserrat";
+  @media (max-width: 768px) {
+      flex-wrap: wrap;
+      gap: 5%;
+    }
   .input_label {
     width: 20%;
-
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   .input_style {
