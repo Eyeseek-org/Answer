@@ -59,13 +59,9 @@ const DonateWithout = ({ pid, currency, blockchain }) => {
         args: [pid, amountD]
     })
 
-    // Calculation part
-    // TBD UI breaks if amount string or non-number - Force always numbewr
-    // https://www.npmjs.com/package/react-number-format x https://www.npmjs.com/package/rc-input-number
-
     const calcMe = () => {
-    //    setMulti((outcome.data).toString())
-   //     setConn((connections.data).toString())
+       setMulti((outcome.data ?? "").toString())
+       setConn((connections.data ?? "").toString())
     }
 
     // TBD fix the cascade for calculation

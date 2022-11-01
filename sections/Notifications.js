@@ -163,7 +163,7 @@ const Notifications = ({notis}) => {
 
     return <Container>  
        {!profile ?<NotiBox> 
-        {notis && notis.map((noti) => <NotiItem>            
+        {notis && notis.sort((a, b) => a.createdAt - b.createdAt).map((noti) => <NotiItem>
             <Link href={`/project/${noti.project}`}><Row>            
                  <IconWrapper>
                     {noti.type === 'projectCanceled' && <CanceledIcon width={15} height={15}/>}
