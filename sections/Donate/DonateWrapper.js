@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { usePrepareContractWrite, useContractWrite, useAccount } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent } from "wagmi";
 import {useState, useEffect} from 'react'
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent'
@@ -29,24 +29,49 @@ const Err = styled.div`
 `
 
 
-const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
+const DonateWrapper = ({amountM, amountD, pid, currency}) => {
     const { address } = useAccount();
     const token = process.env.NEXT_PUBLIC_AD_TOKEN
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [project, setProject] = useState([])
     const [oid, setOid] = useState()
+    const [success, setSuccess] = useState(false)
     const [bookmarks, setBookmarks] = useState()
     const [curr, setCurr] = useState(0)
 
+
+    /// TBD after Axelar pass correct currency, until know we'll hardcode USDC = (EYE)
+
     const handleCurrency = (currency) => {
         if (currency === 'USDC') {
-            setCurr(0)
-        } else if (currency === 'DAI') {
             setCurr(1)
-        } else if (currency === 'USDT') {
+        } else if (currency === 'DAI') {
             setCurr(2)
+        } else if (currency === 'USDT') {
+            setCurr(3)
         }
     }
+
+    const useEv = (event) => {
+        setSuccess(true);
+    }
+
+    useContractEvent({
+        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        contractInterface: donation.abi,
+        eventName: 'Donated',
+        listener: (event) => useEv(event),
+        once: true
+    })
+
+    useContractEvent({
+        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        contractInterface: donation.abi,
+        eventName: 'MicroCreated',
+        listener: (event) => useEv(event),
+        once: true
+    })
+
 
     const moralisConfig = {
         headers: {
@@ -60,12 +85,11 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, curr],
+        args: [amountM, amountD, 1, 1],
     });
 
-    const { write, isSuccess, data } = useContractWrite(config);
+    const { write, data } = useContractWrite(config);
 
-    // TBD get blockchain from provider rather
 
     const handleSubmit = async () => {
         await write?.()
@@ -78,7 +102,7 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
             updateBookmark(oid, bookmarks)
         }
     }
-    const sum = parseInt(amountM) + parseInt(amountD);
+    const sum = (amountM+amountD);
 
     const getProjectDetail = async (pid) => {
         try {
@@ -108,7 +132,7 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
 
     return <div>
         <DonateButtonWrapper>
-            {isSuccess ? <SuccessIcon /> : (
+            {success ? <SuccessIcon /> : (
                 <>
                     {address &&
                     <div>
@@ -119,11 +143,11 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
                 </>
             )}
             <div>
-                {!isSuccess && (
+                {!success && (
                     <>
                         {error ? <Button text='Donate' width={'200px'} error /> : <Button onClick={() => handleSubmit?.()} text='Donate' width={'200px'} />}
                     </>
-                )}{(!error && isSuccess) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
+                )}{(!error && success) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>
             {error ? <Err>Insufficient balance or blockchain error</Err> : null}
         </DonateButtonWrapper>
