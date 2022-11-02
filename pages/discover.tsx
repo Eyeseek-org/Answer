@@ -38,19 +38,32 @@ const BrowsePro: NextPage = () => {
     };
 
     const FilteredProjects = ({projects}) => {
-        cats.forEach(async (cat) => {
-            const Cat = projects.filter((p) => p.category === cat)
-            return <>
-                {Cat.map((project)=> <ProjectCard                    
-                    title={project.title}
-                    description={project.description}
-                    category={project.category}
-                    subcategory={project.subcategory}
-                    link={`/project/${project.objectId}`}
-                    pid={project.pid}
-                />)}
-            </>
-        })
+        return <>
+            {
+                cats.map((cat) => {
+                    const CategoryProjects = projects.filter((p) => p.category.includes(cat));
+                    return (
+                        <>
+                            <SectionTitle title={cat} subtitle={`Browse through ${cat} projects`} />
+                            <ProjectBox>
+                                {CategoryProjects.map((project)=>
+                                    <ProjectCard
+                                        key={project.objectId}
+                                        title={project.title}
+                                        description={project.description}
+                                        category={project.category}
+                                        subcategory={project.subcategory}
+                                        link={`/project/${project.objectId}`}
+                                        pid={project.pid}
+                                        imageUrl={undefined}
+                                        pType={undefined}
+                                    />
+                                )}
+                            </ProjectBox>
+                        </>)
+                })
+            }
+        </>
     }
 
     useEffect(() => {
@@ -59,10 +72,7 @@ const BrowsePro: NextPage = () => {
 
     return (
         <Container>
-            <SectionTitle title="All projects" subtitle='Browse through all application projects' />
-            <ProjectBox>
-            <FilteredProjects />
-        </ProjectBox>
+            <FilteredProjects projects={projects}/>
         </Container>
     )
 }
