@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import {useState} from 'react'
 import Button from "./Button"
-import { usePrepareContractWrite, useContractWrite } from "wagmi"
+import { usePrepareContractWrite, useContractWrite, useContractEvent } from "wagmi"
 import faucet from '../../abi/faucet.json'
 
 const Container = styled.div`
