@@ -10,6 +10,7 @@ import { SuccessIcon } from "../../components/icons/Common";
 import donation from "../../abi/donation.json";
 
 const DonateButtonWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -17,6 +18,15 @@ const DonateButtonWrapper = styled.div`
   margin-top: 3%;
   gap: 1rem;
 `;
+
+const Err = styled.div`
+    position: absolute;
+    color: red;
+    font-family: 'Neucha';
+    letter-spacing: 0.5px;
+    bottom: -25px;
+    font-size: 0.9em;
+`
 
 
 const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
@@ -55,13 +65,15 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
 
     const { write, isSuccess, data } = useContractWrite(config);
 
+    // TBD get blockchain from provider rather
+
     const handleSubmit = async () => {
         await write?.()
-        if (blockchain === 'polygon') {
-            setExplorer('https://mumbai.polygonscan.com/tx/')
-        } else if (blockchain === 'bsc') {
-            setExplorer('https://bscscan.com/tx/')
-        }
+        // if (blockchain === 'polygon') {
+        //     setExplorer('https://mumbai.polygonscan.com/tx/')
+        // } else if (blockchain === 'bsc') {
+        //     setExplorer('https://bscscan.com/tx/')
+        // }
         if (project.length === 1){
             updateBookmark(oid, bookmarks)
         }
@@ -109,10 +121,11 @@ const DonateWrapper = ({amountM, amountD, pid, blockchain, currency}) => {
             <div>
                 {!isSuccess && (
                     <>
-                        {error ? <Button text='Donate' width={'200px'} error /> : <Button onClick={() => handleSubmit?.()} text='Send funds' width={'200px'} />}
+                        {error ? <Button text='Donate' width={'200px'} error /> : <Button onClick={() => handleSubmit?.()} text='Donate' width={'200px'} />}
                     </>
                 )}{(!error && isSuccess) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>
+            {error ? <Err>Insufficient balance or blockchain error</Err> : null}
         </DonateButtonWrapper>
     </div>
 }

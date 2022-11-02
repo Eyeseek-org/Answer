@@ -3,9 +3,8 @@ import { useRouter } from "next/router"
 import type { NextPage } from "next";
 import Image from "next/image";
 import styled from "styled-components";
-import polygon from "../../public/icons/donate/polygon.png";
-import icon2 from "../../public/icons/donate/icon2.png";
-import icon3 from "../../public/icons/donate/icon3.png";
+import axios from 'axios'
+
 import icon4 from "../../public/icons/donate/icon4.png";
 import usdt from "../../public/icons/usdt.png";
 import dai from "../../public/icons/dai.png";
@@ -15,6 +14,8 @@ import { Row } from '../../components/format/Row'
 import { InfoIcon } from "../../components/icons/Common";
 import Tooltip from "../../components/Tooltip";
 import { useNetwork, useSwitchNetwork } from "wagmi";
+import { moralisApiConfig } from "../../data/moralisApiConfig";
+import { blockchains } from "../../data/blockchains";
 
 const Container = styled.div`
   margin-top: 8%;
@@ -53,8 +54,12 @@ const OptionReward = styled.div`
   flex-direction: column;
   font-size: 0.8em;
   min-width: 90px;
+  letter-spacing: 0.4px;
   align-items: center;
   font-family: "Neucha";
+  @media (min-width: 1580px) {
+    font-size: 1em;
+  }
 `
 
 const DisReward = styled(OptionReward)`
@@ -93,21 +98,9 @@ const DonateOptionTitle = styled.div`
   @media (max-width: 500px) {
     width: 40%;
   }
-`;
-
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
-  // Hide checkbox visually but remain accessible to screen readers.
-  // Source: https://polished.js.org/docs/#hidevisually
-  border: 0;
-  clip: rect(0 0 0 0);
-  clippath: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+  @media (min-width: 1580px) {
+    font-size: 1.3em;
+  }
 `;
 
 const Checkbox = styled.input`
@@ -128,87 +121,111 @@ const DonateOptionSub = styled.div`
   font-style: italic;
 `
 
-const StyledCheckbox = styled.div`
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-  transition: all 150ms;
-  padding: 1px;
-
-  ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 0 3px pink;
-  }
-`;
-
-const CheckboxContainer = styled.div`
-  display: inline-block;
-  vertical-align: middle;
-`;
-const Icon = styled.svg`
-  fill: none;
-  stroke: #027600;
-  stroke-width: 3px;
-`;
-
 const InfoBox = styled.div`
   &:hover{
     cursor: pointer;
   }
 `
 
+const ImgActiveBox = styled.div`
+  opacity: 1;
+`
+
+const ImgBox = styled.div`
+  opacity: 0.3;
+  cursor: pointer;
+`
+
 const Donate: NextPage = () => {
   const [rewardNo, setRewardNo] = useState(true);
   const [reward1, setReward1] = useState(false);
-  const [reward2, setReward2] = useState(false);
   const [currency, setCurrency] = useState("USDC");
+  const [apiError, setApiError] = useState(false);
+  const [project, setProject] = useState();
+  const [tokenName, setTokenName] = useState();
+  const [tokenAddress, setTokenAddress] = useState();
+  const [tokenAmount, setTokenAmount] = useState();
+  const [rewards, setRewards] = useState();
+  const [pid, setPid] = useState();
   const router = useRouter()
-  const { pid } = router.query
+  const { objectId } = router.query
+  const { chain } = useNetwork()
+  const {switchNetwork} = useSwitchNetwork();
 
   const [blockchain, setBlockchain] = useState("")
-  const {chain} = useNetwork();
-  const {switchNetwork} = useSwitchNetwork()
   const [tooltip, setTooltip] = useState(false)
 
+  const RenderBlockchain = () => {
+
+    return (
+      <>
+        {blockchains.map((bc, index) => {
+          const { logo, chainId } = bc;
+          return  <OptionReward>
+                    {chain && chain.id === chainId ? 
+                        <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
+                        <ImgBox onClick={()=>{switchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
+                    }
+                  </OptionReward>
+          })}
+      </>
+    );
+  };
+
   useEffect(() => {
-    if(chain){
-      setBlockchain(chain.name)
-    }
+    getProjectDetail()
+    getTokenReward()
+    getRewards()
   },[]);
 
+  const getProjectDetail = async () => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId":"${objectId}"}`,moralisApiConfig)
+        if (res.data.results.length > 0) {
+          setProject(res.data.results[0])
+          setPid(res.data.results[0].pid)
+        }
+        setApiError(false)
+    } catch (err) {
+        console.log(err)
+        setApiError(true)
+    }
+}
+
+const getTokenReward = async () => {
+  try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/TokenReward?where={"project":"${objectId}"}`,moralisApiConfig)
+      if (res.data.results.length > 0) {
+        setTokenAmount(res.data.results[0].tokenAmount)
+        setTokenName(res.data.results[0].tokenName)
+        setTokenAddress(res.data.results[0].tokenAddress)
+      }
+      setApiError(false)
+  } catch (err) {
+      console.log(err)
+      setApiError(true)
+  }
+}
+
+const getRewards = async () => {
+  try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${objectId}"}`,moralisApiConfig)
+      if (res.data.results.length > 0) {
+        setRewards(res.data.results)
+      }
+      setApiError(false)
+  } catch (err) {
+      console.log(err)
+      setApiError(true)
+  }
+}
+
   /// TBD after axelar, handle mutlichain conditions
-//@ts-ignore
-  const handleChain = (chain,id) => {
-    setBlockchain(chain)
-    //@ts-ignore
-    switchNetwork(id)
-  }
+  /// TBD bookmark after donate
 
-
-  const rewardFalse = () => {
-    setRewardNo(false)
-    setReward1(false);
-    setReward2(false);
-  }
-
-  const changeRewardNo = async (r:boolean) => {
-    await rewardFalse();
-    await setRewardNo(r)
-  }
-
-  const changeReward1 = async (r:boolean) => {
-    await rewardFalse();
-    await setReward1(r)
-  }
-
-  const changeReward2 = async (r:boolean) => {
-    await rewardFalse();
-    await setReward2(r)
-  }
 
   return <Container>
-    <SectionTitle title="Select your reward" subtitle={'Select an option below'} />
+    <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
     <DonateContentWrapper>
       <DonateOption>
        {/* @ts-ignore */}
@@ -218,9 +235,7 @@ const Donate: NextPage = () => {
           <DonateOptionSub>Select your source of donation</DonateOptionSub>
         </DonateOptionTitle>
         <OptionItemWrapper>
-          <OptionReward onClick={()=>{handleChain('polygon', 80001)}}><Image src={polygon} alt="polygon" width={'40'} height={'40'} /></OptionReward>
-          <OptionReward><Image src={icon2} alt="fantom" width={'40'} height={'40'} /></OptionReward>
-          <OptionReward><Image src={icon3} alt="bnb" width={'40'} height={'40'} /></OptionReward>
+            <RenderBlockchain/>
         </OptionItemWrapper>
       </DonateOption>
       <DonateOption>
@@ -235,26 +250,32 @@ const Donate: NextPage = () => {
       </DonateOption>
       <DonateOption>
         <DonateOptionTitle>
-          <Row>Donate</Row><DonateOptionSub>Without promised reward</DonateOptionSub>
+          <Row>Donate</Row><DonateOptionSub>Custom amount for donation</DonateOptionSub>
         </DonateOptionTitle>
         <OptionItemWrapper>
         <OptionReward>
-          <Checkbox type="checkbox" checked={rewardNo} onChange={() => changeRewardNo(!rewardNo)} />
+          <Checkbox type="checkbox" checked={rewardNo} />
           Without reward
         </OptionReward>
-        <OptionReward>
-          <Checkbox type="checkbox" checked={reward2} onChange={() => changeReward2(!reward2)} />
-          Reward #1
-        </OptionReward>
-        <OptionReward>
-          <Checkbox type="checkbox" checked={reward1} onChange={() => changeReward1(!reward1)} />
-          Reward #2
-        </OptionReward>
+        {rewards && rewards.length > 0 && rewards.map((_reward, index) => {
+          <div key={index}>Reward</div>
+        })}
         </OptionItemWrapper>
       </DonateOption>
-      {rewardNo && <DonateWithout pid={pid} currency={currency} blockchain={blockchain} />}
-      {reward1 && <DonateWithout pid={pid} currency={currency} blockchain={blockchain} />}
-      {reward2 && <DonateWithout pid={pid} currency={currency} blockchain={blockchain} />}
+      {tokenAddress  && 
+        <DonateOption>
+          <DonateOptionTitle>
+            <Row>Token pool</Row>
+            <DonateOptionSub>Proportional reward for all backers</DonateOptionSub>
+          </DonateOptionTitle>
+          <OptionItemWrapper>
+            <OptionReward>
+                Token pool of {tokenName} - {tokenAmount}x, {tokenAddress}
+            </OptionReward>
+          </OptionItemWrapper>
+        </DonateOption>}
+        {rewardNo && <DonateWithout pid={pid} currency={currency} />}
+        {reward1 && <DonateWithout pid={pid} currency={currency}  />}
     </DonateContentWrapper>
   </Container>
 }

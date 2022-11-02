@@ -17,6 +17,9 @@ const Text = styled.div`
   font-size: 0.9em;
   letter-spacing: 0.5px;
   color: white;
+  @media (min-width: 1980px) {
+    font-size: 1.1em;
+  }
 `
 
 const Tag = ({ tag, color }) => {

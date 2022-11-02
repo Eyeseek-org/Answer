@@ -63,6 +63,9 @@ const DonationRow = styled.div`
     margin-bottom: 1rem;
     width: 100%;
   }
+  @media (min-width: 1580px) {
+    font-size: 1.3em;
+  }
 `
 
 const InfoBox = styled.div`

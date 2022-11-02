@@ -31,17 +31,21 @@ const FaqContainer = styled.div`
 `
 
 const Q = styled.div`
-    font-family: 'Montserrat';
+    font-family: 'Neucha';
     font-style: normal;
     text-align: center;
     font-weight: 400;
-    font-size: 1em;
+    letter-spacing: 0.3;
+    font-size: 1.2em;
     line-height: 43px;
     min-width: 30%;
     color: #B0F6FF;
     @media (max-width: 1168px) {
         line-height: 20px;
     }
+    @media (min-width: 1780px) {
+       font-size: 1.8em;
+  }
 `
 
 const ImageBox = styled.div`

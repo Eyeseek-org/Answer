@@ -76,6 +76,7 @@ const Desc = styled.div`
 `
 
 const LeftPart = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -83,6 +84,9 @@ const LeftPart = styled.div`
     width: 100%;
     margin-bottom: 5%;
     margin-top: 5%;
+  }
+  @media (min-width: 2180px){
+    width: 30%;
   }
 `
 
@@ -227,7 +231,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
               </IconWrapper>
         </ActionPanel>}
         <LeftPart>
-          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={400} height={400} />}
+          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} layout='fill' />}
           <Categories>
             {category && <Tag tag={category} color={"#000850"} />}
             {subcategory && <Tag tag={subcategory} color={"#035201"} />}

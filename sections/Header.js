@@ -24,6 +24,9 @@ const NavItem = styled.div`
     font-size: 1em;
     flex-wrap: wrap;
   }
+  @media (min-width: 1580px) {
+    font-size: 2em;
+  }
 `
 
 const HeadBox = styled.div`
@@ -33,7 +36,8 @@ const HeadBox = styled.div`
   align-items: center;
   background: transparent;
   color: #b0f6ff;
-  padding: 10px 50px;
+  padding: 5%;
+  padding-top: 2%;
   margin-bottom: 3%;
   @media (max-width: 768px) {
     justify-content: center;
@@ -57,12 +61,15 @@ const ImageBox = styled.div`
 const MenuBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 100px;
+  gap: 75px;
 
   @media (max-width: 960px) {
     padding: 0;
     flex-wrap: wrap;
     display: none;
+  }
+  @media (min-width: 1780px) {
+    gap: 125px;
   }
 `
 

@@ -37,7 +37,10 @@ const I = styled.div`
 `
 
 const TokenItem = styled(I)`
-
+    &:hover{
+        font-weight: normal;
+        cursor: default;
+    }
 `
 
 const Modal = styled.div`  
@@ -173,9 +176,9 @@ const RewardList = ({oid}) => {
        })}
        <Title>Token reward</Title>
        {tokenReward.map((reward, index) => {
-              return <TokenItem key={index} amount={reward.tokenAmount} title={'Token offered'}>
-                    Token offered 
-                    Multiple rows to add
+              return <TokenItem key={index} title={'Token offered'}>
+                    <div>{reward.tokenAmount} x {reward.tokenName} </div> 
+                    <div>{reward.tokenAddress} </div> 
               </TokenItem>
        })}
     </Container></>

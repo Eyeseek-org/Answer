@@ -31,6 +31,9 @@ const RowBox = styled.div`
   justify-content: space-between;
   padding-top: 1.4%;
   padding-bottom: 0.5%;
+  @media (min-width: 1580px) {
+    font-size: 1.3em;
+  }
 `
 
 const RowCol = styled.div`
@@ -43,6 +46,9 @@ const RowTitle = styled.div`
   font-size: 1.5em;
   font-weight: 400;
   color: ${(props) => props.color};
+  @media (min-width: 1580px) {
+    font-size: 1.8em;
+  }
 `
 
 const RowDesc = styled.div`
@@ -170,7 +176,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
             </FlexRow>
         </div>
         <ButtonBox>
-        {pType === 'Standard' && <Link href={`/donate/${pid}`}>
+        {pType === 'Standard' && <Link href={`/donate/${objectId}`}>
             <ButtonAlt width={'100%'} text="Fund it!"/> 
         </Link>}
         {pType === 'Stream' && owner !== address && <Link href={`/stream/${objectId}`}>

@@ -9,6 +9,9 @@ const Box = styled.div`
   @media (max-width: 1168px) {
     font-size: 1.1em;
   }
+  @media (min-width: 1980px) {
+    font-size: 2em;
+  }
 `
 
 const Subtitle = ({ text }) => {

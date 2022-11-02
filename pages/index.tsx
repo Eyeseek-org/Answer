@@ -3,11 +3,11 @@ import Head from "next/head";
 import Image from "next/image";
 import styled from "styled-components";
 import Eye7 from "../public/Eye7.png";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Footer from "../sections/Footer";
 import {cats} from '../data/cats'
-import { LandingSvg } from "../sections/Landing/LandingMain";
+import LandingMain from "../sections/Landing/LandingMain";
 import LatestProjects from "../sections/Landing/LatestProjects";
 import Features from "../sections/Landing/Features";
 
@@ -99,7 +99,7 @@ const Home: NextPage = () => {
           <meta name="title" content="Blockchain crowdfunding application powered by Moralis" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <LandingSvg width={'100%'} height={'100%'}/>
+        <LandingMain width={'100%'} height={'100%'}/>
         {/* <ImageBox><Image src={Eye1} alt='Eye1' width={'1000px'} /></ImageBox> */}
         <Features />
         {/* <Categories>

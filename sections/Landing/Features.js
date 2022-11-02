@@ -88,18 +88,18 @@ const Features = () => {
         <SectionTitle title='Key concepts' subtitle='How is Eyeseek different' />
         <ContentBox>
             <Row>
-                {demoMicro ? <FeatureCard icon={<BlockchainIcon width={50} />} title={Texts.title1} description={<Image src={cross} width={500} height={300} />} onClick={() => { setDemoMicro(!demoMicro) }} /> :
-                    <FeatureCard icon={<BlockchainIcon width={50} />} title={Texts.title1} description={<CrossDescription />} onClick={() => { setDemoMicro(!demoMicro) }} />}
+                {demoMicro ? <FeatureCard icon={<BlockchainIcon width={55} />} title={Texts.title1} description={<Image src={cross} width={500} height={300} />} onClick={() => { setDemoMicro(!demoMicro) }} /> :
+                    <FeatureCard icon={<BlockchainIcon width={55} />} title={Texts.title1} description={<CrossDescription />} onClick={() => { setDemoMicro(!demoMicro) }} />}
 
-                {demoFunding ? <FeatureCard icon={<MicrofundIcon width={50} />} title={Texts.title2} description={<Image src={chaindonation} width={500} height={300} />} onClick={() => { setDemoFunding(!demoFunding) }} /> :
-                    <FeatureCard icon={<MicrofundIcon width={50} />} title={Texts.title2} description={<MicroDescription />} onClick={() => { setDemoFunding(!demoFunding) }} />
+                {demoFunding ? <FeatureCard icon={<MicrofundIcon width={55} />} title={Texts.title2} description={<Image src={chaindonation} width={500} height={300} />} onClick={() => { setDemoFunding(!demoFunding) }} /> :
+                    <FeatureCard icon={<MicrofundIcon width={55} />} title={Texts.title2} description={<MicroDescription />} onClick={() => { setDemoFunding(!demoFunding) }} />
                 }
             </Row>
             <Row>
-                {demoFee ? <FeatureCard icon={<PiggyIcon width={50} />} title={Texts.title3} description={<Image src={fee} width={500} height={300}/>} onClick={() => { setDemoFee(!demoFee) }} /> :
-                    <FeatureCard icon={<PiggyIcon width={50} />} title={Texts.title3} description={<FeeDescription />} onClick={() => { setDemoFee(!demoFee) }} />
+                {demoFee ? <FeatureCard icon={<PiggyIcon width={55} />} title={Texts.title3} description={<Image src={fee} width={500} height={300}/>} onClick={() => { setDemoFee(!demoFee) }} /> :
+                    <FeatureCard icon={<PiggyIcon width={55} />} title={Texts.title3} description={<FeeDescription />} onClick={() => { setDemoFee(!demoFee) }} />
                 }
-                <FeatureCard icon={<StreamIcon width={50} />} title={Texts.title4} description={Texts.description4} />
+                <FeatureCard icon={<StreamIcon width={55} />} title={Texts.title4} description={Texts.description4} />
             </Row>
         </ContentBox>
     </Container>
