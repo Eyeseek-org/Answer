@@ -125,7 +125,7 @@ const Header = () => {
   const { isAuthenticated } = useMoralis();
   const {address} = useAccount()
   const header = [
-    { title: "Discover", url: "" },
+    { title: "Discover", url: "/discover" },
     { title: "Start a project", url: "/startproject" },
     { title: "FAQ", url: "/faq" },
     { title: "My projects", url: "/my" },
