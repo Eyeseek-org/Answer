@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import { useContractRead } from "wagmi";
 import CalcOutcome from '../../components/functional/CalcOutcome'
@@ -49,8 +49,6 @@ const DonateWithout = ({ pid, currency }) => {
     const [multi, setMulti] = useState("")
     const [conn, setConn] = useState("")
 
-    console.log(pid)
-
     const outcome = useContractRead({
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
@@ -65,21 +63,18 @@ const DonateWithout = ({ pid, currency }) => {
         args: [pid, amountD]
     })
 
-    const calcMe = () => {
-       setMulti((outcome.data ?? "").toString())
-       setConn((connections.data ?? "").toString())
-    }
+    useEffect(() => {
+        setMulti((outcome.data ?? "").toString())
+        setConn((connections.data ?? "").toString())
+    }, [amountD])
 
-    // TBD fix the cascade for calculation
     const handleChangeD = (e) => {
         setAmountD(e.target.value)
-        calcMe()
     }
 
     const handleChangeM = (e) => {
         setAmountM(e.target.value)
     }
-
 
     const formik = useFormik({
         initialValues: {
