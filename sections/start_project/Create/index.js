@@ -228,6 +228,7 @@ const Create = ({ setStep }) => {
                         {rewards.length >= 3 && <SumItem><SumTitle>Reward #3</SumTitle><SumValue>{rewards[2].title} - ${rewards[2].amount} x{rewards[2].cap}</SumValue></SumItem>}
                         {rewards.length >= 4 && <SumItem><SumTitle>Reward #4</SumTitle><SumValue>{rewards[3].title} - ${rewards[3].amount} x{rewards[3].cap}</SumValue></SumItem>}
                         {rewards.length == 5 && <SumItem><SumTitle>Reward #5</SumTitle><SumValue>{rewards[4].title} - ${rewards[4].amount} x{rewards[4].cap}</SumValue></SumItem>}
+                  {tokenReward.amount > 0 && <SumItem><SumTitle>Token pool</SumTitle><SumValue>{tokenReward.amount}x{tokenReward.name}</SumValue></SumItem>}
                     </SumHalf>   
                     </SumRow>
                 </Summary> : <Rainbow/>}

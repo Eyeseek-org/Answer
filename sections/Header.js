@@ -38,7 +38,6 @@ const HeadBox = styled.div`
   color: #b0f6ff;
   padding: 5%;
   padding-top: 2%;
-  margin-bottom: 3%;
   @media (max-width: 768px) {
     justify-content: center;
   }

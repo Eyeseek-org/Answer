@@ -38,10 +38,14 @@ const Created = styled.div`
 
 const RefCard = styled.div`
     background: black;
-    width: 150px;
+    width: 350px;
     padding: 2%;
     margin: 2%;
     border-radius: 15px;
+    font-size: 1.1em;
+    @media (min-width: 1780px) {
+        font-size: 1.4em;
+    }
 `
 
 const UpdateOverview = ({objectId}) => {
@@ -70,7 +74,7 @@ const UpdateOverview = ({objectId}) => {
             {updates.length > 0 && 
                 updates.map((update)=> 
                     <RefCard key={update.objectId}>
-                        <A href={`${update.url}`} rel="noopener noreferrer" target="_blank"><>Update reference</></A>
+                        <A href={`${update.url}`} rel="noopener noreferrer" target="_blank"><>Update title</></A>
                         <Created><ReactTimeAgo date={update.createdAt} locale="en-US"/></Created>
                   </RefCard>)
             }        

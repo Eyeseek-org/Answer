@@ -95,8 +95,8 @@ const Desc = styled.div`
 
 const Ago = styled.div`
     font-family: 'Arial';
-    font-size: 0.7em;
-    color: white;
+    font-size: 0.65em;
+    color: #B0F6FF;
     @media (min-width: 1780px) {
        font-size: 0.8em;
   }

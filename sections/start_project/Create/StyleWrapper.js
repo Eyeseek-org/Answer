@@ -92,6 +92,9 @@ export const SumTitle = styled.div`
     font-style: italic;
     font-family: 'Roboto';
     opacity: 0.9;
+    @media (min-width: 1768px) {
+        font-size: 1.3em;
+    }
 `
 
 export const SumValue = styled.div`
@@ -99,6 +102,10 @@ export const SumValue = styled.div`
     color: #B0F6FF;
     font-size: 0.95em;
     font-family: 'Neucha';
+    letter-spacing: 0.3px;
+    @media (min-width: 1768px) {
+        font-size: 1.2em;
+    }
 `
 
 export const SumHalf = styled.div`
@@ -118,7 +125,11 @@ export const SumHead = styled.div`
     text-align: center;
     font-family: 'Neucha';
     font-size: 1.3em;
+    letter-spacing: 0.3px;
     margin-bottom: 2%;
+    @media (min-width: 1768px) {
+        font-size: 1.9em;
+    }
 `
 
 export const Divider = styled.div`

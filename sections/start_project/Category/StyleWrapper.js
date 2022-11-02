@@ -50,6 +50,9 @@ export const NextButton = styled.button`
   &:hover {
     background-color: #9bffff;
   }
+  @media (min-width: 1768px) {
+        font-size: 1.2em;
+    }
 `
 
 export const ErrButton = styled(NextButton)`

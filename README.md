@@ -1,34 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Working repository for https://github.com/Eyeseek-org/funding, needed to fall back from some ideas like PWA and Next v13 to achieve stable deployment.
+
+<div>
+  <div align="center">
+    <h1 style="font-weight: bold">Eyeseek Funding</h1>
+    <img src="./public/project-logo.png" alt="Logo" style="width: 30%" />
+    <br />
+    <br />
+    <p align="center">
+    This repository was created as a Moralis hackathon project for cross-chain crowdfunding application. This project is derived from <a href="https://www.eyeseek.org/Whitepaper_v1.pdf">Eyeseek.org whitepaper</a>.  
+    </p>
+    <br />
+    <a href="https://github.com/helloitsm3/tiktok-android/issues">Report Bugs</a>
+    ·
+    <a href="https://github.com/helloitsm3/tiktok-android/issues">Request Feature</a>
+    ·
+    <a href="https://www.fund.eyeseek.org">Project Website</a>
+    </div>
+</div>
+
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Built-with](#built-with)
+- [Getting Started](#getting-started)
+
+<br />
+
+## Built-with
+
+- [Next.js](https://nextjs.org/)
+- [Wagmi](https://wagmi.sh/)
+- [Styled Components](https://styled-components.com/)
+
+<br />
+
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
-First, run the development server:
+This is an example of how you can set up your project locally. To get a local copy up and running follow these simple example steps.
 
-```bash
-npm run dev
-# or
-yarn dev
+1. Fork the repo
+
+2. Clone the repo
+
+```sh
+git clone with HTTPS          https://github.com/YOUR_USERNAME/funding.git
+git clone with SSH            git@github.com:YOUR_USERNAME/funding.git
+git clone with Github CLI     gh repo clone YOUR_USERNAME/funding
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Development
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```sh
+1. Open the project in VS Code
+2. yarn install
+3. yarn dev
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+4. PR via separate branch
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```sh
+git checkout -b feature/AmazingFeature
+git add .
+git commit -m "Add some AmazingFeature"
+git push origin feature/AmazingFeature
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- PR is reviewed then by the core team and merge/rejected based on the quality of the code.

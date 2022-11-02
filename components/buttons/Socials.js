@@ -38,22 +38,22 @@ import {
     return (
         <Row>
             <FacebookShareButton url={url} quote={title} hashtag={hashtags_facebook}>
-                <FacebookIcon size={25} round />
+                <FacebookIcon size={35} round />
             </FacebookShareButton>
             <TwitterShareButton url={url} title={title} hashtags={hashtags_twitter}>
-                <TwitterIcon size={25} round />
+                <TwitterIcon size={35} round />
             </TwitterShareButton>
             <LinkedinShareButton url={url} >
-                <LinkedinIcon size={25} round />
+                <LinkedinIcon size={35} round />
             </LinkedinShareButton>
             <RedditShareButton url={url} title={title}>
-                <RedditIcon size={25} round />
+                <RedditIcon size={35} round />
             </RedditShareButton>
             <TelegramShareButton url={url} title={title}>
-                <TelegramIcon size={25} round />
+                <TelegramIcon size={35} round />
             </TelegramShareButton>
             <WhatsappShareButton url={url} title={title}>
-                <WhatsappIcon size={25} round />
+                <WhatsappIcon size={35} round />
             </WhatsappShareButton>
         </Row>
     )
