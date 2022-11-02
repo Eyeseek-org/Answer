@@ -33,7 +33,7 @@ const Faucet = () => {
     }
 
     return <Container>
-            {!done ? <Button text={'Get test tokens'} onClick={()=>{handleFaucet()}}/> :<Buttom text={'Set and done'}/>}
+            {!done ? <Button text={'Get test tokens'} onClick={()=>{handleFaucet()}}/> :<Button text={'Set and done'}/>}
             </Container>
 }
 
