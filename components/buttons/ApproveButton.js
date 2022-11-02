@@ -58,15 +58,16 @@ const ApproveButton = (sum) => {
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
 
-
+    
     const decimals = 18;
     const input = Number.isNaN(sum.sum) ? 0 : sum.sum;
     const amount = BigNumber.from(input).mul(BigNumber.from(10).pow(decimals));
 
     const dec = utils.formatUnits(amount, decimals);
 
-    const listened = () => {
-        setEv(true)
+    const listened = async() => {
+        await setEv(true)
+        await setLoading(false)
     }
     const { config } = usePrepareContractWrite({
         addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
@@ -103,7 +104,7 @@ const ApproveButton = (sum) => {
          <Button 
             width={'200px'} 
             onClick={() => handleApprove()} 
-            text={<Approve><div>Approve</div><Amount>${input}</Amount></Approve>} />
+            text={<Approve><div>Approve</div><Amount>{input}</Amount></Approve>} />
         }
     </Container>
 }

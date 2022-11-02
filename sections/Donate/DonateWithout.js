@@ -49,6 +49,8 @@ const DonateWithout = ({ pid, currency }) => {
     const [multi, setMulti] = useState("")
     const [conn, setConn] = useState("")
 
+    console.log(pid)
+
     const outcome = useContractRead({
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,

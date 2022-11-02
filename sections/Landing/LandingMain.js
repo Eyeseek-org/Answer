@@ -3,6 +3,7 @@ import {useState} from 'react'
 import styled from 'styled-components'
 import {useContractEvent} from 'wagmi'
 import donation from '../../abi/donation.json'
+import Faucet from '../../components/buttons/Faucet'
 
 
 const Container = styled.div`
@@ -246,7 +247,8 @@ const LandingMain = ({width,height}) => {
         <HeadTitle>Eyeseek Funding</HeadTitle>
         <HeadSub>Next generation of crowdfunding</HeadSub>
         <HeadDesc>by web3</HeadDesc>
-        {donate && <Tag/>}
+          {donate && <Tag/>}
+        <Faucet/>
     </TitleBox>
 
     <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">

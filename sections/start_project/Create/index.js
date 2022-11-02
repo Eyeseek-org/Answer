@@ -98,9 +98,9 @@ const Create = ({ setStep }) => {
     // 1. Update state and project id (pid) as key between web2/web3
     // 2. Activate rewards in the db
     const useEv = (event) => {
-        if (Array.isArray(event) && event[2]) {
-            const pid = parseInt(event[2]);
-            handleUpdateMoralis(pid);
+        if (Array.isArray(event)) {
+            const pid = parseInt(event[2] && event[2]);
+            handleUpdateMoralis(pid); 
             handleRewards()
             handleTokenReward()
         }
