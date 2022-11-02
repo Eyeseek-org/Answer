@@ -52,8 +52,9 @@ const ACat = styled(Cat)`
 
 
 const Home: NextPage = () => {
+  const initialCategory = "All"
   const [projects, setProjects] = useState([]);
-  const [category, setCategory] = useState('All')
+  const [category, setCategory] = useState(initialCategory)
 
 
   useEffect(() => {
@@ -61,19 +62,19 @@ const Home: NextPage = () => {
     getProjects();
   }, []);
 
-  const getProjects = async () => {
+  const getProjects = async (cat?) => {
     const config = {
       headers: {
         "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
       },
     };
+    const selectedCategory = cat ? cat : category
     try {
-      if (category === "All") {
+      if (selectedCategory === "All") {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"state":1}`, config);
         setProjects(res.data.results);
-      }
-      else {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"category":"${category}", "state": 1}`, config);
+      } else {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"category":"${selectedCategory}", "state": 1}`, config);
         setProjects(res.data.results);
       }
     } catch (error) {
@@ -84,7 +85,7 @@ const Home: NextPage = () => {
   const handleCat = async(cat) => {
     try {
       await setCategory(cat)
-      await getProjects()
+      await getProjects(cat)
     } catch(err) {
         console.log(err)
       }
@@ -102,11 +103,11 @@ const Home: NextPage = () => {
         <LandingMain width={'100%'} height={'100%'}/>
         {/* <ImageBox><Image src={Eye1} alt='Eye1' width={'1000px'} /></ImageBox> */}
         <Features />
-        {/* <Categories>
+        <Categories>
             {cats.map((cat) =>
-             <div key={cat}>{cat === category ? <Cat onClick={()=>handleCat(cat)}>{cat}</Cat> : <ACat  onClick={()=>{handleCat(cat)}}>{cat}</ACat>}</div>
+             <div key={cat}>{cat === category ? <Cat onClick={()=>handleCat(initialCategory)}>{cat}</Cat> : <ACat  onClick={()=>{handleCat(cat)}}>{cat}</ACat>}</div>
         )}
-        </Categories> */}
+        </Categories>
         <LatestProjects data={projects} my={false}/>
         <EyeSevenBox>
         <Image src={Eye7} alt="Eye7" width={"350px"} height={"30px"} />
