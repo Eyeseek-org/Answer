@@ -22,7 +22,8 @@ const Container = styled.div`
     top: 15%;
     transition: all 0.7s ease-in-out;
     height: 300px;
-    width: 300px;
+    width: 20%;
+    min-width: 300px;
     background: linear-gradient(155.74deg, #1C1C1C 0%, #000000 120.65%);
     border-radius: 10px;
     border: 1px solid #4E4E4E;
@@ -40,6 +41,9 @@ const Container = styled.div`
     ::-webkit-scrollbar-thumb {
         background: #9bffff;
     }
+    @media (min-width: 1780px) {
+       right: 10%;
+  }
 `
 
 const NotiBox = styled.div`
@@ -59,6 +63,9 @@ const Col = styled.div`
     justify-content: space-between;
     padding-left: 1%;
     font-size: 0.8em;
+    @media (min-width: 1780px) {
+       font-size: 0.9em;
+  }
 `
 
 const Row = styled.div`
@@ -81,12 +88,18 @@ const Desc = styled.div`
     letter-spacing: 0.2px;
     font-size: 0.9em;
     color: #FFFFFF;
+    @media (min-width: 1780px) {
+       font-size: 1.1em;
+  }
 `
 
 const Ago = styled.div`
     font-family: 'Arial';
-    font-size: 0.7em;
-    color: white;
+    font-size: 0.65em;
+    color: #B0F6FF;
+    @media (min-width: 1780px) {
+       font-size: 0.8em;
+  }
 `
 
 const ButtonRow = styled.div`
@@ -111,6 +124,9 @@ const Buttons = styled.div`
         cursor: pointer;
         opacity: 0.9;
     }
+    @media (min-width: 1780px) {
+       font-size: 1.1em;
+  }
 `
 
 const Unread = styled.div`
@@ -124,6 +140,9 @@ const Unread = styled.div`
     padding-left: 5px;
     padding-right: 5px;
     font-size: 0.7em;
+    @media (min-width: 1780px) {
+       font-size: 0.9em;
+  }
 `
 
 const HidUnread = styled(Unread)`

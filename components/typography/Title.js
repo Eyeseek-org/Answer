@@ -10,6 +10,9 @@ const Box = styled.div`
   @media (max-width: 1168px) {
     font-size: 2.3em;
   }
+  @media (min-width: 1980px) {
+    font-size: 4em;
+  }
 `
 
 const Title = ({ text }) => {

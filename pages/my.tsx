@@ -109,7 +109,7 @@ const My: NextPage = () => {
                 imageUrl={imageUrl} 
                 state={status}
                 bookmarks={bookmarks}
-                my /> : <NotProject/>}
+                 /> : <NotProject/>}
             <BlankSpace />
             <LatestProjects data={projects} my />
         </div> : <NotAuth/>}

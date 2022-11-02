@@ -35,6 +35,9 @@ const MyButton = styled(motion.button)`
   @media (max-width: 768px) {
     margin: 0;
   }
+  @media (min-width: 1580px) {
+    font-size: 1.3em;
+  }
 `
 
 const ButtonAlt = ({ text, onClick, width }) => {

@@ -34,6 +34,7 @@ export const Label = styled.label`
 `
 
 export const MilestoneContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -46,6 +47,7 @@ export const MilestoneTitle = styled.span`
 `;
 
 export const MainMilestoneContainer = styled.div`
+  position: relative;
   background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
   border: 1px solid #3C3C3C;
   border-radius: 5px;

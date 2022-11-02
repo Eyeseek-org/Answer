@@ -4,7 +4,7 @@ import { useMoralis } from "react-moralis";
 
 const ConnectBtn = styled.button`
   background-color: #9bffff;
-  padding: 5px 10px;
+  padding: 7px 12px 7px 12px;
   border-radius: 5px;
   border: none;
   font-size: 1em;
@@ -14,6 +14,9 @@ const ConnectBtn = styled.button`
   cursor: pointer;
   &:hover{
     opacity: 0.9;
+  }
+  @media (min-width: 1580px) {
+    font-size: 1.2em;
   }
 `
 

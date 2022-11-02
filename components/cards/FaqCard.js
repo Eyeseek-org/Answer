@@ -15,7 +15,11 @@ const Card = styled.div`
 `
 const An = styled.div`
     margin-top: 2%;
+    font-family: 'Neucha';
     margin-bottom: 4%;
+    @media (min-width: 1780px) {
+       font-size: 1.3em;
+  }
 `
 
 const Li = styled.li`
@@ -26,6 +30,9 @@ const Li = styled.li`
     line-height: 29px;
     letter-spacing: 0.01em;
     color: #FFFFFF;
+    @media (min-width: 1780px) {
+       font-size: 1em;
+  }
 `
 
 const FaqCard = ({ answer, point1, point2, point3, point4 }) => {

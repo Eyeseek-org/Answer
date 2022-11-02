@@ -42,6 +42,10 @@ const DetailBox = styled.div`
     margin: 1%;
     padding: 1%;
   }
+  @media (min-width: 2100px){
+    margin-left: 25%;
+      margin-right: 25%;
+    }
 `
 
 const AbsoluteBox = styled.div`
@@ -76,6 +80,7 @@ const Desc = styled.div`
 `
 
 const LeftPart = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -125,8 +130,7 @@ const Inactive = styled.div`
   color: #d90000;
 `
 
-// @param "my" indicates whether component visualized in context of MyProjects or Landing page
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, my, state, pType, owner }) => {
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner }) => {
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
@@ -202,7 +206,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
 
   return  <>
     <Container>
-      {my ? <SectionTitle title={'Active project'} subtitle={title} /> : <SectionTitle title={"Project detail"} subtitle={title} />}
+      <SectionTitle title={'Project detail'} subtitle={title} />
     {mode === 'Overview' ? <DetailBox>
         {verifiedTooltip && <Tooltip text={'Verified by Eyeseek team'} />}
         {nonVerifiedTooltip && <Tooltip text={'Not verified'} />}
@@ -216,7 +220,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
         </ProjectType>
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}
-        {my && <ActionPanel>
+        {address === owner && <ActionPanel>
           {cancelTooltip && <Tooltip margin={'25px'} text='Cancel project' />}
           {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
           {updateTooltip && <Tooltip margin={'25px'} text='Send project update to users' />}
@@ -227,7 +231,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
               </IconWrapper>
         </ActionPanel>}
         <LeftPart>
-          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={400} height={400} />}
+          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} layout='fill' />}
           <Categories>
             {category && <Tag tag={category} color={"#000850"} />}
             {subcategory && <Tag tag={subcategory} color={"#035201"} />}

@@ -28,6 +28,9 @@ const Title = styled.div`
     font-weight: 500;
     font-size: 1.7em;
     color: #b0f6ff;
+    @media (min-width: 1580px) {
+    font-size: 2.2em;
+  }
 `
 
 const Description = styled.div`
@@ -38,6 +41,9 @@ const Description = styled.div`
      font-weight: 300;
      font-size: 1.1em;
      color: #FFFFFF;
+     @media (min-width: 1580px) {
+    font-size: 1.4em;
+  }
 `
 
 const IconBox = styled.div`

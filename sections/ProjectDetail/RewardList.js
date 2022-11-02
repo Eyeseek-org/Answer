@@ -7,10 +7,13 @@ import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing'
 
 const Container = styled.div`
     position: absolute;
-    right: -100px;
-    height: 100%;
+    right: -120px;
+    top: 100px;
     @media (min-width: 1200px){
-        right: -150px;
+        right: -180px;
+    }
+    @media (min-width: 2150px){
+        right: -220px;
     }
 `
 
@@ -23,6 +26,9 @@ const Title = styled.div`
     &:hover{
         cursor: default;
     }
+    @media (min-width: 1750px){
+        font-size: 1.3em;
+    }
 `
 
 const I = styled.div`
@@ -30,6 +36,10 @@ const I = styled.div`
     font-family: 'Neucha';
     text-align: right;
     color: white;
+    letter-spacing: 0.2px;
+    @media (min-width: 1750px){
+        font-size: 1.1em;
+    }
     &:hover{
         font-weight: bold;
         cursor: pointer;
@@ -37,7 +47,10 @@ const I = styled.div`
 `
 
 const TokenItem = styled(I)`
-
+    &:hover{
+        font-weight: normal;
+        cursor: default;
+    }
 `
 
 const Modal = styled.div`  
@@ -57,6 +70,9 @@ const Modal = styled.div`
         100% {
         opacity: 1;
         }
+    }
+    @media (min-width: 1750px){
+        font-size: 1.3em;
     }
 `
 
@@ -173,9 +189,9 @@ const RewardList = ({oid}) => {
        })}
        <Title>Token reward</Title>
        {tokenReward.map((reward, index) => {
-              return <TokenItem key={index} amount={reward.tokenAmount} title={'Token offered'}>
-                    Token offered 
-                    Multiple rows to add
+              return <TokenItem key={index} title={'Token offered'}>
+                    <div>{reward.tokenAmount} x {reward.tokenName} </div> 
+                    <div>{reward.tokenAddress} </div> 
               </TokenItem>
        })}
     </Container></>

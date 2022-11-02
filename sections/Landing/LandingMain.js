@@ -1,6 +1,8 @@
 import {useState} from 'react'
 
 import styled from 'styled-components'
+import {useContractEvent} from 'wagmi'
+import donation from '../../abi/donation.json'
 
 
 const Container = styled.div`
@@ -14,13 +16,22 @@ const Explainer = styled.div`
     color: white;
     width: 300px;
     height: 104px;
-    left: 200px;
+    left: 15%;
     background: #111111;
     border: 0.5px solid #1E1E1E;
     border-radius: 45px;
     padding: 20px;
     padding-left: 25px;
     font-family: 'Neucha';
+    @media (min-width: 1580px) {
+    font-size: 1.3em;
+  }
+`
+
+const Tag = styled.div`
+    width: 300px;
+    height: 104px;
+    background: white;
 `
 
 const TitleBox = styled.div`
@@ -29,6 +40,9 @@ const TitleBox = styled.div`
     display: flex;
     flex-direction: column;
     text-align: right;
+    @media (min-width: 1580px) {
+        right: 16%;
+    }
 `
 
 const HeadTitle = styled.div`
@@ -36,6 +50,9 @@ const HeadTitle = styled.div`
     font-family: 'Neucha';
     font-size: 3em;
     color: #B0F6FF;
+    @media (min-width: 1580px) {
+        font-size: 4em;
+    }
 `
 
 const HeadSub = styled.div`
@@ -43,6 +60,9 @@ const HeadSub = styled.div`
     font-family: 'Neucha';
     color: white;
     font-size: 1.4em;
+    @media (min-width: 1580px) {
+        font-size: 1.7em;
+    }
 `
 
 const HeadDesc = styled.div`
@@ -55,6 +75,10 @@ const HeadDesc = styled.div`
 const ExpTitle = styled.div`
     color: #B0F6FF;
     font-size: 1.1em;
+    &:hover{
+        opacity: 0.9;
+        cursor: pointer;
+    }
 `
 
 const ExpSub = styled.div`
@@ -85,7 +109,7 @@ const d = {
     fantom: "High-performant EVM-compatible platform",
 }
 
-export const LandingSvg = ({width,height}) => {
+const LandingMain = ({width,height}) => {
     const [expTitle, setExpTitle] = useState("")
     const [expDesc, setExpDesc] = useState("")
     const [morColor, setMorColor] = useState("#F0F0F0")
@@ -95,8 +119,38 @@ export const LandingSvg = ({width,height}) => {
     const [gColor, setGColor] = useState("#F0F0F0")
     const [covColor, setCovColor] = useState("#343434")
     const [axColor, setAxColor] = useState("#343434")
+    const [url, setUrl] = useState()
+
+    const [donate, setDonate] = useState(false)
+    const [micro, setMicro] = useState(false)
+
+    const useDonateEvent = () => {
+        setDonate(true)
+    }
+
+    const useMicroEvent = () => {
+        setMicro(true)
+    }
+
+    /// Set permanent listening after making it done => create some animation
+    useContractEvent({
+        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        contractInterface: donation.abi,
+        eventName: 'MicroCreated',
+        listener: () => useDonateEvent(e),
+        once: true
+    })
+
+    useContractEvent({
+        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        contractInterface: donation.abi,
+        eventName: 'Donated',
+        listener: () => useMicroEvent(e),
+        once: true
+    })
 
     const showMoralis = () =>{
+        setUrl("https://moralis.io/")
         setExpTitle('Moralis')
         setExpDesc(d.moralis)
         setMorColor('#1FA6F5')
@@ -109,6 +163,7 @@ export const LandingSvg = ({width,height}) => {
     }
 
     const showPolygon = () =>{
+        setUrl('https://polygon.technology/')
         setExpTitle('Polygon')
         setExpDesc(d.polygon)
         setMorColor('#F0F0F0')
@@ -121,6 +176,7 @@ export const LandingSvg = ({width,height}) => {
     }
 
     const showBinance = () =>{
+        setUrl('https://www.binance.org/en')
         setExpTitle('Binance')
         setExpDesc(d.bnb)
         setMorColor('#F0F0F0')
@@ -133,6 +189,7 @@ export const LandingSvg = ({width,height}) => {
     }
 
     const showFantom = () =>{
+        setUrl('https://fantom.foundation/')
         setExpTitle('Fantom')
         setExpDesc(d.fantom)
         setMorColor('#F0F0F0')
@@ -145,6 +202,7 @@ export const LandingSvg = ({width,height}) => {
     }
 
     const showGoogle = () =>{
+        setUrl('https://cloud.google.com/')
         setExpTitle('Google')
         setExpDesc(d.google)
         setMorColor('#F0F0F0')
@@ -157,6 +215,7 @@ export const LandingSvg = ({width,height}) => {
     }
 
     const showCov = () =>{
+        setUrl('https://www.covalenthq.com/')
         setExpTitle('Cov')
         setExpDesc(d.covalent)
         setMorColor('#F0F0F0')
@@ -169,6 +228,7 @@ export const LandingSvg = ({width,height}) => {
     }
 
     const showAxelar = () =>{
+        setUrl('https://axelar.network/')
         setExpTitle('Axelar')
         setExpDesc(d.axelar)
         setMorColor('#F0F0F0')
@@ -181,11 +241,12 @@ export const LandingSvg = ({width,height}) => {
     }
 
     return <Container>
-    {expTitle !== '' && <Explainer><ExpTitle>{expTitle}</ExpTitle><ExpSub>{expDesc}</ExpSub></Explainer>}
+    {expTitle !== '' && <Explainer><ExpTitle><a href={url} rel="noopener noreferrer" target="_blank">{expTitle}</a></ExpTitle><ExpSub>{expDesc}</ExpSub></Explainer>}
     <TitleBox>
         <HeadTitle>Eyeseek Funding</HeadTitle>
         <HeadSub>Next generation of crowdfunding</HeadSub>
         <HeadDesc>by web3</HeadDesc>
+        {donate && <Tag/>}
     </TitleBox>
 
     <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -228,3 +289,5 @@ export const LandingSvg = ({width,height}) => {
     <MPath onClick={()=>{showAxelar()}} d="M603.824 269.139L606.857 266.069L609.889 263L616.545 269.694L623.557 276.747L623.912 277.104L624.266 276.747L631.257 269.698L637.893 263.007L640.848 265.967L643.806 268.931L635.452 277.373C633.061 279.789 630.766 282.049 628.997 283.744C628.112 284.592 627.36 285.296 626.794 285.807C626.511 286.063 626.277 286.267 626.098 286.416C626.008 286.491 625.935 286.549 625.878 286.592C625.85 286.613 625.828 286.629 625.811 286.641C625.792 286.653 625.785 286.656 625.787 286.656M603.824 269.139L603.473 269.495L604.908 270.891C605.894 271.85 610.144 276.019 614.352 280.154C621.469 287.149 622.106 287.674 623.473 287.674C624.281 287.674 625.429 287.414 626.023 287.096M603.824 269.139L605.256 270.532C606.244 271.493 610.495 275.662 614.703 279.798C618.269 283.303 620.189 285.163 621.387 286.151C621.985 286.644 622.373 286.893 622.672 287.024C622.952 287.146 623.175 287.174 623.473 287.174C623.831 287.174 624.281 287.115 624.718 287.016C625.158 286.917 625.545 286.785 625.787 286.656M603.824 269.139L624.057 287.637L644.511 268.93L635.807 277.724C631.02 282.561 626.617 286.779 626.023 287.096M625.787 286.656L626.023 287.096M635.415 303.68C630.5 298.762 626.08 294.515 625.591 294.242C624.444 293.6 623.393 293.615 621.903 294.296C621.243 294.598 616.744 298.851 611.905 303.748L623.883 294.273M635.415 303.68L644.351 312.621M635.415 303.68L623.883 294.273M610.811 301.909C615.731 297.047 618.255 294.505 619.445 292.86C620.033 292.046 620.251 291.509 620.3 291.062C620.348 290.621 620.24 290.2 620.012 289.579C620.008 289.573 619.998 289.557 619.981 289.532C619.946 289.482 619.894 289.414 619.824 289.325C619.683 289.149 619.483 288.912 619.229 288.621C618.721 288.041 618.012 287.26 617.166 286.346C615.474 284.52 613.244 282.174 611.006 279.856C608.768 277.538 606.524 275.251 604.805 273.545C603.945 272.692 603.22 271.986 602.693 271.496C602.448 271.268 602.251 271.091 602.106 270.968C602.1 270.973 602.095 270.977 602.089 270.982C601.91 271.14 601.658 271.371 601.352 271.662C600.741 272.242 599.925 273.045 599.051 273.929L596.214 276.804L602.759 283.395L609.653 290.337L610.003 290.689L609.653 291.041L602.652 298.101M610.811 301.909L611.162 302.265M610.811 301.909L601.902 310.712L598.951 307.759L596 304.806L602.652 298.101M602.652 298.101L602.297 297.748M636.799 279.465C634.421 281.872 632.21 284.159 630.564 285.903C629.741 286.775 629.061 287.51 628.573 288.055C628.329 288.328 628.135 288.551 627.996 288.718C627.841 288.905 627.792 288.979 627.792 288.979C627.703 289.158 627.602 289.493 627.525 289.913C627.449 290.323 627.403 290.771 627.403 291.152C627.403 291.472 627.427 291.697 627.568 292.001C627.719 292.33 628.017 292.769 628.619 293.477C629.823 294.89 632.128 297.238 636.55 301.705L645.487 310.735L648.445 307.773L651.406 304.807L644.953 298.301M636.799 279.465L636.444 279.113M636.799 279.465C639.178 277.057 641.385 274.87 643.025 273.285C643.845 272.492 644.521 271.853 645.005 271.413C645.229 271.208 645.408 271.051 645.539 270.942C645.563 270.96 645.589 270.979 645.617 271.001C645.814 271.154 646.083 271.382 646.405 271.671C647.048 272.248 647.883 273.047 648.754 273.929L651.584 276.796L645.052 283.121M645.052 283.121L645.4 283.48M645.052 283.121C643.153 284.96 641.425 286.686 640.17 287.986C639.544 288.635 639.032 289.181 638.675 289.584C638.497 289.784 638.352 289.955 638.25 290.088C638.199 290.154 638.152 290.219 638.114 290.28C638.096 290.309 638.074 290.348 638.056 290.391C638.042 290.421 638.005 290.509 638.005 290.623C638.005 290.735 638.041 290.822 638.054 290.852C638.072 290.894 638.093 290.932 638.111 290.962C638.147 291.023 638.193 291.089 638.243 291.156C638.344 291.291 638.486 291.465 638.662 291.67C639.014 292.082 639.519 292.642 640.137 293.308C641.375 294.64 643.079 296.412 644.953 298.301M644.953 298.301L645.268 297.988M623.883 294.273C623.384 294.28 622.819 294.427 622.11 294.751C622.11 294.751 622.084 294.764 622.02 294.809C621.961 294.85 621.885 294.906 621.792 294.98C621.606 295.127 621.364 295.331 621.072 295.587C620.489 296.099 619.718 296.807 618.814 297.662C617.007 299.37 614.677 301.654 612.26 304.099L603.81 312.65L606.758 315.618L609.7 318.58L616.347 311.896L623.348 304.853L623.703 304.497L624.057 304.853L631.056 311.892L637.701 318.575L640.672 315.599L643.644 312.622L635.061 304.034C632.606 301.577 630.274 299.288 628.497 297.58C627.608 296.726 626.859 296.019 626.303 295.509C626.025 295.254 625.798 295.051 625.626 294.904C625.541 294.83 625.472 294.774 625.42 294.733C625.361 294.687 625.341 294.675 625.347 294.678C624.836 294.393 624.373 294.266 623.883 294.273Z" stroke={axColor} fill='inherit'/>
     </svg></Container>
 }
+
+export default LandingMain

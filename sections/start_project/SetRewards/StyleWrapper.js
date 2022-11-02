@@ -38,6 +38,10 @@ export const TooltipBox = styled.div`
 
 export const IconBox = styled.div`
   margin-left: 2px;
+  &:hover{
+    cursor: pointer;
+    opacity: 0.9;
+  }
 `
 
 export const RewardDesc = styled.div`
@@ -49,4 +53,11 @@ export const RewardDesc = styled.div`
       width: 100%;
       margin-top: 5%;
     }
+`
+
+export const TokenTooltip = styled.div`
+  position: absolute;
+  bottom: -30px;
+  right: -250px;
+  width: 100%;
 `

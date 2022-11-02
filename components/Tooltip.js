@@ -6,9 +6,14 @@ const Container = styled.div`
   background: black;
   border-radius: 5px;
   padding: 5px;
+  color: white;
+  letter-spacing: 0.2px;
   font-size: 0.8em;
   font-family: 'Neucha';
   border: 1px solid #2F2F2F;
+  @media (min-width: 1580px) {
+    font-size: 1em;
+  }
 `
 
 const Tooltip = ({text, margin}) => {

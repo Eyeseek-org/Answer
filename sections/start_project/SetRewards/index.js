@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useApp } from "../../utils/appContext";
 
 import SectionTitle from "../../../components/typography/SectionTitle";
-import { RewardContainer, ButtonRow, TabRow, TooltipBox, IconBox,RewardDesc } from "./StyleWrapper";
+import { RewardContainer, ButtonRow, TabRow, TooltipBox, IconBox,RewardDesc, TokenTooltip } from "./StyleWrapper";
 import { MainContainer, NextButton } from "../Category/StyleWrapper";
 import InputContainer from "../../../components/form/InputContainer";
 import Tab from "../../../components/form/Tab";
@@ -13,9 +13,10 @@ import { Row } from "../../../components/format/Row";
 
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { isNext, pType, rewards, tokenReward } = { ...appState };
+  const { isNext, pType, rewards } = { ...appState };
   const [rType, setRType] = useState(true)
   const [microTooltip, setMicroTooltip] = useState(false)
+  const [tokenTooltip, setTokenTooltip] = useState(false)
   const [reward, setReward] = useState({
     title: "Reward 1",
     description: "Reward 1 description",
@@ -99,8 +100,8 @@ const SetRewards = ({ setStep }) => {
               type={'number'}
             />}
             <InputContainer
-              label={'Reward #'}
-              placeholder={'100'}
+              label={'Number'}
+              placeholder={'10'}
               description={'Maximum number of offered rewards'}
               onChange={(e)=>{setReward({reward: {cap: e.target.value}})}}
               type={'number'}
@@ -108,8 +109,11 @@ const SetRewards = ({ setStep }) => {
           </MilestoneContainer>
         </MainMilestoneContainer>}
       {pType !== 'Stream' ? <><NextButton onClick={() => setShowToken(!showToken)}>Token reward (optional)</NextButton>
-        {showToken && <MainMilestoneContainer><RewardDesc>Create a pool with custom ERC20 token, our smart contract distributes automatically rewards proportionally to all involved backers after project success.</RewardDesc>
+        {showToken && <MainMilestoneContainer>
+          <RewardDesc>Create a pool with custom ERC20 token, our smart contract distributes automatically rewards proportionally to all involved backers after project success.</RewardDesc>
+
           <MilestoneContainer>
+             {tokenTooltip &&  <TokenTooltip><Tooltip text={'       Backer delivering 80% of all allocation to your projects will receive 80% of all tokens in the pool. '} /></TokenTooltip>}
               <InputContainer
                 label={'Token name'}
                 placeholder={'EYE'}
@@ -128,7 +132,11 @@ const SetRewards = ({ setStep }) => {
                 label={'Total amount'}
                 placeholder={'10000'}
                 onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {amount: e.target.value }}))}
-                description={'Total amount of reward tokens proportionally distributed to the backers'}
+                description={<>        
+                <IconBox onMouseEnter={() => setTokenTooltip(true)} onMouseLeave={() => setTokenTooltip(false)}>
+                Total amount of reward tokens proportionally distributed to the backers 
+                <InfoIcon width={15} />
+              </IconBox></>}
                 type={'number'}
               />
             </MilestoneContainer></MainMilestoneContainer>}

@@ -16,6 +16,7 @@ const FormWrapper = styled.div`
   padding: 10px 20px;
   padding: 2rem 5rem 1rem 5rem;
   margin-bottom: 3%;
+  margin-top: 3%;
   @media (max-width: 769px) {
     padding: 2rem 1rem 1rem 3rem;
   }
@@ -35,10 +36,13 @@ const FormInfo = styled.div`
   @media (max-width: 500px) {
     width: 100%;
   }
+  @media (min-width: 1580px) {
+    font-size: 1.1em;
+  }
 `;
 
 
-const DonateWithout = ({ pid, currency, blockchain }) => {
+const DonateWithout = ({ pid, currency }) => {
     const [amountM, setAmountM] = useState(0);
     const [amountD, setAmountD] = useState(1)
 
@@ -116,7 +120,7 @@ const DonateWithout = ({ pid, currency, blockchain }) => {
             <li>Funded amount must be approved before sending to the Eyeseek contract</li>
         </FormInfo>
 
-        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid} blockchain={blockchain} currency={currency}/>
+        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid} currency={currency}/>
     </>
 }
 
