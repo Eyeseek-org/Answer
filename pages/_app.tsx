@@ -35,8 +35,38 @@ const mumbai: Chain = {
   testnet: true,
 };
 
+const fantomTest: Chain = {
+  id: 4_002,
+  name: "Fantom Testnet",
+  network: "fantom",
+  nativeCurrency: {
+    decimals: 18,
+    name: "FTM",
+    symbol: "FTM",
+  },
+  rpcUrls: {
+    default: "https://rpc.testnet.fantom.network",
+  },
+  testnet: true,
+}
+
+const bnbTest: Chain = {
+  id: 97,
+  name: "BNB Testnet",
+  network: "binance",
+  nativeCurrency: {
+    decimals: 18,
+    name: "BNB",
+    symbol: "BNB",
+  },
+  rpcUrls: {
+    default: "https://data-seed-prebsc-1-s1.binance.org:8545",
+  },
+  testnet: true,
+}
+
 const { provider, webSocketProvider, chains } = configureChains(
-  [mumbai],
+  [mumbai, fantomTest, bnbTest],
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY }), publicProvider()]
 );
 
