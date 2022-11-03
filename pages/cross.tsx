@@ -10,8 +10,7 @@ import {
 } from "@axelar-network/axelarjs-sdk";
 
 import {gatewayDestinationAbi} from '../abi/gateway'
-import messageSource from '../abi/messageSource'
-import donation from '../abi/donation'
+
 import ApproveUniversal from "../components/buttons/ApproveUniversal";
 
 interface GMPStatusResponse {
