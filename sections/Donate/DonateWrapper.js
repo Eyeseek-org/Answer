@@ -100,7 +100,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
         //     setExplorer('https://bscscan.com/tx/')
         // }
     }
-    const sum = (amountM+amountD);
+    const sum = (parseInt(amountM) + parseInt(amountD));
 
 
     useEffect(() => {

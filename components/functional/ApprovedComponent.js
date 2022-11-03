@@ -1,6 +1,7 @@
 import {useContractRead} from 'wagmi'
 import styled from 'styled-components'
 import token from '../../abi/token.json'
+import Amount from "./Amount";
 
 const Container = styled.div`
     display: flex;
@@ -19,7 +20,7 @@ const ApprovedComponent = ({address}) => {
 
         
     return <Container>
-        {data && <>Approved: ${data?.toString()}</>}
+        {data && <>Approved: <Amount value={data} /></>}
     </Container>
 }
 
