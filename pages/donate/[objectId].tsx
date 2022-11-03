@@ -148,6 +148,7 @@ const Donate: NextPage = () => {
   const [tokenAddress, setTokenAddress] = useState();
   const [tokenAmount, setTokenAmount] = useState();
   const [rewards, setRewards] = useState();
+  const [bookmarks, setBookmarks] = useState();
   const [pid, setPid] = useState();
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
@@ -165,7 +166,7 @@ const Donate: NextPage = () => {
       <>
         {blockchains.map((bc, index) => {
           const { logo, chainId } = bc;
-          return  <OptionReward>
+          return  <OptionReward key={chainId}>
                     {chain && chain.id === chainId ? 
                         <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
                         <ImgBox onClick={()=>{switchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
@@ -190,6 +191,8 @@ const Donate: NextPage = () => {
         if (res.data.results.length > 0) {
           setProject(res.data.results[0])
           setPid(res.data.results[0].pid)
+          setBookmarks(res.data.results[0].bookmarks)
+          setRewards(res.data.results[0].rewards)
         }
         setApiError(false)
     } catch (err) {
@@ -280,8 +283,7 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardNo && <DonateWithout pid={pid} currency={currency}  />}
-        {reward1 && <DonateWithout pid={pid} currency={currency}  />}
+        {rewardNo && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} />}
     </DonateContentWrapper>
   </Container>
 }
