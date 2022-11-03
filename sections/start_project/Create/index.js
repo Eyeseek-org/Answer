@@ -99,7 +99,7 @@ const Create = ({ setStep }) => {
     // 2. Activate rewards in the db
     const useEv = (event) => {
         if (Array.isArray(event)) {
-            const pid = parseInt(event[2] && event[2]);
+            const pid = parseInt(event[2] && event[2]) - 1;
             handleUpdateMoralis(pid); 
             handleRewards()
             handleTokenReward()

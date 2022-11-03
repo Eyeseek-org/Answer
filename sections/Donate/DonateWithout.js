@@ -42,7 +42,7 @@ const FormInfo = styled.div`
 `;
 
 
-const DonateWithout = ({ pid, currency }) => {
+const DonateWithout = ({ pid, currency, bookmarks }) => {
     const [amountM, setAmountM] = useState(0);
     const [amountD, setAmountD] = useState(1)
 
@@ -117,7 +117,7 @@ const DonateWithout = ({ pid, currency }) => {
             <li>Funded amount must be approved before sending to the Eyeseek contract</li>
         </FormInfo>
 
-        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid} currency={currency}/>
+        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid} currency={currency} bookmarks={bookmarks}/>
     </>
 }
 

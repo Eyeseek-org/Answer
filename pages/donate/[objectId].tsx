@@ -137,6 +137,8 @@ const ImgBox = styled.div`
 `
 
 const Donate: NextPage = () => {
+  const router = useRouter()
+  const { objectId } = router.query
   const [rewardNo, setRewardNo] = useState(true);
   const [reward1, setReward1] = useState(false);
   const [currency, setCurrency] = useState("USDC");
@@ -147,13 +149,15 @@ const Donate: NextPage = () => {
   const [tokenAmount, setTokenAmount] = useState();
   const [rewards, setRewards] = useState();
   const [pid, setPid] = useState();
-  const router = useRouter()
-  const { objectId } = router.query
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
   const [blockchain, setBlockchain] = useState("")
   const [tooltip, setTooltip] = useState(false)
+
+  const handleBack = () => {
+    router.push(`/project/${objectId}`)
+  }
 
   const RenderBlockchain = () => {
 
@@ -173,10 +177,12 @@ const Donate: NextPage = () => {
   };
 
   useEffect(() => {
+    if(!router.isReady) return;
     getProjectDetail()
     getTokenReward()
     getRewards()
-  },[]);
+  },[router.isReady]);
+
 
   const getProjectDetail = async () => {
     try {
@@ -225,7 +231,7 @@ const getRewards = async () => {
 
 
   return <Container>
-    <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
+    <SectionTitle title={'Donate'} subtitle={'Select an option below'} onClick={()=>(handleBack())}/>
     <DonateContentWrapper>
       <DonateOption>
        {/* @ts-ignore */}
@@ -274,7 +280,7 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardNo && <DonateWithout pid={pid} currency={currency} />}
+        {rewardNo && <DonateWithout pid={pid} currency={currency}  />}
         {reward1 && <DonateWithout pid={pid} currency={currency}  />}
     </DonateContentWrapper>
   </Container>

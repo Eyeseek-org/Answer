@@ -6,15 +6,11 @@ import axios from 'axios'
 import Tag from "../../components/typography/Tag"
 import SectionTitle from "../../components/typography/SectionTitle"
 import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
-import { CancelIcon, VerifiedIcon, RewardIcon, UpdateSvg } from '../../components/icons/Common'
+import { CancelIcon, VerifiedIcon} from '../../components/icons/Common'
 import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
 import donation from '../../abi/donation.json'
-import { useContractWrite, useNetwork, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi'
-import UpdateCreate from './UpdateCreate'
-
-import RewardCreate from "./RewardCreate"
-import UpdateOverview from "./UpdateOverview"
+import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi'
 import RewardList from "./RewardList"
 import ProjectDetailRight from "./ProjectDetailRight"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
@@ -134,13 +130,9 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
-  const [rewardTooltip, setRewardTooltip] = useState(false)
-  const [updateTooltip, setUpdateTooltip] = useState(false)
-  const [mode, setMode] = useState('Overview')
   const [nonVerifiedTooltip, setNonVerifiedTooltip] = useState(false)
   const [canceled, setCanceled] = useState(false)
   const [error, setError] = useState(false)
-  const { chain } = useNetwork()
 
 
   // TBD add prepare contract write - To make blockchain part work
@@ -207,7 +199,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   return  <>
     <Container>
       <SectionTitle title={'Project detail'} subtitle={title} />
-    {mode === 'Overview' ? <DetailBox>
+      <DetailBox>
         {verifiedTooltip && <Tooltip text={'Verified by Eyeseek team'} />}
         {nonVerifiedTooltip && <Tooltip text={'Not verified'} />}
         <AbsoluteBox>
@@ -222,10 +214,6 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}
         {address === owner && <ActionPanel>
           {cancelTooltip && <Tooltip margin={'25px'} text='Cancel project' />}
-          {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
-          {updateTooltip && <Tooltip margin={'25px'} text='Send project update to users' />}
-          <IconWrapper onClick={() => { setMode('Update') }} onMouseEnter={() => { setUpdateTooltip(true) }} onMouseLeave={() => {setUpdateTooltip(false)}}><UpdateSvg width={75} /></IconWrapper>
-          <IconWrapper onClick={() => { setMode('Reward') }} onMouseEnter={() => { setRewardTooltip(true) }} onMouseLeave={() => {setRewardTooltip(false)}}><RewardIcon width={25} /></IconWrapper>
               <IconWrapper onMouseEnter={() => { setCancelTooltip(true) }} onMouseLeave={() => { setCancelTooltip(false) }}>
                 <CancelIcon width={30} />
               </IconWrapper>
@@ -240,11 +228,8 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
         </LeftPart>
         {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} /> }
         <RewardList oid={objectId}/>
-      </DetailBox> : null}
-      {mode === 'Reward' && <RewardCreate objectId={objectId} bookmarks={bookmarks} title={title}/>}
-      {mode === 'Update' && <UpdateCreate objectId={objectId} bookmarks={bookmarks} title={title}/>}
+      </DetailBox>
     </Container>
-  <UpdateOverview objectId={objectId}/>
   </>
 }
 

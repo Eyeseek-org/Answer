@@ -3,6 +3,7 @@ import donation from '../../abi/donation.json'
 import { useContractRead, useAccount } from 'wagmi'
 import Link from 'next/link'
 import {useState} from 'react'
+import { useRouter } from 'next/router'
 
 import ButtonAlt from "../../components/buttons/ButtonAlt"
 import Socials from '../../components/buttons/Socials'
@@ -78,6 +79,7 @@ const Backers = styled.div`
 const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     const {address} = useAccount()
     const [management, setManagement] = useState(false)
+    const router = useRouter()
 
     var bal = 'n/a'
     var microInvolved = 'n/a'
@@ -176,9 +178,8 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
             </FlexRow>
         </div>
         <ButtonBox>
-        {pType === 'Standard' && <Link href={`/donate/${objectId}`}>
-            <ButtonAlt width={'100%'} text="Fund it!"/> 
-        </Link>}
+        {pType === 'Standard' &&  <ButtonAlt width={'100%'} text="Fund it!" onClick={() => router.push(`/donate/${objectId}`)}/> 
+        }
         {pType === 'Stream' && owner !== address && <Link href={`/stream/${objectId}`}>
            <ButtonAlt width={'100%'} text="Stream!!"/>
         </Link>}
