@@ -110,7 +110,7 @@ const Stream: NextPage = () => {
         superToken: process.env.NEXT_PUBLIC_AD_TOKEN,
         sender: address,
         receiver: recipient,
-        provider: provider
+        providerOrSigner: provider
       })
       console.log(flow)
     } catch(err){
@@ -198,7 +198,7 @@ const Stream: NextPage = () => {
       addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
       contractInterface: token.abi,
       eventName: 'Approval',
-      listener: (event) => listened(event),
+      listener: (_event) => listened(),
       once: true
     })
 

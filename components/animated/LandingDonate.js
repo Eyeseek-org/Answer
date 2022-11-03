@@ -20,7 +20,7 @@ const Tag = styled(motion.div)`
 const LandingDonate = () => {
     const [showDonate, setShowDonate] = useState(false)
 
-    const useDonate = (e) => {
+    const handleContractListener = () => {
         setShowDonate(!showDonate)
         setTimeout(() => {
             setShowDonate(false)
@@ -31,7 +31,7 @@ const LandingDonate = () => {
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
         eventName: 'Donated',
-        listener: (event) => useDonate(event),
+        listener: (_event) => handleContractListener(),
         once: false
     })
 

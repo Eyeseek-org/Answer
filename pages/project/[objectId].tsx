@@ -28,7 +28,7 @@ const Project: NextPage = () => {
   const [mode, setMode] = useState("Overview")
   const [active, setActive] = useState("Overview")
 
-  const [project, setProject] = useState()
+  const [project, setProject] = useState<any>()
   const [apiError, setApiError] = useState(false)
 
   const getProjectDetail = async () => {
