@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {useBalance} from 'wagmi'
+import Amount from "./Amount";
 
 const Container = styled.div`
     display: flex;
@@ -13,10 +14,10 @@ const BalanceComponent = ({token, address, amount}) => {
         addressOrName: address,
         token: token
       })
-     // TBD Finish tier - format number to 2 decimals, compare amount to balance, color red if insufficient
+     // TBD Finish tier - compare amount to balance, color red if insufficient
 
     return <Container>
-         {amount ? <>Balance: {data?.formatted} {data?.symbol}</> : <>Balance: {data?.formatted} {data?.symbol}</>}
+         {amount ? <>Balance: <Amount value={amount} /> {data?.symbol}</> : <>Balance: <Amount value={data?.formatted} /> {data?.symbol}</>}
     </Container>
 }
 

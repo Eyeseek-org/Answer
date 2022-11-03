@@ -8,6 +8,7 @@ import Lottie from "react-lottie";
 import successAnimation from '../../data/successAnimation.json'
 import smallLoading from '../../data/smallLoading.json'
 import { BigNumber,utils } from 'ethers'
+import Amount from "../functional/Amount";
 
 // Animation configs 
 const okAnim = {
@@ -44,7 +45,7 @@ const Approve = styled.div`
     position: relative;
 `
 
-const Amount = styled.div`
+const AmountStyled = styled.div`
     font-size: 0.8em;
     position: absolute;
     color: white;
@@ -104,7 +105,7 @@ const ApproveButton = (sum) => {
          <Button 
             width={'200px'} 
             onClick={() => handleApprove()} 
-            text={<Approve><div>Approve</div><Amount>{input}</Amount></Approve>} />
+            text={<Approve><div>Approve</div><AmountStyled><Amount value={input} /></AmountStyled></Approve>} />
         }
     </Container>
 }
