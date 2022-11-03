@@ -17,17 +17,16 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    right: 4%;
+    right: 0%;
     z-index: 1;
-    top: 15%;
+    top: 7%;
     transition: all 0.7s ease-in-out;
-    height: 300px;
-    width: 20%;
-    min-width: 300px;
+    height: 100vh;
+    width: 300px;
     background: linear-gradient(155.74deg, #1C1C1C 0%, #000000 120.65%);
     border-radius: 10px;
     border: 1px solid #4E4E4E;
-    overflow-y: scroll;
+    overflow: scroll;
     ::-webkit-scrollbar {
       width: 2px;
     
@@ -41,9 +40,6 @@ const Container = styled.div`
     ::-webkit-scrollbar-thumb {
         background: #9bffff;
     }
-    @media (min-width: 1780px) {
-       right: 10%;
-  }
 `
 
 const NotiBox = styled.div`
@@ -182,12 +178,12 @@ const Notifications = ({notis}) => {
 
     return <Container>  
        {!profile ?<NotiBox> 
-        {notis && notis.sort((a, b) => a.createdAt - b.createdAt).map((noti) => <NotiItem>
+        {notis && notis.sort((a, b) => a.createdAt - b.createdAt).map((noti, index) => <NotiItem key={index}>
             <Link href={`/project/${noti.project}`}><Row>            
                  <IconWrapper>
                     {noti.type === 'projectCanceled' && <CanceledIcon width={15} height={15}/>}
                     {noti.type === 'rewardAdded' && <RewardIcon width={15}/>}
-                    {noti.type === 'projectUpdate' && <NewsIcon width={15} height={15}/>}
+                    {noti.type === 'projectUpdate' && <BellIcon/>}
                 </IconWrapper>
                 <Col><Desc>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
                 <Col>
