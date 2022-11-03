@@ -2,89 +2,95 @@ import { useRouter } from "next/router"
 import type { NextPage } from "next";
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useMoralisQuery } from 'react-moralis'
 
 import ProjectDetail from "../../sections/ProjectDetail/ProjectDetail"
+import Tab from "../../components/form/Tab";
+import RewardCreate from "../../sections/ProjectDetail/RewardCreate";
+import UpdateCreate from "../../sections/ProjectDetail/UpdateCreate";
+import UpdateOverview from "../../sections/ProjectDetail/UpdateOverview";
+import axios from "axios";
+import { moralisApiConfig } from "../../data/moralisApiConfig";
 
 const Container = styled.div`
   margin-top: 5%;
   margin-bottom: 5%;
 `
 
+const TabBox = styled.div`
+  margin-left: 17%;
+`
+
 const Project: NextPage = () => {
   const router = useRouter()
   const { objectId } = router.query 
-  const { data } = useMoralisQuery("Project", (query) => query.equalTo("objectId", objectId));
-  const fetchDetail = JSON.parse(
-    JSON.stringify(data, [
-      "title",
-      "description",
-      "category",
-      "subcategory",
-      "bookmarks",
-      "verified",
-      "state",
-      "imageUrl",
-      "type",
-      "owner",
-      "pid"
-      //@ts-ignore
-    ]), [], { autoFetch: true },
-  );
+  const [mode, setMode] = useState("Overview")
+  const [active, setActive] = useState("Overview")
 
-  const [imageUrl, setImageUrl] = useState(null)
-  const [verified, setVerified] = useState(false)
-  const [title, setTitle] = useState("Default Title")
-  const [description, setDescription] = useState("Default Description")
-  const [category, setCategory] = useState(null)
-  const [subcategory, setSubcategory] = useState(null)
-  const [pid, setPid] = useState()
-  const [bookmarks, setBookmarks] = useState([])
-  const [status, setStatus] = useState(0)
-  const [pType, setPType] = useState("Standard")
-  const [owner, setOwner] = useState("Owner")
+  const [project, setProject] = useState()
+  const [apiError, setApiError] = useState(false)
 
-  const getData = async () => {
+  const getProjectDetail = async () => {
     try {
-      await setTitle(fetchDetail[0].title)
-      await setDescription(fetchDetail[0].description)
-      await setCategory(fetchDetail[0].category)
-      await setSubcategory(fetchDetail[0].subcategory)
-      await setPid(fetchDetail[0].pid)
-      await setBookmarks(fetchDetail[0].bookmarks)
-      await setVerified(fetchDetail[0].verified)
-      await setStatus(fetchDetail[0].state)
-      await setImageUrl(fetchDetail[0].imageUrl)
-      await setPType(fetchDetail[0].type)
-      await setOwner(fetchDetail[0].owner)
-    } catch (error) {
-      console.log(error)
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId":"${objectId}"}`,moralisApiConfig)
+        if (res.data.results.length > 0) {
+          setProject(res.data.results[0])
+        }
+        setApiError(false)
+    } catch (err) {
+        console.log(err)
+        setApiError(true)
     }
+}
+
+
+  const handleMode = (mode: string) => {
+    setMode(mode)
+    setActive(mode)
   }
 
   useEffect(() => {
-    getData()
-  }, [!fetchDetail[0]])
+    getProjectDetail()
+  }, [])
+
+  // TBD doplnit popisy
+  // TBD migrate rewards separately
 
 
   return (
     <>
+      <TabBox>  
+        <Tab 
+          active={active} 
+          o1={'Overview'} 
+          o2={'Updates'} 
+          o3={"Rewards"} 
+          change1={()=>handleMode('Overview')} 
+          change2={()=>handleMode('Updates')} 
+          change3={()=>handleMode('Rewards')}/>
+      </TabBox>
+        {/* {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
+          {updateTooltip && <Tooltip margin={'25px'} text='Send project update to users' />}
+          <IconWrapper onClick={() => { setMode('Update') }} onMouseEnter={() => { setUpdateTooltip(true) }} onMouseLeave={() => {setUpdateTooltip(false)}}><UpdateSvg width={75} /></IconWrapper>
+          <IconWrapper onClick={() => { setMode('Reward') }} onMouseEnter={() => { setRewardTooltip(true) }} onMouseLeave={() => {setRewardTooltip(false)}}><RewardIcon width={25} /></IconWrapper> */}
       <Container>
-      {/* @ts-ignore */}
-        <ProjectDetail 
-          description={description} 
-          title={title} 
-          category={category} 
-          subcategory={subcategory} 
-          imageUrl={imageUrl} 
-          bookmarks={bookmarks}
-          verified={verified}
-          state={status}
-          pid={pid}
-          objectId={objectId}
-          owner={owner}
-          pType={pType}
-        />
+      {project ?  <>
+    {mode === 'Overview' &&   <ProjectDetail 
+          description={project.description} 
+          title={project.title} 
+          category={project.category} 
+          subcategory={project.subcategory} 
+          imageUrl={project.imageUrl} 
+          bookmarks={project.bookmarks}
+          verified={project.verified}
+          state={project.status}
+          pid={project.pid}
+          objectId={project.objectId}
+          owner={project.owner}
+          pType={project.type}
+        />}
+      {mode === 'Rewards' && <RewardCreate objectId={objectId} rewards={project.rewards}/>}
+      {mode === 'Updates' && <><UpdateOverview objectId={objectId}/><UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/></>}
+      </> : <>{apiError ? <>Project failed to fetch</> : <>Project was not fetched </>}</>}
       </Container>
     </>
   )

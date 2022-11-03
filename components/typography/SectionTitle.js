@@ -11,16 +11,16 @@ const SubRow = styled.div`
   padding-left: 17%;
 `
 
-const SectionTitle = ({ title, subtitle }) => {
+const SectionTitle = ({ title, subtitle, onClick }) => {
   return (
-    <>
+    <div onClick={onClick}>
       <TitleRow>
         <Title text={title} />
       </TitleRow>
       <SubRow>
         <Subtitle text={subtitle} />
       </SubRow>
-    </>
+    </div>
   )
 }
 

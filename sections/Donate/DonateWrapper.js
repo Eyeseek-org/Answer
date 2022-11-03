@@ -8,6 +8,7 @@ import Button from "../../components/buttons/Button";
 import ApproveButton from "../../components/buttons/ApproveButton";
 import { SuccessIcon } from "../../components/icons/Common";
 import donation from "../../abi/donation.json";
+import { useRouter } from 'next/router';
 
 const DonateButtonWrapper = styled.div`
   position: relative;
@@ -38,7 +39,11 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
     const [success, setSuccess] = useState(false)
     const [bookmarks, setBookmarks] = useState()
     const [curr, setCurr] = useState(0)
+    const [projectId, setProjectId] = useState(pid)
 
+    const router = useRouter()
+    const { objectId } = router.query
+    
 
     /// TBD after Axelar pass correct currency, until know we'll hardcode USDC = (EYE)
 
@@ -54,6 +59,10 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
 
     const useEv = (event) => {
         setSuccess(true);
+        if (project.length === 1){
+            updateBookmark(bookmarks)
+            console.log('updated')
+        }
     }
 
     useContractEvent({
@@ -80,12 +89,11 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
         }
       }
 
-    // TBD hardcoded currency for now
     const { config, error } = usePrepareContractWrite({
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
         functionName: 'contribute',
-        args: [amountM, amountD, 1, 1],
+        args: [amountM, amountD, projectId, 1],
     });
 
     const { write, data } = useContractWrite(config);
@@ -98,33 +106,30 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
         // } else if (blockchain === 'bsc') {
         //     setExplorer('https://bscscan.com/tx/')
         // }
-        if (project.length === 1){
-            updateBookmark(oid, bookmarks)
-        }
     }
     const sum = (amountM+amountD);
 
-    const getProjectDetail = async (pid) => {
+    const getProjectDetail = async () => {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"pid":"${pid}"}`, moralisConfig)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId":"${objectId}"}`, moralisConfig)
             await setProject(res.data.results);
             await setBookmarks(project[0].bookmarks)
-            await setOid(project[0].objectId)
+            await setProjectId(project[0].pid)
         } catch (err){
             console.log(err)
         }
     }
 
     useEffect(() => {
-        getProjectDetail(pid)
+        getProjectDetail()
         handleCurrency()
     }, [])
 
 
-    const updateBookmark = async (oid, bookmarks) => {
+    const updateBookmark = async (bookmarks) => {
         const newBookmarks = [...bookmarks, address];
         try {
-          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, { 'bookmarks': newBookmarks }, moralisConfig)
+          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { 'bookmarks': newBookmarks }, moralisConfig)
         } catch (error) {
           console.log(error)
         }
@@ -132,6 +137,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
 
     return <div>
         <DonateButtonWrapper>
+           
             {success ? <SuccessIcon /> : (
                 <>
                     {address &&

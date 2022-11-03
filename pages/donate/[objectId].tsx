@@ -155,6 +155,10 @@ const Donate: NextPage = () => {
   const [blockchain, setBlockchain] = useState("")
   const [tooltip, setTooltip] = useState(false)
 
+  const handleBack = () => {
+    router.push(`/project/${objectId}`)
+  }
+
   const RenderBlockchain = () => {
 
     return (
@@ -225,7 +229,7 @@ const getRewards = async () => {
 
 
   return <Container>
-    <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
+    <SectionTitle title={'Donate'} subtitle={'Select an option below'} onClick={()=>(handleBack())}/>
     <DonateContentWrapper>
       <DonateOption>
        {/* @ts-ignore */}
@@ -274,7 +278,7 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardNo && <DonateWithout pid={pid} currency={currency} />}
+        {rewardNo && <DonateWithout pid={pid} currency={currency}  />}
         {reward1 && <DonateWithout pid={pid} currency={currency}  />}
     </DonateContentWrapper>
   </Container>

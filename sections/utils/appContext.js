@@ -19,14 +19,16 @@ export const AppProvider = (props) => {
     pImageUrl: "",
     pm1: 0,
     pmDesc: 'Some description',
-    cateogry: "Games",
+    category: "Games",
     subcategory: "Board",
     tokenReward: {
       amount: 0,
       name: "EYE",
       address: process.env.NEXT_PUBLIC_AD_TOKEN,
-    }
+    },
   });
+
+
 
   return (
     <AppContext.Provider

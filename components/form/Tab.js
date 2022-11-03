@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {useState} from 'react'
+import { useState } from 'react'
 
 const Container = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ const Container = styled.div`
   gap: 3%;
   color: white;
   padding: 0.5%;
-  border-bottom: 1px solid #3a3a3a;
+ 
   width: 40%;
   @media (max-width: 768px) {
     width: 100%;
@@ -15,12 +15,17 @@ const Container = styled.div`
 `
 
 const Inactive = styled.div`
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-family: 'Montserrat';
     cursor: pointer;
     transition: 0.2s;
+    box-shadow: 0px 0px 0px 0px #ffffff;
+    padding-bottom: 1%;
     &:hover{
         opacity: 0.8;
+    }
+    @media (min-width: 1768px) {
+        font-size: 1.1em;
     }
 `
 
@@ -34,24 +39,18 @@ const Divider = styled.div`
     background: #3a3a3a;
 `
 
-/// TBD connect it with parent
-
-const Tab = ({act, o1, o2, o3, onClick}) => {
-    const [active, setActive] = useState(o1)
-
-    const handleChange = (v) => {
-        setActive(v)
-    }
-
-    const Item = ({act, text, onClick}) => {
+const Tab = ({ active, o1, o2, o3, o4, change1, change2, change3, change4 }) => {
+    
+    const Item = ({ act, text, onClick }) => {
         return <>{active === act ? <Active>{text}</Active> : <Inactive onClick={onClick}>{text}</Inactive>}</>
     }
-    return <Container onClick={onClick}>
-        <Item act={o1} text={o1} onClick={() => handleChange(o1)}/>
-            <Divider/>
-        <Item act={o2} text={o2} onClick={() => handleChange(o2)}/>
-          
-      {o3 && <>  <Divider/><Item o={o3} text={o3} onClick={() => handleChange(o3)}/></>}
+    return <Container>
+        <Item act={o1} text={o1} onClick={change1} />
+        <Divider />
+        <Item act={o2} text={o2} onClick={change2} />
+
+        {o3 && <>  <Divider /><Item o={o3} text={o3} onClick={change3} /></>}
+        {o4 && <>  <Divider /><Item o={o4} text={o4} onClick={change4} /></>}
     </Container>
 }
 
