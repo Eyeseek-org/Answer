@@ -7,6 +7,7 @@ import InputContainer from "../../../components/form/InputContainer";
 import Moralis from "moralis-v1";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import Image from "next/image";
 
 const TellStory = ({ setStep }) => {
   const { appState, setAppState } = useApp();
@@ -75,10 +76,10 @@ const TellStory = ({ setStep }) => {
         <FormStyle method="post" action="" enctype="multipart/form-data">
           <label className="custom-file-upload">
             <input className="input-file" type="file" id="file" onChange={handleFileUpload} />
-            {image ? <img src={image} width="100%" height="100%"  alt="Project image" /> : <span className="input-span">Upload project image</span>}
+            {image ? <Image src={image} width={'400px'} height={'300px'}  alt="Project image" /> : <span className="input-span">Upload project image</span>}
           </label>
           {story_form.map((sf) => {
-            const { title, name, description, text_field, change, p, maxLength } = sf;
+            const { title, name, description, text_field, p, maxLength } = sf;
             return (
               <InputContainer
                   key={name}

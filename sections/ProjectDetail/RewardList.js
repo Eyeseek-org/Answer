@@ -20,21 +20,6 @@ const Container = styled.div`
     flex-wrap: wrap;
 `
 
-const I = styled.div`
-    margin-bottom: 5%;
-    font-family: 'Neucha';
-    text-align: right;
-    color: white;
-    letter-spacing: 0.2px;
-    @media (min-width: 1750px){
-        font-size: 1.1em;
-    }
-    &:hover{
-        font-weight: bold;
-        cursor: pointer;
-    }
-`
-
 const Modal = styled.div`  
     position: relative;
     font-family: 'Montserrat';

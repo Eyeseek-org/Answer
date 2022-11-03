@@ -141,7 +141,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
   const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
   const [canceled, setCanceled] = useState(false)
-  const [error, setError] = useState(false)
+  const [apiError, setApiError] = useState(false)
 
 
   // TBD add prepare contract write - To make blockchain part work
@@ -159,13 +159,14 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
     }
   }
 
-  const {isError, isLoading, write } = useContractWrite(config)
+  const { write } = useContractWrite(config)
 
   /// TBD create before the cancellation event is confirmed
 
-  const useEv = (e) => {
-    handleCancelNotifications();
-    setCanceled(true);
+  const useEv = async(e) => {
+    await cancelMoralis(objectId);
+    await handleCancelNotifications();
+    console.log(e)
   }
 
   useContractEvent({
@@ -176,11 +177,8 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
     once: true
   })
 
-  const cancel = async (oid) => {
+  const cancel = async () => {
     await write?.()
-    await cancelMoralis(oid);
-    // Temporary
-    setCanceled(true); 
   }
 
   const handleCancelNotifications = async () => {
@@ -199,9 +197,10 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const cancelMoralis = async (oid) => {
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, { 'state': 4 }, moralisApiConfig)
+      await setCanceled(true);
     } catch (error) {
       console.log(error)
-      setError(true)
+      setApiError(true)
     }
   }
 
@@ -215,8 +214,6 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
           {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
         </LeftTopTooltip>
-        <AbsoluteBox>
-          {isError && <>Error</>}</AbsoluteBox>
         <ProjectType>
           {verified  ? 
               <IconWrapper onMouseEnter={() => { setVerifiedTooltip(true) }} onMouseLeave={() => { setVerifiedTooltip(false) }}><VerifiedIcon width={30} height={30} /></IconWrapper> :
