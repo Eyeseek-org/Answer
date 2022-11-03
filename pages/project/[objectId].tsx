@@ -49,8 +49,9 @@ const Project: NextPage = () => {
   }
 
   useEffect(() => {
+    if(!router.isReady) return;
     getProjectDetail()
-  }, [])
+  }, [router.isReady])
 
   // TBD doplnit popisy
   // TBD migrate rewards separately
@@ -64,9 +65,12 @@ const Project: NextPage = () => {
           o1={'Overview'} 
           o2={'Updates'} 
           o3={"Rewards"} 
+          o4={"Backers"}
           change1={()=>handleMode('Overview')} 
           change2={()=>handleMode('Updates')} 
-          change3={()=>handleMode('Rewards')}/>
+          change3={()=>handleMode('Rewards')}
+          change4={()=>handleMode('Backers')}
+          />
       </TabBox>
         {/* {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
           {updateTooltip && <Tooltip margin={'25px'} text='Send project update to users' />}
@@ -90,7 +94,8 @@ const Project: NextPage = () => {
         />}
       {mode === 'Rewards' && <RewardCreate objectId={objectId} rewards={project.rewards}/>}
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/><UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/></>}
-      </> : <>{apiError ? <>Project failed to fetch</> : <>Project was not fetched </>}</>}
+      {mode === 'Backers' && <div>Backers</div>}
+      </> : <>{apiError && <>Project failed to fetch</>}</>}
       </Container>
     </>
   )

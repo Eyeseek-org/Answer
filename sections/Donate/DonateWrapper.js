@@ -30,16 +30,12 @@ const Err = styled.div`
 `
 
 
-const DonateWrapper = ({amountM, amountD, pid, currency}) => {
+const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
     const { address } = useAccount();
     const token = process.env.NEXT_PUBLIC_AD_TOKEN
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
-    const [project, setProject] = useState([])
-    const [oid, setOid] = useState()
     const [success, setSuccess] = useState(false)
-    const [bookmarks, setBookmarks] = useState()
     const [curr, setCurr] = useState(0)
-    const [projectId, setProjectId] = useState(pid)
 
     const router = useRouter()
     const { objectId } = router.query
@@ -59,10 +55,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
 
     const useEv = (event) => {
         setSuccess(true);
-        if (project.length === 1){
-            updateBookmark(bookmarks)
-            console.log('updated')
-        }
+        updateBookmark(bookmarks)
     }
 
     useContractEvent({
@@ -93,7 +86,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
         addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
         functionName: 'contribute',
-        args: [amountM, amountD, projectId, 1],
+        args: [amountM, amountD, pid, 1],
     });
 
     const { write, data } = useContractWrite(config);
@@ -109,19 +102,8 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
     }
     const sum = (amountM+amountD);
 
-    const getProjectDetail = async () => {
-        try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId":"${objectId}"}`, moralisConfig)
-            await setProject(res.data.results);
-            await setBookmarks(project[0].bookmarks)
-            await setProjectId(project[0].pid)
-        } catch (err){
-            console.log(err)
-        }
-    }
 
     useEffect(() => {
-        getProjectDetail()
         handleCurrency()
     }, [])
 
@@ -137,7 +119,6 @@ const DonateWrapper = ({amountM, amountD, pid, currency}) => {
 
     return <div>
         <DonateButtonWrapper>
-           
             {success ? <SuccessIcon /> : (
                 <>
                     {address &&

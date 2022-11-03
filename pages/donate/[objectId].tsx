@@ -137,6 +137,8 @@ const ImgBox = styled.div`
 `
 
 const Donate: NextPage = () => {
+  const router = useRouter()
+  const { objectId } = router.query
   const [rewardNo, setRewardNo] = useState(true);
   const [reward1, setReward1] = useState(false);
   const [currency, setCurrency] = useState("USDC");
@@ -147,8 +149,6 @@ const Donate: NextPage = () => {
   const [tokenAmount, setTokenAmount] = useState();
   const [rewards, setRewards] = useState();
   const [pid, setPid] = useState();
-  const router = useRouter()
-  const { objectId } = router.query
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
@@ -177,10 +177,12 @@ const Donate: NextPage = () => {
   };
 
   useEffect(() => {
+    if(!router.isReady) return;
     getProjectDetail()
     getTokenReward()
     getRewards()
-  },[]);
+  },[router.isReady]);
+
 
   const getProjectDetail = async () => {
     try {

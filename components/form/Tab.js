@@ -40,7 +40,7 @@ const Divider = styled.div`
 `
 
 const Tab = ({ active, o1, o2, o3, o4, change1, change2, change3, change4 }) => {
-    
+
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? <Active>{text}</Active> : <Inactive onClick={onClick}>{text}</Inactive>}</>
     }
