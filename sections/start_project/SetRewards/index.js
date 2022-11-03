@@ -17,6 +17,11 @@ const SetRewards = ({ setStep }) => {
   const [rType, setRType] = useState(true)
   const [microTooltip, setMicroTooltip] = useState(false)
   const [tokenTooltip, setTokenTooltip] = useState(false)
+  const [tReward, setTokenReward] = useState({
+    amount: 0,
+    name: "EYE",
+    address: process.env.NEXT_PUBLIC_AD_TOKEN,
+  })
   const [reward, setReward] = useState({
     title: "Reward 1",
     description: "Reward 1 description",
@@ -31,6 +36,7 @@ const SetRewards = ({ setStep }) => {
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));
+    setAppState((prev) => ({ ...prev, tokenReward: tReward}))
     // addReward()
   };
 
@@ -116,22 +122,22 @@ const SetRewards = ({ setStep }) => {
              {tokenTooltip &&  <TokenTooltip><Tooltip text={'       Backer delivering 80% of all allocation to your projects will receive 80% of all tokens in the pool. '} /></TokenTooltip>}
               <InputContainer
                 label={'Token name'}
-                placeholder={'EYE'}
+                placeholder={tReward.name}
                 description={'Name of the reward token you will offer to backers'}
-                onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {name: e.target.value }}))}
+                onChange={(e)=>{setTokenReward({tReward: {name: e.target.value}})}}
                 type={'text'}
               />
               <InputContainer
                 label={'Token address'}
-                placeholder={'Token address'}
-                onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {address: e.target.value }}))}
+                placeholder={tReward.address}
+                onChange={(e)=>{setTokenReward({tReward: {address: e.target.value}})}}
                 description={'Token address verifiable on blockchain explorer'}
                 type={'text'}
               />
               <InputContainer
                 label={'Total amount'}
-                placeholder={'10000'}
-                onChange= {(e) => setAppState((prev) => ({ ...prev, tokenReward: {amount: e.target.value }}))}
+                placeholder={tReward.amount}
+                onChange={(e)=>{setTokenReward({tReward: {amount: e.target.value}})}}
                 description={<>        
                 <IconBox onMouseEnter={() => setTokenTooltip(true)} onMouseLeave={() => setTokenTooltip(false)}>
                 Total amount of reward tokens proportionally distributed to the backers 

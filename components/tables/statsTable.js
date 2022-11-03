@@ -6,10 +6,8 @@ import {
 import { useEffect, useState } from "react"
 import Button from "../buttons/Button"
 import Title  from "../typography/Title"
-import SectionTitle from "../typography/SectionTitle"
-import Subtitle from "../typography/Subtitle"
 
-const StatsTable = () => {
+const StatsTable = ({objectId, pid, chain}) => {
     const [showHottestTable, setShowHottestTable] = useState(false);
     const [showTopChainTable, setShowTopChainTable] = useState(false);
 
@@ -17,8 +15,11 @@ const StatsTable = () => {
         padding-bottom: 2%;
         padding-top: 2%;
         display: flex;
+        background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
         flex-direction: column;
         align-items: center;
+        padding-left: 10%;
+        padding-right: 10%;
     `
 
     const I = styled.input`

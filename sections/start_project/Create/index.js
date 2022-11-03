@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount } from "wagmi";
 import axios from "axios";
 import Link from "next/link";
-
+import styled from "styled-components";
 
 import SectionTitle from "../../../components/typography/SectionTitle";
 import { ButtonRow } from "../SetRewards/StyleWrapper";
@@ -19,8 +19,17 @@ import errorAnimation from '../../../data/errorAnimation.json'
 import smallLoading from '../../../data/smallLoading.json'
 import Eye10 from '../../../public/Eye10.png'
 import Rainbow from "../../../components/buttons/Rainbow";
+import ApproveUniversal from "../../../components/buttons/ApproveUniversal";
 
+const ApprovalBox = styled.div`
 
+`   
+
+const ApproveText = styled.div`
+    font-family: 'Gemunu Libre';
+    letter-spacing: 0.2px;
+    font-size: 1em;
+`
 // Animation configs 
 const okAnim = {
     loop: false,
@@ -166,7 +175,7 @@ const Create = ({ setStep }) => {
                 "type": pType,
                 "owner": address,
                 "state": 0, // Always 0 for new projects
-                "chain": chain.name,
+                "chain": chain.id,
                 "bookmarks": [address], // Add owner to bookmark
                 "rewards": rewards,
                 "imageUrl": pImageUrl
@@ -228,13 +237,18 @@ const Create = ({ setStep }) => {
                         {rewards.length >= 3 && <SumItem><SumTitle>Reward #3</SumTitle><SumValue>{rewards[2].title} - ${rewards[2].amount} x{rewards[2].cap}</SumValue></SumItem>}
                         {rewards.length >= 4 && <SumItem><SumTitle>Reward #4</SumTitle><SumValue>{rewards[3].title} - ${rewards[3].amount} x{rewards[3].cap}</SumValue></SumItem>}
                         {rewards.length == 5 && <SumItem><SumTitle>Reward #5</SumTitle><SumValue>{rewards[4].title} - ${rewards[4].amount} x{rewards[4].cap}</SumValue></SumItem>}
-                  {tokenReward.amount > 0 && <SumItem><SumTitle>Token pool</SumTitle><SumValue>{tokenReward.amount}x{tokenReward.name}</SumValue></SumItem>}
+                  {tokenReward.amount > 0 && <SumItem><SumTitle>Token pool</SumTitle><SumValue>{tokenReward.amount}x {tokenReward.name}</SumValue></SumItem>}
                     </SumHalf>   
                     </SumRow>
                 </Summary> : <Rainbow/>}
-                {!success ? <ButtonRow>
+                {!success ? 
+                <ButtonRow>
                     <NextButton onClick={handleBack}>Back</NextButton>
-                    {isDisconnected ? <ErrButton>Chain error</ErrButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
+                      {tokenReward.amount > 0 && 
+                        <ApprovalBox><ApproveText>ERC20 supported only</ApproveText>
+                            <ApproveUniversal tokenContract={tokenReward.address} spender={process.env.NEXT_PUBLIC_AD_DONATOR} amount={tokenReward.amount}/>
+                        </ApprovalBox>}
+                    {isDisconnected ? <ErrButton disabled={!write} onClick={handleSubmit}>Chain error</ErrButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
                 </ButtonRow> :
                     <TxStatus>Transaction status
                         <LogRow><InfoTag>Info</InfoTag> Project was initiated</LogRow>

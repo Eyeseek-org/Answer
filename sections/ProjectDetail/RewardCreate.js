@@ -9,6 +9,7 @@ import { Row } from "../../components/format/Row";
 import { NextButton } from "../start_project/Category/StyleWrapper";
 import { useRouter } from 'next/router';
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
+import SectionTitle from '../../components/typography/SectionTitle';
 
 
 const RewardCreate = ({objectId, rewards}) => {
@@ -23,10 +24,8 @@ const RewardCreate = ({objectId, rewards}) => {
         title: "Godspeed",
         description: "Jesus will smile on you",
         amount: 100,
-        type: "Donate",  // OR Donate OR Stream // OR Microfund
-        tokenAmount: "10", // optional 
-        tokenName: "EYE", // optional
-        tokenUrl: "https://polygonscan.com/token/0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        cap: 10,
+        type: "Donate"  // OR Donate OR Stream // OR Microfund
     })
 
 
@@ -36,6 +35,8 @@ const RewardCreate = ({objectId, rewards}) => {
           "Content-Type": "application/json"
         }
     }
+
+    /// Maybe handle rewards to separate table
     
     const handleReward = async (oid, newReward) => {
        const newRewards = [...rewards, newReward];
@@ -51,6 +52,7 @@ const RewardCreate = ({objectId, rewards}) => {
 
 
     return <MainContainer>
+        <SectionTitle title='Create new reward' subtitle='Add a new reward to your project' />
         <RewardContainer>
             <MainMilestoneContainer>
                 <MilestoneContainer>
@@ -97,6 +99,13 @@ const RewardCreate = ({objectId, rewards}) => {
                         description={'Describe what backer receives for this reward'}
                         onChange={(e) => setReward((prev) => ({ ...prev, description: e.target.value }))}
                         type={'text'}
+                    />
+                    <InputContainer
+                        label={'Capacity'}
+                        placeholder={'10'}
+                        description={'How many rewards will be available for users'}
+                        onChange={(e) => setReward((prev) => ({ ...prev, cap: e.target.value }))}
+                        type={'number'}
                     />
                     {!success && !error && <NextButton onClick={()=>{handleReward(objectId, newReward)}}>Create reward</NextButton>}
                     {error && <NextButton onClick={()=>{handleReward(objectId, newReward)}}>Error: Check your fields and retry</NextButton>}

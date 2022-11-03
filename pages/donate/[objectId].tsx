@@ -139,8 +139,7 @@ const ImgBox = styled.div`
 const Donate: NextPage = () => {
   const router = useRouter()
   const { objectId } = router.query
-  const [rewardNo, setRewardNo] = useState(true);
-  const [reward1, setReward1] = useState(false);
+  const [rewardType, setRewardType] = useState('none')
   const [currency, setCurrency] = useState("USDC");
   const [apiError, setApiError] = useState(false);
   const [project, setProject] = useState();
@@ -148,6 +147,7 @@ const Donate: NextPage = () => {
   const [tokenAddress, setTokenAddress] = useState();
   const [tokenAmount, setTokenAmount] = useState();
   const [rewards, setRewards] = useState();
+  const [bookmarks, setBookmarks] = useState();
   const [pid, setPid] = useState();
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
@@ -165,7 +165,7 @@ const Donate: NextPage = () => {
       <>
         {blockchains.map((bc, index) => {
           const { logo, chainId } = bc;
-          return  <OptionReward>
+          return  <OptionReward key={chainId}>
                     {chain && chain.id === chainId ? 
                         <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
                         <ImgBox onClick={()=>{switchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
@@ -190,6 +190,8 @@ const Donate: NextPage = () => {
         if (res.data.results.length > 0) {
           setProject(res.data.results[0])
           setPid(res.data.results[0].pid)
+          setBookmarks(res.data.results[0].bookmarks)
+          setRewards(res.data.results[0].rewards)
         }
         setApiError(false)
     } catch (err) {
@@ -231,7 +233,7 @@ const getRewards = async () => {
 
 
   return <Container>
-    <SectionTitle title={'Donate'} subtitle={'Select an option below'} onClick={()=>(handleBack())}/>
+    <SectionTitle title={'Donate'} subtitle={'Select an option below'}/>
     <DonateContentWrapper>
       <DonateOption>
        {/* @ts-ignore */}
@@ -260,9 +262,14 @@ const getRewards = async () => {
         </DonateOptionTitle>
         <OptionItemWrapper>
         <OptionReward>
-          <Checkbox type="checkbox" checked={rewardNo} />
+          <Checkbox type="checkbox"  onChange={()=>setRewardType('none')} />
           Without reward
         </OptionReward>
+        <OptionReward>
+          <Checkbox type="checkbox"  onChange={()=>setRewardType('token')} />
+          Token reward
+        </OptionReward>
+        {/* @ts-ignore */}
         {rewards && rewards.length > 0 && rewards.map((_reward, index) => {
           <div key={index}>Reward</div>
         })}
@@ -280,8 +287,8 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardNo && <DonateWithout pid={pid} currency={currency}  />}
-        {reward1 && <DonateWithout pid={pid} currency={currency}  />}
+        {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} />}
+        {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks}  />}
     </DonateContentWrapper>
   </Container>
 }

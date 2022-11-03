@@ -30,7 +30,7 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
       }, moralisApiConfig)
       setSuccess(true)
       setError(false)
-      handleRewardNotifications
+      await handleRewardNotifications()
     } catch (error) {
       setError(true)
     }
@@ -40,9 +40,10 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     if (bookmarks) {
       bookmarks.forEach(async (bookmark) => {
         await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`, {
-          'title': `UPDATE!! ${title}`,
-          'description': `${url}`,
+          'title': `Update`,
+          'description': `Project ${title} has been updated!`,
           'type': 'projectUpdate',
+          'project': objectId,
           'user': bookmark
         }, moralisApiConfig)
       })

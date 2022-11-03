@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {useContractEvent} from 'wagmi'
 import donation from '../../abi/donation.json'
 import Faucet from '../../components/buttons/Faucet'
+import LandingDonate from '../../components/animated/LandingDonate'
 
 
 const Container = styled.div`
@@ -27,12 +28,6 @@ const Explainer = styled.div`
     @media (min-width: 1580px) {
     font-size: 1.3em;
   }
-`
-
-const Tag = styled.div`
-    width: 300px;
-    height: 104px;
-    background: white;
 `
 
 const TitleBox = styled.div`
@@ -122,33 +117,6 @@ const LandingMain = ({width,height}) => {
     const [axColor, setAxColor] = useState("#343434")
     const [url, setUrl] = useState()
 
-    const [donate, setDonate] = useState(false)
-    const [micro, setMicro] = useState(false)
-
-    const useDonateEvent = () => {
-        setDonate(true)
-    }
-
-    const useMicroEvent = () => {
-        setMicro(true)
-    }
-
-    /// Set permanent listening after making it done => create some animation
-    useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
-        contractInterface: donation.abi,
-        eventName: 'MicroCreated',
-        listener: () => useDonateEvent(e),
-        once: true
-    })
-
-    useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
-        contractInterface: donation.abi,
-        eventName: 'Donated',
-        listener: () => useMicroEvent(e),
-        once: true
-    })
 
     const showMoralis = () =>{
         setUrl("https://moralis.io/")
@@ -247,8 +215,8 @@ const LandingMain = ({width,height}) => {
         <HeadTitle>Eyeseek Funding</HeadTitle>
         <HeadSub>Next generation of crowdfunding</HeadSub>
         <HeadDesc>by web3</HeadDesc>
-          {donate && <Tag/>}
         <Faucet/>
+        <LandingDonate/>
     </TitleBox>
 
     <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">

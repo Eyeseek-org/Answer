@@ -1,15 +1,17 @@
 import { useRouter } from "next/router"
 import type { NextPage } from "next";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import styled from "styled-components"
+import axios from "axios";
 
 import ProjectDetail from "../../sections/ProjectDetail/ProjectDetail"
 import Tab from "../../components/form/Tab";
 import RewardCreate from "../../sections/ProjectDetail/RewardCreate";
 import UpdateCreate from "../../sections/ProjectDetail/UpdateCreate";
 import UpdateOverview from "../../sections/ProjectDetail/UpdateOverview";
-import axios from "axios";
+import RewardList from "../../sections/ProjectDetail/RewardList";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
+import StatsTable from '../../components/tables/StatsTable'
 
 const Container = styled.div`
   margin-top: 5%;
@@ -53,9 +55,6 @@ const Project: NextPage = () => {
     getProjectDetail()
   }, [router.isReady])
 
-  // TBD doplnit popisy
-  // TBD migrate rewards separately
-
 
   return (
     <>
@@ -65,11 +64,11 @@ const Project: NextPage = () => {
           o1={'Overview'} 
           o2={'Updates'} 
           o3={"Rewards"} 
-          o4={"Backers"}
+          o4={"Transactions"}
           change1={()=>handleMode('Overview')} 
           change2={()=>handleMode('Updates')} 
           change3={()=>handleMode('Rewards')}
-          change4={()=>handleMode('Backers')}
+          change4={()=>handleMode('Transactions')}
           />
       </TabBox>
         {/* {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
@@ -79,10 +78,7 @@ const Project: NextPage = () => {
       <Container>
       {project ?  <>
     {mode === 'Overview' &&   <ProjectDetail 
-          description={project.description} 
-          title={project.title} 
-          category={project.category} 
-          subcategory={project.subcategory} 
+          description={project.description}  title={project.title} category={project.category} subcategory={project.subcategory} 
           imageUrl={project.imageUrl} 
           bookmarks={project.bookmarks}
           verified={project.verified}
@@ -90,11 +86,12 @@ const Project: NextPage = () => {
           pid={project.pid}
           objectId={project.objectId}
           owner={project.owner}
+          chain={project.chain}
           pType={project.type}
         />}
-      {mode === 'Rewards' && <RewardCreate objectId={objectId} rewards={project.rewards}/>}
+      {mode === 'Rewards' && <><RewardList oid={objectId}/><RewardCreate objectId={objectId} rewards={project.rewards}/></>}
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/><UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/></>}
-      {mode === 'Backers' && <div>Backers</div>}
+      {mode === 'Transactions' && <StatsTable objectId={objectId} pid={project.pid} chain={project.chain}/>}
       </> : <>{apiError && <>Project failed to fetch</>}</>}
       </Container>
     </>
