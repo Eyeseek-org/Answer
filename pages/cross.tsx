@@ -39,7 +39,7 @@ enum GasPaidStatus {
 
 const Cross: NextPage = () => {
   const [loading, setLoading] = useState(false);
-  const [gasFee, setGasFee] = useState(0);
+  const [gasFee, setGasFee] = useState();
 
 
   const destinationTokenAddress = 0x2c852e740B62308c46DD29B982FBb650D063Bd07
@@ -105,7 +105,7 @@ const Cross: NextPage = () => {
       // @ts-ignore
       GasToken.FANTOM
     );
-
+    // @ts-ignore
     setGasFee(gasFee)
   }
 

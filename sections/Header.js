@@ -6,6 +6,7 @@ import Image from "next/image"
 import styled from "styled-components"
 import axios from 'axios'
 import {useAccount} from 'wagmi'
+import {motion} from 'framer-motion'
 
 import Logo from "../public/Logo.png"
 import Rainbow from '../components/buttons/Rainbow'
@@ -104,13 +105,15 @@ const IconFrame = styled.div`
   }
 `
 
-const Notis = styled.div`
+const Notis = styled(motion.div)`
   position: absolute;
   color: white;
   text-align: center;
   align-items: center;
   width: 17px;
   height: 17px;
+  font-size: 13px;
+  padding: 2%;
   border-radius: 15px;
   background: #ab0000;
   right: -10%;
@@ -142,15 +145,16 @@ const Header = () => {
       try {
           const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification?where={"user":"${address}"}`, moralisApiConfig);
           await setNotis(res.data.results.slice(0,20));
-          await setNotiNumber(notis.length)
+          const unread = res.data.results.filter((item) => item.isRead === false)
+          await setNotiNumber(unread.length)
       } catch (error) {
         console.log(error);
       }
     };
 
-  useEffect(() => {
-    getData()
-  },[])
+    useEffect(() => {
+        getData()
+    }, []);
 
   return (
     <>
@@ -198,7 +202,13 @@ const Header = () => {
           <Rainbow />
           {isAuthenticated && <IconFrame onClick={() => { setNoti(!noti) }}>
           <BellIcon/>
-            {notis > 0 && <Notis>{notiNumber}</Notis>}
+            {notiNumber > 0 && 
+            <Notis
+              animate={{
+                scale: [1, 2, 2, 1, 1],
+                rotate: [0, 0, 270, 270, 0],
+                borderRadius: ["20%", "20%", "50%", "50%", "20%"]}}>
+                  {notiNumber}</Notis>}
           </IconFrame>}
         </ConnectBox>
         {noti && <Notifications notis={notis} />}

@@ -139,8 +139,7 @@ const ImgBox = styled.div`
 const Donate: NextPage = () => {
   const router = useRouter()
   const { objectId } = router.query
-  const [rewardNo, setRewardNo] = useState(true);
-  const [reward1, setReward1] = useState(false);
+  const [rewardType, setRewardType] = useState('none')
   const [currency, setCurrency] = useState("USDC");
   const [apiError, setApiError] = useState(false);
   const [project, setProject] = useState();
@@ -234,7 +233,7 @@ const getRewards = async () => {
 
 
   return <Container>
-    <SectionTitle title={'Donate'} subtitle={'Select an option below'} onClick={()=>(handleBack())}/>
+    <SectionTitle title={'Donate'} subtitle={'Select an option below'}/>
     <DonateContentWrapper>
       <DonateOption>
        {/* @ts-ignore */}
@@ -263,9 +262,14 @@ const getRewards = async () => {
         </DonateOptionTitle>
         <OptionItemWrapper>
         <OptionReward>
-          <Checkbox type="checkbox" checked={rewardNo} />
+          <Checkbox type="checkbox"  onChange={()=>setRewardType('none')} />
           Without reward
         </OptionReward>
+        <OptionReward>
+          <Checkbox type="checkbox"  onChange={()=>setRewardType('token')} />
+          Token reward
+        </OptionReward>
+        {/* @ts-ignore */}
         {rewards && rewards.length > 0 && rewards.map((_reward, index) => {
           <div key={index}>Reward</div>
         })}
@@ -283,7 +287,8 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardNo && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} />}
+        {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} />}
+        {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks}  />}
     </DonateContentWrapper>
   </Container>
 }

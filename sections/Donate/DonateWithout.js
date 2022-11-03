@@ -42,7 +42,7 @@ const FormInfo = styled.div`
 `;
 
 
-const DonateWithout = ({ pid, currency, bookmarks }) => {
+const DonateWithout = ({ pid, currency, bookmarks}) => {
     const [amountM, setAmountM] = useState(0);
     const [amountD, setAmountD] = useState(1)
 

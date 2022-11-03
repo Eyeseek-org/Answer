@@ -7,6 +7,8 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 5px;
   color: white;
+  min-width: 200px;
+  text-align: center;
   letter-spacing: 0.2px;
   font-size: 0.8em;
   font-family: 'Neucha';

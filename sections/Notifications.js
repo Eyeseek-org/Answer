@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Preferences from './Preferences'
-import {CanceledIcon} from '../components/icons/Notifications'
+import {CanceledIcon, NewsIcon} from '../components/icons/Notifications'
 import { RewardIcon } from '../components/icons/Common'
 import { BellIcon } from '../components/icons/Landing'
 import ReactTimeAgo from 'react-time-ago'
@@ -187,7 +187,7 @@ const Notifications = ({notis}) => {
                  <IconWrapper>
                     {noti.type === 'projectCanceled' && <CanceledIcon width={15} height={15}/>}
                     {noti.type === 'rewardAdded' && <RewardIcon width={15}/>}
-                    {noti.type === 'projectUpdate' && <BellIcon/>}
+                    {noti.type === 'projectUpdate' && <NewsIcon width={15} height={15}/>}
                 </IconWrapper>
                 <Col><Desc>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
                 <Col>

@@ -49,8 +49,8 @@ const Tab = ({ active, o1, o2, o3, o4, change1, change2, change3, change4 }) => 
         <Divider />
         <Item act={o2} text={o2} onClick={change2} />
 
-        {o3 && <>  <Divider /><Item o={o3} text={o3} onClick={change3} /></>}
-        {o4 && <>  <Divider /><Item o={o4} text={o4} onClick={change4} /></>}
+        {o3 && <>  <Divider /><Item act={o3} o={o3} text={o3} onClick={change3} /></>}
+        {o4 && <>  <Divider /><Item act={o4} o={o4} text={o4} onClick={change4} /></>}
     </Container>
 }
 

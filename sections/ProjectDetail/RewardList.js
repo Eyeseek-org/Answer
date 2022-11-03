@@ -4,31 +4,20 @@ import axios from 'axios'
 import { moralisApiConfig } from '../../data/moralisApiConfig'
 import { useEffect } from 'react'
 import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing'
+import SectionTitle from '../../components/typography/SectionTitle'
 
-const Container = styled.div`
-    position: absolute;
-    right: -120px;
-    top: 100px;
-    @media (min-width: 1200px){
-        right: -180px;
-    }
-    @media (min-width: 2150px){
-        right: -220px;
-    }
+const Main = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding-left: 18%;
+    padding-right: 18%;
 `
 
-const Title = styled.div`
-    font-size: 1.1em;
-    text-align: right;
-    margin-bottom: 7%;
-    font-family: 'Montserrat';
-    color: #B0F6FF;
-    &:hover{
-        cursor: default;
-    }
-    @media (min-width: 1750px){
-        font-size: 1.3em;
-    }
+const Container = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: 5%;
+    flex-wrap: wrap;
 `
 
 const I = styled.div`
@@ -46,22 +35,16 @@ const I = styled.div`
     }
 `
 
-const TokenItem = styled(I)`
-    &:hover{
-        font-weight: normal;
-        cursor: default;
-    }
-`
-
 const Modal = styled.div`  
-    position: absolute;
-    right: 0;
+    position: relative;
     font-family: 'Montserrat';
-    height: 300px;
+    height: 200px;
+    margin: 1%;
     padding: 3%;
     width: 300px;
-    background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.99) -21.57%, rgba(0, 0, 0, 0.99) 100%);
-    border: 45px;
+    background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+    border: 1px solid #3C3C3C;
+    border-radius: 5px;
     animation: fadeIn 0.5s;
     @keyframes fadeIn {
         0% {
@@ -77,9 +60,13 @@ const Modal = styled.div`
 `
 
 const ModalTitle = styled.div`
-    text-decoration: underline;
+    padding-bottom: 2%;
+    border-bottom: 1px dashed #3C3C3C;
     margin-bottom: 4%;
+    color: #B0F6FF;
     font-size: 1em;
+    font-family: 'Gemunu Libre';
+    letter-spacing: 0.4px;
 `
 
 const ModalDesc = styled.div`
@@ -99,10 +86,6 @@ const Row = styled.div`
     justify-content: space-between;
 `
 
-const ImageBox = styled.div`
-    position: relative;
-    z-index: 5;
-`
 
 const TypeBox = styled.div`
     position: absolute;
@@ -119,27 +102,9 @@ const NumberBox = styled.div`
 // Display rewards
 // Add reward types and other metadata
 const RewardList = ({oid}) => {
-    const [modal, setModal] = useState(false)
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [amount, setAmount] = useState("")
     const [rewards, setRewards] = useState([])
     const [tokenReward, setTokenReward] = useState([])
-    const [type, setType] = useState('Microfund')
-    const [pledged, setPledge] = useState()
-    const [cap, setCap] = useState()
     const [apiError, setApiError] = useState(false)
-
-    const showModal = (title,description,amount, type, pledged, cap) => {
-        setModal(true)
-        setTitle(title)
-        setDescription(description)
-        setAmount(amount)
-        setType(type)
-        setPledge(pledged)
-        setCap(cap)
-    }
-
 
     const getRewards = async () => {
         try {
@@ -168,33 +133,31 @@ const RewardList = ({oid}) => {
         getTokenReward()
     }, [])
 
-    const Item = ({title, description, amount, type, cap, pledged}) => {
-        return <I onMouseEnter={()=>{showModal(title, description, amount, type, cap, pledged)}} onMouseLeave={()=>{setModal(false)}}>{title}</I>
-    }
-
     /// TBD switched numbers - total vs pledged
-    /// TBD incorrect icons
+    /// TBD incorrect icons + Complet the UI
     return <>
-    {modal && 
-        <Modal>
-             <Row><ModalTitle>{title}</ModalTitle><ModalAmount>${amount}</ModalAmount></Row>
-            <ModalDesc>{description}</ModalDesc>
-             <NumberBox> {pledged} of {cap} </NumberBox>
-            <TypeBox>{type === 'Donate' ? <BlockchainIcon width={30}/> : <StreamIcon width={30}/>}</TypeBox>
-        </Modal>}
+        <SectionTitle title="Rewards" subtitle={'Display current rewards'} />
+        <Main>
+
+
     <Container>
-       <Title>Rewards</Title>
        {rewards.map((reward, index) => {
-              return <Item key={index} title={reward.title} description={reward.description} amount={reward.amount} type={reward.type} cap={reward.cap} pledged={reward.pledged} />
+              return  <Modal key={index}>
+                    <Row><ModalTitle>{reward.title}</ModalTitle><ModalAmount>${reward.amount}</ModalAmount></Row>
+                    <ModalDesc>{reward.description}</ModalDesc>
+                    <NumberBox> {reward.pledged} of {reward.cap} </NumberBox>
+                    <TypeBox>{reward.type === 'Donate' ? <BlockchainIcon width={30}/> : <StreamIcon width={30}/>}</TypeBox>
+               </Modal>
        })}
-       <Title>Token reward</Title>
-       {tokenReward.map((reward, index) => {
-              return <TokenItem key={index} title={'Token offered'}>
-                    <div>{reward.tokenAmount} x {reward.tokenName} </div> 
-                    <div>{reward.tokenAddress} </div> 
-              </TokenItem>
-       })}
-    </Container></>
+       
+    {tokenReward.length > 0 && <>{tokenReward.map((reward, index) => {
+              return  <Modal key={index}>  
+              {reward.tokenAmount > 0 ?  <> <Row><ModalTitle>Token reward</ModalTitle><ModalAmount>${reward.tokenAmount}</ModalAmount></Row>
+              <ModalDesc>{reward.tokenName} - {reward.tokenAddress}</ModalDesc></> : <i>No Token reward offered for this project</i> }
+
+         </Modal>
+       })} </>}
+    </Container></Main></>
 }
 
 export default RewardList

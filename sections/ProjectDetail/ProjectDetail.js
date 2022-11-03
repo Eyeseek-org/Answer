@@ -6,12 +6,11 @@ import axios from 'axios'
 import Tag from "../../components/typography/Tag"
 import SectionTitle from "../../components/typography/SectionTitle"
 import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
-import { CancelIcon, VerifiedIcon} from '../../components/icons/Common'
+import { CancelIcon, VerifiedIcon, NonVerifiedIcon} from '../../components/icons/Common'
 import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
 import donation from '../../abi/donation.json'
 import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi'
-import RewardList from "./RewardList"
 import ProjectDetailRight from "./ProjectDetailRight"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
 
@@ -53,9 +52,11 @@ const AbsoluteBox = styled.div`
 
 const ProjectType = styled.div`
   position: absolute;
-  left: 0;
+  left: -20px;
   font-family: 'Neucha';
   top: 0;
+  display: flex;
+  flex-direction: column;
 `
 
 const Categories = styled.div`
@@ -126,11 +127,19 @@ const Inactive = styled.div`
   color: #d90000;
 `
 
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner }) => {
+const LeftTopTooltip = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+`
+
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chain }) => {
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
   const [nonVerifiedTooltip, setNonVerifiedTooltip] = useState(false)
+  const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
+  const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
   const [canceled, setCanceled] = useState(false)
   const [error, setError] = useState(false)
 
@@ -200,21 +209,33 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
     <Container>
       <SectionTitle title={'Project detail'} subtitle={title} />
       <DetailBox>
-        {verifiedTooltip && <Tooltip text={'Verified by Eyeseek team'} />}
-        {nonVerifiedTooltip && <Tooltip text={'Not verified'} />}
+        <LeftTopTooltip>
+          {verifiedTooltip && <Tooltip text={'Verified by Eyeseek team'} />}
+          {nonVerifiedTooltip && <Tooltip text={'Project not verified'} />}
+          {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
+          {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
+        </LeftTopTooltip>
         <AbsoluteBox>
-          {verified ?
-            <div onMouseEnter={() => { setVerifiedTooltip(true) }} onMouseLeave={() => { setVerifiedTooltip(false) }}><VerifiedIcon width={70} /></div> :
-            <></>
-          }
           {isError && <>Error</>}</AbsoluteBox>
         <ProjectType>
-          {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
+          {verified  ? 
+              <IconWrapper onMouseEnter={() => { setVerifiedTooltip(true) }} onMouseLeave={() => { setVerifiedTooltip(false) }}><VerifiedIcon width={30} height={30} /></IconWrapper> :
+              <IconWrapper onMouseEnter={() => { setNonVerifiedTooltip(true) }} onMouseLeave={() => { setNonVerifiedTooltip(false) }}><NonVerifiedIcon width={70} height={70} /></IconWrapper>
+            }
+          {pType === 'Stream' ? 
+            <IconWrapper onMouseEnter={() => { setStreamTypeTooltip(true) }} onMouseLeave={() => { setStreamTypeTooltip(false) }}>
+              <StreamIcon width={30} />
+            </IconWrapper> : 
+            <IconWrapper onMouseEnter={() => { setStandardTypeTooltip(true) }} onMouseLeave={() => { setStandardTypeTooltip(false) }}>
+              <BlockchainIcon width={30} />
+            </IconWrapper>
+            }
         </ProjectType>
+   
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}
         {address === owner && <ActionPanel>
           {cancelTooltip && <Tooltip margin={'25px'} text='Cancel project' />}
-              <IconWrapper onMouseEnter={() => { setCancelTooltip(true) }} onMouseLeave={() => { setCancelTooltip(false) }}>
+              <IconWrapper onClick={()=>{cancel()}} onMouseEnter={() => { setCancelTooltip(true) }} onMouseLeave={() => { setCancelTooltip(false) }}>
                 <CancelIcon width={30} />
               </IconWrapper>
         </ActionPanel>}
@@ -227,7 +248,6 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           <Desc>{description}</Desc>
         </LeftPart>
         {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} /> }
-        <RewardList oid={objectId}/>
       </DetailBox>
     </Container>
   </>
