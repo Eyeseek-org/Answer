@@ -46,8 +46,12 @@ const Row = styled.div`
 
 const Title = styled.div`
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.4em;
     font-family: 'Neucha';
+    margin-top: 2%;
+    @media (min-width: 1980px) {
+        font-size: 1.9em;
+    }
 `
 
 const Col = styled.div`
@@ -76,6 +80,9 @@ const TextBox = styled.div`
     display: flex;
     font-size: 0.9em;
     height: 100%;
+    @media (min-width: 1980px) {
+        font-size: 1.1em;
+    }
 `
 const Clickable = styled.div`
     display: flex;
@@ -95,6 +102,9 @@ const TypeTitle = styled.div`
     font-family: 'Neucha';
     margin-top: 5%;
     color: ${props => props.color};
+    @media (min-width: 1980px) {
+        font-size: 1.7em;
+    }
 `
 
 const text = {

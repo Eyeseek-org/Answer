@@ -36,6 +36,7 @@ const Category = ({ setStep }) => {
     }),
     control: (provided) => ({
       ...provided,
+      padding: '1%',
       background: 'rgba(107, 255, 255, 0.05)',
       border: '1px solid #FFFFFF',
       borderRadius: '15px',
@@ -46,6 +47,7 @@ const Category = ({ setStep }) => {
     }),
     option: (provided, state) => ({
       ...provided,
+      padding: '1%',
       fontSize: '0.9em',
       color: '#B0F6FF',
       background: state.isSelected ? 'rgba(107, 255, 255, 0.2)' : 'transparent',
