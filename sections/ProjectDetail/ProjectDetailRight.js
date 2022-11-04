@@ -78,7 +78,6 @@ const Backers = styled.div`
 
 const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     const {address} = useAccount()
-    const [management, setManagement] = useState(false)
     const router = useRouter()
 
     var bal = 'n/a'
