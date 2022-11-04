@@ -135,7 +135,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
 
     return <A href={link}>
         <Container>
-            <Days>{days}d</Days>
+            {pType !== 'Stream' && <Days>{days}d</Days>}
             <ProjectType>
                     {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
              </ProjectType>

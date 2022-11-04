@@ -244,7 +244,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           </Categories>
           <Desc>{description}</Desc>
         </LeftPart>
-        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} /> }
+        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner}/> }
       </DetailBox>
     </Container>
   </>

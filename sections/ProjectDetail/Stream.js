@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router"
 import { Framework } from "@superfluid-finance/sdk-core";
-import type { NextPage } from "next";
-import { useAccount, useProvider, useSigner, useContractEvent, usePrepareContractWrite, useContractWrite } from 'wagmi'
+import { useAccount, useProvider, useSigner} from 'wagmi'
 import {abi} from '../../abi/supertoken.js'
-import token from '../../abi/token.json'
 import styled from 'styled-components'
 import axios from 'axios'
 import {moralisApiConfig} from '../../data/moralisApiConfig'
-import SectionTitle from "../../components/typography/SectionTitle.js";
+
+import Address from "../../components/functional/Address"
 import ButtonAlt from "../../components/buttons/ButtonAlt.js";
+import Subtitle from "../../components/typography/Subtitle.js";
+import ApproveUniversal from "../../components/buttons/ApproveUniversal.js";
 
 const Container = styled.div`
-  padding-left: 17%;
-  padding-right: 17%;
+  padding-left: 1%;
+  padding-right: 1%;
   padding-top: 5%;
-
+  min-height: 300px;
 `
 // TBD component to display current stream - Destination, Flow, Amount sent
 const StreamComponent = styled.div`
   background: rgba(0, 0, 0, 0.25);
-  border: 1px solid #393939;
-  min-width: 500px;
-  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between ;
+  width: 100%;
   padding: 5%;
   padding-left: 10%;
+  min-height: 280px;
 `
 
 const Title = styled.div`
@@ -36,7 +38,7 @@ const Title = styled.div`
 `
 
 const ValueRow = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex; 
   flex-direction: row;
   justify-content: space-between;
@@ -48,15 +50,16 @@ const ValueRow = styled.div`
   font-size: 1em;
   line-height: 23px;
   margin: 1%;
-  padding: 1.2%;
+  padding: 1.4%;
+  padding-left: 10px;
+  padding-right: 10px;
   color: #B0F6FF;
 `
 
 const ButtonBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  width: 50%;
+  justify-content: space-between;
   margin-top: 4%;
 `
 // TBD component to create a stream 
@@ -73,28 +76,40 @@ const Input = styled.input`
 
 const ActiveValue = styled.div`
   color: white;
-  font-weight: bold;
-
+  min-width: 150px;
 `
 
 const RowItem = styled.div`
   width: 33%;
 `
 
-const Stream: NextPage = () => {
-  const router = useRouter()
-  const { objectId } = router.query 
+const RowRightItem = styled(RowItem)`
+  text-align: right;
+`
+
+const ErrorBox = styled.div`
+  color: red;
+`
+
+const Stream = ({objectId, recipient}) => {
   const { address } = useAccount();
-  const [recipient, setRecipient] = useState('0xd4924261323DAc5fAAD8524864d35D43d7190F92')
-  const [loading, setLoading] = useState(false)
   const [apiError, setApiError] = useState(false)
-  const [amount, setAmount] = useState(1000)
-  const [flowRate, setFlowRate] = useState(amount.toString());
+  const [flowRate, setFlowRate] = useState(0);
   const provider = useProvider()
   const [ev, setEv] = useState(false)
   const { data: signer } = useSigner()
   const [streamFound, setStreamFound] = useState(false)
   const [streamData, setStreamData] = useState()
+  const [deposit, setDeposit] = useState(0)
+  const [owedDeposit, setOwedDeposit] = useState(0)
+  const [superfluidError, setSuperfluidError] = useState(false)
+
+  // Gameplan 
+  // 1. Approve and create a stream from App
+  // 2. Add an item to the db - flowRate, deposit
+  // 3. Preview - Get stream from DB
+  // 4. Synthetic calculation
+  // 5. Stop stream from the app
 
 
   const getFlowData = async() => {
@@ -102,19 +117,27 @@ const Stream: NextPage = () => {
       provider: provider,
       chainId: 80001
     })
+    const DAIxContract = await sf.loadSuperToken("fDAIx");
+    const DAIx = DAIxContract.address;
     /// TBD need to repair to get actual balance 
     /// TBD find simple way how to find address
     /// TBD pass correct values to the form and send to Superfluid & Moralis 
     try{
       const flow = await sf.cfaV1.getFlow({
-        superToken: process.env.NEXT_PUBLIC_AD_TOKEN,
+        superToken: DAIx,
         sender: address,
         receiver: recipient,
         providerOrSigner: provider
       })
       console.log(flow)
+      if(flow.flowRate !== '0'){
+        setDeposit(flow.deposit)
+        setOwedDeposit(flow.owedDeposit)
+        setFlowRate(flow.flowRate)
+      }
     } catch(err){
       console.log(err)
+      setSuperfluidError("Stream not found")
     }
   }
     
@@ -126,6 +149,7 @@ const Stream: NextPage = () => {
       await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, { 
         'project': {oid},
         'flowRate': flowRate,
+        'recipient': recipient,
         'isActive': true
       }, moralisApiConfig)
       setApiError(false)
@@ -141,6 +165,8 @@ const Stream: NextPage = () => {
       if (res.data.results.length > 0) {
         setStreamFound(true)
         setStreamData(res.data.results[0])
+      } else {
+        setStreamFound(false)
       }
       setApiError(false)
     } catch (error) {
@@ -161,49 +187,11 @@ const Stream: NextPage = () => {
     }
   }
 
-  const listened = () => {
-    setEv(true)
-  }
-
-  const { config } = usePrepareContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
-    contractInterface: abi,
-    functionName: 'approve',
-    args: ['0xEB796bdb90fFA0f28255275e16936D25d3418603', flowRate],
-  })
-
-
-  // useContractEvent({
-  //   addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
-  //   contractInterface: abi,
-  //   eventName: 'Approval',
-  //   listener: (event) => listened(event),
-  //   once: true
-  // })
-
   useEffect(() => {
-    getFlowData();
     getStreamState(objectId);
   },[])
 
-  const { write } = useContractWrite(config)
-
-
-  const handleApprove = async () => {
-    await write?.()
-    setLoading(true)
-  }
-
-  useContractEvent({
-      addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
-      contractInterface: token.abi,
-      eventName: 'Approval',
-      listener: (_event) => listened(),
-      once: true
-    })
-
-
-  async function createNewFlow() {
+  async function startStream() {
     const sf = await Framework.create({
       provider: provider,
       chainId: 80001
@@ -211,23 +199,27 @@ const Stream: NextPage = () => {
     
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
+    const amount = flowRate.toString();
+    console.log(DAIx)
     try {
       const createFlowOperation = sf.cfaV1.createFlow({
         sender: address,
         receiver: recipient,
-        flowRate: flowRate,
+        flowRate: amount,
         superToken: DAIx
       });
 
       const result = await createFlowOperation.exec(signer);
-      console.log(result);
+      console.log("Success" + result);
       await addStreamState(objectId)
-
+      setApiError(false)
     } catch (error) {
       console.log(
         "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
       );
       console.error(error);
+      setApiError(true)
+      console.log(address, recipient, amount, DAIx)
     }
   }
 
@@ -253,54 +245,39 @@ const Stream: NextPage = () => {
       console.error(error);
     }
   }
+
   return <>
-   <SectionTitle title='Streaming PoC' subtitle='Stream resources to your favorite project'/>
     <Container>
       <StreamComponent>
-      <button
-        onClick={() => {
-          createNewFlow();
-        }}
-      >
-        Create stream
-      </button>
-      <button onClick={()=>{deleteFlow()}}>
-        Delete stream
-      </button>
-
-      <div>
-        Result in console
-        <p>
-          <li>Recipient: {recipient}</li>
-          <li>Flow: {flowRate}</li>
-        </p>
-      </div>
-
-        <Title>{streamFound ? <>Active stream</>: <>New stream</>}</Title>
-        <ValueRow>
-          <RowItem>Balance</RowItem>
+        <Title>{streamFound ? <Subtitle text={'Active stream'}/> : <Subtitle text={'New stream'}/>}</Title>
+      {streamFound && <ValueRow>
+          <RowItem>Deposit</RowItem>
           <RowItem>
-          {streamFound ? <ActiveValue>TBD value</ActiveValue> : <Input type='number' placeholder='enter cap' onChange={(e)=>{setFlowRate(e.target.value)}}/>}     
+            <ActiveValue>{deposit}</ActiveValue>     
           </RowItem>
-          <RowItem>Value</RowItem>
-        </ValueRow>
+          <RowRightItem>Value</RowRightItem>
+        </ValueRow>}
         <ValueRow>
-          <RowItem>Receiver</RowItem>
+          <RowItem>Recipient</RowItem>
           <RowItem>
-          {streamFound ? <ActiveValue>TBD address</ActiveValue> : <Input type='text' placeholder='enter receiver address' onChange={(e)=>{setFlowRate(e.target.value)}}/>}     
+              <ActiveValue><Address address={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'}/></ActiveValue>   
           </RowItem>
-          <RowItem>Address</RowItem>
+          <RowRightItem>Address</RowRightItem>
         </ValueRow>
         <ValueRow>
           <RowItem>Flow rate</RowItem>
           <RowItem>
-            {streamFound ? <ActiveValue>TBD value</ActiveValue> : <Input type='number' placeholder='enter flow rate' onChange={(e)=>{setFlowRate(e.target.value)}}/>}        
+            {streamFound ? <ActiveValue>{flowRate}</ActiveValue> : <Input type='number' placeholder='enter flow rate' onChange={(e)=>{setFlowRate(e.target.value)}}/>}        
           </RowItem>
-          <RowItem>$/month</RowItem>
+          <RowRightItem>dai/mo</RowRightItem>
         </ValueRow>
-       {!streamFound ?  <ButtonBox><ButtonAlt width={'150px'} text='Start' onClick={handleApprove}/></ButtonBox> : <ButtonBox><ButtonAlt width={'150px'} text='Stop' onClick={handleApprove}/></ButtonBox>}
+       {!streamFound ?  
+       <ButtonBox>
+        <ApproveUniversal tokenContract={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} spender={'0xEB796bdb90fFA0f28255275e16936D25d3418603'} amount={flowRate}/>
+        <ButtonAlt width={'100px'} text='Start' onClick={()=>(startStream())}/></ButtonBox> : 
+       <ButtonBox><ButtonAlt width={'100px'} text='Stop' /></ButtonBox>}
       </StreamComponent>
-
+        {apiError && <ErrorBox>Insufficient funds, no approval, or owner = backer</ErrorBox>}
     </Container>
   </>
 }

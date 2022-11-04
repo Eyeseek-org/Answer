@@ -17,12 +17,11 @@ const List = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 15%;
+    margin-left: 16%;
     font-family: 'Neucha';
 `
 
 const A = styled.a`
-    padding: 2%;
     font-size: 1em;
     color: white;
     &:hover{
@@ -37,7 +36,9 @@ const Created = styled.div`
 `
 
 const RefCard = styled.div`
-    background: black;
+    background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+    border: 1px solid #3C3C3C;
+    border-radius: 5px;
     width: 350px;
     padding: 2%;
     margin: 2%;
@@ -69,7 +70,7 @@ const UpdateOverview = ({objectId}) => {
         }
     }
     return <Container>
-        <SectionTitle title={'Project updates'}/>
+        <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
         <List>
             {updates.length > 0 && 
                 updates.map((update)=> 

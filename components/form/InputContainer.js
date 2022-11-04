@@ -6,6 +6,9 @@ const Container = styled.div`
   flex-direction: row;
   gap: 15%;
   font-family: "Montserrat";
+  @media (min-width: 1980px) {
+        font-size: 1.2em;
+    }
   @media (max-width: 768px) {
       flex-wrap: wrap;
       gap: 5%;
@@ -27,6 +30,9 @@ const Container = styled.div`
 
   .input_description {
     font-size: 0.7em;
+    @media (min-width: 1980px) {
+        font-size: 0.8em;
+    }
   }
   
   .input_description_container {

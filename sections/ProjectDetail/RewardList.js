@@ -11,6 +11,7 @@ const Main = styled.div`
     flex-direction: column;
     padding-left: 18%;
     padding-right: 18%;
+    min-height: 200px;
 `
 
 const Container = styled.div`
@@ -123,7 +124,6 @@ const RewardList = ({oid}) => {
     return <>
         <SectionTitle title="Rewards" subtitle={'Display current rewards'} />
         <Main>
-
 
     <Container>
        {rewards.map((reward, index) => {
