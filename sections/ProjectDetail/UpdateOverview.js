@@ -69,7 +69,7 @@ const UpdateOverview = ({objectId}) => {
         }
     }
     return <Container>
-        <SectionTitle title={'Project updates'}/>
+        <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
         <List>
             {updates.length > 0 && 
                 updates.map((update)=> 
