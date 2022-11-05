@@ -113,13 +113,17 @@ const RenderMilestones = () => {
 
 const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { isNext, pm1, pm1Desc, pType } = { ...appState };
+  const { pm1, pm1Desc, pType } = { ...appState };
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));
-    setAppState((prev) => ({ ...prev, isNext: false }));
+    setAppState((prev) => ({ ...prev }));
+    // If milestone 1 amount is greater than 0, we allow user to access reward & create project pages
+    if (pm1 > 0) {
+      setAppState((prev) => ({ ...prev, stepLock: 4 }));
+    }
   };
 
   const handleBack = () => {

@@ -38,7 +38,7 @@ const TellStory = ({ setStep }) => {
       ),
     }),
     onSubmit: (values) => {
-      setAppState((prev) => ({ ...prev, pTitle: values.title, pDesc: values.description, pWeb: values.website, pSocial: values.socials }));
+      setAppState((prev) => ({ ...prev, pTitle: values.title, pDesc: values.description, pWeb: values.website, pSocial: values.socials, stepLock: 2 }));
       handleClick();
     }
   });
