@@ -92,7 +92,7 @@ const LatestProjects = ({ my}) => {
         {my ? <SectionTitle title='Project history' subtitle='Looking back at your success' /> : <SectionTitle title='Recently added' subtitle={'Support latest projects'} />}
         <Categories>
             {category === initialCategory ? <ACat onClick={() => handleCat(initialCategory)}>All</ACat> : <Cat onClick={() => handleCat(initialCategory)}>All</Cat>}
-            {cats.map((cat) =>
+            {cats.sort().map((cat) =>
              <div key={cat}>{cat === category ? <ACat onClick={()=>handleCat(initialCategory)}>{cat}</ACat> : <Cat  onClick={()=>{handleCat(cat)}}>{cat}</Cat>}</div>
         )}
         </Categories>
