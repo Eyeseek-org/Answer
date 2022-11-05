@@ -76,7 +76,7 @@ const Backers = styled.div`
     }
 `
 
-const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
+const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainId}) => {
     const {address} = useAccount()
     const router = useRouter()
 
@@ -90,7 +90,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getConnectedMicroFunds',
-        chainId: 80001,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
@@ -103,7 +103,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundBalance',
-        chainId: 80001,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
@@ -116,7 +116,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundDeadline',
-        chainId: 80001,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
@@ -131,7 +131,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundCap',
-        chainId: 80001,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
@@ -144,7 +144,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getBackers',
-        chainId: 80001,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })

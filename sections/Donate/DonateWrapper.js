@@ -95,7 +95,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
 
     return <div>
         <DonateButtonWrapper>
-            {success ? <SuccessIcon /> : (
+            {success ? <SuccessIcon width={50}/> : (
                 <>
                     {address &&
                     <div>

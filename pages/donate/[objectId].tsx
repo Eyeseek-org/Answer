@@ -16,6 +16,7 @@ import Tooltip from "../../components/Tooltip";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
 import { blockchains } from "../../data/blockchains";
+import {currencies} from '../../data/currencies'
 import {testChains} from "../../data/contracts";
 import NativeFaucet from "../../sections/Donate/NativeFaucet"
 import Faucet from '../../components/buttons/Faucet'
@@ -213,8 +214,10 @@ const Donate: NextPage = () => {
     }
   }
 
-  const handleCurrency = (curr) => {
-    if (curr = 'USDC'){
+  // Switching currency is done incorrectly
+
+  const handleSwitchCurrency = (c: string) => {
+    if (c = 'USDC'){
       if (chain && chain.id === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC)
       } else if (chain && chain.id === 97){
@@ -224,7 +227,8 @@ const Donate: NextPage = () => {
       }
       setCurrency('USDC')
       setCurr(1)
-    } else if (curr = 'USDT'){
+    } else if (c = 'USDT'){
+      console.log(curr)
       if (chain && chain.id === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT)
       } else if (chain && chain.id === 97){
@@ -234,7 +238,7 @@ const Donate: NextPage = () => {
       }
       setCurrency('USDT')
       setCurr(2)
-    } else if (curr = 'DAI'){
+    } else if (c = 'DAI'){
       if (chain && chain.id === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI)
       } else if (chain && chain.id === 97){
@@ -257,6 +261,22 @@ const Donate: NextPage = () => {
                     {chain && chain.id === chainId ? 
                         <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
                         <ImgBox onClick={()=>{handleSwitchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
+                    }
+                  </OptionReward>
+          })}
+      </>
+    );
+  };
+
+  const RenderCurrency = () => {
+    return (
+      <>
+        {currencies.map((c, index) => {
+          const { logo, title } = c;
+          return  <OptionReward key={index}>
+                    {title === currency ? 
+                        <ImgActiveBox><Image src={logo} alt={title} width={'40'} height={'40'}/></ImgActiveBox> : 
+                        <ImgBox onClick={()=>{handleSwitchCurrency(title)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
                     }
                   </OptionReward>
           })}
@@ -343,12 +363,10 @@ const getRewards = async () => {
             <LandingDonate/>
         </FaucetBox>
         <DonateOptionTitle>
-          <Row>Currency</Row><DonateOptionSub>Currently only USDC supported</DonateOptionSub>
+          <Row>Currency</Row><DonateOptionSub>Choose donate currency</DonateOptionSub>
         </DonateOptionTitle>
         <OptionItemWrapper>
-          <OptionReward onClick={()=>{handleCurrency('USDC')}}><Image src={icon4} alt="usdc" width={'40'} height={'40'} /></OptionReward>
-          <DisReward onClick={()=>{handleCurrency('USDT')}}><Image src={usdt} alt="usdt" width={'40'} height={'42'} /></DisReward>
-          <DisReward onClick={()=>{handleCurrency('DAI')}}><Image src={dai} alt="dai" width={'40'} height={'40'} /></DisReward>
+            <RenderCurrency/>
         </OptionItemWrapper>
       </DonateOption>
       <DonateOption>

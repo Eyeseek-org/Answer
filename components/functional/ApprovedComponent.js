@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import token from '../../abi/token.json'
 import Amount from "./Amount";
 import { GetTokenAddress, GetFundingAddress } from './GetContractAddress';
+import { ethers } from 'ethers';
 
 const Container = styled.div`
     display: flex;
@@ -29,9 +30,10 @@ const ApprovedComponent = ({address}) => {
         args: [address, add]
       })
 
+      const fullValue = ethers.utils.formatEther(data);
         
     return <Container>
-        {data && <>Approved: <Amount value={data} /></>}
+        {data && <>Approved: <Amount value={fullValue} /></>}
     </Container>
 }
 

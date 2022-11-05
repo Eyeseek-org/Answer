@@ -21,8 +21,9 @@ const Explainer = styled.div`
     padding-left: 25px;
     font-family: 'Neucha';
     @media (min-width: 1580px) {
-    font-size: 1.3em;
-  }
+        font-size: 1.3em;
+        width: 500px;
+    }
 `
 
 const TitleBox = styled.div`
@@ -175,7 +176,7 @@ const LandingMain = ({width,height}) => {
 
     const showCov = () =>{
         setUrl('https://www.covalenthq.com/')
-        setExpTitle('Cov')
+        setExpTitle('Covalent')
         setExpDesc(d.covalent)
         setMorColor('#F0F0F0')
         setFanColor('#F0F0F0')

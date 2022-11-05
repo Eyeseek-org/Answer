@@ -1,17 +1,22 @@
-// https://app.clickup.com/t/321nwca
 import styled from "styled-components"
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useAccount } from "wagmi"
 import Loading from "../components/Loading"
-import Title from "../components/typography/Title"
 import {categories} from "../data/categories"
+import {defaultProfile } from "../data/profile"
+import { moralisApiConfig } from "../data/moralisApiConfig"
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 20px;
+    margin-top: 70px;
+    padding-left: 2%;
+`
+
+const Section = styled.div`
+  margin-top: 1%;
 `
 
 const Subcategory = styled.div`
@@ -25,8 +30,21 @@ const Subcategory = styled.div`
     background-color: transparent;
 `
 
+const Title = styled.div`
+    font-family: 'Neucha';
+    letter-spacing: 0.3px;
+    font-size: 1.2em;
+    width: 100%;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #585858;
+    @media (min-width: 1768px) {
+      font-size: 1.5em;
+    }
+`
+
 const Label = styled.label`
-font-family: "Roboto";
+  font-family: "Montserrat";
     font-size: 1em;
     margin: 2px;
     border-radius: 15px;
@@ -34,73 +52,23 @@ font-family: "Roboto";
     padding: 5px;
     cursor: pointer;
     border: 1px solid grey;
+    @media (min-width: 1968px) {
+      font-size: 1.2em;
+    } 
 `
+
+/// TBD update does not work correctly
+/// TBD sort cats asc, sort subcategories asc
 
 const Preferences = () => {
   const [loading, setLoading] = useState(true)
   const [objectId, setObjectId] = useState(null)
   const {address} = useAccount()
-  const [profile, setProfile] = useState({
-     "Technology": {
-         "Gadgets": false,
-          "Robots": false,
-          "Wearables": false,
-          "Other": false,
-      },
-      "Games": {
-          "Mobile": false,
-          "Board": false,
-          "Card": false,
-          "Other": false,
-      },
-      "Art": {
-          "Painting": false,
-          "Sculpture": false,
-          "Photography": false,
-          "Other": false,
-      },
-      "Web3": {
-          "Defi": false,
-          "DAO": false,
-          "Gamefi": false,
-          "NFT": false,
-          "Social-fi": false,
-          "Infrastrucute": false,
-          "Dev tooling": false,
-          "Other": false,
-      },
-      "Science": {
-          "Biology": false,
-          "Ecologogy": false,
-          "Psychology": false,
-          "Chemistry": false,
-          "Physics": false,
-          "Engineering": false,
-          "Medicine": false,
-          "Neuroscience": false,
-          "Other": false,
-      },
-      "Open_Source": {
-          "AI": false,
-          "Big Data": false,
-          "Cloud": false,
-          "Cybersecurity": false,
-          "IoT": false,
-          "Machine Learning": false,
-          "Dev tools": false,
-          "Other": false,
-      }
-  })
+  const [profile, setProfile] = useState(defaultProfile)
   
   const getProfile = async () => {
-    const config = {
-      headers: {
-        "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-        "x-Parse-Master-Key": `${process.env.NEXT_PUBLIC_MORALIS}`,
-      },
-    };
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`, config);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`, moralisApiConfig);
       setProfile(res.data.results[0].pref[0]);
       setObjectId(res.data.results[0].objectId)
 
@@ -111,14 +79,8 @@ const Preferences = () => {
 
   const updateProfile = async (e) => {
     // update profile in database
-    const config = {
-      headers: {
-        "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-        "x-Parse-Master-Key": `${process.env.NEXT_PUBLIC_MORALIS}`,
-      },
-    };
     try {
-      const res = await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User/${objectId}`, {'pref' : [profile]}, config);
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User/${objectId}`, {'pref' : [profile]}, moralisApiConfig);
       localStorage.setItem('localProfile', JSON.stringify(profile))
     } catch (error) {
       console.log(error);
@@ -151,8 +113,8 @@ const Preferences = () => {
       {/* map out categories and their corresponding subcategories, if the user selects one then add the category and corresponding subcategory to the profile */}
       {!loading && Object.keys(categories).map((category, index) => {
           return (
-            <div key={index}>
-              <Title text={category}/>
+            <Section key={index}>
+              <Title>{category}</Title>
               <Subcategory >
                 {categories[category].map((subcategory, index) => {
                     return( 
@@ -160,14 +122,13 @@ const Preferences = () => {
                         key={index}
                         onClick={() => handleSelect(category, subcategory)}
                         name={`${category}-${subcategory}`}
-                        style={{backgroundColor: profile[category][subcategory] ? 'green' : 'black'}}
                       >
                         {subcategory}
                       </Label>
                     )
                 })}
               </Subcategory>
-            </div>
+            </Section>
           )
       })}
     </Container>
