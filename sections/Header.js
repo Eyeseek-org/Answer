@@ -12,6 +12,7 @@ import Logo from "../public/Logo.png"
 import Rainbow from '../components/buttons/Rainbow'
 import Notifications from '../sections/Notifications'
 import { BellIcon } from "../components/icons/Landing";
+import { moralisApiConfig } from "../data/moralisApiConfig";
 
 const NavItem = styled.div`
   display: flex;
@@ -134,12 +135,6 @@ const Header = () => {
     { title: "My projects", url: "/my" },
   ]
 
-  const moralisApiConfig = {
-    headers: {
-      "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-      "Content-Type": "application/json"
-    }
-  }
 
   const getData = async () => {
       try {

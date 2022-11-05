@@ -1,18 +1,20 @@
 import Image from "next/image"
 import styled from "styled-components"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount, useNetwork } from 'wagmi'
 
 import Tag from "../../components/typography/Tag"
 import SectionTitle from "../../components/typography/SectionTitle"
+import ErrText from '../../components/typography/ErrText'
 import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
 import { CancelIcon, VerifiedIcon, NonVerifiedIcon} from '../../components/icons/Common'
 import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
 import donation from '../../abi/donation.json'
-import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi'
 import ProjectDetailRight from "./ProjectDetailRight"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
+import { GetFundingAddress } from "../../components/functional/GetContractAddress"
 
 
 const Container = styled.div`
@@ -133,7 +135,7 @@ const LeftTopTooltip = styled.div`
   top: 0;
 `
 
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chain }) => {
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner }) => {
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
@@ -143,10 +145,15 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [canceled, setCanceled] = useState(false)
   const [apiError, setApiError] = useState(false)
 
+  const {chain} = useNetwork()
+  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
-  // TBD add prepare contract write - To make blockchain part work
+  useEffect(() => {
+    setAdd(GetFundingAddress(chain))
+  },[])
+
   const { config } = usePrepareContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+    addressOrName: add,
     contractInterface: donation.abi,
     functionName: 'cancelFund',
     args: [pid],
@@ -170,7 +177,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   }
 
   useContractEvent({
-    addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+    addressOrName: add,
     contractInterface: donation.abi,
     eventName: 'Cancelled',
     listener: () => useEv(e),
@@ -207,6 +214,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   return  <>
     <Container>
       <SectionTitle title={'Project detail'} subtitle={title} />
+      {apiError && <ErrText text={'Error with Moralis connection, please try again later'} />}
       <DetailBox>
         <LeftTopTooltip>
           {verifiedTooltip && <Tooltip text={'Verified by Eyeseek team'} />}
@@ -244,7 +252,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           </Categories>
           <Desc>{description}</Desc>
         </LeftPart>
-        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner}/> }
+        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add}/> }
       </DetailBox>
     </Container>
   </>

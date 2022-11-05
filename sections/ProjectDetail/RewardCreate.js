@@ -10,6 +10,7 @@ import { NextButton } from "../start_project/Category/StyleWrapper";
 import { useRouter } from 'next/router';
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
 import SectionTitle from '../../components/typography/SectionTitle';
+import { moralisApiConfig } from '../../data/moralisApiConfig';
 
 
 const RewardCreate = ({objectId, rewards}) => {
@@ -27,14 +28,6 @@ const RewardCreate = ({objectId, rewards}) => {
         cap: 10,
         type: "Donate"  // OR Donate OR Stream // OR Microfund
     })
-
-
-    const moralisApiConfig = {
-        headers: {
-          "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-          "Content-Type": "application/json"
-        }
-    }
 
     /// Maybe handle rewards to separate table
     

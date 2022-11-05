@@ -5,6 +5,7 @@ import {useState, useEffect} from 'react'
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
+import { moralisApiConfig } from "../../data/moralisApiConfig"
 
 TimeAgo.addDefaultLocale(en)
 
@@ -57,13 +58,8 @@ const UpdateOverview = ({objectId}) => {
       }, []);
 
     const getUpdates = async () => {
-        const config = {
-            headers: {
-                "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`
-            }
-        }
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`, config)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`, moralisApiConfig)
             setUpdates(res.data.results)
         } catch (error) {
             console.log(error)

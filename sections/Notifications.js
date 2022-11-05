@@ -5,10 +5,10 @@ import Link from 'next/link'
 import Preferences from './Preferences'
 import {CanceledIcon, NewsIcon} from '../components/icons/Notifications'
 import { RewardIcon } from '../components/icons/Common'
-import { BellIcon } from '../components/icons/Landing'
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
+import { moralisApiConfig } from '../data/moralisApiConfig'
 
 TimeAgo.addDefaultLocale(en)
 
@@ -157,13 +157,6 @@ const IconWrapper = styled.div`
 
 const Notifications = ({notis}) => {
     const [profile, setProfile] = useState(false)
-
-    const moralisApiConfig = {
-        headers: {
-          "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-          "Content-Type": "application/json"
-        }
-      }
 
     useEffect(() => {
         confirmRead()

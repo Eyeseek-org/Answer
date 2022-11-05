@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent } from "wagmi";
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent'
 import ApprovedComponent from '../../components/functional/ApprovedComponent'
@@ -9,6 +9,7 @@ import ApproveButton from "../../components/buttons/ApproveButton";
 import { SuccessIcon } from "../../components/icons/Common";
 import donation from "../../abi/donation.json";
 import { useRouter } from 'next/router';
+import { moralisApiConfig } from '../../data/moralisApiConfig';
 
 const DonateButtonWrapper = styled.div`
   position: relative;
@@ -30,28 +31,14 @@ const Err = styled.div`
 `
 
 
-const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
+const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add}) => {
     const { address } = useAccount();
-    const token = process.env.NEXT_PUBLIC_AD_TOKEN
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [success, setSuccess] = useState(false)
-    const [curr, setCurr] = useState(0)
 
     const router = useRouter()
     const { objectId } = router.query
     
-
-    /// TBD after Axelar pass correct currency, until know we'll hardcode USDC = (EYE)
-
-    const handleCurrency = (currency) => {
-        if (currency === 'USDC') {
-            setCurr(1)
-        } else if (currency === 'DAI') {
-            setCurr(2)
-        } else if (currency === 'USDT') {
-            setCurr(3)
-        }
-    }
 
     const useEv = (event) => {
         setSuccess(true);
@@ -59,7 +46,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
     }
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         eventName: 'Donated',
         listener: (event) => useEv(event),
@@ -67,7 +54,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
     })
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         eventName: 'MicroCreated',
         listener: (event) => useEv(event),
@@ -75,18 +62,12 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
     })
 
 
-    const moralisConfig = {
-        headers: {
-          "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-          "Content-Type": "application/json"
-        }
-      }
 
     const { config, error } = usePrepareContractWrite({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, 1],
+        args: [amountM, amountD, pid, curr],
     });
 
     const { write, data } = useContractWrite(config);
@@ -103,15 +84,10 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
     const sum = (parseInt(amountM) + parseInt(amountD));
 
 
-    useEffect(() => {
-        handleCurrency()
-    }, [])
-
-
     const updateBookmark = async (bookmarks) => {
         const newBookmarks = [...bookmarks, address];
         try {
-          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { 'bookmarks': newBookmarks }, moralisConfig)
+          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { 'bookmarks': newBookmarks }, moralisApiConfig)
         } catch (error) {
           console.log(error)
         }
@@ -123,7 +99,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
                 <>
                     {address &&
                     <div>
-                        <BalanceComponent address={address} token={token} amount={sum} />
+                        <BalanceComponent address={address} token={currencyAddress} amount={sum} />
                         <ApprovedComponent address={address} />
                     </div>}
                     <ApproveButton sum={sum} />

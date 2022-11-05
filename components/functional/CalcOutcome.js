@@ -1,7 +1,4 @@
 import styled from "styled-components"; 
-import { useContractRead} from 'wagmi'
-import { useEffect, useState } from 'react'
-import donation from '../../abi/donation.json'
 
 const Container = styled.div`
     display: flex;

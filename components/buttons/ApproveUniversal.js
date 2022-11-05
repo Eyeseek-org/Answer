@@ -70,7 +70,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
 
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
+        addressOrName: tokenContract,
         contractInterface: token.abi,
         eventName: 'Approval',
         listener: (event) => listened(event),

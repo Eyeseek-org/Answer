@@ -17,12 +17,11 @@ const Preferences = () => {
     const [profile, setProfile] = useState([])
     const {address} = useAccount()
 
-
     const getData = async () => {
         const config = {
           headers: {
             "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-            "x-Parse-Master-Key": `${process.env.MORALIS}`
+            "x-Parse-Master-Key": `${process.env.NEXT_PUBLIC_MORALIS}`
           },
         };
         try {
