@@ -80,11 +80,14 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
     const {address} = useAccount()
     const router = useRouter()
 
-    var bal = 'n/a'
-    var microInvolved = 'n/a'
-    var days = 'n/a'
-    var max = 'n/a'
-    var backing ='n/a'
+    let bal = 'n/a';
+    let microInvolved = 'n/a';
+    let days = 'n/a';
+    let max = 'n/a';
+    let backing = 'n/a';
+    let usdcBalance = 'n/a';
+    let usdtBalance = 'n/a';
+    let daiBalance = 'n/a';
 
     const micros = useContractRead({
         addressOrName: add,
@@ -99,45 +102,35 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
         microInvolved = micros.data.toString()
     }
 
-    const balance = useContractRead({
-        addressOrName: add,
+    const funds = useContractRead({
+        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
         contractInterface: donation.abi,
-        functionName: 'getFundBalance',
+        functionName: 'funds',
         chainId: chainId,
         args: [pid],
         watch: false,
     })
 
-    if (balance.data) {
-        bal = balance.data.toString()
-    }
+    if (funds.data) {
+        // Get fund balance
+        bal = funds.data.balance.toString()
 
-    const deadline = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
-        functionName: 'getFundDeadline',
-        chainId: chainId,
-        args: [pid],
-        watch: false,
-    })
-
-    if (deadline.data) {
-        const d = deadline.data.toString()
+        // Get fund deadline
+        const d = funds.data.deadline.toString()
         const test = new Date(d * 1000);
         days = test.getDate()
-    }
 
-    const cap = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
-        functionName: 'getFundCap',
-        chainId: chainId,
-        args: [pid],
-        watch: false,
-    })
+        // Get fund cap
+        max = funds.data.level1.toString()
 
-    if (cap.data) {
-        max = cap.data.toString()
+        // Get fund usdc balance
+        usdcBalance = funds.data.usdcBalance.toString()
+
+        // Get fund usdt balance
+        usdtBalance = funds.data.usdtBalance.toString()
+
+        // Get fund dai balance
+        daiBalance = funds.data.daiBalance.toString()
     }
 
     const backers = useContractRead({
