@@ -26,6 +26,8 @@ export const AppProvider = (props) => {
       name: "EYE",
       address: process.env.NEXT_PUBLIC_AD_TOKEN,
     },
+    // Step 1 is default, because step 0 is always prefilled
+    stepLock: 1,
   });
 
 
