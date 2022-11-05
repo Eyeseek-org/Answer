@@ -76,7 +76,7 @@ const Backers = styled.div`
     }
 `
 
-const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
+const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
     const {address} = useAccount()
     const router = useRouter()
 
@@ -87,7 +87,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     var backing ='n/a'
 
     const micros = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getConnectedMicroFunds',
         chainId: 80001,
@@ -100,7 +100,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const balance = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundBalance',
         chainId: 80001,
@@ -113,7 +113,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const deadline = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundDeadline',
         chainId: 80001,
@@ -128,7 +128,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const cap = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundCap',
         chainId: 80001,
@@ -141,7 +141,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const backers = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getBackers',
         chainId: 80001,

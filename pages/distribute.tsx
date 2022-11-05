@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import type { NextPage } from "next";
-import { usePrepareContractWrite, useContractWrite, useContractEvent } from 'wagmi';
-import {useState} from 'react'
+import { usePrepareContractWrite, useContractWrite, useNetwork } from 'wagmi';
+import {useState, useEffect} from 'react'
 import Lottie from "react-lottie";
 
 import donation from "../abi/donation.json";
 import SectionTitle from '../components/typography/SectionTitle';
 import successAlt from '../data/animations/successAlt.json';
+import { GetFundingAddress } from '../components/functional/GetContractAddress';
 
 const okAnim = {
     loop: false,
@@ -60,9 +61,16 @@ const Distribute: NextPage = () => {
     const [identifier, setIdentifier] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [ev, setEv] = useState<boolean>(false);
+    const {chain} = useNetwork();
+
+    const [add, setAdd] = useState<string>(process.env.NEXT_PUBLIC_AD_DONATOR);
+
+    useEffect(() => {
+        setAdd(GetFundingAddress(chain))
+    }, [])
     
     const { config } = usePrepareContractWrite({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'distribute',
         args: [identifier, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E'],
@@ -73,7 +81,7 @@ const Distribute: NextPage = () => {
     const handleContract = async () => { write?.()}
 
     // useContractEvent({
-    //     addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+    //     addressOrName: add,
     //     contractInterface: donation.abi,
     //     eventName: 'DistributionAccomplished',
     //     listener: (event) => useEv(event),

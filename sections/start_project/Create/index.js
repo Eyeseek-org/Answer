@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApp } from "../../utils/appContext";
 import Lottie from "react-lottie";
 import Image from "next/image";
@@ -20,6 +20,8 @@ import smallLoading from '../../../data/smallLoading.json'
 import Eye10 from '../../../public/Eye10.png'
 import Rainbow from "../../../components/buttons/Rainbow";
 import ApproveUniversal from "../../../components/buttons/ApproveUniversal";
+import { moralisApiConfig } from "../../../data/moralisApiConfig";
+import { GetFundingAddress } from "../../../components/functional/GetContractAddress";
 
 const ApprovalBox = styled.div`
 
@@ -80,16 +82,15 @@ const Create = ({ setStep }) => {
     const [loading, setLoading] = useState(false)
     const [ready, setReady] = useState(false)
 
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+
     const handleBack = () => {
         setStep((prev) => (prev -= 1));
     }
 
-    const moralisHeaders = {
-        headers: {
-            "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-            "Content-Type": "application/json"
-        }
-    }
+    useEffect (() => {
+        setAdd(GetFundingAddress(chain))
+    },[])
 
     // Update project with PID retrieved from blockchain
     const handleUpdateMoralis = async (pid) => {
@@ -97,7 +98,7 @@ const Create = ({ setStep }) => {
             await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, {
                 "pid": pid,
                 "state": 1 // Set active
-            }, moralisHeaders)
+            }, moralisApiConfig)
             await setSuccess(true)
             await setApiError(false)
         } catch (err) {
@@ -122,12 +123,13 @@ const Create = ({ setStep }) => {
     }
 
     const { config, isError } = usePrepareContractWrite({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'createFund',
         chain: 80001,
         args: [pm1, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E', tokenReward.amount],
     })
+
 
     const { write } = useContractWrite(config)
 
@@ -145,7 +147,7 @@ const Create = ({ setStep }) => {
                 "cap": rewards[0].cap,
                 "type": rewards[0].type,
                 "active": true
-            }, moralisHeaders)
+            }, moralisApiConfig)
             setApiError(false)
         } catch (err) {
             console.log(err)
@@ -161,7 +163,7 @@ const Create = ({ setStep }) => {
                 "tokenName": tokenReward.name,
                 "tokenAddress": tokenReward.address,
                 "tokenAmount": tokenReward.amount,
-            }, moralisHeaders)
+            }, moralisApiConfig)
             setApiError(false)
         } catch (err) {
             console.log(err)
@@ -184,7 +186,7 @@ const Create = ({ setStep }) => {
                 "bookmarks": [address], // Add owner to bookmark
                 "rewards": rewards,
                 "imageUrl": pImageUrl
-            }, moralisHeaders)
+            }, moralisApiConfig)
             setOid(res.data.objectId)
             setApiError(false)
         } catch (err) {
@@ -196,7 +198,7 @@ const Create = ({ setStep }) => {
 
     const handleSubmit = async () => {
         await setLoading(true)
-        if (!pType === 'Stream'){
+        if (pType !== 'Stream'){
             await handleContract()
         }
         if (pType === 'Stream'){
@@ -207,7 +209,7 @@ const Create = ({ setStep }) => {
     }
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         eventName: 'FundCreated',
         listener: (event) => useEv(event),

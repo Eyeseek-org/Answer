@@ -1,7 +1,9 @@
-import {useContractRead} from 'wagmi'
+import {useState, useEffect} from 'react'
+import {useContractRead, useNetwork} from 'wagmi'
 import styled from 'styled-components'
 import token from '../../abi/token.json'
 import Amount from "./Amount";
+import { GetTokenAddress, GetFundingAddress } from './GetContractAddress';
 
 const Container = styled.div`
     display: flex;
@@ -11,11 +13,20 @@ const Container = styled.div`
 `
 
 const ApprovedComponent = ({address}) => {
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+    const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_TOKEN)
+    const {chain} = useNetwork()
+
+    useEffect(() => {
+        setAdd(GetFundingAddress(chain))
+        setTokenAdd(GetTokenAddress(chain))
+    },[])
+
     const {data} = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
+        addressOrName: tokenAdd,
         contractInterface: token.abi,
         functionName: 'allowance',
-        args: [address, process.env.NEXT_PUBLIC_AD_DONATOR]
+        args: [address, add]
       })
 
         

@@ -11,7 +11,7 @@ const Main = styled.div`
     flex-direction: column;
     padding-left: 18%;
     padding-right: 18%;
-    min-height: 200px;
+    min-height: 300px;
 `
 
 const Container = styled.div`
