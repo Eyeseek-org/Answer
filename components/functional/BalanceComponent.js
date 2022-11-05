@@ -8,7 +8,7 @@ const Container = styled.div`
     font-weight: 400;
     font-family: 'Gemunu Libre';
 `
-const BalanceComponent = ({token, address, amount}) => {
+const BalanceComponent = ({token, address}) => {
 
     const {data} = useBalance({
         addressOrName: address,
@@ -16,7 +16,7 @@ const BalanceComponent = ({token, address, amount}) => {
       })
 
     return <Container>
-         {amount ? <>Balance: <Amount value={amount} /> {data?.symbol}</> : <>Balance: <Amount value={data?.formatted} /> {data?.symbol}</>}
+        <>Balance: <Amount value={data?.formatted} /> {data?.symbol}</>
     </Container>
 }
 

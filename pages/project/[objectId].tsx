@@ -86,12 +86,12 @@ const Project: NextPage = () => {
           pid={project.pid}
           objectId={project.objectId}
           owner={project.owner}
-          chain={project.chain}
+          chainId={project.chainId}
           pType={project.type}
         />}
       {mode === 'Rewards' && <><RewardList oid={objectId}/><RewardCreate objectId={objectId} rewards={project.rewards}/></>}
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/><UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/></>}
-      {mode === 'Transactions' && <StatsTable objectId={objectId} pid={project.pid} chain={project.chain}/>}
+      {mode === 'Transactions' && <StatsTable objectId={objectId} pid={project.pid} chain={project.chainId}/>}
       </> : <>{apiError && <>Project failed to fetch</>}</>}
       </Container>
     </>

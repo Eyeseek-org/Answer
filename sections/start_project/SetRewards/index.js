@@ -14,7 +14,7 @@ import { Row } from "../../../components/format/Row";
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { pType, rewards } = { ...appState };
-  const [rType, setRType] = useState(true)
+  const [rType, setRType] = useState('Direct donate')
   const [microTooltip, setMicroTooltip] = useState(false)
   const [tokenTooltip, setTokenTooltip] = useState(false)
   const [tReward, setTokenReward] = useState({
@@ -60,12 +60,23 @@ const SetRewards = ({ setStep }) => {
         <NextButton onClick={() => setShowReward(!showReward)}>{showReward ? <>Remove reward</> : <>Add reward (optional)</>}</NextButton>
         {showReward && <MainMilestoneContainer>
           <MilestoneContainer>
-            <TabRow> {pType === 'Standard' && <Tab  act={rType} o1={'Microfund'} o2={'Direct donate'} onClick={() => { setRType(!rType) }} />}
+            <TabRow> {pType === 'Standard' && 
+              <Tab  
+                active={rType} 
+                o1={'Microfund'} 
+                o2={'Direct donate'} 
+                change1={() =>{ setRType('Microfund') }} 
+                change2={() =>{ setRType('Direct donate') }} />}
+              
               <TooltipBox>
                 {microTooltip && <Tooltip text={'Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.'} />}
                 {donationTooltip && <Tooltip text={'Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.'} />}
               </TooltipBox>
-              <RewardDesc>Offer rewards to the backers on your own responsibility and effort. Eyeseek will provide addresses of backers, rest is on you.</RewardDesc>
+              <RewardDesc>
+                {rType === 'Direct donate' && <>Offer rewards to the backers on your own responsibility and effort. Eyeseek will provide addresses of backers, rest is on you.</>}
+                {rType === 'Microfund' && <>Offer rewards to the microfund deployers for they intention to incentivize the crowdfunding chain reaction.</>}
+                
+                </RewardDesc>
             </TabRow>
             <InputContainer
               label={'Title'}
@@ -114,12 +125,14 @@ const SetRewards = ({ setStep }) => {
             />
           </MilestoneContainer>
         </MainMilestoneContainer>}
-      {pType !== 'Stream' ? <><NextButton onClick={() => setShowToken(!showToken)}>Token reward (optional)</NextButton>
+      {pType !== 'Stream' ? <><NextButton onClick={() => setShowToken(!showToken)}>
+        {!showToken ?  <>Token reward (optional)</> : <>Remove token reward</>}
+        </NextButton>
         {showToken && <MainMilestoneContainer>
           <RewardDesc>Create a pool with custom ERC20 token, our smart contract distributes automatically rewards proportionally to all involved backers after project success.</RewardDesc>
 
           <MilestoneContainer>
-             {tokenTooltip &&  <TokenTooltip><Tooltip text={'       Backer delivering 80% of all allocation to your projects will receive 80% of all tokens in the pool. '} /></TokenTooltip>}
+             {tokenTooltip &&  <TokenTooltip><Tooltip text={'Backer delivering 80% of all allocation to your projects will receive 80% of all tokens in the pool. '} /></TokenTooltip>}
               <InputContainer
                 label={'Token name'}
                 placeholder={tReward.name}

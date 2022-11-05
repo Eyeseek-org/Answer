@@ -95,11 +95,11 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
 
     return <div>
         <DonateButtonWrapper>
-            {success ? <SuccessIcon /> : (
+            {success ? <SuccessIcon width={50}/> : (
                 <>
                     {address &&
                     <div>
-                        <BalanceComponent address={address} token={currencyAddress} amount={sum} />
+                        <BalanceComponent address={address} token={currencyAddress} />
                         <ApprovedComponent address={address} />
                     </div>}
                     <ApproveButton sum={sum} />

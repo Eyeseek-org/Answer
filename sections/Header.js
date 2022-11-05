@@ -13,6 +13,7 @@ import Rainbow from '../components/buttons/Rainbow'
 import Notifications from '../sections/Notifications'
 import { BellIcon } from "../components/icons/Landing";
 import { moralisApiConfig } from "../data/moralisApiConfig";
+import { CloseIcon } from "../components/icons/Notifications";
 
 const NavItem = styled.div`
   display: flex;
@@ -96,6 +97,7 @@ const IconFrame = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 38px;
   height: 38px;
   border: 1px solid white;
@@ -196,7 +198,7 @@ const Header = () => {
         <ConnectBox>
           <Rainbow />
           {isAuthenticated && <IconFrame onClick={() => { setNoti(!noti) }}>
-          <BellIcon/>
+            {!noti ? <BellIcon/> : <CloseIcon width={20}/>}
             {notiNumber > 0 && 
             <Notis
               animate={{
