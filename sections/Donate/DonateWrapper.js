@@ -99,7 +99,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
                 <>
                     {address &&
                     <div>
-                        <BalanceComponent address={address} token={currencyAddress} amount={sum} />
+                        <BalanceComponent address={address} token={currencyAddress} />
                         <ApprovedComponent address={address} />
                     </div>}
                     <ApproveButton sum={sum} />

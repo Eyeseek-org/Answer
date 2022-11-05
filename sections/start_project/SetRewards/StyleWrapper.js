@@ -45,13 +45,16 @@ export const IconBox = styled.div`
 `
 
 export const RewardDesc = styled.div`
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-family: 'Montserrat';
     border-bottom: 1px solid #3a3a3a;
     padding-bottom: 2%;
     @media (max-width: 768px) {
       width: 100%;
       margin-top: 5%;
+    }
+    @media (min-width: 1968px){
+    font-size: 1.2em;
     }
 `
 

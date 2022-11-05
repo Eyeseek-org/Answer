@@ -44,17 +44,24 @@ const Title = styled.div`
 `
 
 const Label = styled.label`
-  font-family: "Montserrat";
+   font-family: "Montserrat";
     font-size: 1em;
     margin: 2px;
     border-radius: 15px;
     color: white;
     padding: 5px;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin-right: 6px;
     cursor: pointer;
+    transition: 0.2s;
     border: 1px solid grey;
     @media (min-width: 1968px) {
       font-size: 1.2em;
     } 
+    &:hover {
+      background-color: #585858;
+    }
 `
 
 /// TBD update does not work correctly

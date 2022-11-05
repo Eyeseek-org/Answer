@@ -85,11 +85,12 @@ const Row = styled.div`
 const Desc = styled.div`
     font-family: 'Arial';
     font-weight: 300;
+    transition: 0.5s;
     letter-spacing: 0.2px;
-    font-size: 0.9em;
+    font-size: ${props => props.expand ? '1.1em' : '0.8em'};
     color: #FFFFFF;
     @media (min-width: 1780px) {
-       font-size: 1.1em;
+        font-size: ${props => props.expand ? '1.3em' : '1.1em'};
   }
 `
 
@@ -193,7 +194,7 @@ const Notifications = ({notis}) => {
                     {noti.type === 'rewardAdded' && <RewardIcon width={20} height={20}/>}
                     {noti.type === 'projectUpdate' && <NewsIcon width={20} height={20}/>}
                 </IconWrapper>
-                <Col><Desc>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
+                <Col><Desc expand={expand}>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
                 <Col>
                      {noti.isRead === false ? <Unread>New</Unread> : <HidUnread></HidUnread>}
              
@@ -202,12 +203,12 @@ const Notifications = ({notis}) => {
             </NotiItem>)}
             {expand && <ImageBox><Image src={Eye1} alt={'EYE'} width={'2000px'} height={'2000px'}/></ImageBox>}
         </NotiBox> : <Preferences/>}
-      <ButtonRow>
-        {!profile ? <Buttons onClick={()=>{setProfile(true)}}>Edit preferences</Buttons> : 
-      <Buttons onClick={()=>{setProfile(false)}}>Notifications</Buttons>}      
-      <Buttons  onClick={()=>{setExpand(!expand)}}>
-        {!expand ? <ExpandIcon width={20} height={20}/> : <ShrinkIcon width={20} height={20}/>}
-      </Buttons>
+        <ButtonRow>
+            {!profile ? <Buttons onClick={()=>{setProfile(true)}}>Edit preferences</Buttons> : 
+        <Buttons onClick={()=>{setProfile(false)}}>Notifications</Buttons>}      
+        <Buttons  onClick={()=>{setExpand(!expand)}}>
+            {!expand ? <ExpandIcon width={20} height={20}/> : <ShrinkIcon width={20} height={20}/>}
+        </Buttons>
       </ButtonRow>
     </Container>
 }

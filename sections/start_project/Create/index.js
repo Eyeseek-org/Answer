@@ -9,7 +9,7 @@ import styled from "styled-components";
 
 import SectionTitle from "../../../components/typography/SectionTitle";
 import { ButtonRow } from "../SetRewards/StyleWrapper";
-import { MainContainer, NextButton, ErrButton } from "../Category/StyleWrapper";
+import { MainContainer, NextButton } from "../Category/StyleWrapper";
 import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Ok, TxStatus, LogRow, Ref, Summary, AnimBox, Err, InfoTag, SumItem, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox } from "./StyleWrapper";
 import FaqCard from "../../../components/cards/FaqCard";
 import { BookIcon } from "../../../components/icons/Common";
