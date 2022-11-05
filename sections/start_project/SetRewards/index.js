@@ -13,7 +13,7 @@ import { Row } from "../../../components/format/Row";
 
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { isNext, pType, rewards } = { ...appState };
+  const { pType, rewards } = { ...appState };
   const [rType, setRType] = useState(true)
   const [microTooltip, setMicroTooltip] = useState(false)
   const [tokenTooltip, setTokenTooltip] = useState(false)

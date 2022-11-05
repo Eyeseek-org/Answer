@@ -1,10 +1,5 @@
-import {useState} from 'react'
-
+import { useState} from 'react'
 import styled from 'styled-components'
-import {useContractEvent} from 'wagmi'
-import donation from '../../abi/donation.json'
-import Faucet from '../../components/buttons/Faucet'
-import LandingDonate from '../../components/animated/LandingDonate'
 
 
 const Container = styled.div`
@@ -66,6 +61,7 @@ const HeadDesc = styled.div`
     font-family: 'Neucha';
     font-size: 1.2em;
     font-style: italic;
+    margin-bottom: 25%;
 `
 
 const ExpTitle = styled.div`
@@ -90,11 +86,6 @@ const MPath = styled.path`
     }
 `
 
-
-// TBD covalent & axelar unclickable, need to wrap into a box
-// TBD Fonts needed to be imported - Custom font: Sue Ellen Francisco
-// TBD Explainer animation 
-
 const d = {
     google: "Top cloud technology provider",
     covalent: "Unified multichain API",
@@ -116,7 +107,6 @@ const LandingMain = ({width,height}) => {
     const [covColor, setCovColor] = useState("#343434")
     const [axColor, setAxColor] = useState("#343434")
     const [url, setUrl] = useState()
-
 
     const showMoralis = () =>{
         setUrl("https://moralis.io/")
@@ -212,11 +202,9 @@ const LandingMain = ({width,height}) => {
     return <Container>
     {expTitle !== '' && <Explainer><ExpTitle><a href={url} rel="noopener noreferrer" target="_blank">{expTitle}</a></ExpTitle><ExpSub>{expDesc}</ExpSub></Explainer>}
     <TitleBox>
-        <HeadTitle>Eyeseek Funding</HeadTitle>
-        <HeadSub>Next generation of crowdfunding</HeadSub>
-        <HeadDesc>by web3</HeadDesc>
-        <Faucet/>
-        <LandingDonate/>
+            <HeadTitle>Eyeseek Funding</HeadTitle>
+            <HeadSub>Next generation of crowdfunding</HeadSub>
+            <HeadDesc>by web3</HeadDesc>
     </TitleBox>
 
     <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">

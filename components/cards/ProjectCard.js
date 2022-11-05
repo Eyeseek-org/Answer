@@ -4,8 +4,10 @@ import Image from 'next/image'
 import ImgSkeleton from '../skeletons/ImgSkeleton'
 import Tag from "../../components/typography/Tag"
 import donation from '../../abi/donation.json'
-import { useContractRead } from 'wagmi'
+import { useContractRead, useNetwork } from 'wagmi'
 import { BlockchainIcon, StreamIcon } from '../icons/Landing'
+import {GetFundingAddress} from '../functional/GetContractAddress'
+import { useEffect, useState } from 'react'
 
 const A = styled(Link)`
     &:hover{
@@ -87,13 +89,19 @@ const ProjectType = styled.div`
 `
 
 const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType }) => {
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+    const {chain} = useNetwork()
+
+    useEffect(() => {
+        setAdd(GetFundingAddress(chain))
+    }, [])
 
     var bal = '0'
     var days = '0'
     var max = '0'
 
     const balance = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundBalance',
         chainId: 80001,
@@ -106,7 +114,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     }
 
     const deadline = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundDeadline',
         chainId: 80001,
@@ -121,7 +129,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     }
 
     const cap = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundCap',
         chainId: 80001,
@@ -135,7 +143,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
 
     return <A href={link}>
         <Container>
-            <Days>{days}d</Days>
+            {pType !== 'Stream' && <Days>{days}d</Days>}
             <ProjectType>
                     {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
              </ProjectType>

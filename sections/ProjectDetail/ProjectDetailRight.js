@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import donation from '../../abi/donation.json'
 import { useContractRead, useAccount } from 'wagmi'
 import Link from 'next/link'
-import {useState} from 'react'
 import { useRouter } from 'next/router'
 
 import ButtonAlt from "../../components/buttons/ButtonAlt"
 import Socials from '../../components/buttons/Socials'
 import Bookmark from '../../components/functional/Bookmark'
+import Stream from './Stream'
 
 
 const RightPart = styled.div`
@@ -76,9 +76,8 @@ const Backers = styled.div`
     }
 `
 
-const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
+const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add}) => {
     const {address} = useAccount()
-    const [management, setManagement] = useState(false)
     const router = useRouter()
 
     var bal = 'n/a'
@@ -88,7 +87,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     var backing ='n/a'
 
     const micros = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getConnectedMicroFunds',
         chainId: 80001,
@@ -101,7 +100,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const balance = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundBalance',
         chainId: 80001,
@@ -114,7 +113,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const deadline = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundDeadline',
         chainId: 80001,
@@ -129,7 +128,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const cap = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getFundCap',
         chainId: 80001,
@@ -142,7 +141,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     }
 
     const backers = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getBackers',
         chainId: 80001,
@@ -165,25 +164,25 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
         )
     }
 
+    /// TBD backers will be moved elsewhere
     return <RightPart>
+        {pType !== 'Stream' ?
         <div>
             <Row title={bal} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
-            <Row title={backing} desc={
-                <Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
+            <Row title={backing} desc={<Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
             color="white" />
             <Row title={microInvolved} desc={`microfunds active`} color="white" />
             <FlexRow>
                 <Row title={days} desc={`days to go`} color="white" />
                 <Socials/>
             </FlexRow>
-        </div>
+        </div> : <Stream recipient={owner} objectId={objectId}/>}
         <ButtonBox>
         {pType === 'Standard' &&  <ButtonAlt width={'100%'} text="Fund it!" onClick={() => router.push(`/donate/${objectId}`)}/> 
         }
-        {pType === 'Stream' && owner !== address && <Link href={`/stream/${objectId}`}>
-           <ButtonAlt width={'100%'} text="Stream!!"/>
-        </Link>}
+        {pType === 'Stream' && owner !== address && <ButtonAlt width={'100%'} text="Stream!!" />}
         </ButtonBox>
+
     </RightPart>
 }
 

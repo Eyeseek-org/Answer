@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApp } from "../../utils/appContext";
 import Lottie from "react-lottie";
 import Image from "next/image";
@@ -20,6 +20,8 @@ import smallLoading from '../../../data/smallLoading.json'
 import Eye10 from '../../../public/Eye10.png'
 import Rainbow from "../../../components/buttons/Rainbow";
 import ApproveUniversal from "../../../components/buttons/ApproveUniversal";
+import { moralisApiConfig } from "../../../data/moralisApiConfig";
+import { GetFundingAddress } from "../../../components/functional/GetContractAddress";
 
 const ApprovalBox = styled.div`
 
@@ -76,17 +78,19 @@ const Create = ({ setStep }) => {
     const [apiError, setApiError] = useState(false)
     const [success, setSuccess] = useState(false)
     const [oid, setOid] = useState(null)
+    const [pState, setPState] = useState(0)
+    const [loading, setLoading] = useState(false)
+    const [ready, setReady] = useState(false)
+
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
     const handleBack = () => {
         setStep((prev) => (prev -= 1));
     }
 
-    const moralisHeaders = {
-        headers: {
-            "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-            "Content-Type": "application/json"
-        }
-    }
+    useEffect (() => {
+        setAdd(GetFundingAddress(chain))
+    },[])
 
     // Update project with PID retrieved from blockchain
     const handleUpdateMoralis = async (pid) => {
@@ -94,35 +98,38 @@ const Create = ({ setStep }) => {
             await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, {
                 "pid": pid,
                 "state": 1 // Set active
-            }, moralisHeaders)
-            setSuccess(true)
-            setApiError(false)
+            }, moralisApiConfig)
+            await setSuccess(true)
+            await setApiError(false)
         } catch (err) {
             console.log(err)
-            setApiError(true)
+            await setApiError(true)
+            await setLoading(false)
         }
     }
 
     // Event upon successful project creation on blockchain
     // 1. Update state and project id (pid) as key between web2/web3
     // 2. Activate rewards in the db
-    const useEv = (event) => {
+    const useEv = async(event) => {
         if (Array.isArray(event)) {
             const pid = parseInt(event[2] && event[2]) - 1;
             handleUpdateMoralis(pid); 
             handleRewards()
             handleTokenReward()
         }
-        setEv(true);
+        await setEv(true);
+        await setLoading(false)
     }
 
     const { config, isError } = usePrepareContractWrite({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'createFund',
         chain: 80001,
         args: [pm1, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E', tokenReward.amount],
     })
+
 
     const { write } = useContractWrite(config)
 
@@ -140,12 +147,12 @@ const Create = ({ setStep }) => {
                 "cap": rewards[0].cap,
                 "type": rewards[0].type,
                 "active": true
-            }, moralisHeaders)
-            setSuccess(true)
+            }, moralisApiConfig)
             setApiError(false)
         } catch (err) {
             console.log(err)
             setApiError(true)
+            await setLoading(false)
         }
     }
 
@@ -156,12 +163,12 @@ const Create = ({ setStep }) => {
                 "tokenName": tokenReward.name,
                 "tokenAddress": tokenReward.address,
                 "tokenAmount": tokenReward.amount,
-            }, moralisHeaders)
-            setSuccess(true)
+            }, moralisApiConfig)
             setApiError(false)
         } catch (err) {
             console.log(err)
             setApiError(true)
+            await setLoading(false)
         }
     }
 
@@ -174,28 +181,35 @@ const Create = ({ setStep }) => {
                 "subcategory": subcategory,
                 "type": pType,
                 "owner": address,
-                "state": 0, // Always 0 for new projects
+                "state": pState,
                 "chain": chain.id,
                 "bookmarks": [address], // Add owner to bookmark
                 "rewards": rewards,
                 "imageUrl": pImageUrl
-            }, moralisHeaders)
+            }, moralisApiConfig)
             setOid(res.data.objectId)
-            setSuccess(true)
             setApiError(false)
         } catch (err) {
             console.log(err)
             setApiError(true)
+            await setLoading(false)
         }
     }
 
     const handleSubmit = async () => {
-        await handleContract()
+        await setLoading(true)
+        if (pType !== 'Stream'){
+            await handleContract()
+        }
+        if (pType === 'Stream'){
+            await setPState(1)
+        }
+        await setReady(true)
         await handleMoralis()
     }
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         eventName: 'FundCreated',
         listener: (event) => useEv(event),
@@ -224,6 +238,7 @@ const Create = ({ setStep }) => {
                     <SumHead>Summary</SumHead>
                   <SumRow>
                     <SumHalf align={'left'}>
+                        <SumItem><SumTitle>Funding type</SumTitle><SumValue>{pType}</SumValue></SumItem>
                         <SumItem><SumTitle>Title</SumTitle><SumValue>{pTitle}</SumValue></SumItem>
                         <SumItem><SumTitle>Category</SumTitle><SumValue>{category}-{subcategory}</SumValue></SumItem>
                         <SumItem><SumTitle>Destimation chain</SumTitle><SumValue>Mumbai</SumValue></SumItem>
@@ -237,19 +252,27 @@ const Create = ({ setStep }) => {
                         {rewards.length >= 3 && <SumItem><SumTitle>Reward #3</SumTitle><SumValue>{rewards[2].title} - ${rewards[2].amount} x{rewards[2].cap}</SumValue></SumItem>}
                         {rewards.length >= 4 && <SumItem><SumTitle>Reward #4</SumTitle><SumValue>{rewards[3].title} - ${rewards[3].amount} x{rewards[3].cap}</SumValue></SumItem>}
                         {rewards.length == 5 && <SumItem><SumTitle>Reward #5</SumTitle><SumValue>{rewards[4].title} - ${rewards[4].amount} x{rewards[4].cap}</SumValue></SumItem>}
-                  {tokenReward.amount > 0 && <SumItem><SumTitle>Token pool</SumTitle><SumValue>{tokenReward.amount}x {tokenReward.name}</SumValue></SumItem>}
+                        {tokenReward.amount > 0 && <SumItem><SumTitle>Token pool</SumTitle><SumValue>{tokenReward.amount}x {tokenReward.name}</SumValue></SumItem>}
                     </SumHalf>   
                     </SumRow>
                 </Summary> : <Rainbow/>}
-                {!success ? 
+                {!ready ? 
                 <ButtonRow>
                     <NextButton onClick={handleBack}>Back</NextButton>
                       {tokenReward.amount > 0 && 
                         <ApprovalBox><ApproveText>ERC20 supported only</ApproveText>
                             <ApproveUniversal tokenContract={tokenReward.address} spender={process.env.NEXT_PUBLIC_AD_DONATOR} amount={tokenReward.amount}/>
                         </ApprovalBox>}
-                    {isDisconnected ? <ErrButton disabled={!write} onClick={handleSubmit}>Chain error</ErrButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
+                    {pType === 'Stream' ? <NextButton onClick={handleSubmit}>Create project</NextButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
                 </ButtonRow> :
+                    <>{pType === 'Stream' ?                     
+                    <TxStatus>Transaction status
+                        <LogRow><InfoTag>Info</InfoTag> Project was initiated</LogRow>
+                        {!apiError && <LogRow><InfoTag>Info</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}
+                        {apiError && <AnimBox><Lottie height={100} width={100} options={errAnim} /></AnimBox>}
+                        {!apiError && !success && <AnimBox><Lottie height={100} width={100} options={loadingAnim} /></AnimBox>}
+                    </TxStatus>
+                    :
                     <TxStatus>Transaction status
                         <LogRow><InfoTag>Info</InfoTag> Project was initiated</LogRow>
                         <LogRow><InfoTag>Info</InfoTag> ...Waiting for blockchain confirmation</LogRow>
@@ -258,12 +281,12 @@ const Create = ({ setStep }) => {
                             {ev && <Ok>Success: Transaction was processed</Ok>} {apiError && <Err>Failed: Transaction failed on chain</Err>}
                         </LogRow>
                         {ev && <LogRow><InfoTag>Info</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}
-                        {ev && <AnimBox><Lottie height={100} width={100} options={okAnim} /></AnimBox>}
+                        {ev && success && <AnimBox><Lottie height={100} width={100} options={okAnim} /></AnimBox>}
                         {apiError && <AnimBox><Lottie height={100} width={100} options={errAnim} /></AnimBox>}
-                        {!ev && !apiError && <AnimBox><Lottie height={100} width={100} options={loadingAnim} /></AnimBox>}
-                    </TxStatus>}
+                        {!ev && !apiError && !success && <AnimBox><Lottie height={100} width={100} options={loadingAnim} /></AnimBox>}
+                    </TxStatus>}</>}
                 {apiError  && <Err>Transaction failed, please contact support team to make it work</Err>}
-                {isError && <Err>Smart contract error, check if all your data inputs are valid</Err>}
+                {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
             </RulesContainer>
         </MainContainer>
     );

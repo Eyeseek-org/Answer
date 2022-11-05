@@ -1,19 +1,31 @@
 import { useState } from 'react'
 import axios from 'axios'
-import InputContainer from "../../components/form/InputContainer";
-import { NextButton } from "../start_project/Category/StyleWrapper";
-import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers'
+import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
+import InputContainer from "../../components/form/InputContainer";
+import { NextButton } from "../start_project/Category/StyleWrapper";
+import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers'
 import { HTTPS_URL_REGEX } from '../../util/regex'
 
+const Description = styled.div`
+  font-size: 1em;
+  font-family: 'Montserrat';
+  margin-bottom: 2%;
+  letter-spacing: 0.2px;
+  line-height: 1.5em;
+  background: rgba(0, 0, 0, 0.08);
+  border-top: 1px solid rgba(176, 246, 255, 0.4);
+  padding-top: 0.5%;
+`
 
 const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const [success, setSuccess] = useState(false)
-  const router = useRouter()
   const [error, setError] = useState(false)
   const [url, setUrl] = useState('URL example')
+  const [updateTitle, setUpdateTitle] = useState('Update')
 
   const moralisApiConfig = {
     headers: {
@@ -40,7 +52,7 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     if (bookmarks) {
       bookmarks.forEach(async (bookmark) => {
         await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`, {
-          'title': `Update`,
+          'title': updateTitle,
           'description': `Project ${title} has been updated!`,
           'type': 'projectUpdate',
           'project': objectId,
@@ -50,7 +62,7 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     }
   }
 
-  // TBD pass correctly formik into the input
+  // TBD pass correctly formik into the input, right now validations are off
   const formik = useFormik({
     initialValues: {
       url: "",
@@ -80,6 +92,14 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     <RewardContainer>
       <MainMilestoneContainer>
         <MilestoneContainer>
+          <Description>Notify backers and stakeholders about your project updates, rewards and followups. Insert reference to the project page or socials where your progress is described in more detail</Description>
+          <InputContainer
+            label={'Update title'}
+            placeholder={'Alpha available!'}
+            description={'Describe your update in two or three words'}
+            onChange={(e) => setUpdateTitle(e.target.value)}
+            type={'text'}
+          />
           <InputContainer
             label={'URL'}
             placeholder={'https://updates.kickstarter.com/kickstarters-four-day-work-week/'}
@@ -87,9 +107,9 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
             onChange={(e) => setUrl(e.target.value)}
             type={'text'}
           />
-          {!success && !error && <NextButton onClick={() => { handleUpdate(objectId) }}>Sent update notification</NextButton>}
+          {!success && !error && !url !== 'URL example' && <NextButton onClick={() => { handleUpdate(objectId) }}>Sent update notification</NextButton>}
           {error && <NextButton onClick={() => { handleUpdate(objectId) }}>Technical error: Please try again later</NextButton>}
-          {success && <NextButton onClick={() => router.push('/')}>Success: Back to the overview</NextButton>}
+          {success && <NextButton disabled>Success!</NextButton>}
         </MilestoneContainer>
       </MainMilestoneContainer>
     </RewardContainer>

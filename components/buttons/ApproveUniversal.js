@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import Button from './Button'
 import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi'
 import styled from 'styled-components'
 import token from '../../abi/token.json'
@@ -7,6 +6,7 @@ import Rainbow from './Rainbow'
 import Lottie from "react-lottie";
 import successAnimation from '../../data/successAnimation.json'
 import smallLoading from '../../data/smallLoading.json'
+import ButtonAlt from './ButtonAlt'
 
 // Animation configs 
 const okAnim = {
@@ -61,7 +61,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         await setEv(true)
         await setLoading(false)
     }
-    const { config, error } = usePrepareContractWrite({
+    const { config } = usePrepareContractWrite({
         addressOrName: tokenContract,
         contractInterface: token.abi,
         functionName: 'approve',
@@ -70,7 +70,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
 
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
+        addressOrName: tokenContract,
         contractInterface: token.abi,
         eventName: 'Approval',
         listener: (event) => listened(event),
@@ -92,12 +92,15 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
             {!ev && loading && <><Lottie height={50} width={50} options={loadingAnim} /></>}
         </ApprovalBox>
         {!address && <Rainbow/>}
-        {address && 
-         <Button 
-            width={'200px'} 
-            onClick={() => handleApprove()} 
-            text={<Approve><div>Approve</div><Amount>{amount}</Amount></Approve>} />
-        }
+        {address && <>
+            {!ev ?  
+            <ButtonAlt 
+                width={'200px'} 
+                onClick={() => handleApprove()} 
+                text={<Approve><div>Approve</div><Amount>{amount}</Amount></Approve>} />
+                : 
+            <ButtonAlt width={'200px'} text={'Approved'} />}
+         </>}
     </Container>
 }
 

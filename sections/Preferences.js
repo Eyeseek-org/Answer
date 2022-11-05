@@ -92,8 +92,6 @@ const Preferences = () => {
       }
   })
   
-
-
   const getProfile = async () => {
     const config = {
       headers: {
