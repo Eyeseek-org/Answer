@@ -1,10 +1,10 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useAccount } from "wagmi"
 import Loading from "../components/Loading"
 import {categories} from "../data/categories"
-import {defaultProfile } from "../data/profile"
+import defaultProfile from "../data/profile"
 import { moralisApiConfig } from "../data/moralisApiConfig"
 
 const Container = styled.div`
@@ -62,10 +62,12 @@ const Label = styled.label`
     &:hover {
       background-color: #585858;
     }
+    ${props => props.selected && css`
+      background-color: #474747;
+    `}
 `
 
 /// TBD update does not work correctly
-/// TBD sort cats asc, sort subcategories asc
 
 const Preferences = () => {
   const [loading, setLoading] = useState(true)
@@ -78,7 +80,6 @@ const Preferences = () => {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`, moralisApiConfig);
       setProfile(res.data.results[0].pref[0]);
       setObjectId(res.data.results[0].objectId)
-
     } catch (error) {
       console.log(error);
     }
@@ -96,7 +97,7 @@ const Preferences = () => {
 
 
   const handleSelect = async(category, subcategory) => {
-    const newProfile = {...profile}
+    const newProfile = {...profile};
     newProfile[category][subcategory] = !newProfile[category][subcategory]
     setProfile(newProfile)
     updateProfile()
@@ -104,31 +105,33 @@ const Preferences = () => {
 
   // Check local storage for profile, if not there, then create one
   useEffect(() => {
-    if (localStorage.getItem('localProfile') === null) {
-        localStorage.setItem('localProfile', JSON.stringify(profile))
-        setLoading(false)
+    const localProfile = localStorage.getItem('localProfile');
+    if (localProfile) {
+      setProfile(JSON.parse(localProfile))
+      setLoading(false)
     } else {
-        setProfile(JSON.parse(localStorage.getItem('localProfile')))
-        setLoading(false)
+      localStorage.setItem('localProfile', JSON.stringify(profile))
+      setLoading(false)
     }
-    getProfile()
+    getProfile();
   }, [])
 
     return (
     <Container>
       {loading ? <Loading /> : null}
       {/* map out categories and their corresponding subcategories, if the user selects one then add the category and corresponding subcategory to the profile */}
-      {!loading && Object.keys(categories).map((category, index) => {
+      {!loading && Object.keys(categories).sort().map((category, index) => {
           return (
             <Section key={index}>
               <Title>{category}</Title>
               <Subcategory >
-                {categories[category].map((subcategory, index) => {
+                {categories[category].sort().map((subcategory, index) => {
                     return( 
                       <Label
                         key={index}
                         onClick={() => handleSelect(category, subcategory)}
                         name={`${category}-${subcategory}`}
+                        selected={profile[category][subcategory]}
                       >
                         {subcategory}
                       </Label>

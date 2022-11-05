@@ -187,7 +187,7 @@ const Notifications = ({notis}) => {
 
     return <Container expand={expand}>  
        {!profile ?<NotiBox> 
-        {notis && notis.sort((a, b) => a.createdAt - b.createdAt).map((noti, index) => <NotiItem key={index}>
+        {notis && notis.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).map((noti, index) => <NotiItem key={index}>
             <Link href={`/project/${noti.project}`}><Row>            
                  <IconWrapper>
                     {noti.type === 'projectCanceled' && <CanceledIcon width={20} height={20}/>}
