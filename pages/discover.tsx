@@ -54,6 +54,8 @@ const BrowsePro: NextPage = () => {
                                         category={project.category}
                                         subcategory={project.subcategory}
                                         link={`/project/${project.objectId}`}
+                                        state={project.state}
+                                        chain={project.chainId}
                                         pid={project.pid}
                                         imageUrl={undefined}
                                         pType={undefined}

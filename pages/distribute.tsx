@@ -71,7 +71,7 @@ const Distribute: NextPage = () => {
     const {chain} = useNetwork();
     const [chainId, setChainId] = useState<number>(80001);
     const [apiError, setApiError] = useState<boolean>(false);
-    const [project, setProject] = useState<object>({})
+    const [project, setProject] = useState<any>({})
     const [bookmarks, setBookmarks] = useState([])
 
     const [add, setAdd] = useState<string>(process.env.NEXT_PUBLIC_AD_DONATOR);
@@ -118,11 +118,11 @@ const Distribute: NextPage = () => {
         contractInterface: donation.abi,
         chainId: 80001,
         eventName: 'DistributionAccomplished',
-        listener: (event) => useEv(event),
+        listener: (event) => handleListener(event),
         once: true
     })
 
-    const useEv = async(event) => {
+    const handleListener = async(event) => {
         setLoading(true)
         await setEv(true);
         await setLoading(false)
