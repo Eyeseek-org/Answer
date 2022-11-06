@@ -131,7 +131,7 @@ const Preferences = () => {
                         key={index}
                         onClick={() => handleSelect(category, subcategory)}
                         name={`${category}-${subcategory}`}
-                        selected={profile[category][subcategory]}
+                        selected={profile[category ?? ""][subcategory ?? ""]}
                       >
                         {subcategory}
                       </Label>

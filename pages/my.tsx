@@ -35,7 +35,7 @@ const TabBox = styled.div`
 
 const My: NextPage = () => {
     const { address } = useAccount()
-    const [project, setProject] = useState()
+    const [project, setProject] = useState<any>()
     const [mode, setMode] = useState("Overview")
     const [active, setActive] = useState("Overview")
 
@@ -89,6 +89,9 @@ const My: NextPage = () => {
                 state={project.state}
                 chainId={project.chainId}
                 bookmarks={project.bookmarks}
+                verified={project.verified}
+                pType={project.type}
+                owner={project.owner}
                  /> }
                  
                  
