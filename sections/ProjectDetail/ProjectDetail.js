@@ -146,7 +146,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [nonVerifiedTooltip, setNonVerifiedTooltip] = useState(false)
   const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
   const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
-  const [chainTooltip, setChainTooltip] = useState(80001)
+  const [chainTooltip, setChainTooltip] = useState(false)
   const [canceled, setCanceled] = useState(false)
   const [apiError, setApiError] = useState(false)
 

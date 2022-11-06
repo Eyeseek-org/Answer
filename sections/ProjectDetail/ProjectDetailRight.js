@@ -3,11 +3,15 @@ import donation from '../../abi/donation.json'
 import { useContractRead, useAccount } from 'wagmi'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 import ButtonAlt from "../../components/buttons/ButtonAlt"
 import Socials from '../../components/buttons/Socials'
 import Bookmark from '../../components/functional/Bookmark'
 import Stream from './Stream'
+import usdc from '../../public/icons/usdc.png'
+import usdt from '../../public/icons/usdt.png'
+import dai from '../../public/icons/dai.png'
 
 
 const RightPart = styled.div`
@@ -76,6 +80,22 @@ const Backers = styled.div`
     }
 `
 
+const Bal = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+const SmallBal = styled.div`
+  font-size: 0.7em;
+  margin-left: 20px;
+  font-family: "Gemunu Libre";
+  opacity: 0.9;
+  color: white;
+  display: flex; 
+  flex-direction: row;
+  gap: 7px;
+`
+
 const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainId}) => {
     const {address} = useAccount()
     const router = useRouter()
@@ -89,21 +109,8 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
     let usdtBalance = 'n/a';
     let daiBalance = 'n/a';
 
-    const micros = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
-        functionName: 'getConnectedMicroFunds',
-        chainId: chainId,
-        args: [pid],
-        watch: false,
-    })
-
-    if (micros.data) {
-        microInvolved = micros.data.toString()
-    }
-
     const funds = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'funds',
         chainId: chainId,
@@ -146,6 +153,31 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
         backing = backers.data.toString()
     }
 
+    const micros = useContractRead({
+      addressOrName: add,
+      contractInterface: donation.abi,
+      functionName: 'getConnectedMicroFunds',
+      chainId: chainId,
+      args: [pid],
+      watch: false,
+  })
+
+  if (micros.data) {
+      microInvolved = micros.data.toString()
+  }
+
+  const Balances = () => {
+    return <Bal>
+      {bal} 
+      <SmallBal>
+        <div>{usdcBalance} <Image src={usdc} alt='usdc' width={20} height={20}/> </div>
+        <div>{usdtBalance} <Image src={usdt} alt='usdt' width={20} height={20}/> </div>
+        <div>{daiBalance} <Image src={dai} alt='dai' width={20} height={20}/></div>
+      </SmallBal>
+    </Bal>
+  }
+
+
     const Row = ({ title, desc, right, color }) => {
         return (
             <RowBox>
@@ -161,7 +193,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
     return <RightPart>
         {pType !== 'Stream' ?
         <div>
-            <Row title={bal} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
+            <Row title={<Balances/>} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
             <Row title={backing} desc={<Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
             color="white" />
             <Row title={microInvolved} desc={`microfunds active`} color="white" />
