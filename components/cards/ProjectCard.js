@@ -8,6 +8,7 @@ import { useContractRead, useNetwork } from 'wagmi'
 import { BlockchainIcon, StreamIcon } from '../icons/Landing'
 import {GetFundingAddress} from '../functional/GetContractAddress'
 import { useEffect, useState } from 'react'
+import {motion} from 'framer-motion'
 
 const A = styled(Link)`
     &:hover{
@@ -15,7 +16,7 @@ const A = styled(Link)`
     }
 `
 
-const Container = styled.div`
+const Container = styled(motion.div)`
     background: rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
@@ -123,7 +124,9 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     }
 
     return <A href={link}>
-        <Container>
+        <Container
+            whileHover={{ scale: 1.05 }} 
+        >
             {pType !== 'Stream' && <Days>{days}d</Days>}
             <ProjectType>
                     {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
