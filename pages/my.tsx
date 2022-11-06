@@ -111,7 +111,7 @@ const My: NextPage = () => {
                 bookmarks={bookmarks}
                  /> : <NotProject/>}
             <BlankSpace />
-            <LatestProjects data={projects} my />
+            <LatestProjects my />
         </div> : <NotAuth/>}
         <Footer />
     </Container>
