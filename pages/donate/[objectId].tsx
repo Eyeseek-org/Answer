@@ -217,7 +217,7 @@ const Donate: NextPage = () => {
   // Switching currency is done incorrectly
 
   const handleSwitchCurrency = (c: string) => {
-    if (c = 'USDC'){
+    if (c === 'USDC'){
       if (chain && chain.id === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC)
       } else if (chain && chain.id === 97){
@@ -227,7 +227,7 @@ const Donate: NextPage = () => {
       }
       setCurrency('USDC')
       setCurr(1)
-    } else if (c = 'USDT'){
+    } else if (c === 'USDT'){
       console.log(curr)
       if (chain && chain.id === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT)
@@ -238,7 +238,7 @@ const Donate: NextPage = () => {
       }
       setCurrency('USDT')
       setCurr(2)
-    } else if (c = 'DAI'){
+    } else if (c === 'DAI'){
       if (chain && chain.id === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI)
       } else if (chain && chain.id === 97){
