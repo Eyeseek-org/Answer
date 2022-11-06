@@ -8,8 +8,7 @@ const utils = ethers.utils;
 const key = 'ckey_da302f1c19694bdbbab1f7ae1ce';
 
 // contract addresses
-const eye_seek_contract_address = '0xFfF3B40f7905704ce5Ae876b59B6E1C30fBEa995';
-const multi_chain_swap_address = '0xaf28cb0d9E045170E1642321B964740784E7dC64'
+const eye_seek_contract_address = '0x37D38734253472Efc971dD4da1C107E630DE08AC';
 
 // Chain : ChainID
 const polygonChainId = 137;
@@ -17,30 +16,21 @@ const polygonMumbaiChainId = 80001;
 const bnbChainId = 56;
 const fantomChainId = 250;
 
-// GET TOPIC HASHES (EXAMPLE BELOW IS FOR A TRANSFER)
-const transfer_sig = 'Transfer(address,address,uint256)';
+// GET TOPIC HASHES (Events: Micro Created, Donation)
+const micro_created_sig = 'MicroCreated(address,uint256,uint256,uint256)'; //0x982b08aefe79525577026fc60aa3d85b642f6336a5078e50f2836434719770a5
+const micro_created_topic = utils.toUtf8Bytes(micro_created_sig);
+const micro_created_hash = utils.keccak256(micro_created_topic);
 
-const transfer_topic = utils.toUtf8Bytes(transfer_sig);
-console.log('transfer topic', transfer_topic);
-
-const transfer_keccak256 = utils.keccak256(transfer_topic);
-console.log('transfer keccak256', transfer_keccak256);
-
-// DECODE LOGS (EXAMPLE BELOW IS FOR A TRANSFER)
-const decodedLog = utils.defaultAbiCoder.decode(['uint256'], '0x0000000000000000000000000000000000000000000000003db758145ca5d960');
-console.log('this is the decodedLog', decodedLog);
-
-const decodedLogString = utils.defaultAbiCoder.decode(['uint256'], '0x0000000000000000000000000000000000000000000000003db758145ca5d960')[0].toString();
-console.log('this is the decodedLogString', decodedLogString);
-
+const donated_sig = 'Donated(address,uint256,uint256,uint256)'; //0x8d09c6745838fd32e92a7aec9e4c21f8fcc0ddf4300881dcffdbf060ba8bcff2
+const donated_topic = utils.toUtf8Bytes(donated_sig);
+const donated_hash = utils.keccak256(donated_topic);
 
 // GET LATEST BLOCK HEIGHT FOR A CHAIN
-export const getLatestBlockHeight = async () => {
+export const getLatestBlockHeight = async (chain: number) => {
     try {
         const response = await axios.get(
-        `https://api.covalenthq.com/v1/${polygonMumbaiChainId}/block_v2/latest/?key=${key}`
+        `https://api.covalenthq.com/v1/${chain}/block_v2/latest/?key=${key}`
         );
-        console.log('response: ', response);
         return response.data.data.items[0].height;
     } catch (error) {
         console.log(error);
@@ -48,46 +38,66 @@ export const getLatestBlockHeight = async () => {
 }
 
 // GET LOG EVENTS FOR A CONTRACT
-export const getLogEvents = async (startingBlock: number , endingBlock: number) => {
+export const getLogEvents = async (startingBlock: number ,  chain: number) => {
     try {
-        console.log('passing in these params: ', polygonMumbaiChainId, multi_chain_swap_address, startingBlock, endingBlock);
-        console.log('covalent link with params:', `https://api.covalenthq.com/v1/${polygonMumbaiChainId}/events/address/${multi_chain_swap_address}/?quote-currency=USD&format=JSON&starting-block=${startingBlock}&ending-block=${endingBlock}&key=${key}`)
+        console.log('passing in these params: ', polygonMumbaiChainId, eye_seek_contract_address, startingBlock);
+        console.log('covalent link with params:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=latest&key=${key}`)
+        console.log('link we are using for now:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`)
         const response = await axios.get(
-            //Test Link w/ params filled in (limited to page size of 25)
-            `https://api.covalenthq.com/v1/80001/events/address/0xaf28cb0d9E045170E1642321B964740784E7dC64/?quote-currency=USD&format=JSON&starting-block=28824286&ending-block=28824287&page-size=100&key=ckey_da302f1c19694bdbbab1f7ae1ce`
-
+            //Test Link w/ block height hardcoded
+            `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`
             //Dynamic Link
-            // `https://api.covalenthq.com/v1/${polygonMumbaiChainId}/events/address/${multi_chain_swap_address}/?quote-currency=USD&format=JSON&starting-block=${startingBlock}&ending-block=${endingBlock}&key=${key}`
+            // `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=latest&key=${key}`
         );
-        console.log('log events response: ', response.data.data);
  
-    let total_log_data = [];
-    let total_amount_transferred = 0;
+        let total_txn_log_data = [];
+        let micro_created_log_data = [];
 
     for (let i = 0; i < response.data.data.items.length; i++) {
-        if(response.data.data.items[i].raw_log_topics[0] === transfer_keccak256) {
+        // Parse Data for Donation Events
+        if(response.data.data.items[i].raw_log_topics[0] === donated_hash) {
+            const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256','uint256','uint256','uint256'], response.data.data.items[i].raw_log_data);
+            const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
+            const donator_address = decoded_raw_log_data[0]._hex;
+            const amount = parseInt(decoded_raw_log_data[1]._hex);
+            const fund_id = parseInt(decoded_raw_log_data[2]._hex);
+            const currency_id = parseInt(decoded_raw_log_data[3]._hex);
 
-            const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256'], response.data.data.items[i].raw_log_data).toString();
-            console.log('decoded_raw_log_data: ',decoded_raw_log_data);
-        
+            total_txn_log_data.push({
+                "donator_address" : donator_address,
+                "amount" : amount,
+                "currency_id" : currency_id,
+                "date" : date,
+                "fund_id" : fund_id
+            });
+        }
 
-            // format the decoded_raw_log_data to a readable number
-            const formatted_decoded_raw_log_data = utils.formatUnits(decoded_raw_log_data, 18);
-            
-
-            console.log('formatted_decoded_raw_log_data',formatted_decoded_raw_log_data);
-
-            total_log_data.push({
-                "tx_hash" : `https://mumbai.polygonscan.com/tx/${response.data.data.items[i].tx_hash}`,
-                "tx_amount_transferred" : formatted_decoded_raw_log_data
+        // Parse Data for Micro Created Events
+        if(response.data.data.items[i].raw_log_topics[0] === micro_created_hash) {
+            const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256','uint256','uint256','uint256'], response.data.data.items[i].raw_log_data);
+            const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
+            const owner = decoded_raw_log_data[0]._hex;
+            const cap = parseInt(decoded_raw_log_data[1]._hex);
+            const fund_id = parseInt(decoded_raw_log_data[2]._hex);
+            const currency_id = parseInt(decoded_raw_log_data[3]._hex);
+    
+            micro_created_log_data.push({
+                "owner" : owner,
+                "amount" : cap,
+                "currency_id" : currency_id,
+                "date" : date,
+                "fund_id" : fund_id
             });
         }
     }
 
-    console.log('total_log_data:',total_log_data);
-    console.log('total_amount_transferred:',total_amount_transferred);
+    console.log('total_txn_log_data:',total_txn_log_data);
+    console.log('micro_created_log_data:',micro_created_log_data);
 
-    return total_amount_transferred;
+    return {
+        total_txn_log_data,
+        micro_created_log_data
+    }
 
     } catch (error) {
         console.log(error);
@@ -99,7 +109,7 @@ export const getERC20Transfers = async () => {
     try {
         const response = await axios.get(
         //https://api.covalenthq.com/v1/80001/address/0xaf28cb0d9E045170E1642321B964740784E7dC64/transfers_v2/?&key=ckey_da302f1c19694bdbbab1f7ae1ce
-        `https://api.covalenthq.com/v1/${polygonMumbaiChainId}/address/${multi_chain_swap_address}/transfers_v2/?&key=${key}`
+        `https://api.covalenthq.com/v1/${polygonMumbaiChainId}/address/${eye_seek_contract_address}/transfers_v2/?&key=${key}`
         );
         console.log('erc20 transfers: ', response);
         return response

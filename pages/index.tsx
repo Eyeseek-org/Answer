@@ -10,6 +10,8 @@ import {cats} from '../data/cats'
 import LandingMain from "../sections/Landing/LandingMain";
 import LatestProjects from "../sections/Landing/LatestProjects";
 import Features from "../sections/Landing/Features";
+// DELETE
+import StatsTable from "../components/tables/statsTable";
 
 
 const Container = styled.div`

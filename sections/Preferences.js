@@ -93,7 +93,6 @@ const Preferences = () => {
   })
   
 
-
   const getProfile = async () => {
     const config = {
       headers: {
@@ -103,8 +102,13 @@ const Preferences = () => {
     };
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`, config);
-      setProfile(res.data.results[0].pref[0]);
-      setObjectId(res.data.results[0].objectId)
+      console.log(res)
+      if(res.data.results > 0){
+        setProfile(res.data.results[0].pref[0]);
+        setObjectId(res.data.results[0].objectId);
+      }
+      else{}
+
 
     } catch (error) {
       console.log(error);
