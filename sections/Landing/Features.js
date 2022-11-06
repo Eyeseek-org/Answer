@@ -7,7 +7,6 @@ import cross from '../../public/cross.gif'
 import chaindonation from '../../public/chaindonation.gif'
 import fee from '../../public/fee.gif'
 import SectionTitle from '../../components/typography/SectionTitle'
-import { RewardIcon } from '../../components/icons/Common'
 
 const Container = styled.div`
     position: relative;
@@ -69,7 +68,7 @@ const CrossDescription = () => {
 
 const MicroDescription = () => {
     return <>
-        Backers can deploy microfunds instead of classic donations and each time someone after donates, the same amount is charged from all microfunds until they are depleted. With good strategy even <G>$1 donation could have $100 impact</G>.
+        With <B>chain funding</B> capacities of Eyeseek microfunds, each time someone donates, the same amount is charged from all deployed microfunds until they are depleted. With right strategy even <G>$1 donation could have $100 impact</G>.
     </>
 }
 

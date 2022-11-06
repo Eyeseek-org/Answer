@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 import axios from "axios";
+import { useAccount } from 'wagmi';
 
 import ProjectDetail from "../../sections/ProjectDetail/ProjectDetail"
 import Tab from "../../components/form/Tab";
@@ -12,6 +13,7 @@ import UpdateOverview from "../../sections/ProjectDetail/UpdateOverview";
 import RewardList from "../../sections/ProjectDetail/RewardList";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
 import StatsTable from "../../components/tables/StatsTable";
+import SectionTitle from "../../components/typography/SectionTitle";
 
 const Container = styled.div`
   margin-top: 5%;
@@ -27,6 +29,7 @@ const Project: NextPage = () => {
   const { objectId } = router.query 
   const [mode, setMode] = useState("Overview")
   const [active, setActive] = useState("Overview")
+  const {address} = useAccount()
 
   const [project, setProject] = useState<any>()
   const [apiError, setApiError] = useState(false)
@@ -58,6 +61,7 @@ const Project: NextPage = () => {
 
   return (
     <>
+      {project && <SectionTitle title={'Project detail'} subtitle={project.title} />}
       <TabBox>  
         <Tab 
           active={active} 
@@ -89,8 +93,12 @@ const Project: NextPage = () => {
           chainId={project.chainId}
           pType={project.type}
         />}
-      {mode === 'Rewards' && <><RewardList oid={objectId}/><RewardCreate objectId={objectId} rewards={project.rewards}/></>}
-      {mode === 'Updates' && <><UpdateOverview objectId={objectId}/><UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/></>}
+      {mode === 'Rewards' && <><RewardList oid={objectId}/>
+        {address === project.owner && <RewardCreate objectId={objectId} rewards={project.rewards}/>}
+      </>}
+      {mode === 'Updates' && <><UpdateOverview objectId={objectId}/>
+        {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/>}
+      </>}
       {mode === 'Transactions' && <StatsTable objectId={objectId} pid={project.pid} chain={project.chainId}/>}
       </> : <>{apiError && <>Project failed to fetch</>}</>}
       </Container>
