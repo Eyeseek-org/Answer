@@ -1,13 +1,15 @@
 import styled from 'styled-components'
 import type { NextPage } from "next";
-import { usePrepareContractWrite, useContractWrite, useNetwork } from 'wagmi';
+import { usePrepareContractWrite, useContractWrite, useNetwork, useContractEvent } from 'wagmi';
 import {useState, useEffect} from 'react'
 import Lottie from "react-lottie";
+import axios from 'axios'
 
 import donation from "../abi/donation.json";
 import SectionTitle from '../components/typography/SectionTitle';
 import successAlt from '../data/animations/successAlt.json';
 import { GetFundingAddress } from '../components/functional/GetContractAddress';
+import { moralisApiConfig } from '../data/moralisApiConfig';
 
 const okAnim = {
     loop: false,
@@ -57,21 +59,52 @@ const AnimBox3 = styled.div`
     bottom: 55%;
 `
 
+const I = styled.input`
+    padding: 2px;
+    padding-left: 5px;
+`
+
 const Distribute: NextPage = () => {
     const [identifier, setIdentifier] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [ev, setEv] = useState<boolean>(false);
     const {chain} = useNetwork();
+    const [chainId, setChainId] = useState<number>(80001);
+    const [apiError, setApiError] = useState<boolean>(false);
+    const [project, setProject] = useState<object>({})
+    const [bookmarks, setBookmarks] = useState([])
 
     const [add, setAdd] = useState<string>(process.env.NEXT_PUBLIC_AD_DONATOR);
 
     useEffect(() => {
         setAdd(GetFundingAddress(chain))
     }, [])
+
+    /// Need to retrieve chainId, contract
+
+    const handleId = (e: number) => {
+        setIdentifier(e);
+        getProjectDetail(e)
+    }
+
+    const getProjectDetail = async (id) => {
+        try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"pid":${id},"chainId": ${chainId} }`,moralisApiConfig)
+            if (res.data.results.length > 0) {
+              setProject(res.data.results[0])
+              setBookmarks(res.data.results[0].bookmarks)
+            }
+            setApiError(false)
+        } catch (err) {
+            console.log(err)
+            setApiError(true)
+        }
+    }
     
     const { config } = usePrepareContractWrite({
         addressOrName: add,
         contractInterface: donation.abi,
+        chainId: chainId,
         functionName: 'distribute',
         args: [identifier, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E'],
     })
@@ -80,20 +113,47 @@ const Distribute: NextPage = () => {
 
     const handleContract = async () => { write?.()}
 
-    // useContractEvent({
-    //     addressOrName: add,
-    //     contractInterface: donation.abi,
-    //     eventName: 'DistributionAccomplished',
-    //     listener: (event) => useEv(event),
-    //     once: true
-    // })
-
-    /// TBD lottie animation
+    useContractEvent({
+        addressOrName: add,
+        contractInterface: donation.abi,
+        chainId: 80001,
+        eventName: 'DistributionAccomplished',
+        listener: (event) => useEv(event),
+        once: true
+    })
 
     const useEv = async(event) => {
         setLoading(true)
         await setEv(true);
         await setLoading(false)
+        await handleNotifications()
+        await updateProjectState()
+    }
+
+    const handleNotifications = async () => {
+        if (bookmarks && bookmarks.length > 0 && project) {
+          bookmarks.forEach(async (bookmark) => {
+            await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`, {
+              'title': 'Project funded',
+              'description': `Project ${project.title} was successfully funded.`,
+              'type': 'projectFunded',
+              'user': bookmark
+            }, moralisApiConfig)
+          })
+        }
+      }
+
+    
+      const updateProjectState = async () => {
+        try {
+            await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${project.objectId}`, {
+                "state": 2 // Set to funded
+            }, moralisApiConfig)
+            await setApiError(false)
+        } catch (err) {
+            console.log(err)
+            await setApiError(true)
+        }
     }
 
 
@@ -103,13 +163,13 @@ const Distribute: NextPage = () => {
           <div> <p>For hackathon admin only...</p>
             <Input>
                 <div>Pass project ID to distribute rewards from successfully funded project</div>
-              <div><input type="number" placeholder={'Project ID'} value={identifier} onChange={(e) => setIdentifier(Number(e.target.value))} />
+              <div><I type="number" placeholder={'Project ID'} value={identifier} onChange={(e) => handleId(Number(e.target.value))} />
               <button disabled={!write} onClick={()=>{handleContract()}}>DEW IT</button></div>
               {loading && <div>Processing...</div>}
               {ev && <div>Success!</div>}
+              {apiError && <div>API Error</div>}
             </Input></div>
          {ev && <Animations><AnimBox><Lottie height={100} width={100} options={okAnim} /></AnimBox>
-            <AnimBox2><Lottie height={100} width={100} options={okAnim} /></AnimBox2>
             <AnimBox3><Lottie height={100} width={100} options={okAnim} /></AnimBox3></Animations>}
         </Container>
     </>

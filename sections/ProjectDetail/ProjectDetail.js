@@ -212,7 +212,6 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
 
   return  <>
     <Container>
-      <SectionTitle title={'Project detail'} subtitle={title} />
       {apiError && <ErrText text={'Error with Moralis connection, please try again later'} />}
       <DetailBox>
         <LeftTopTooltip>

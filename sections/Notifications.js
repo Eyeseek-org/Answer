@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Preferences from './Preferences'
 import {CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon} from '../components/icons/Notifications'
-import { RewardIcon } from '../components/icons/Common'
+import { RewardIcon, SuccessIcon } from '../components/icons/Common'
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
@@ -193,6 +193,7 @@ const Notifications = ({notis}) => {
                     {noti.type === 'projectCanceled' && <CanceledIcon width={20} height={20}/>}
                     {noti.type === 'rewardAdded' && <RewardIcon width={20} height={20}/>}
                     {noti.type === 'projectUpdate' && <NewsIcon width={20} height={20}/>}
+                    {noti.type === 'projectFunded' && <SuccessIcon width={20} height={20}/>}
                 </IconWrapper>
                 <Col><Desc expand={expand}>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
                 <Col>

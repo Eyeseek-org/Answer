@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {useAccount} from 'wagmi'
 
 import ProjectCard from '../../components/cards/ProjectCard'
 import SectionTitle from '../../components/typography/SectionTitle'
@@ -51,14 +52,27 @@ const ACat = styled(Cat)`
 /// @notice "my" indicates whether component visualized in context of MyProjects or Landing page
 const LatestProjects = ({ my}) => {
     const initialCategory = "All"
+    const { address } = useAccount()
     const [data, setData] = useState([]);
     const [category, setCategory] = useState(initialCategory)
   
   
     useEffect(() => {
-      getProjects();
+      if (my) {
+        getMyProjects();
+      } else {
+        getProjects();
+      }
     }, []);
   
+    const getMyProjects = async () => {
+      try {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"owner":"${address}"}`, moralisApiConfig);
+          setData(res.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     const getProjects = async (cat) => {
         const selectedCategory = cat ? cat : category
@@ -106,6 +120,8 @@ const LatestProjects = ({ my}) => {
                             category={project.category}
                             subcategory={project.subcategory}
                             imageUrl={project.imageUrl}
+                            state={project.state}
+                            chain={project.chainId}	
                             link={`/project/${project.objectId}`}
                             pType={project.type}
                             pid={project.pid}
@@ -120,7 +136,9 @@ const LatestProjects = ({ my}) => {
                             description={project.description}
                             category={project.category}
                             subcategory={project.subcategory}
+                            chain={project.chainId}	
                             imageUrl={project.imageUrl}
+                            state={project.state}
                             link={`/project/${project.objectId}`}
                             pType={project.type}
                             pid={project.pid}
@@ -134,8 +152,10 @@ const LatestProjects = ({ my}) => {
                             title={project.title}
                             description={project.description}
                             category={project.category}
+                            chain={project.chainId}	
                             subcategory={project.subcategory}
                             imageUrl={project.imageUrl}
+                            state={project.state}
                             link={`/project/${project.objectId}`}
                             pType={project.type}
                             pid={project.pid}

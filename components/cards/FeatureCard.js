@@ -1,6 +1,8 @@
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
-const Card = styled.div`
+const Card = styled(motion.div)`
+    position: relative;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid #3C3C3C;
     border-radius: 15px;
@@ -50,9 +52,23 @@ const IconBox = styled.div`
 
 `
 
-const FeatureCard = ({ title, description, icon, onClick }) => {
-    return  <Card onClick={onClick}>
+const RightAnimation = styled(motion.div)`
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    top: 0;
+`
+
+const FeatureCard = ({ title, description, icon, onClick, anim }) => {
+    return  <Card
+        whileHover={{ scale: 1.05 }} 
+        onClick={onClick}>
         <IconBox>{icon} </IconBox>
+        <RightAnimation
+            whileHover={{ opacity: 1, scale: 1.3 }} 
+            transition={{  duration: 2,}}
+            exit={{ opacity: 0 }} 
+        >{anim}</RightAnimation>
         <Title>{title}</Title>
         <Description>{description}</Description>
     </Card>

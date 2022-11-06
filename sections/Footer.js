@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { BookIcon } from "../components/icons/Common"
 import { DiscordIcon, EmailIcon, MediumIcon, TwitterIcon } from "../components/icons/Socials"
 
 const Container = styled.div`
@@ -40,9 +41,7 @@ const HeadSection = () => {
       <Container>
         <FooterSection>
           <FooterItem>
-            {" "}
             <a href="mailto: eyeseek@proton.me">
-              {" "}
               <EmailIcon width={50} />
               eyeseek@proton.me
             </a>
@@ -59,19 +58,17 @@ const HeadSection = () => {
         </FooterSection>
         <FooterSection>
           <FooterItem>
-            <a href="https://twitter.com/Eyeseek6" target="_blank" rel="noopener noreferrer">
-              {" "}
-              <TwitterIcon width={30} />
-              Twitter
+            <a href="https://medium.com/eyeseek" target="_blank" rel="noopener noreferrer">
+              <MediumIcon width={30} />
+              Medium
             </a>
           </FooterItem>
         </FooterSection>
         <FooterSection>
           <FooterItem>
-            <a href="https://medium.com/eyeseek" target="_blank" rel="noopener noreferrer">
-              <MediumIcon width={30} />
-              Medium
-            </a>
+            <a href='pitch.pdf' target="_blank" rel="noopener noreferrer">
+              Pitch deck
+              </a>  
           </FooterItem>
         </FooterSection>
       </Container>
