@@ -23,6 +23,8 @@ const ApprovedComponent = ({address}) => {
         setTokenAdd(GetTokenAddress(chain))
     },[])
 
+    var fullValue
+
     const {data} = useContractRead({
         addressOrName: tokenAdd,
         contractInterface: token.abi,
@@ -30,7 +32,10 @@ const ApprovedComponent = ({address}) => {
         args: [address, add]
       })
 
-      const fullValue = ethers.utils.formatEther(data);
+      if (data){
+        fullValue = ethers.utils.formatEther(data);
+      }
+
         
     return <Container>
         {data && <>Approved: <Amount value={fullValue} /></>}

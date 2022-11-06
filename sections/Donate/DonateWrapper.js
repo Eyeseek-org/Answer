@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork } from "wagmi";
 import {useState} from 'react'
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent'
@@ -35,6 +35,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     const { address } = useAccount();
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [success, setSuccess] = useState(false)
+    const {chain} = useNetwork()
 
     const router = useRouter()
     const { objectId } = router.query
@@ -75,11 +76,13 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
 
     const handleSubmit = async () => {
         await write?.()
-        // if (blockchain === 'polygon') {
-        //     setExplorer('https://mumbai.polygonscan.com/tx/')
-        // } else if (blockchain === 'bsc') {
-        //     setExplorer('https://bscscan.com/tx/')
-        // }
+        if (chain && chain.id === 80001) {
+            setExplorer('https://mumbai.polygonscan.com/tx/')
+        } else if (chain && chain.id  === 97) {
+            setExplorer('https://bscscan.com/tx/')
+        } else if (chain && chain.id === 4002){
+            setExplorer('https://testnet.ftmscan.com/tx')
+        }
     }
     const sum = (parseInt(amountM) + parseInt(amountD));
 

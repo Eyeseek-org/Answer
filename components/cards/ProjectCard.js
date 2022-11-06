@@ -96,49 +96,30 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         setAdd(GetFundingAddress(chain))
     }, [])
 
-    var bal = '0'
-    var days = '0'
-    var max = '0'
+    let bal = 'n/a';
+    let days = 'n/a';
+    let max = 'n/a';
 
-    const balance = useContractRead({
+    const funds = useContractRead({
         addressOrName: add,
         contractInterface: donation.abi,
-        functionName: 'getFundBalance',
-        chainId: 80001,
+        functionName: 'funds',
+        chainId: chain.id,
         args: [pid],
         watch: false,
     })
 
-    if (balance.data) {
-        bal = balance.data.toString()
-    }
+    if (funds.data) {
+        // Get fund balance
+        bal = funds.data.balance.toString()
 
-    const deadline = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
-        functionName: 'getFundDeadline',
-        chainId: 80001,
-        args: [pid],
-        watch: false,
-    })
-
-    if (deadline.data) {
-        const d = deadline.data.toString()
+        // Get fund deadline
+        const d = funds.data.deadline.toString()
         const test = new Date(d * 1000);
         days = test.getDate()
-    }
 
-    const cap = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
-        functionName: 'getFundCap',
-        chainId: 80001,
-        args: [pid],
-        watch: false,
-    })
-
-    if (cap.data) {
-        max = cap.data.toString()
+        // Get fund cap
+        max = funds.data.level1.toString()
     }
 
     return <A href={link}>
