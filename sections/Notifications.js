@@ -42,6 +42,12 @@ const Container = styled.div`
     ::-webkit-scrollbar-thumb {
         background: #9bffff;
     }
+    @media (max-width: 768px) {
+        max-width: 100%;
+        flex-wrap: wrap;
+        padding-left: 3%;
+        padding-right: 3%;
+  }
 `
 
 const NotiBox = styled.div`
@@ -91,6 +97,11 @@ const Desc = styled.div`
     color: #FFFFFF;
     @media (min-width: 1780px) {
         font-size: ${props => props.expand ? '1.3em' : '1.1em'};
+    }
+        @media (max-width: 768px) {
+        flex-wrap: wrap;
+        padding-left: 3%;
+        padding-right: 3%;
   }
 `
 
@@ -121,6 +132,7 @@ const Buttons = styled.div`
     font-family: 'Neucha';
     font-style: italic;
     font-weight: 400;
+    padding-right: 15px;
     letter-spacing: 0.2px;
     font-size: 1.2em;
     color: #B0F6FF;

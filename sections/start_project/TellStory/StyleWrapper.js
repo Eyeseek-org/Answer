@@ -42,5 +42,9 @@ export const TellContainer = styled.div`
   padding-right: 18%;
   margin-top: 3%;
   font-family: "Montserrat";
+  @media (max-width: 768px) {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
 `;
 

@@ -11,6 +11,7 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 
 const Container = styled.div`
     margin-top: 5%;
+
 `
 
 const ProjectBox = styled.div`
@@ -20,6 +21,9 @@ const ProjectBox = styled.div`
     flex-wrap: wrap;
     padding: 5%;
     gap: 2%;
+    @media (max-width: 768px) {
+        justify-content: center;
+  }
 `
 
 const Categories = styled.div`
@@ -34,6 +38,12 @@ const Categories = styled.div`
     margin-bottom: 1%;
     gap: 4%;
     justify-content: center;
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+        padding-left: 3%;
+        font-size: 12px;
+        padding-right: 3%;
+  }
 `
 
 const Cat = styled.div`

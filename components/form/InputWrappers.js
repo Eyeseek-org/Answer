@@ -40,4 +40,9 @@ export const RewardContainer = styled.div`
   padding-left: 18%;
   padding-right: 18%;
   margin-top: 3%;
+  @media (max-width: 768px) {
+        flex-wrap: wrap;
+        padding-left: 3%;
+        padding-right: 3%;
+  }
 `

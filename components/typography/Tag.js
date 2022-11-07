@@ -3,7 +3,7 @@ import styled from "styled-components"
 const Box = styled.div`
   text-align: center;
   padding: 1%;
-  background: black;
+  background: ${props => props.color};
   border: 1px solid ${(props) => props.color};
   border-radius: 45px;
   padding-left: 15px;
@@ -22,11 +22,11 @@ const Text = styled.div`
   }
 `
 
-const Tag = ({ tag, color }) => {
+const Tag = ({ tag, color, icon }) => {
   return (
     <>
       <Box color={color}>
-        <Text>{tag}</Text>
+        {icon ? <></> : <Text>{tag}</Text>}
       </Box>
     </>
   )

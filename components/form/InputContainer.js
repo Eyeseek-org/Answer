@@ -17,6 +17,7 @@ const Container = styled.div`
     width: 20%;
     @media (max-width: 768px) {
       width: 100%;
+      padding-bottom: 5px;
     }
   }
 
@@ -30,6 +31,7 @@ const Container = styled.div`
 
   .input_description {
     font-size: 0.7em;
+    padding: 2px;
     @media (min-width: 1980px) {
         font-size: 0.8em;
     }

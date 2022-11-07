@@ -14,6 +14,7 @@ const Main = styled.div`
     padding-left: 18%;
     padding-right: 18%;
     min-height: 300px;
+
 `
 
 const Container = styled.div`

@@ -9,6 +9,10 @@ export const RulesContainer = styled.div`
   padding-left: 17%;
   padding-right: 17%;
   margin-top: 5%;
+  @media (max-width: 768px) {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
 `
 
 export const RulesTitle = styled.p`

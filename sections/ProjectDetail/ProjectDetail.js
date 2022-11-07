@@ -42,6 +42,8 @@ const DetailBox = styled.div`
     flex-wrap: wrap;
     margin: 1%;
     padding: 1%;
+    padding-left: 3%;
+    padding-right: 3%;
   }
   @media (min-width: 2100px){
     margin-left: 25%;
@@ -250,7 +252,15 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
         <LeftPart>
           {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} layout='fill' />}
           <Categories>
-            {category && <Tag tag={category} color={"#000850"} />}
+            {category && <>
+              {category === 'Art' && <Tag tag={category} color={"#7E0000"} />}
+              {category === 'Games' && <Tag tag={category} color={"#7E3D00"} />}
+              {category === 'Open_Source' && <Tag tag={category} color={"#7C007E"} />}
+              {category === 'Science' && <Tag tag={category} color={"#00502E"} />}
+              {category === 'Technology' && <Tag tag={category} color={"#2B2B2B"} />}
+              {category === 'Web3' && <Tag tag={category} color={"#687900"} />}
+              
+            </>}
             {subcategory && <Tag tag={subcategory} color={"#035201"} />}
           </Categories>
           <Desc>{description}</Desc>
