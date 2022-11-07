@@ -5,7 +5,6 @@ import axios from 'axios'
 import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount, useNetwork } from 'wagmi'
 
 import Tag from "../../components/typography/Tag"
-import SectionTitle from "../../components/typography/SectionTitle"
 import ErrText from '../../components/typography/ErrText'
 import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
 import { CancelIcon, VerifiedIcon, NonVerifiedIcon} from '../../components/icons/Common'
@@ -19,6 +18,7 @@ import { moralisApiConfig } from "../../data/moralisApiConfig"
 import polygon from "../../public/icons/donate/polygon.png"
 import bnb from "../../public/icons/donate/bnb.png"
 import ftm from "../../public/icons/donate/ftm.png"
+
 
 
 const Container = styled.div`
@@ -47,13 +47,6 @@ const DetailBox = styled.div`
     margin-left: 25%;
       margin-right: 25%;
     }
-`
-
-const AbsoluteBox = styled.div`
-  position: absolute;
-  left: -20px;
-  top: -30px;
-  z-index: 1;
 `
 
 const ProjectType = styled.div`
@@ -243,6 +236,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
             {chainId === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
             {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
           </IconWrapper>
+
         </ProjectType>
    
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}

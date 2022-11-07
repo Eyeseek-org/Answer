@@ -87,6 +87,14 @@ const MPath = styled.path`
     }
 `
 
+const Testnet = styled.div`
+    text-align: right;
+    font-family: 'Neucha';
+    font-style: italic;
+    font-size: 0.8em;
+    color: #9d0b0b; 
+`
+
 const d = {
     google: "Top cloud technology provider",
     covalent: "Unified multichain API",
@@ -203,6 +211,7 @@ const LandingMain = ({width,height}) => {
     return <Container>
     {expTitle !== '' && <Explainer><ExpTitle><a href={url} rel="noopener noreferrer" target="_blank">{expTitle}</a></ExpTitle><ExpSub>{expDesc}</ExpSub></Explainer>}
     <TitleBox>
+            <Testnet>Testnet</Testnet>
             <HeadTitle>Eyeseek Funding</HeadTitle>
             <HeadSub>Next generation of crowdfunding</HeadSub>
             <HeadDesc>by web3</HeadDesc>

@@ -22,6 +22,7 @@ const Container = styled.div`
 
 const TabBox = styled.div`
   margin-left: 17%;
+  margin-top: 5%;
 `
 
 const Project: NextPage = () => {
