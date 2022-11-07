@@ -29,7 +29,8 @@ const ApprovedComponent = ({address}) => {
         addressOrName: tokenAdd,
         contractInterface: token.abi,
         functionName: 'allowance',
-        args: [address, add]
+        args: [address, add],
+        watch: true,
       })
 
       if (data){

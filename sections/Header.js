@@ -137,6 +137,11 @@ const Header = () => {
     { title: "My projects", url: "/my" },
   ]
 
+  const handleNotiWindow = (b) => {
+    setNoti(b)
+    setNotiNumber(0)
+  }
+
 
   const getData = async () => {
       try {
@@ -197,7 +202,7 @@ const Header = () => {
 
         <ConnectBox>
           <Rainbow />
-          {isAuthenticated && <IconFrame onClick={() => { setNoti(!noti) }}>
+          {isAuthenticated && <IconFrame onClick={() => { handleNotiWindow(!noti) }}>
             {!noti ? <BellIcon/> : <CloseIcon width={20}/>}
             {notiNumber > 0 && 
             <Notis

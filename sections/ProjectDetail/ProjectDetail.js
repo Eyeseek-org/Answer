@@ -187,6 +187,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           'title': 'Project Canceled',
           'description': `Project ${title} was cancelled before the deadline by the owner. All resources were refunded to the backers.`,
           'type': 'projectCanceled',
+          'project': `${objectId}`,
           'user': bookmark
         }, moralisApiConfig)
       })

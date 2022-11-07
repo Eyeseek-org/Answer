@@ -48,11 +48,11 @@ const Approve = styled.div`
 `
 
 const AmountStyled = styled.div`
-    font-size: 0.8em;
+    font-size: 0.7em;
     position: absolute;
     color: white;
     right: 0;
-    top: -3px;
+    top: -10px;
     font-family: 'Gemunu Libre';
 `
 
@@ -69,7 +69,6 @@ const ApproveButton = (sum) => {
     const input = Number.isNaN(sum.sum) ? 0 : sum.sum;
     const amount = BigNumber.from(input).mul(BigNumber.from(10).pow(decimals));
 
-    /// TBD currency
     useEffect(() => {
         setAdd(GetFundingAddress(chain))
         setTokenAdd(GetTokenAddress(chain))
@@ -117,7 +116,14 @@ const ApproveButton = (sum) => {
          <Button 
             width={'200px'} 
             onClick={() => handleApprove()} 
-            text={<Approve><div>Approve</div><AmountStyled><Amount value={input} /></AmountStyled></Approve>} />
+            text={<Approve>
+                <div>
+                  {loading && <>Approving</>}
+                  {!ev && !loading && <>Approve</>}
+                  {ev && !loading && <>Approved</>}
+                </div>
+                 <AmountStyled><Amount value={input} /></AmountStyled>
+                </Approve>} />
         }
     </Container>
 }

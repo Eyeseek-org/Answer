@@ -112,6 +112,12 @@ const IconWrapper = styled.button`
   }
 `
 
+const ImagePart = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4%;
+`
+
 
 const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chain }) => {
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
@@ -179,7 +185,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <NftIcon width={40} height={40} />
                 </IconWrapper>
              </ProjectType>
-            <div> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'300px'} height={'300px'} />}</div>
+            <ImagePart> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'220px'} height={'200px'} />}</ImagePart>
             <Row>
                 <Row>
                     <div> {category && <Tag tag={category} color={"#000850"} />}</div>

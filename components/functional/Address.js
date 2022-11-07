@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 const Container = styled.div`
 `
 const CopyRow = styled.div`
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -16,7 +17,7 @@ const CopyRow = styled.div`
     border-radius: 5px;
     padding: 5px;
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 25px;
     font-size: 0.8em;
     letter-spacing: 0.3px;
     transition: all 0.1s ease;
@@ -32,7 +33,8 @@ const CopyRow = styled.div`
 `
 
 const IconBox = styled(motion.div)`
-
+    position: absolute;
+    right: 5px;
 `
 
 const Address = ({ address }) => {
@@ -48,7 +50,7 @@ const Address = ({ address }) => {
     return <Container>
         <CopyRow onClick={() => { handleCopy() }}>{addressFirs6CharLast4Char}
             {!copied ? 
-            <CopyIcon width={10} /> : 
+            <IconBox><CopyIcon width={10} /></IconBox> : 
             <IconBox
                 initial={{ scale: 0.8 }}
                 animate={{ y: -4 }}

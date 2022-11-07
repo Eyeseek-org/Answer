@@ -42,7 +42,7 @@ const FormInfo = styled.div`
 `;
 
 
-const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add}) => {
+const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, home}) => {
     const [amountM, setAmountM] = useState(0);
     const [amountD, setAmountD] = useState(1)
 
@@ -53,6 +53,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add}) 
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'calcOutcome',
+        chainId: home,
         args: [pid, amountD]
     })
 
@@ -60,6 +61,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add}) 
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'calcInvolvedMicros',
+        chainId: home,
         args: [pid, amountD]
     })
 
@@ -117,7 +119,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add}) 
             <li>Funded amount must be approved before sending to the Eyeseek contract</li>
         </FormInfo>
 
-        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid}  bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} />
+        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid}  bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={home} />
     </>
 }
 

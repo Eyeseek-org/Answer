@@ -187,8 +187,7 @@ const RewardList = ({oid}) => {
                     <NumberBox> {reward.eligibleActual} of {reward.cap} </NumberBox>
                     <TypeBox>{reward.type === 'Donate' ? <BlockchainIcon width={30}/> : <StreamIcon width={30}/>}</TypeBox>
                </Modal>
-       })}
-       
+       })}    
     {tokenReward.length > 0 && <>{tokenReward.map((reward, index) => {
               return  <Modal key={index}>  
               {reward.tokenAmount > 0 ?  <> <Row><ModalTitle>Token reward</ModalTitle><ModalAmount>${reward.tokenAmount}</ModalAmount></Row>

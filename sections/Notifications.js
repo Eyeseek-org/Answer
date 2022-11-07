@@ -202,7 +202,7 @@ const Notifications = ({notis}) => {
                 </Col>
             </Row></Link>
             </NotiItem>)}
-            {expand && <ImageBox><Image src={Eye1} alt={'EYE'} width={'2000px'} height={'2000px'}/></ImageBox>}
+            {expand && <ImageBox><Image src={Eye1} alt={'eyee'} width={'2000px'} height={'2000px'}/></ImageBox>}
         </NotiBox> : <Preferences/>}
         <ButtonRow>
             {!profile ? <Buttons onClick={()=>{setProfile(true)}}>Edit preferences</Buttons> : 

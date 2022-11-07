@@ -165,7 +165,7 @@ const SetGoals = ({ setStep }) => {
           {pm1 >= 1000 ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton>Next</DisButton>}
         </ButtonContainer>
       </TellContainer> : 
-      <StreamAnnouncement><Lottie height={100} width={100} options={octaAnim} /><div>MVP stage: Supported only Polygon for money streaming type</div>
+      <StreamAnnouncement><Lottie height={100} width={100} options={octaAnim} /><div>MVP stage: Supported only Polygon for money streaming type. Go Next.</div>
         <ButtonContainer>
           <NextButton onClick={handleBack}>Back</NextButton>
           {chain.id !== 80001 ? <NextButton onClick={()=>{switchNetwork(80001)}}>Switch to Polygon</NextButton> : <NextButton onClick={handleClick}>Next</NextButton>}
