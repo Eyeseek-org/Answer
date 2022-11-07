@@ -108,12 +108,12 @@ const TypeTitle = styled.div`
 `
 
 const text = {
-    a1: 'Recommended for starting projects looking for first resources.',
-    p11: 'Kickstarter-like donations',
-    p12: 'Crosschain-funding',
-    p13: 'Crypto launchpad',
-    p14: 'Microfund strategies',
-    a2: 'Recommended for already built projects looking to fund open-source or non-profit activities.',
+    a1: 'Recommended for new projects boosting ideas from scratch.',
+    p11: 'Kickstarter-like multichain donations',
+    p12: 'Offer usual rewards, ERC20 tokens or ERC1155 NFTs',
+    p13: 'Supported on Polygon, BNB Chain, Fantom',
+    p14: 'Microfund strategies, incentivize smaller backers',
+    a2: 'Ideal for already built projects looking to fund open-source or non-profit activities.',
     p21: 'Single-chain payment streaming',
     p22: 'Supported only on polygon',
     p23: 'Payment in super token (Wrapped ERC20)',

@@ -115,7 +115,6 @@ const Create = ({ setStep }) => {
         if (Array.isArray(event)) {
             const pid = parseInt(event[2] && event[2]) - 1;
             handleUpdateMoralis(pid); 
-            handleRewards()
             handleTokenReward()
         }
         await setEv(true);
@@ -134,27 +133,6 @@ const Create = ({ setStep }) => {
     const { write } = useContractWrite(config)
 
     const handleContract = async () => { write?.() }
-
-    const handleRewards = async () => {
-        try {
-            await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward`, {
-                "project": oid,
-                "tokenName": tokenReward.name,
-                "tokenAddress": tokenReward.address,
-                "tokenAmount": tokenReward.amount,
-                "title": rewards[0].title,
-                "description": rewards[0].description,
-                "cap": rewards[0].cap,
-                "type": rewards[0].type,
-                "active": true
-            }, moralisApiConfig)
-            setApiError(false)
-        } catch (err) {
-            console.log(err)
-            setApiError(true)
-            await setLoading(false)
-        }
-    }
 
     const handleTokenReward = async () => {
         try {
@@ -196,12 +174,12 @@ const Create = ({ setStep }) => {
         }
     }
 
+
     const handleSubmit = async () => {
         await setLoading(true)
         if (pType !== 'Stream'){
             await handleContract()
-        }
-        if (pType === 'Stream'){
+        } else if (pType === 'Stream'){
             await setPState(1)
         }
         await setReady(true)
@@ -247,7 +225,7 @@ const Create = ({ setStep }) => {
                     </SumHalf>
                     <EyeBox><Image src={Eye10} alt='Eye' width={'200px'}  height={'150px'}/> </EyeBox>
                     <SumHalf align={'right'}>
-                        <SumItem><SumTitle>Reward #1</SumTitle><SumValue>{rewards[0].title} - ${rewards[0].amount} x{rewards[0].cap}</SumValue></SumItem>
+                       {rewards.length >= 1 && <SumItem><SumTitle>Reward #1</SumTitle><SumValue>{rewards[0].title} - ${rewards[0].amount} x{rewards[0].cap}</SumValue></SumItem>}
                         {rewards.length >= 2 && <SumItem><SumTitle>Reward #2</SumTitle><SumValue>{rewards[1].title} - ${rewards[1].amount} x{rewards[1].cap}</SumValue></SumItem>}
                         {rewards.length >= 3 && <SumItem><SumTitle>Reward #3</SumTitle><SumValue>{rewards[2].title} - ${rewards[2].amount} x{rewards[2].cap}</SumValue></SumItem>}
                         {rewards.length >= 4 && <SumItem><SumTitle>Reward #4</SumTitle><SumValue>{rewards[3].title} - ${rewards[3].amount} x{rewards[3].cap}</SumValue></SumItem>}
@@ -280,7 +258,7 @@ const Create = ({ setStep }) => {
                         <LogRow><div>Blockchain status:</div>
                             {ev && <Ok>Success: Transaction was processed</Ok>} {apiError && <Err>Failed: Transaction failed on chain</Err>}
                         </LogRow>
-                        {ev && <LogRow><InfoTag>Info</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}
+                        {ev && <LogRow><InfoTag>Success</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}
                         {ev && success && <AnimBox><Lottie height={100} width={100} options={okAnim} /></AnimBox>}
                         {apiError && <AnimBox><Lottie height={100} width={100} options={errAnim} /></AnimBox>}
                         {!ev && !apiError && !success && <AnimBox><Lottie height={100} width={100} options={loadingAnim} /></AnimBox>}

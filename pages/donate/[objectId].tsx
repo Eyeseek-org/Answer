@@ -5,9 +5,9 @@ import Image from "next/image";
 import styled from "styled-components";
 import axios from 'axios'
 
-import icon4 from "../../public/icons/donate/icon4.png";
-import usdt from "../../public/icons/usdt.png";
-import dai from "../../public/icons/dai.png";
+import polygon from "../../public/icons/polygon.png";
+import fantom from "../../public/icons/fantom.png";
+import binance from "../../public/icons/binance.png";
 import SectionTitle from "../../components/typography/SectionTitle";
 import DonateWithout from '../../sections/Donate/DonateWithout'
 import { Row } from '../../components/format/Row'
@@ -164,6 +164,7 @@ const Donate: NextPage = () => {
   const [pid, setPid] = useState();
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
+  const [homechain, setHomechain] = useState(80001)
 
   const [tooltip, setTooltip] = useState(false)
 
@@ -300,6 +301,7 @@ const Donate: NextPage = () => {
           setPid(res.data.results[0].pid)
           setBookmarks(res.data.results[0].bookmarks)
           setRewards(res.data.results[0].rewards)
+          setHomechain(res.data.results[0].chainId)
         }
         setApiError(false)
     } catch (err) {
@@ -348,10 +350,12 @@ const getRewards = async () => {
         {tooltip && <Tooltip text='No matter from which chain you pay. Axelar will take care to route funds on target' />}
         <DonateOptionTitle>
           <Row>Blockchain <InfoBox onMouseEnter={() => { setTooltip(true) }} onMouseLeave={() => { setTooltip(false) }}> <InfoIcon width={15} /></InfoBox></Row>
-          <DonateOptionSub>Select your source of donation</DonateOptionSub>
+          {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
         </DonateOptionTitle>
         <OptionItemWrapper>
-            <RenderBlockchain/>
+            {homechain === 80001 && <Image src={polygon} alt='polygon' width={'40'} height={'40'}/>}
+            {homechain === 97 && <Image src={binance} alt='binance' width={'40'} height={'40'}/>}
+            {homechain === 4002 && <Image src={fantom} alt='fantom' width={'40'} height={'40'}/>}
         </OptionItemWrapper>
       </DonateOption>
       <DonateOption>
@@ -400,8 +404,8 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} />}
-        {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} />}
+        {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={homechain} />}
+        {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={homechain}/>}
     </DonateContentWrapper>
   </Container>
 }

@@ -10,6 +10,13 @@ import {GetFundingAddress} from '../functional/GetContractAddress'
 import { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
 
+import polygon from "../../public/icons/donate/polygon.png"
+import bnb from "../../public/icons/donate/bnb.png"
+import ftm from "../../public/icons/donate/ftm.png"
+import Tooltip from '../Tooltip'
+import {Erc20Icon, NftIcon} from "../../components/icons/Project"
+
+
 const A = styled(Link)`
     &:hover{
         text-decoration: none;  
@@ -31,7 +38,6 @@ const Container = styled(motion.div)`
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
     border-radius: 5px;
     &:hover{
-        opacity: 0.8;
         cursor: pointer;
     }
     @media (max-width: 768px) {
@@ -83,6 +89,8 @@ const Days = styled.div`
 `
 
 const ProjectType = styled.div`
+  display: flex;
+flex-direction: column;
   position: absolute;
   left: 0;
   font-family: 'Neucha';
@@ -94,8 +102,30 @@ const Status = styled.div`
     font-family: 'Gemunu Libre';
 `
 
+const IconWrapper = styled.button`
+  position: relative;
+  background: inherit;
+  border: none;
+  &:hover{
+    cursor: pointer;
+    opacity: 0.9;
+  }
+`
+
+const ImagePart = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4%;
+`
+
+
 const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chain }) => {
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+    const [chainTooltip, setChainTooltip] = useState(false)
+    const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
+    const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
+    const [nftTooltip, setNftTooltip] = useState(false)
+    const [erc20Tooltip, setErc20Tooltip] = useState(false)
 
     useEffect(() => {
         setAdd(GetFundingAddress(chain))
@@ -115,27 +145,47 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     })
 
     if (funds.data) {
-        // Get fund balance
         bal = funds.data.balance.toString()
-
-        // Get fund deadline
+        /// TBD Fix deadline - Block timestamp - current deadline?
         const d = funds.data.deadline.toString()
         const test = new Date(d * 1000);
         days = test.getDate()
-
-        // Get fund cap
         max = funds.data.level1.toString()
     }
+
+    // Condition for ERC20 & NFT from the profile
 
     return <A href={link}>
         <Container
             whileHover={{ scale: 1.05 }} 
         >
+            {chainTooltip && <Tooltip text={<>Project chain: 
+                {chain === 80001 && <> Polygon Mumbai</>}
+                {chain === 97 && <> BNB Chain testnet</>}
+                {chain === 4002 && <> Fantom testnet</>}
+            </>} />}
+          {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
+          {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
+          {nftTooltip && <Tooltip text={'NFT Rewards offered'} />}
+          {erc20Tooltip && <Tooltip text={'ERC20 Rewards offered'} />}
             {pType !== 'Stream' && <Days>{days}d</Days>}
             <ProjectType>
-                    {pType === 'Stream' ? <StreamIcon width={30} /> : <BlockchainIcon width={30}></BlockchainIcon>}
+                    {pType === 'Stream' ? 
+                    <IconWrapper onMouseEnter={() => { setStreamTypeTooltip(true) }} onMouseLeave={() => { setStreamTypeTooltip(false) }}><StreamIcon width={30} /></IconWrapper> : 
+                    <IconWrapper onMouseEnter={() => { setStandardTypeTooltip(true) }} onMouseLeave={() => { setStandardTypeTooltip(false) }}><BlockchainIcon width={30}/></IconWrapper>}
+                    <IconWrapper onMouseEnter={() => { setChainTooltip(true) }} onMouseLeave={() => { setChainTooltip(false) }}>
+                        {chain === 80001 && <><Image src={polygon} alt={'matic'} width={30} height={30}/> </>}
+                        {chain === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
+                        {chain === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
+                      </IconWrapper>
+                <IconWrapper onMouseEnter={() => { setErc20Tooltip(true) }} onMouseLeave={() => { setErc20Tooltip(false) }}>
+                    <Erc20Icon width={50} height={70} />
+                </IconWrapper>
+                <IconWrapper onMouseEnter={() => { setNftTooltip(true) }} onMouseLeave={() => { setNftTooltip(false) }}>
+                    <NftIcon width={40} height={40} />
+                </IconWrapper>
              </ProjectType>
-            <div> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'300px'} height={'300px'} />}</div>
+            <ImagePart> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'220px'} height={'200px'} />}</ImagePart>
             <Row>
                 <Row>
                     <div> {category && <Tag tag={category} color={"#000850"} />}</div>

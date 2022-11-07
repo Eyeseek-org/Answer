@@ -36,7 +36,7 @@ const MyButton = styled(motion.button)`
     margin: 0;
   }
   @media (min-width: 1580px) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 `
 

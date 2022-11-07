@@ -5,6 +5,8 @@ const StreamCounter = ({startValue, endValue}) => {
     const endValueNumber = parseInt(endValue);
     const [counter, setCounter] = useState(startValueNumber);
 
+    const cutCounter = counter.toFixed(8);
+
     const isIncreasing = startValueNumber < endValueNumber;
 
     const millisecondsInDay = 86400000;
@@ -30,7 +32,7 @@ const StreamCounter = ({startValue, endValue}) => {
         };
     }, [counter]);
 
-    return <>{counter}</>
+    return <>{cutCounter}</>
 }
 
 export default StreamCounter;

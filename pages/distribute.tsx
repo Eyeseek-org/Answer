@@ -137,6 +137,7 @@ const Distribute: NextPage = () => {
               'title': 'Project funded',
               'description': `Project ${project.title} was successfully funded.`,
               'type': 'projectFunded',
+              'project': `${project.objectId}`,
               'user': bookmark
             }, moralisApiConfig)
           })

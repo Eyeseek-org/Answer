@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork } from "wagmi";
 import {useState} from 'react'
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent'
@@ -31,11 +31,12 @@ const Err = styled.div`
 `
 
 
-const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add}) => {
+const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add, home}) => {
     const { address } = useAccount();
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [success, setSuccess] = useState(false)
     const {chain} = useNetwork()
+    const { switchNetwork } = useSwitchNetwork()
 
     const router = useRouter()
     const { objectId } = router.query
@@ -49,6 +50,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     useContractEvent({
         addressOrName: add,
         contractInterface: donation.abi,
+        chainId: home,
         eventName: 'Donated',
         listener: (event) => useEv(event),
         once: true
@@ -57,6 +59,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     useContractEvent({
         addressOrName: add,
         contractInterface: donation.abi,
+        chainId: home,
         eventName: 'MicroCreated',
         listener: (event) => useEv(event),
         once: true
@@ -67,6 +70,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     const { config, error } = usePrepareContractWrite({
         addressOrName: add,
         contractInterface: donation.abi,
+        chainId: home,
         functionName: 'contribute',
         args: [amountM, amountD, pid, curr],
     });
@@ -96,7 +100,8 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
         }
     }
 
-    return <div>
+    return <div> 
+        {chain && home === chain.id ? 
         <DonateButtonWrapper>
             {success ? <SuccessIcon width={50}/> : (
                 <>
@@ -116,7 +121,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
                 )}{(!error && success) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>
             {error ? <Err>Insufficient balance or blockchain error</Err> : null}
-        </DonateButtonWrapper>
+        </DonateButtonWrapper> : <Button text='Wrong network' onClick={() => switchNetwork?.(home)} width={'200px'} /> }
     </div>
 }
 
