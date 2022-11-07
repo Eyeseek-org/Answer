@@ -5,6 +5,7 @@ import {useState, useEffect} from 'react'
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
+import { moralisApiConfig } from "../../data/moralisApiConfig"
 
 TimeAgo.addDefaultLocale(en)
 
@@ -17,12 +18,11 @@ const List = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 15%;
+    margin-left: 16%;
     font-family: 'Neucha';
 `
 
 const A = styled.a`
-    padding: 2%;
     font-size: 1em;
     color: white;
     &:hover{
@@ -37,7 +37,9 @@ const Created = styled.div`
 `
 
 const RefCard = styled.div`
-    background: black;
+    background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+    border: 1px solid #3C3C3C;
+    border-radius: 5px;
     width: 350px;
     padding: 2%;
     margin: 2%;
@@ -56,20 +58,15 @@ const UpdateOverview = ({objectId}) => {
       }, []);
 
     const getUpdates = async () => {
-        const config = {
-            headers: {
-                "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`
-            }
-        }
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`, config)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`, moralisApiConfig)
             setUpdates(res.data.results)
         } catch (error) {
             console.log(error)
         }
     }
     return <Container>
-        <SectionTitle title={'Project updates'}/>
+        <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
         <List>
             {updates.length > 0 && 
                 updates.map((update)=> 

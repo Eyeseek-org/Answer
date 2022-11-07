@@ -3,12 +3,14 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Preferences from './Preferences'
-import {CanceledIcon, NewsIcon} from '../components/icons/Notifications'
-import { RewardIcon } from '../components/icons/Common'
-import { BellIcon } from '../components/icons/Landing'
+import {CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon} from '../components/icons/Notifications'
+import { RewardIcon, SuccessIcon } from '../components/icons/Common'
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
+import { moralisApiConfig } from '../data/moralisApiConfig'
+import Image from 'next/image'
+import Eye1 from '../public/Eye1.png'
 
 TimeAgo.addDefaultLocale(en)
 
@@ -19,14 +21,14 @@ const Container = styled.div`
     justify-content: space-between;
     right: 0%;
     z-index: 1;
-    top: 7%;
+    top: 15%;
     transition: all 0.7s ease-in-out;
-    height: 100vh;
-    width: 300px;
+    height: 500px;
+    width: ${props => props.expand ? '800px' : '300px'};
     background: linear-gradient(155.74deg, #1C1C1C 0%, #000000 120.65%);
     border-radius: 10px;
     border: 1px solid #4E4E4E;
-    overflow: scroll;
+    overflow-y: scroll;
     ::-webkit-scrollbar {
       width: 2px;
     
@@ -43,7 +45,8 @@ const Container = styled.div`
 `
 
 const NotiBox = styled.div`
-    margin-top: 35px;
+    margin-top: 60px;
+    position: relative;
 `
 
 const NotiItem = styled.div`
@@ -58,7 +61,7 @@ const Col = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding-left: 1%;
-    font-size: 0.8em;
+    font-size: 1em;
     @media (min-width: 1780px) {
        font-size: 0.9em;
   }
@@ -71,6 +74,7 @@ const Row = styled.div`
     padding: 2%;
     margin-top: 2px;
     margin-bottom: 2px;
+    width: 100%;
     cursor: pointer;
     &:hover{
         opacity: 0.9;
@@ -81,11 +85,12 @@ const Row = styled.div`
 const Desc = styled.div`
     font-family: 'Arial';
     font-weight: 300;
+    transition: 0.5s;
     letter-spacing: 0.2px;
-    font-size: 0.9em;
+    font-size: ${props => props.expand ? '1.1em' : '0.8em'};
     color: #FFFFFF;
     @media (min-width: 1780px) {
-       font-size: 1.1em;
+        font-size: ${props => props.expand ? '1.3em' : '1.1em'};
   }
 `
 
@@ -102,9 +107,11 @@ const ButtonRow = styled.div`
     position: absolute; 
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     width: 100%;
     background: black;
     padding: 2%;
+    padding-right: 5%;
 `
 
 const Buttons = styled.div`
@@ -114,14 +121,15 @@ const Buttons = styled.div`
     font-family: 'Neucha';
     font-style: italic;
     font-weight: 400;
-    font-size: 0.9em;
+    letter-spacing: 0.2px;
+    font-size: 1.2em;
     color: #B0F6FF;
     &:hover {
         cursor: pointer;
         opacity: 0.9;
     }
     @media (min-width: 1780px) {
-       font-size: 1.1em;
+       font-size: 1.4em;
   }
 `
 
@@ -151,15 +159,16 @@ const IconWrapper = styled.div`
     padding-top: 2%;
 `
 
+const ImageBox = styled.div`
+    position: absolute;
+    right: 0;
+    top: -300px;
+    z-index: -1;
+`
+
 const Notifications = ({notis}) => {
     const [profile, setProfile] = useState(false)
-
-    const moralisApiConfig = {
-        headers: {
-          "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-          "Content-Type": "application/json"
-        }
-      }
+    const [expand, setExpand] = useState(false)
 
     useEffect(() => {
         confirmRead()
@@ -176,24 +185,32 @@ const Notifications = ({notis}) => {
         } 
       }
 
-    return <Container>  
+    return <Container expand={expand}>  
        {!profile ?<NotiBox> 
-        {notis && notis.sort((a, b) => a.createdAt - b.createdAt).map((noti, index) => <NotiItem key={index}>
+        {notis && notis.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((noti, index) => <NotiItem key={index}>
             <Link href={`/project/${noti.project}`}><Row>            
                  <IconWrapper>
-                    {noti.type === 'projectCanceled' && <CanceledIcon width={15} height={15}/>}
-                    {noti.type === 'rewardAdded' && <RewardIcon width={15}/>}
-                    {noti.type === 'projectUpdate' && <BellIcon/>}
+                    {noti.type === 'projectCanceled' && <CanceledIcon width={20} height={20}/>}
+                    {noti.type === 'rewardAdded' && <RewardIcon width={20} height={20}/>}
+                    {noti.type === 'projectUpdate' && <NewsIcon width={20} height={20}/>}
+                    {noti.type === 'projectFunded' && <SuccessIcon width={20} height={20}/>}
                 </IconWrapper>
-                <Col><Desc>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
+                <Col><Desc expand={expand}>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
                 <Col>
                      {noti.isRead === false ? <Unread>New</Unread> : <HidUnread></HidUnread>}
              
                 </Col>
             </Row></Link>
             </NotiItem>)}
+            {expand && <ImageBox><Image src={Eye1} alt={'eyee'} width={'2000px'} height={'2000px'}/></ImageBox>}
         </NotiBox> : <Preferences/>}
-      <ButtonRow>{!profile ? <Buttons onClick={()=>{setProfile(true)}}>Edit preferences</Buttons> : <Buttons onClick={()=>{setProfile(false)}}>Notifications</Buttons>}</ButtonRow>
+        <ButtonRow>
+            {!profile ? <Buttons onClick={()=>{setProfile(true)}}>Edit preferences</Buttons> : 
+        <Buttons onClick={()=>{setProfile(false)}}>Notifications</Buttons>}      
+        <Buttons  onClick={()=>{setExpand(!expand)}}>
+            {!expand ? <ExpandIcon width={20} height={20}/> : <ShrinkIcon width={20} height={20}/>}
+        </Buttons>
+      </ButtonRow>
     </Container>
 }
 

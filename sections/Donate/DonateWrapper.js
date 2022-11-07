@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent } from "wagmi";
-import {useState, useEffect} from 'react'
+import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork } from "wagmi";
+import {useState} from 'react'
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent'
 import ApprovedComponent from '../../components/functional/ApprovedComponent'
@@ -9,6 +9,7 @@ import ApproveButton from "../../components/buttons/ApproveButton";
 import { SuccessIcon } from "../../components/icons/Common";
 import donation from "../../abi/donation.json";
 import { useRouter } from 'next/router';
+import { moralisApiConfig } from '../../data/moralisApiConfig';
 
 const DonateButtonWrapper = styled.div`
   position: relative;
@@ -30,28 +31,16 @@ const Err = styled.div`
 `
 
 
-const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
+const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add, home}) => {
     const { address } = useAccount();
-    const token = process.env.NEXT_PUBLIC_AD_TOKEN
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [success, setSuccess] = useState(false)
-    const [curr, setCurr] = useState(0)
+    const {chain} = useNetwork()
+    const { switchNetwork } = useSwitchNetwork()
 
     const router = useRouter()
     const { objectId } = router.query
     
-
-    /// TBD after Axelar pass correct currency, until know we'll hardcode USDC = (EYE)
-
-    const handleCurrency = (currency) => {
-        if (currency === 'USDC') {
-            setCurr(1)
-        } else if (currency === 'DAI') {
-            setCurr(2)
-        } else if (currency === 'USDT') {
-            setCurr(3)
-        }
-    }
 
     const useEv = (event) => {
         setSuccess(true);
@@ -59,34 +48,31 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
     }
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
+        chainId: home,
         eventName: 'Donated',
         listener: (event) => useEv(event),
         once: true
     })
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
+        chainId: home,
         eventName: 'MicroCreated',
         listener: (event) => useEv(event),
         once: true
     })
 
 
-    const moralisConfig = {
-        headers: {
-          "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-          "Content-Type": "application/json"
-        }
-      }
 
     const { config, error } = usePrepareContractWrite({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
+        chainId: home,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, 1],
+        args: [amountM, amountD, pid, curr],
     });
 
     const { write, data } = useContractWrite(config);
@@ -94,36 +80,34 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
 
     const handleSubmit = async () => {
         await write?.()
-        // if (blockchain === 'polygon') {
-        //     setExplorer('https://mumbai.polygonscan.com/tx/')
-        // } else if (blockchain === 'bsc') {
-        //     setExplorer('https://bscscan.com/tx/')
-        // }
+        if (chain && chain.id === 80001) {
+            setExplorer('https://mumbai.polygonscan.com/tx/')
+        } else if (chain && chain.id  === 97) {
+            setExplorer('https://bscscan.com/tx/')
+        } else if (chain && chain.id === 4002){
+            setExplorer('https://testnet.ftmscan.com/tx')
+        }
     }
     const sum = (parseInt(amountM) + parseInt(amountD));
-
-
-    useEffect(() => {
-        handleCurrency()
-    }, [])
 
 
     const updateBookmark = async (bookmarks) => {
         const newBookmarks = [...bookmarks, address];
         try {
-          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { 'bookmarks': newBookmarks }, moralisConfig)
+          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { 'bookmarks': newBookmarks }, moralisApiConfig)
         } catch (error) {
           console.log(error)
         }
     }
 
-    return <div>
+    return <div> 
+        {chain && home === chain.id ? 
         <DonateButtonWrapper>
-            {success ? <SuccessIcon /> : (
+            {success ? <SuccessIcon width={50}/> : (
                 <>
                     {address &&
                     <div>
-                        <BalanceComponent address={address} token={token} amount={sum} />
+                        <BalanceComponent address={address} token={currencyAddress} />
                         <ApprovedComponent address={address} />
                     </div>}
                     <ApproveButton sum={sum} />
@@ -137,7 +121,7 @@ const DonateWrapper = ({amountM, amountD, pid, currency, bookmarks}) => {
                 )}{(!error && success) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>
             {error ? <Err>Insufficient balance or blockchain error</Err> : null}
-        </DonateButtonWrapper>
+        </DonateButtonWrapper> : <Button text='Wrong network' onClick={() => switchNetwork?.(home)} width={'200px'} /> }
     </div>
 }
 

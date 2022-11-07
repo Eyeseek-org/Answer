@@ -6,7 +6,7 @@ import Image from "next/image";
 import Eye7 from "../public/Eye7.png";
 import Footer from '../sections/Footer'
 import SectionTitle from '../components/typography/SectionTitle';
-import { BookIcon, DeniedIcon, KeyIcon } from '../components/icons/Common';
+import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
 import FaqCard from '../components/cards/FaqCard';
 
 const Container = styled.div`
@@ -78,7 +78,13 @@ const texts = {
     "p31": "Introduction of the game theory into crowdfunding thanks to the microfunds",
     "p32": "Accept cryptocurrency payments from multiple blockchains at once",
     "p33": "Real-time money streaming from backers to project owners",
-    "p34": "Allows rewards in fungible tokens as additional benefit"
+    "p34": "Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit",
+    "q4": "How does it work?",
+    "a4": "Creators can set up project in 5 simple steps",
+    "p41": "With possibility to offer additional reward, tokens and NFTs",
+    "p42": "Backers discover projects based on their interests",
+    "p43": "For each project, backers can donate any amount or create microfunds",
+    "p44": "Microfunds incentivize smaller backers to join the ride with larger impact",
 }
 
 const Faq: NextPage = () => {
@@ -97,6 +103,10 @@ const Faq: NextPage = () => {
                 <Row>
                     <Q><div>{texts.q3} </div><ImageBox><KeyIcon width={70} /></ImageBox> </Q>
                     <FaqCard answer={texts.a3} point1={texts.p31} point2={texts.p32} point3={texts.p33} point4={texts.p34} />
+                </Row>
+                <Row>
+                    <FaqCard answer={texts.a4} point1={texts.p41} point2={texts.p42} point3={texts.p43} point4={texts.p44} />
+                    <Q><div>{texts.q4} </div><ImageBox><WorkIcon width={100} height={150} /></ImageBox></Q>
                 </Row>
             </FaqContainer>
         </Container>

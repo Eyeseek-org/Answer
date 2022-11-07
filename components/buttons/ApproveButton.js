@@ -1,13 +1,15 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import Button from './Button'
-import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi'
+import Lottie from "react-lottie";
+import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent, useNetwork } from 'wagmi'
 import styled from 'styled-components'
+import {GetFundingAddress, GetTokenAddress} from '../functional/GetContractAddress'
+import { BigNumber,utils } from 'ethers'
+
 import token from '../../abi/token.json'
 import Rainbow from './Rainbow'
-import Lottie from "react-lottie";
 import successAnimation from '../../data/successAnimation.json'
 import smallLoading from '../../data/smallLoading.json'
-import { BigNumber,utils } from 'ethers'
 import Amount from "../functional/Amount";
 
 // Animation configs 
@@ -46,23 +48,32 @@ const Approve = styled.div`
 `
 
 const AmountStyled = styled.div`
-    font-size: 0.8em;
+    font-size: 0.7em;
     position: absolute;
     color: white;
     right: 0;
-    top: -3px;
+    top: -10px;
     font-family: 'Gemunu Libre';
 `
 
 const ApproveButton = (sum) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
+    const { chain } = useNetwork()
     const [loading, setLoading] = useState(false)
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+    const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_USDC)
 
     
     const decimals = 18;
     const input = Number.isNaN(sum.sum) ? 0 : sum.sum;
     const amount = BigNumber.from(input).mul(BigNumber.from(10).pow(decimals));
+
+    useEffect(() => {
+        setAdd(GetFundingAddress(chain))
+        setTokenAdd(GetTokenAddress(chain))
+    }, [])
+
 
     const dec = utils.formatUnits(amount, decimals);
 
@@ -71,15 +82,15 @@ const ApproveButton = (sum) => {
         await setLoading(false)
     }
     const { config } = usePrepareContractWrite({
-        addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
+        addressOrName: tokenAdd,
         contractInterface: token.abi,
         functionName: 'approve',
-        args: [process.env.NEXT_PUBLIC_AD_DONATOR, amount],
+        args: [add, amount],
     })
 
 
     useContractEvent({
-        addressOrName: process.env.NEXT_PUBLIC_AD_TOKEN,
+        addressOrName: tokenAdd,
         contractInterface: token.abi,
         eventName: 'Approval',
         listener: (event) => listened(event),
@@ -105,7 +116,14 @@ const ApproveButton = (sum) => {
          <Button 
             width={'200px'} 
             onClick={() => handleApprove()} 
-            text={<Approve><div>Approve</div><AmountStyled><Amount value={input} /></AmountStyled></Approve>} />
+            text={<Approve>
+                <div>
+                  {loading && <>Approving</>}
+                  {!ev && !loading && <>Approve</>}
+                  {ev && !loading && <>Approved</>}
+                </div>
+                 <AmountStyled><Amount value={input} /></AmountStyled>
+                </Approve>} />
         }
     </Container>
 }

@@ -1,18 +1,24 @@
 import Image from "next/image"
 import styled from "styled-components"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount, useNetwork } from 'wagmi'
 
 import Tag from "../../components/typography/Tag"
-import SectionTitle from "../../components/typography/SectionTitle"
+import ErrText from '../../components/typography/ErrText'
 import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
 import { CancelIcon, VerifiedIcon, NonVerifiedIcon} from '../../components/icons/Common'
 import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
 import donation from '../../abi/donation.json'
-import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi'
 import ProjectDetailRight from "./ProjectDetailRight"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
+import { GetFundingAddress } from "../../components/functional/GetContractAddress"
+import { moralisApiConfig } from "../../data/moralisApiConfig"
+import polygon from "../../public/icons/donate/polygon.png"
+import bnb from "../../public/icons/donate/bnb.png"
+import ftm from "../../public/icons/donate/ftm.png"
+
 
 
 const Container = styled.div`
@@ -41,13 +47,6 @@ const DetailBox = styled.div`
     margin-left: 25%;
       margin-right: 25%;
     }
-`
-
-const AbsoluteBox = styled.div`
-  position: absolute;
-  left: -20px;
-  top: -30px;
-  z-index: 1;
 `
 
 const ProjectType = styled.div`
@@ -133,31 +132,31 @@ const LeftTopTooltip = styled.div`
   top: 0;
 `
 
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chain }) => {
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chainId }) => {
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
   const [nonVerifiedTooltip, setNonVerifiedTooltip] = useState(false)
   const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
   const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
+  const [chainTooltip, setChainTooltip] = useState(false)
   const [canceled, setCanceled] = useState(false)
   const [apiError, setApiError] = useState(false)
 
+  const {chain} = useNetwork()
+  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
-  // TBD add prepare contract write - To make blockchain part work
+  useEffect(() => {
+    setAdd(GetFundingAddress(chain))
+  },[])
+
   const { config } = usePrepareContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+    addressOrName: add,
     contractInterface: donation.abi,
     functionName: 'cancelFund',
     args: [pid],
   })
 
-  const moralisApiConfig = {
-    headers: {
-      "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-      "Content-Type": "application/json"
-    }
-  }
 
   const { write } = useContractWrite(config)
 
@@ -170,7 +169,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   }
 
   useContractEvent({
-    addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+    addressOrName: add,
     contractInterface: donation.abi,
     eventName: 'Cancelled',
     listener: () => useEv(e),
@@ -188,6 +187,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           'title': 'Project Canceled',
           'description': `Project ${title} was cancelled before the deadline by the owner. All resources were refunded to the backers.`,
           'type': 'projectCanceled',
+          'project': `${objectId}`,
           'user': bookmark
         }, moralisApiConfig)
       })
@@ -206,13 +206,18 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
 
   return  <>
     <Container>
-      <SectionTitle title={'Project detail'} subtitle={title} />
+      {apiError && <ErrText text={'Error with Moralis connection, please try again later'} />}
       <DetailBox>
         <LeftTopTooltip>
           {verifiedTooltip && <Tooltip text={'Verified by Eyeseek team'} />}
           {nonVerifiedTooltip && <Tooltip text={'Project not verified'} />}
           {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
           {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
+          {chainTooltip && <Tooltip text={<>Project chain: 
+            {chainId === 80001 && <> Polygon Mumbai</>}
+            {chainId === 97 && <> BNB Chain testnet</>}
+            {chainId === 4002 && <> Fantom testnet</>}
+          </>} />}
         </LeftTopTooltip>
         <ProjectType>
           {verified  ? 
@@ -226,7 +231,13 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
             <IconWrapper onMouseEnter={() => { setStandardTypeTooltip(true) }} onMouseLeave={() => { setStandardTypeTooltip(false) }}>
               <BlockchainIcon width={30} />
             </IconWrapper>
-            }
+          }
+          <IconWrapper onMouseEnter={() => { setChainTooltip(true) }} onMouseLeave={() => { setChainTooltip(false) }}>
+            {chainId === 80001 && <><Image src={polygon} alt={'matic'} width={30} height={30}/> </>}
+            {chainId === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
+            {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
+          </IconWrapper>
+
         </ProjectType>
    
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}
@@ -244,7 +255,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           </Categories>
           <Desc>{description}</Desc>
         </LeftPart>
-        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} /> }
+        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add} chainId={chainId}/> }
       </DetailBox>
     </Container>
   </>

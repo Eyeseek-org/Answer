@@ -8,7 +8,7 @@ export const RulesContainer = styled.div`
   text-align: left;
   padding-left: 17%;
   padding-right: 17%;
-  margin-top: 7%;
+  margin-top: 5%;
 `
 
 export const RulesTitle = styled.p`
@@ -17,6 +17,9 @@ export const RulesTitle = styled.p`
     font-family: "Neucha";
     margin-bottom: 5%;
     letter-spacing: 0.2px;
+    @media (min-width: 1980px) {
+        font-size: 1.9em;
+    }
 `
 
 export const WarningBox = styled.div`
@@ -30,17 +33,19 @@ export const WarningBox = styled.div`
 export const Li = styled.li`
     font-family: 'Roboto';
     font-style: normal;
-    font-weight: 00;
     font-size: 0.8em;
     line-height: 2em; 
     letter-spacing: 0.01em;
     color: #FFFFFF;
+    @media (min-width: 1980px) {
+        font-size: 1.1em;
+    }
 `
 
 export const Row = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     margin-top: 8%;
     padding-bottom: 4%;
@@ -76,7 +81,8 @@ export const Summary = styled.div`
     background: #1e1e1e;
     padding: 4%;
     border-radius: 45px;
-    margin: 2%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     font-size: 1em;
 `
 

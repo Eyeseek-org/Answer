@@ -8,16 +8,15 @@ const Container = styled.div`
     font-weight: 400;
     font-family: 'Gemunu Libre';
 `
-const BalanceComponent = ({token, address, amount}) => {
+const BalanceComponent = ({token, address}) => {
 
     const {data} = useBalance({
         addressOrName: address,
         token: token
       })
-     // TBD Finish tier - compare amount to balance, color red if insufficient
 
     return <Container>
-         {amount ? <>Balance: <Amount value={amount} /> {data?.symbol}</> : <>Balance: <Amount value={data?.formatted} /> {data?.symbol}</>}
+        <>Balance: <Amount value={data?.formatted} /> {data?.symbol}</>
     </Container>
 }
 

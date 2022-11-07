@@ -1,6 +1,9 @@
+import Image from "next/image";
 import styled from "styled-components"
+import {useApp} from "../../sections/utils/appContext";
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -26,6 +29,10 @@ const NotCircle = styled(Circle)`
     cursor: pointer;
     opacity: 0.8;
   }
+`
+
+const DisabledCircle = styled(Circle)`
+  background: #3a3a3a;
 `
 
 const YesCircle = styled(Circle)`
@@ -56,6 +63,7 @@ const Line = styled.div`
 const StepContainer = styled.div`
   display: flex;
   flex-direction: row;
+  position: relative;
 `
 
 const StepContent = styled.div`
@@ -72,21 +80,40 @@ const StepText = styled.div`
     margin-top: 5%;
 `
 
+const ImageBox = styled.div`
+  top: -110px;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+`
+
 const Stepper = ({ handleStep, steps, step }) => {
+  const { appState } = useApp();
+  const { stepLock } = { ...appState };
+
+  const handleStepClick = (step) => {
+    if (stepLock >= step) {
+      handleStep(step);
+    }
+  }
+
   const Step = ({ s }) => {
     return (
       <>
-        {s < step && <YesCircle onClick={() => handleStep(s)}></YesCircle>}
+        {s < step && <YesCircle onClick={() => handleStepClick(s)}/>}
         {s === step && <Circle />}
-        {s > step && <NotCircle onClick={() => handleStep(s)} />}
+        {s > step && s <= stepLock && <NotCircle onClick={() => handleStepClick(s)} />}
+        {s > step && s > stepLock && <DisabledCircle />}
       </>
     )
   }
 
-  return (
+  /// TBD finds some picture
+
+  return (<> 
     <Container>
       {steps.map((st, index) => {
-        if (index + 1 == steps.length) {
+        if (index + 1 === steps.length) {
           return (
             <StepContent key={index}>
               <Step s={index} />
@@ -106,7 +133,7 @@ const Stepper = ({ handleStep, steps, step }) => {
           </StepContainer>
         )
       })}
-    </Container>
+    </Container></>
   )
 }
 

@@ -12,6 +12,8 @@ import Logo from "../public/Logo.png"
 import Rainbow from '../components/buttons/Rainbow'
 import Notifications from '../sections/Notifications'
 import { BellIcon } from "../components/icons/Landing";
+import { moralisApiConfig } from "../data/moralisApiConfig";
+import { CloseIcon } from "../components/icons/Notifications";
 
 const NavItem = styled.div`
   display: flex;
@@ -95,6 +97,7 @@ const IconFrame = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 38px;
   height: 38px;
   border: 1px solid white;
@@ -134,12 +137,11 @@ const Header = () => {
     { title: "My projects", url: "/my" },
   ]
 
-  const moralisApiConfig = {
-    headers: {
-      "X-Parse-Application-Id": `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-      "Content-Type": "application/json"
-    }
+  const handleNotiWindow = (b) => {
+    setNoti(b)
+    setNotiNumber(0)
   }
+
 
   const getData = async () => {
       try {
@@ -200,8 +202,8 @@ const Header = () => {
 
         <ConnectBox>
           <Rainbow />
-          {isAuthenticated && <IconFrame onClick={() => { setNoti(!noti) }}>
-          <BellIcon/>
+          {isAuthenticated && <IconFrame onClick={() => { handleNotiWindow(!noti) }}>
+            {!noti ? <BellIcon/> : <CloseIcon width={20}/>}
             {notiNumber > 0 && 
             <Notis
               animate={{

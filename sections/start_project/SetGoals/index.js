@@ -113,13 +113,17 @@ const RenderMilestones = () => {
 
 const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { isNext, pm1, pm1Desc, pType } = { ...appState };
+  const { pm1, pm1Desc, pType } = { ...appState };
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));
-    setAppState((prev) => ({ ...prev, isNext: false }));
+    setAppState((prev) => ({ ...prev }));
+    // If milestone 1 amount is greater than 0, we allow user to access reward & create project pages
+    if (pm1 > 0) {
+      setAppState((prev) => ({ ...prev, stepLock: 4 }));
+    }
   };
 
   const handleBack = () => {
@@ -161,7 +165,7 @@ const SetGoals = ({ setStep }) => {
           {pm1 >= 1000 ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton>Next</DisButton>}
         </ButtonContainer>
       </TellContainer> : 
-      <StreamAnnouncement><Lottie height={100} width={100} options={octaAnim} /><div>MVP stage: Supported only Polygon for money streaming type</div>
+      <StreamAnnouncement><Lottie height={100} width={100} options={octaAnim} /><div>MVP stage: Supported only Polygon for money streaming type. Go Next.</div>
         <ButtonContainer>
           <NextButton onClick={handleBack}>Back</NextButton>
           {chain.id !== 80001 ? <NextButton onClick={()=>{switchNetwork(80001)}}>Switch to Polygon</NextButton> : <NextButton onClick={handleClick}>Next</NextButton>}

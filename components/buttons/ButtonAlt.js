@@ -36,7 +36,7 @@ const MyButton = styled(motion.button)`
     margin: 0;
   }
   @media (min-width: 1580px) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 `
 
@@ -44,9 +44,9 @@ const ButtonAlt = ({ text, onClick, width }) => {
   return (
     <>
       <MyButton     
-        whileHover={{ scale: 0.98 }} 
-        transition={{ type: "spring", stiffness: 500, damping: 3 }} 
-        onClick={onClick} width={width}
+          whileHover={{ scale: 0.98 }} 
+          transition={{ type: "spring", stiffness: 500, damping: 3 }} 
+          onClick={onClick} width={width}
         >
         {text}
       </MyButton>

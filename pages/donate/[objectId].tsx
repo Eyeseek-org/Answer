@@ -5,9 +5,9 @@ import Image from "next/image";
 import styled from "styled-components";
 import axios from 'axios'
 
-import icon4 from "../../public/icons/donate/icon4.png";
-import usdt from "../../public/icons/usdt.png";
-import dai from "../../public/icons/dai.png";
+import polygon from "../../public/icons/polygon.png";
+import fantom from "../../public/icons/fantom.png";
+import binance from "../../public/icons/binance.png";
 import SectionTitle from "../../components/typography/SectionTitle";
 import DonateWithout from '../../sections/Donate/DonateWithout'
 import { Row } from '../../components/format/Row'
@@ -16,6 +16,11 @@ import Tooltip from "../../components/Tooltip";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
 import { blockchains } from "../../data/blockchains";
+import {currencies} from '../../data/currencies'
+import {testChains} from "../../data/contracts";
+import NativeFaucet from "../../sections/Donate/NativeFaucet"
+import Faucet from '../../components/buttons/Faucet'
+import LandingDonate from '../../components/animated/LandingDonate'
 
 const Container = styled.div`
   margin-top: 8%;
@@ -136,6 +141,14 @@ const ImgBox = styled.div`
   cursor: pointer;
 `
 
+const FaucetBox = styled.div`
+  font-family: "Neucha";
+  font-size: 1.2em;
+  letter-spacing: 0.6px;
+  position: absolute;
+  right: -110px;
+`
+
 const Donate: NextPage = () => {
   const router = useRouter()
   const { objectId } = router.query
@@ -151,12 +164,92 @@ const Donate: NextPage = () => {
   const [pid, setPid] = useState();
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
+  const [homechain, setHomechain] = useState(80001)
 
-  const [blockchain, setBlockchain] = useState("")
   const [tooltip, setTooltip] = useState(false)
 
-  const handleBack = () => {
-    router.push(`/project/${objectId}`)
+  const [usdcFaucet, setUsdcFaucet] = useState(testChains.polygonUsdcFaucet)
+  const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet)
+  const [currencyAddress, setCurrencyAddress] = useState(process.env.NEXT_PUBLIC_AD_USDC);
+  const [curr, setCurr] = useState(1)
+  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+
+  const handleSwitchNetwork = (id) => {
+    switchNetwork(id)
+    if (id === 80001){
+        setUsdcFaucet(testChains.polygonUsdcFaucet)
+        setUsdtFaucet(testChains.polygonUsdtFaucet)
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR)
+        if (currency === 'USDC'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC)
+        } else if (currency === 'USDT'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT)
+        } else if (currency === 'DAI'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI)
+        }
+    } else if (id === 97){
+        setUsdcFaucet(testChains.bnbUsdcFaucet)
+        setUsdtFaucet(testChains.bnbUsdtFaucet)
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_BSC)
+        if (currency === 'USDC'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB)
+        } else if (currency === 'USDT'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB)
+        } else if (currency === 'DAI'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB)
+        }
+    } else if (id === 4002){
+        setUsdcFaucet(testChains.fantomUsdcFaucet)
+        setUsdtFaucet(testChains.fantomUsdtFaucet)
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_FTM)
+        if (currency === 'USDC'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM)
+        } else if (currency === 'USDT'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM)
+        } else if (currency === 'DAI'){
+          setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM)
+        }
+    } else {
+        setUsdcFaucet("")
+        setUsdtFaucet("")
+    }
+  }
+
+  // Switching currency is done incorrectly
+
+  const handleSwitchCurrency = (c: string) => {
+    if (c === 'USDC'){
+      if (chain && chain.id === 80001){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC)
+      } else if (chain && chain.id === 97){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB)
+      } else if (chain && chain.id === 4002){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM)
+      }
+      setCurrency('USDC')
+      setCurr(1)
+    } else if (c === 'USDT'){
+      console.log(curr)
+      if (chain && chain.id === 80001){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT)
+      } else if (chain && chain.id === 97){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB)
+      } else if (chain && chain.id === 4002){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM)
+      }
+      setCurrency('USDT')
+      setCurr(2)
+    } else if (c === 'DAI'){
+      if (chain && chain.id === 80001){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI)
+      } else if (chain && chain.id === 97){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB)
+      } else if (chain && chain.id === 4002){
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM)
+      }
+      setCurrency('DAI')
+      setCurr(3)
+    }
   }
 
   const RenderBlockchain = () => {
@@ -168,7 +261,23 @@ const Donate: NextPage = () => {
           return  <OptionReward key={chainId}>
                     {chain && chain.id === chainId ? 
                         <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
-                        <ImgBox onClick={()=>{switchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
+                        <ImgBox onClick={()=>{handleSwitchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
+                    }
+                  </OptionReward>
+          })}
+      </>
+    );
+  };
+
+  const RenderCurrency = () => {
+    return (
+      <>
+        {currencies.map((c, index) => {
+          const { logo, title } = c;
+          return  <OptionReward key={index}>
+                    {title === currency ? 
+                        <ImgActiveBox><Image src={logo} alt={title} width={'40'} height={'40'}/></ImgActiveBox> : 
+                        <ImgBox onClick={()=>{handleSwitchCurrency(title)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
                     }
                   </OptionReward>
           })}
@@ -192,6 +301,7 @@ const Donate: NextPage = () => {
           setPid(res.data.results[0].pid)
           setBookmarks(res.data.results[0].bookmarks)
           setRewards(res.data.results[0].rewards)
+          setHomechain(res.data.results[0].chainId)
         }
         setApiError(false)
     } catch (err) {
@@ -240,20 +350,27 @@ const getRewards = async () => {
         {tooltip && <Tooltip text='No matter from which chain you pay. Axelar will take care to route funds on target' />}
         <DonateOptionTitle>
           <Row>Blockchain <InfoBox onMouseEnter={() => { setTooltip(true) }} onMouseLeave={() => { setTooltip(false) }}> <InfoIcon width={15} /></InfoBox></Row>
-          <DonateOptionSub>Select your source of donation</DonateOptionSub>
+          {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
         </DonateOptionTitle>
         <OptionItemWrapper>
-            <RenderBlockchain/>
+            {homechain === 80001 && <Image src={polygon} alt='polygon' width={'40'} height={'40'}/>}
+            {homechain === 97 && <Image src={binance} alt='binance' width={'40'} height={'40'}/>}
+            {homechain === 4002 && <Image src={fantom} alt='fantom' width={'40'} height={'40'}/>}
         </OptionItemWrapper>
       </DonateOption>
       <DonateOption>
+       <FaucetBox>
+            Hackathon purpose:
+            <Faucet currency={'USDC'} address={usdcFaucet}/>
+            <Faucet currency={'USDT'} address={usdtFaucet}/>
+            <NativeFaucet/>
+            <LandingDonate/>
+        </FaucetBox>
         <DonateOptionTitle>
-          <Row>Currency</Row><DonateOptionSub>Currently only USDC supported</DonateOptionSub>
+          <Row>Currency</Row><DonateOptionSub>Choose donate currency</DonateOptionSub>
         </DonateOptionTitle>
         <OptionItemWrapper>
-          <OptionReward><Image src={icon4} alt="usdc" width={'40'} height={'40'} /></OptionReward>
-          <DisReward><Image src={usdt} alt="usdt" width={'40'} height={'42'} /></DisReward>
-          <DisReward><Image src={dai} alt="dai" width={'40'} height={'40'} /></DisReward>
+            <RenderCurrency/>
         </OptionItemWrapper>
       </DonateOption>
       <DonateOption>
@@ -287,8 +404,8 @@ const getRewards = async () => {
             </OptionReward>
           </OptionItemWrapper>
         </DonateOption>}
-        {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} />}
-        {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks}  />}
+        {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={homechain} />}
+        {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={homechain}/>}
     </DonateContentWrapper>
   </Container>
 }

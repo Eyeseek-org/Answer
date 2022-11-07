@@ -2,12 +2,16 @@ import styled from 'styled-components'
 import donation from '../../abi/donation.json'
 import { useContractRead, useAccount } from 'wagmi'
 import Link from 'next/link'
-import {useState} from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 import ButtonAlt from "../../components/buttons/ButtonAlt"
 import Socials from '../../components/buttons/Socials'
 import Bookmark from '../../components/functional/Bookmark'
+import Stream from './Stream'
+import usdc from '../../public/icons/usdc.png'
+import usdt from '../../public/icons/usdt.png'
+import dai from '../../public/icons/dai.png'
 
 
 const RightPart = styled.div`
@@ -76,76 +80,71 @@ const Backers = styled.div`
     }
 `
 
-const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
+const Bal = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+const SmallBal = styled.div`
+  font-size: 0.7em;
+  margin-left: 20px;
+  font-family: "Gemunu Libre";
+  opacity: 0.9;
+  color: white;
+  display: flex; 
+  flex-direction: row;
+  gap: 7px;
+`
+
+const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainId}) => {
     const {address} = useAccount()
-    const [management, setManagement] = useState(false)
     const router = useRouter()
 
-    var bal = 'n/a'
-    var microInvolved = 'n/a'
-    var days = 'n/a'
-    var max = 'n/a'
-    var backing ='n/a'
+    let bal = 'n/a';
+    let microInvolved = 'n/a';
+    let days = 'n/a';
+    let max = 'n/a';
+    let backing = 'n/a';
+    let usdcBalance = 'n/a';
+    let usdtBalance = 'n/a';
+    let daiBalance = 'n/a';
 
-    const micros = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+    const funds = useContractRead({
+        addressOrName: add,
         contractInterface: donation.abi,
-        functionName: 'getConnectedMicroFunds',
-        chainId: 80001,
+        functionName: 'funds',
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
 
-    if (micros.data) {
-        microInvolved = micros.data.toString()
-    }
+    if (funds.data) {
+        // Get fund balance
+        bal = funds.data.balance.toString()
 
-    const balance = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
-        contractInterface: donation.abi,
-        functionName: 'getFundBalance',
-        chainId: 80001,
-        args: [pid],
-        watch: false,
-    })
-
-    if (balance.data) {
-        bal = balance.data.toString()
-    }
-
-    const deadline = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
-        contractInterface: donation.abi,
-        functionName: 'getFundDeadline',
-        chainId: 80001,
-        args: [pid],
-        watch: false,
-    })
-
-    if (deadline.data) {
-        const d = deadline.data.toString()
+        // Get fund deadline
+        const d = funds.data.deadline.toString()
         const test = new Date(d * 1000);
         days = test.getDate()
-    }
 
-    const cap = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
-        contractInterface: donation.abi,
-        functionName: 'getFundCap',
-        chainId: 80001,
-        args: [pid],
-        watch: false,
-    })
+        // Get fund cap
+        max = funds.data.level1.toString()
 
-    if (cap.data) {
-        max = cap.data.toString()
+        // Get fund usdc balance
+        usdcBalance = funds.data.usdcBalance.toString()
+
+        // Get fund usdt balance
+        usdtBalance = funds.data.usdtBalance.toString()
+
+        // Get fund dai balance
+        daiBalance = funds.data.daiBalance.toString()
     }
 
     const backers = useContractRead({
-        addressOrName: process.env.NEXT_PUBLIC_AD_DONATOR,
+        addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'getBackers',
-        chainId: 80001,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
@@ -153,6 +152,31 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
     if (backers.data) {
         backing = backers.data.toString()
     }
+
+    const micros = useContractRead({
+      addressOrName: add,
+      contractInterface: donation.abi,
+      functionName: 'getConnectedMicroFunds',
+      chainId: chainId,
+      args: [pid],
+      watch: false,
+  })
+
+  if (micros.data) {
+      microInvolved = micros.data.toString()
+  }
+
+  const Balances = () => {
+    return <Bal>
+      {bal} 
+      <SmallBal>
+        <div>{usdcBalance} <Image src={usdc} alt='usdc' width={20} height={20}/> </div>
+        <div>{usdtBalance} <Image src={usdt} alt='usdt' width={20} height={20}/> </div>
+        <div>{daiBalance} <Image src={dai} alt='dai' width={20} height={20}/></div>
+      </SmallBal>
+    </Bal>
+  }
+
 
     const Row = ({ title, desc, right, color }) => {
         return (
@@ -165,25 +189,25 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner}) => {
         )
     }
 
+    /// TBD backers will be moved elsewhere
     return <RightPart>
+        {pType !== 'Stream' ?
         <div>
-            <Row title={bal} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
-            <Row title={backing} desc={
-                <Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
+            <Row title={<Balances/>} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
+            <Row title={backing} desc={<Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
             color="white" />
             <Row title={microInvolved} desc={`microfunds active`} color="white" />
             <FlexRow>
                 <Row title={days} desc={`days to go`} color="white" />
                 <Socials/>
             </FlexRow>
-        </div>
+        </div> : <Stream recipient={owner} objectId={objectId} />}
         <ButtonBox>
         {pType === 'Standard' &&  <ButtonAlt width={'100%'} text="Fund it!" onClick={() => router.push(`/donate/${objectId}`)}/> 
         }
-        {pType === 'Stream' && owner !== address && <Link href={`/stream/${objectId}`}>
-           <ButtonAlt width={'100%'} text="Stream!!"/>
-        </Link>}
+        {pType === 'Stream' && owner !== address && <ButtonAlt width={'100%'} text="Stream!!" />}
         </ButtonBox>
+
     </RightPart>
 }
 

@@ -1,10 +1,5 @@
-import {useState} from 'react'
-
+import { useState} from 'react'
 import styled from 'styled-components'
-import {useContractEvent} from 'wagmi'
-import donation from '../../abi/donation.json'
-import Faucet from '../../components/buttons/Faucet'
-import LandingDonate from '../../components/animated/LandingDonate'
 
 
 const Container = styled.div`
@@ -26,8 +21,9 @@ const Explainer = styled.div`
     padding-left: 25px;
     font-family: 'Neucha';
     @media (min-width: 1580px) {
-    font-size: 1.3em;
-  }
+        font-size: 1.3em;
+        width: 500px;
+    }
 `
 
 const TitleBox = styled.div`
@@ -66,6 +62,7 @@ const HeadDesc = styled.div`
     font-family: 'Neucha';
     font-size: 1.2em;
     font-style: italic;
+    margin-bottom: 25%;
 `
 
 const ExpTitle = styled.div`
@@ -90,10 +87,13 @@ const MPath = styled.path`
     }
 `
 
-
-// TBD covalent & axelar unclickable, need to wrap into a box
-// TBD Fonts needed to be imported - Custom font: Sue Ellen Francisco
-// TBD Explainer animation 
+const Testnet = styled.div`
+    text-align: right;
+    font-family: 'Neucha';
+    font-style: italic;
+    font-size: 0.8em;
+    color: #9d0b0b; 
+`
 
 const d = {
     google: "Top cloud technology provider",
@@ -116,7 +116,6 @@ const LandingMain = ({width,height}) => {
     const [covColor, setCovColor] = useState("#343434")
     const [axColor, setAxColor] = useState("#343434")
     const [url, setUrl] = useState()
-
 
     const showMoralis = () =>{
         setUrl("https://moralis.io/")
@@ -185,7 +184,7 @@ const LandingMain = ({width,height}) => {
 
     const showCov = () =>{
         setUrl('https://www.covalenthq.com/')
-        setExpTitle('Cov')
+        setExpTitle('Covalent')
         setExpDesc(d.covalent)
         setMorColor('#F0F0F0')
         setFanColor('#F0F0F0')
@@ -212,11 +211,10 @@ const LandingMain = ({width,height}) => {
     return <Container>
     {expTitle !== '' && <Explainer><ExpTitle><a href={url} rel="noopener noreferrer" target="_blank">{expTitle}</a></ExpTitle><ExpSub>{expDesc}</ExpSub></Explainer>}
     <TitleBox>
-        <HeadTitle>Eyeseek Funding</HeadTitle>
-        <HeadSub>Next generation of crowdfunding</HeadSub>
-        <HeadDesc>by web3</HeadDesc>
-        <Faucet/>
-        <LandingDonate/>
+            <Testnet>Testnet</Testnet>
+            <HeadTitle>Eyeseek Funding</HeadTitle>
+            <HeadSub>Next generation of crowdfunding</HeadSub>
+            <HeadDesc>by web3</HeadDesc>
     </TitleBox>
 
     <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">
