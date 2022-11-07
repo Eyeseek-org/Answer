@@ -20,6 +20,11 @@ const List = styled.div`
     flex-wrap: wrap;
     margin-left: 16%;
     font-family: 'Neucha';
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+        padding-left: 3%;
+        padding-right: 3%;
+  }
 `
 
 const A = styled.a`

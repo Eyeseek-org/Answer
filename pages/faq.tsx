@@ -28,6 +28,10 @@ const FaqContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 5% 10% 8% 17%;
+    @media (max-width: 768px) {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
 `
 
 const Q = styled.div`
@@ -46,6 +50,9 @@ const Q = styled.div`
     @media (min-width: 1780px) {
        font-size: 1.8em;
   }
+    @media (max-width: 768px) {
+        display: none;
+    }
 `
 
 const ImageBox = styled.div`
@@ -74,7 +81,7 @@ const texts = {
     "p23": "Projects and backer statistics must be honest and clearly presented",
     "p24": "Projects can't involve prohibited items",
     "q3": "Why blockchain?",
-    "a3": "Benefits over other crowdfunding platforms",
+    "a3": "Possibilities granted by blockchain technology",
     "p31": "Introduction of the game theory into crowdfunding thanks to the microfunds",
     "p32": "Accept cryptocurrency payments from multiple blockchains at once",
     "p33": "Real-time money streaming from backers to project owners",

@@ -43,6 +43,9 @@ const Address = ({ address }) => {
     const handleCopy = () => {
         navigator.clipboard.writeText(address)
         setCopied(true)
+        setTimeout(() => {
+            setCopied(false)
+        }, 2000)
     }
 
     let addressFirs6CharLast4Char = address.slice(0, 6) + "..." + address.slice(-4)

@@ -24,6 +24,11 @@ const StatsTable = ({pid, chain}) => {
         align-items: center;
         padding-left: 10%;
         padding-right: 10%;
+        @media (max-width: 768px) {
+        flex-wrap: wrap;
+        padding-left: 3%;
+        padding-right: 3%;
+  }
     `
     const Table = styled.table`
         width: 100%;
@@ -54,6 +59,9 @@ const StatsTable = ({pid, chain}) => {
 
     const AddressCell = styled(Cell)`
         width: 150px;
+        @media (max-width: 768px) {
+        width: 50px;
+  }
     `
 
     const Sub = styled.div`

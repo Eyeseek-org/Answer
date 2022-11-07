@@ -30,6 +30,12 @@ const Err = styled.div`
     font-size: 0.9em;
 `
 
+const Metrics = styled.div`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`
+
 
 const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add, home}) => {
     const { address } = useAccount();
@@ -106,10 +112,10 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
             {success ? <SuccessIcon width={50}/> : (
                 <>
                     {address &&
-                    <div>
+                    <Metrics>
                         <BalanceComponent address={address} token={currencyAddress} />
                         <ApprovedComponent address={address} />
-                    </div>}
+                    </Metrics>}
                     <ApproveButton sum={sum} />
                 </>
             )}

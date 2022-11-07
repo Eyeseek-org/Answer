@@ -7,7 +7,7 @@ Working repository for https://github.com/Eyeseek-org/funding, needed to fall ba
     <br />
     <br />
     <p align="center">
-    This repository was created as a Moralis hackathon project for cross-chain crowdfunding application. This project is derived from <a href="https://www.eyeseek.org/Whitepaper_v1.pdf">Eyeseek.org whitepaper</a>.  
+    This repository was created as a Moralis hackathon project for multichain crowdfunding application. This project is derived from <a href="https://www.eyeseek.org/Whitepaper_v1.pdf">Eyeseek.org whitepaper</a>.  
     </p>
     <br />
     <a href="https://github.com/helloitsm3/tiktok-android/issues">Report Bugs</a>
@@ -22,15 +22,33 @@ Working repository for https://github.com/Eyeseek-org/funding, needed to fall ba
 
 - [Table of Contents](#table-of-contents)
 - [Built-with](#built-with)
+  - [Frontend Stack](#frontend-stack)
+  - [Blockchain Stack](#blockchain-stack)
+  - [Supported chains](#supported-chains)
 - [Getting Started](#getting-started)
 
 <br />
 
 ## Built-with
 
+### Frontend Stack
 - [Next.js](https://nextjs.org/)
 - [Wagmi](https://wagmi.sh/)
-- [Styled Components](https://styled-components.com/)
+- [Styled Components](https://styled-components.com/) 
+
+### Blockchain Stack
+- [Superfluid](https://superfluid.finance/) - Superfluid is a protocol for building and deploying real-time finance applications.
+- [Moralis](https://moralis.io/) - Moralis is an all-in-one backend solution for Web3 applications.
+- [Covalent](https://www.covalenthq.com/) - Covalent is a blockchain data API that provides a unified interface to blockchain data. 
+- [Axelar](https://axelar.network/) - Axelar is a decentralized network for cross-chain applications.
+  
+### Supported chains
+Project is currently maintained in testnet environment and operates with valueless assets.
+
+Users can test project creation and crowdfunding features on the following chains:
+- [Polygon Mumbai](https://ethereum.org/en/)
+- [BNB testnet](https://www.binance.org/en)
+- [Fantom testnet](https://fantom.foundation/)
 
 <br />
 
@@ -38,6 +56,7 @@ Working repository for https://github.com/Eyeseek-org/funding, needed to fall ba
 
 ## Getting Started
 
+Contribution - Project was created during Moralis x Google hackathon as open-source initiative, contributions are welcomed.
 This is an example of how you can set up your project locally. To get a local copy up and running follow these simple example steps.
 
 1. Fork the repo
@@ -68,3 +87,6 @@ git push origin feature/AmazingFeature
 ```
 
 - PR is reviewed then by the core team and merge/rejected based on the quality of the code.
+
+
+Anyone can participate and discuss product development on Discord channel: https://discord.gg/DM3Eh6srkY

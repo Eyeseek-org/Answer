@@ -147,6 +147,9 @@ const FaucetBox = styled.div`
   letter-spacing: 0.6px;
   position: absolute;
   right: -110px;
+  @media (max-width: 768px) {
+        display: none;
+  }
 `
 
 const Donate: NextPage = () => {

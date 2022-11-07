@@ -18,6 +18,10 @@ export const SiteContainer = styled.div`
   padding-left: 18%;
   padding-right: 18%;
   margin-top: 3%;
+  @media (max-width: 768px) {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
 `
 
 export const NextButton = styled.button`

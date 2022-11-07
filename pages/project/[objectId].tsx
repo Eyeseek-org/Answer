@@ -19,11 +19,19 @@ import SectionTitle from "../../components/typography/SectionTitle";
 const Container = styled.div`
   margin-top: 5%;
   margin-bottom: 5%;
+  
 `
 
 const TabBox = styled.div`
+display: flex;
   margin-left: 17%;
   margin-top: 5%;
+  @media (max-width: 768px) {
+        flex-wrap: wrap;
+        margin-left: 5%;
+        justify-content: center;
+        
+  }
 `
 
 const Project: NextPage = () => {
