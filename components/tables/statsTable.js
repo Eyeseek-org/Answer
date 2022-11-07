@@ -4,10 +4,12 @@ import {
     getLogEvents, 
 } from "../../pages/api/covalent"
 import { useEffect, useState } from "react"
-import Title from "../typography/Title"
 import Loading from "../Loading"
+import SectionTitle from "../typography/SectionTitle"
+import Address from "../functional/Address"
+import Subtitle from "../typography/Subtitle"
 
-const StatsTable = ({objectId, pid, chain}) => {
+const StatsTable = ({pid, chain}) => {
     const [loading, setLoading] = useState(true)
     const [microCreatedLogs, setMicroCreatedLogs] = useState([]);
     const [transactionLogs, setTransactionLogs] = useState([]);
@@ -18,7 +20,6 @@ const StatsTable = ({objectId, pid, chain}) => {
         padding-bottom: 2%;
         padding-top: 2%;
         display: flex;
-        background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
         flex-direction: column;
         align-items: center;
         padding-left: 10%;
@@ -27,8 +28,10 @@ const StatsTable = ({objectId, pid, chain}) => {
     const Table = styled.table`
         width: 100%;
         border-collapse: collapse;
+        border-radius: 10px;
         border: none;
         text-align: center;
+        background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
     `
     const Header = styled.th`
         border: none;
@@ -39,16 +42,23 @@ const StatsTable = ({objectId, pid, chain}) => {
     const Row = styled.tr`
         padding: 1%;
         border-bottom: 1px solid grey;
+        transition: 0.1s;
+        &:hover{
+            background: rgba(56, 56, 56, 0.4);
+        }
     `
     const Cell = styled.td`
-        padding: 1%;
-        font-family: "Roboto";
-
+        padding: 2px;
+        font-family: "Neucha";
     `
-    const Logo = styled.img`
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+
+    const AddressCell = styled(Cell)`
+        width: 150px;
+    `
+
+    const Sub = styled.div`
+        display: flex;
+        margin: 3%;
     `
 
     //create function that maps data into a table using keys as headers
@@ -75,10 +85,16 @@ const StatsTable = ({objectId, pid, chain}) => {
                                 {Object.keys(row).map((key, index) => {
                                     if (key != "fund_id") {
                                         if (key === "donator_address" || key === "owner") {
-                                            return <Cell key={index}>{row[key].slice(0, 3) + "..." + row[key].slice(-3)}</Cell>
+                                            return <AddressCell key={index}>
+                                                <Address address={row[key]} />
+                                            </AddressCell>
                                         }
                                         if (key === "currency_id"){
-                                            return <Cell key={index}>{row[key] == 1 ? "USDC" : "USDT"}</Cell>
+                                            return <Cell key={index}>
+                                                {row[key] == 1 && "USDC"}
+                                                {row[key] == 2 && "USDT"}
+                                                {row[key] == 3 && "DAI"}
+                                                </Cell>
                                         }
                                         else{
                                             return <Cell key={index}>{row[key]}</Cell>
@@ -127,17 +143,17 @@ const StatsTable = ({objectId, pid, chain}) => {
         getData();
     }, [])
 
-    return (
+    return (<>
+        <SectionTitle title='Project transactions'/>
         <Container>
+            <Sub><Subtitle text='Donations'/></Sub>
             {loading && <Loading />}
-            <Title text="Total Transactions" />
             {!loading && filteredTransactionLogs.length > 0 && mapDataToTable(filteredTransactionLogs)}
             {!loading && filteredTransactionLogs.length === 0 && <p>No transactions have been made in last 999 blocks</p>}
-            <br />
-            <Title text="Micro Funds" />
+            <Sub><Subtitle text='Microfunds'/></Sub>
             {!loading && filteredMicroCreatedLogs.length > 0 && mapDataToTable(filteredMicroCreatedLogs)}
-            {!loading && filteredMicroCreatedLogs.length === 0 && <p>No micro created events have been made in last 999 blocks</p>}
-        </Container>
+            {!loading && filteredMicroCreatedLogs.length === 0 && <p>No microfunds created in last 999 blocks</p>}
+        </Container></>
     )
 }
 
