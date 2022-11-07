@@ -5,10 +5,10 @@ import { ethers } from "ethers";
 const utils = ethers.utils;
 
 // covalent key
-const key = 'ckey_da302f1c19694bdbbab1f7ae1ce';
+const key = process.env.NEXT_PUBLIC_COVALENT;
 
 // contract addresses
-const eye_seek_contract_address = '0x37D38734253472Efc971dD4da1C107E630DE08AC';
+const eye_seek_contract_address = process.env.NEXT_PUBLIC_AD_DONATOR;
 
 // Chain : ChainID
 const polygonChainId = 137;

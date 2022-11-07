@@ -12,7 +12,8 @@ import UpdateCreate from "../../sections/ProjectDetail/UpdateCreate";
 import UpdateOverview from "../../sections/ProjectDetail/UpdateOverview";
 import RewardList from "../../sections/ProjectDetail/RewardList";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
-import StatsTable from "../../components/tables/statsTable";
+import StatsTable from "../../components/tables/StatsTable";
+import SectionTitle from "../../components/typography/SectionTitle";
 
 
 const Container = styled.div`
@@ -100,7 +101,7 @@ const Project: NextPage = () => {
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/>
         {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/>}
       </>}
-      {mode === 'Transactions' && <StatsTable objectId={objectId} pid={project.pid} chain={project.chainId}/>}
+      {mode === 'Transactions' && <StatsTable  pid={project.pid} chain={project.chainId}/>}
       </> : <>{apiError && <>Project failed to fetch</>}</>}
       </Container>
     </>
