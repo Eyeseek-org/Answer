@@ -12,8 +12,8 @@ import UpdateCreate from "../../sections/ProjectDetail/UpdateCreate";
 import UpdateOverview from "../../sections/ProjectDetail/UpdateOverview";
 import RewardList from "../../sections/ProjectDetail/RewardList";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
-import StatsTable from "../../components/tables/StatsTable";
-import SectionTitle from "../../components/typography/SectionTitle";
+import StatsTable from "../../components/tables/statsTable";
+
 
 const Container = styled.div`
   margin-top: 5%;
