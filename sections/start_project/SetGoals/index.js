@@ -33,8 +33,15 @@ const octaAnim = {
 };
 
 const RenderBlockchain = () => {
+  const { appState, setAppState } = useApp();
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
+
+  const handleSwitchNetwork = async(c) => {
+    await switchNetwork(c)
+    await setAppState((prev) => ({ ...prev, pChain: c }));
+  }
+  
   return (
     <ImageContainer>
       <Col>
@@ -47,7 +54,7 @@ const RenderBlockchain = () => {
         return  <>
                   {chain.id === chainId ? 
                       <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
-                      <ImgBox onClick={()=>{switchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
+                      <ImgBox onClick={()=>{handleSwitchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
                   }
                 </>
         })}

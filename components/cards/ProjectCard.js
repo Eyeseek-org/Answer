@@ -119,7 +119,7 @@ const ImagePart = styled.div`
 `
 
 
-const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chain }) => {
+const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chainId, hasFungible, hasNft }) => {
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
     const [chainTooltip, setChainTooltip] = useState(false)
     const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
@@ -128,7 +128,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     const [erc20Tooltip, setErc20Tooltip] = useState(false)
 
     useEffect(() => {
-        setAdd(GetFundingAddress(chain))
+        setAdd(GetFundingAddress(chainId))
     }, [])
 
     let bal = 'n/a';
@@ -139,7 +139,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'funds',
-        chain: chain,
+        chain: chainId,
         args: [pid],
         watch: false,
     })
@@ -160,9 +160,9 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
             whileHover={{ scale: 1.05 }} 
         >
             {chainTooltip && <Tooltip text={<>Project chain: 
-                {chain === 80001 && <> Polygon Mumbai</>}
-                {chain === 97 && <> BNB Chain testnet</>}
-                {chain === 4002 && <> Fantom testnet</>}
+                {chainId === 80001 && <> Polygon Mumbai</>}
+                {chainId === 97 && <> BNB Chain testnet</>}
+                {chainId === 4002 && <> Fantom testnet</>}
             </>} />}
           {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
           {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
@@ -174,16 +174,16 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <IconWrapper onMouseEnter={() => { setStreamTypeTooltip(true) }} onMouseLeave={() => { setStreamTypeTooltip(false) }}><StreamIcon width={30} /></IconWrapper> : 
                     <IconWrapper onMouseEnter={() => { setStandardTypeTooltip(true) }} onMouseLeave={() => { setStandardTypeTooltip(false) }}><BlockchainIcon width={30}/></IconWrapper>}
                     <IconWrapper onMouseEnter={() => { setChainTooltip(true) }} onMouseLeave={() => { setChainTooltip(false) }}>
-                        {chain === 80001 && <><Image src={polygon} alt={'matic'} width={30} height={30}/> </>}
-                        {chain === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
-                        {chain === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
+                        {chainId === 80001 && <><Image src={polygon} alt={'matic'} width={30} height={30}/> </>}
+                        {chainId === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
+                        {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
                       </IconWrapper>
-                <IconWrapper onMouseEnter={() => { setErc20Tooltip(true) }} onMouseLeave={() => { setErc20Tooltip(false) }}>
+              {hasFungible && <IconWrapper onMouseEnter={() => { setErc20Tooltip(true) }} onMouseLeave={() => { setErc20Tooltip(false) }}>
                     <Erc20Icon width={50} height={70} />
-                </IconWrapper>
-                <IconWrapper onMouseEnter={() => { setNftTooltip(true) }} onMouseLeave={() => { setNftTooltip(false) }}>
+                </IconWrapper>}
+               {hasNft && <IconWrapper onMouseEnter={() => { setNftTooltip(true) }} onMouseLeave={() => { setNftTooltip(false) }}>
                     <NftIcon width={40} height={40} />
-                </IconWrapper>
+                </IconWrapper>}
              </ProjectType>
             <ImagePart> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'220px'} height={'200px'} />}</ImagePart>
             <Row>

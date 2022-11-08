@@ -78,7 +78,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
         contractInterface: donation.abi,
         chainId: home,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, curr],
+        args: [amountM, amountD, pid, curr, false],
     });
 
     const { write, data } = useContractWrite(config);

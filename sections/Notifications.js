@@ -203,9 +203,9 @@ const Notifications = ({notis}) => {
             <Link href={`/project/${noti.project}`}><Row>            
                  <IconWrapper>
                     {noti.type === 'projectCanceled' && <CanceledIcon width={20} height={20}/>}
-                    {noti.type === 'rewardAdded' && <RewardIcon width={20} height={20}/>}
                     {noti.type === 'projectUpdate' && <NewsIcon width={20} height={20}/>}
                     {noti.type === 'projectFunded' && <SuccessIcon width={20} height={20}/>}
+                    {noti.type === 'rewardAdded' && <RewardIcon width={20} height={20}/>}
                 </IconWrapper>
                 <Col><Desc expand={expand}>{noti.description}</Desc><Ago><ReactTimeAgo date={noti.createdAt} locale="en-US"/></Ago></Col>
                 <Col>

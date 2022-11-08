@@ -17,15 +17,11 @@ export const AppProvider = (props) => {
     pSocial: "https://twitter.com/d3v_library",
     pType: "Standard", // Stream vs Standard
     pImageUrl: "",
+    pChain: 80001,
     pm1: 0,
     pmDesc: 'Some description',
     category: "Games",
     subcategory: "Board",
-    tokenReward: {
-      amount: 0,
-      name: "EYE",
-      address: process.env.NEXT_PUBLIC_AD_TOKEN,
-    },
     // Step 1 is default, because step 0 is always prefilled
     stepLock: 1,
   });

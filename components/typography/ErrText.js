@@ -10,3 +10,5 @@ const ErrText = ({ text }) => {
         {text}
     </Container>
 }
+
+export default ErrText

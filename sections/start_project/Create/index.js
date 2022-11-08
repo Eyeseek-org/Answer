@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { useApp } from "../../utils/appContext";
 import Lottie from "react-lottie";
 import Image from "next/image";
-import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount } from "wagmi";
+import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from "wagmi";
 import axios from "axios";
 import Link from "next/link";
-import styled from "styled-components";
 
 import SectionTitle from "../../../components/typography/SectionTitle";
 import { ButtonRow } from "../SetRewards/StyleWrapper";
@@ -19,19 +18,9 @@ import errorAnimation from '../../../data/errorAnimation.json'
 import smallLoading from '../../../data/smallLoading.json'
 import Eye10 from '../../../public/Eye10.png'
 import Rainbow from "../../../components/buttons/Rainbow";
-import ApproveUniversal from "../../../components/buttons/ApproveUniversal";
 import { moralisApiConfig } from "../../../data/moralisApiConfig";
 import { GetFundingAddress } from "../../../components/functional/GetContractAddress";
 
-const ApprovalBox = styled.div`
-
-`   
-
-const ApproveText = styled.div`
-    font-family: 'Gemunu Libre';
-    letter-spacing: 0.2px;
-    font-size: 1em;
-`
 // Animation configs 
 const okAnim = {
     loop: false,
@@ -71,17 +60,16 @@ const texts = {
 
 const Create = ({ setStep }) => {
     const { appState } = useApp();
-    const { address, isDisconnected } = useAccount()
+    const { address } = useAccount()
     const {chain} = useNetwork();
-    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, tokenReward } = appState;
+    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, pChain} = appState;
     const [ev, setEv] = useState(false)
     const [apiError, setApiError] = useState(false)
     const [success, setSuccess] = useState(false)
     const [oid, setOid] = useState(null)
     const [pState, setPState] = useState(0)
-    const [loading, setLoading] = useState(false)
     const [ready, setReady] = useState(false)
-
+    const {switchNetwork} = useSwitchNetwork();
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
     const handleBack = () => {
@@ -104,7 +92,6 @@ const Create = ({ setStep }) => {
         } catch (err) {
             console.log(err)
             await setApiError(true)
-            await setLoading(false)
         }
     }
 
@@ -115,18 +102,16 @@ const Create = ({ setStep }) => {
         if (Array.isArray(event)) {
             const pid = parseInt(event[2] && event[2]) - 1;
             handleUpdateMoralis(pid); 
-            handleTokenReward()
         }
         await setEv(true);
-        await setLoading(false)
     }
 
     const { config, isError } = usePrepareContractWrite({
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'createFund',
-        chain: 80001,
-        args: [pm1, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E', tokenReward.amount],
+        chain: pChain,
+        args: [pm1],
     })
 
 
@@ -134,21 +119,6 @@ const Create = ({ setStep }) => {
 
     const handleContract = async () => { write?.() }
 
-    const handleTokenReward = async () => {
-        try {
-            await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/TokenReward`, {
-                "project": oid,
-                "tokenName": tokenReward.name,
-                "tokenAddress": tokenReward.address,
-                "tokenAmount": tokenReward.amount,
-            }, moralisApiConfig)
-            setApiError(false)
-        } catch (err) {
-            console.log(err)
-            setApiError(true)
-            await setLoading(false)
-        }
-    }
 
     const handleMoralis = async () => {
         try {
@@ -160,7 +130,7 @@ const Create = ({ setStep }) => {
                 "type": pType,
                 "owner": address,
                 "state": pState,
-                "chain": chain.id,
+                "chainId": pChain,
                 "bookmarks": [address], // Add owner to bookmark
                 "rewards": rewards,
                 "imageUrl": pImageUrl
@@ -170,13 +140,11 @@ const Create = ({ setStep }) => {
         } catch (err) {
             console.log(err)
             setApiError(true)
-            await setLoading(false)
         }
     }
 
 
     const handleSubmit = async () => {
-        await setLoading(true)
         if (pType !== 'Stream'){
             await handleContract()
         } else if (pType === 'Stream'){
@@ -194,14 +162,10 @@ const Create = ({ setStep }) => {
         once: true
     })
 
-    // TBD Array with rewards -> Push to the DB
-    // Needed to lock user on screen until this is done
-
     return (
         <MainContainer>
             <SectionTitle title='Create project' subtitle='Meet crowdfunding rules' />
             <RulesContainer>
-                {chain && !chain.name === 'Mumbai' && <>Go to Mumbai</>}
                 <RulesTitle>Conditions and rules</RulesTitle>
                 <WarningBox>
                     <Li>If any of your goals are not met in 30 days of crowdfunding period, collected resources will be returned back to the backers. No fees will be collected by Eyeseek.</Li>
@@ -230,20 +194,16 @@ const Create = ({ setStep }) => {
                         {rewards.length >= 3 && <SumItem><SumTitle>Reward #3</SumTitle><SumValue>{rewards[2].title} - ${rewards[2].amount} x{rewards[2].cap}</SumValue></SumItem>}
                         {rewards.length >= 4 && <SumItem><SumTitle>Reward #4</SumTitle><SumValue>{rewards[3].title} - ${rewards[3].amount} x{rewards[3].cap}</SumValue></SumItem>}
                         {rewards.length == 5 && <SumItem><SumTitle>Reward #5</SumTitle><SumValue>{rewards[4].title} - ${rewards[4].amount} x{rewards[4].cap}</SumValue></SumItem>}
-                        {tokenReward.amount > 0 && <SumItem><SumTitle>Token pool</SumTitle><SumValue>{tokenReward.amount}x {tokenReward.name}</SumValue></SumItem>}
                     </SumHalf>   
                     </SumRow>
                 </Summary> : <Rainbow/>}
-                {!ready ? 
-                <ButtonRow>
-                    <NextButton onClick={handleBack}>Back</NextButton>
-                      {tokenReward.amount > 0 && 
-                        <ApprovalBox><ApproveText>ERC20 supported only</ApproveText>
-                            <ApproveUniversal tokenContract={tokenReward.address} spender={process.env.NEXT_PUBLIC_AD_DONATOR} amount={tokenReward.amount}/>
-                        </ApprovalBox>}
-                    {pType === 'Stream' ? <NextButton onClick={handleSubmit}>Create project</NextButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
-                </ButtonRow> :
-                    <>{pType === 'Stream' ?                     
+            {!ready ? <>
+                {chain && pChain === chain.id ? 
+                    <ButtonRow>
+                        <NextButton onClick={handleBack}>Back</NextButton>
+                        {pType === 'Stream' ? <NextButton onClick={handleSubmit}>Create project</NextButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
+                        </ButtonRow> : <NextButton onClick={()=>{switchNetwork(pChain)}}>Wrong network</NextButton>} 
+                </> : <>{pType === 'Stream' ?                     
                     <TxStatus>Transaction status
                         <LogRow><InfoTag>Info</InfoTag> Project was initiated</LogRow>
                         {!apiError && <LogRow><InfoTag>Info</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}

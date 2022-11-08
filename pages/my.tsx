@@ -23,11 +23,6 @@ const Container = styled.div`
     flex-direction: column;
 `
 
-const BlankSpace = styled.div`
-    margin-top: 8%;
-    margin-bottom: 8%;
-`
-
 const TabBox = styled.div`
   margin-top: 5%;
   margin-left: 17%;
@@ -70,10 +65,12 @@ const My: NextPage = () => {
             o2={'Updates'} 
             o3={"Rewards"} 
             o4={"Transactions"}
+            o5={'History'}
             change1={()=>handleMode('Overview')} 
             change2={()=>handleMode('Updates')} 
             change3={()=>handleMode('Rewards')}
             change4={()=>handleMode('Transactions')}
+            change5={()=>handleMode('History')}
           />
       </TabBox>
     {/* @ts-ignore */}
@@ -98,9 +95,8 @@ const My: NextPage = () => {
                  </>: <NotProject/>}
             {mode === 'Rewards' && <><RewardList oid={project.objectId}/><RewardCreate objectId={project.objectId} rewards={project.rewards}/></>}
             {mode === 'Updates' && <><UpdateOverview objectId={project.objectId}/><UpdateCreate objectId={project.objectId} bookmarks={project.bookmarks} title={project.title}/></>}
-            {mode === 'Transactions' && <StatsTable objectId={project.objectId} pid={project.pid} chain={project.chainId}/>}
-            <BlankSpace />
-            <LatestProjects my />
+            {mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId}/>}
+            {mode === 'History' &&  <LatestProjects my />}
         </div> : <NotAuth/>}
         <Footer />
     </Container>

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { RewardIcon } from '../icons/Common'
+import { Erc20ActiveIcon, Erc20Icon, NftActiveIcon, NftIcon } from '../icons/Project'
 
 const Container = styled.div`
   display: flex;
@@ -39,10 +40,23 @@ const Divider = styled.div`
     background: #3a3a3a;
 `
 
-const Tab = ({ active, o1, o2, o3, o4, change1, change2, change3, change4 }) => {
+const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, change5 }) => {
 
     const Item = ({ act, text, onClick }) => {
-        return <>{active === act ? <Active>{text}</Active> : <Inactive onClick={onClick}>{text}</Inactive>}</>
+        return <>{active === act ? 
+            <Active>
+                {text === 'Classic' && <RewardIcon width={150} />} 
+                {text === 'ERC20' && <Erc20ActiveIcon width={150} />}
+                {text === 'ERC1155' && <NftActiveIcon width={150} />}
+                {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
+            </Active> : 
+            <Inactive onClick={onClick}>
+                {text === 'Classic' && <RewardIcon width={150} />} 
+                {text === 'ERC20' && <Erc20Icon width={150} />}
+                {text === 'ERC1155' && <NftIcon width={150} />}
+                {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
+            </Inactive>
+        }</>
     }
     return <Container>
         <Item act={o1} text={o1} onClick={change1} />
@@ -51,6 +65,7 @@ const Tab = ({ active, o1, o2, o3, o4, change1, change2, change3, change4 }) => 
 
         {o3 && <>  <Divider /><Item act={o3} o={o3} text={o3} onClick={change3} /></>}
         {o4 && <>  <Divider /><Item act={o4} o={o4} text={o4} onClick={change4} /></>}
+        {o5 && <>  <Divider /><Item act={o5} o={o5} text={o5} onClick={change5} /></>}
     </Container>
 }
 
