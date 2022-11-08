@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useApp} from "../../utils/appContext";
 
 import SectionTitle from "../../../components/typography/SectionTitle";
-import {ButtonRow, IconBox, RewardContainer, RewardDesc, TabRow, TokenTooltip, TooltipBox} from "./StyleWrapper";
+import {ButtonRow, IconBox, RewardContainer, RewardDesc, TabRow, TokenTooltip, TooltipBox, ButtonBox, RewardButton, RewardAction} from "./StyleWrapper";
 import {MainContainer, NextButton} from "../Category/StyleWrapper";
 import InputContainer from "../../../components/form/InputContainer";
 import Tab from "../../../components/form/Tab";
@@ -10,6 +10,7 @@ import {MainMilestoneContainer, MilestoneContainer} from "../SetGoals/StyleWrapp
 import Tooltip from "../../../components/Tooltip";
 import {InfoIcon} from "../../../components/icons/Common";
 import {Row} from "../../../components/format/Row";
+import { AddIcon, Erc20Icon, RemoveIcon } from "../../../components/icons/Project";
 
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
@@ -65,8 +66,14 @@ const SetRewards = ({ setStep }) => {
     <SectionTitle title='Offer rewards for backers' subtitle='' />
     <MainContainer>
       <RewardContainer>
-        <NextButton onClick={() => setRewardsCount(rewardsCounts + 1)}>Add reward (optional)</NextButton>
-        {rewardsCounts > 0 && <NextButton onClick={() => handleRemoveReward()}>Remove last reward</NextButton>}
+        <ButtonBox>
+          <RewardButton onClick={() => setRewardsCount(rewardsCounts + 1)}><RewardAction>Add reward (optional) </RewardAction><AddIcon width={20} height={20}/></RewardButton>
+          {rewardsCounts > 0 && <RewardButton onClick={() => handleRemoveReward()}><RewardAction>Remove last reward </RewardAction><RemoveIcon width={20} height={20}/></RewardButton>}
+            <RewardButton onClick={() => setShowToken(!showToken)}>
+                {!showToken ?  <RewardAction>Token reward (optional)</RewardAction> : <RewardAction>Remove token reward</RewardAction>}
+                <Erc20Icon width={30} height={30}/>
+          </RewardButton>
+        </ButtonBox>
         {[...Array(rewardsCounts).keys()].map((rewardIndex) => (
             <MainMilestoneContainer>
               <MilestoneContainer>
@@ -93,16 +100,16 @@ const SetRewards = ({ setStep }) => {
                   placeholder={'Godspeed'}
                   description={'Create a unique title for your reward'}
                   onChange={(e)=>{handleChangeReward(rewardIndex, e.target.value, undefined, undefined, undefined)}}
-                  type={'textArea'}
+                  type={'text'}
                 />
                 <InputContainer
                   label={'Description'}
                   placeholder={'Backer receives autographed copy of the book'}
                   description={'Describe what backer receives for this reward'}
                   onChange={(e)=>{handleChangeReward(rewardIndex, undefined, e.target.value, undefined, undefined)}}
-                  type={'text'}
+                  type={'textArea'}
                 />
-              {rType ? <InputContainer
+              {rType === 'Microfund' ? <InputContainer
                   label={'Amount'}
                   placeholder={'1000'}
                   onChange={(e)=>{handleChangeReward(rewardIndex, undefined, undefined, e.target.value, undefined)}}
@@ -135,9 +142,7 @@ const SetRewards = ({ setStep }) => {
                 />
               </MilestoneContainer>
           </MainMilestoneContainer>))}
-      {pType !== 'Stream' ? <><NextButton onClick={() => setShowToken(!showToken)}>
-        {!showToken ?  <>Token reward (optional)</> : <>Remove token reward</>}
-        </NextButton>
+      {pType !== 'Stream' ? <>
         {showToken && <MainMilestoneContainer>
           <RewardDesc>Create a pool with custom ERC20 token, our smart contract distributes automatically rewards proportionally to all involved backers after project success.</RewardDesc>
 

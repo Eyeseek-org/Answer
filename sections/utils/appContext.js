@@ -17,6 +17,7 @@ export const AppProvider = (props) => {
     pSocial: "https://twitter.com/d3v_library",
     pType: "Standard", // Stream vs Standard
     pImageUrl: "",
+    pChain: 80001,
     pm1: 0,
     pmDesc: 'Some description',
     category: "Games",

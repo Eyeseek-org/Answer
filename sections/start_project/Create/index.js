@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApp } from "../../utils/appContext";
 import Lottie from "react-lottie";
 import Image from "next/image";
-import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount } from "wagmi";
+import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from "wagmi";
 import axios from "axios";
 import Link from "next/link";
 import styled from "styled-components";
@@ -71,17 +71,16 @@ const texts = {
 
 const Create = ({ setStep }) => {
     const { appState } = useApp();
-    const { address, isDisconnected } = useAccount()
+    const { address } = useAccount()
     const {chain} = useNetwork();
-    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, tokenReward } = appState;
+    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, tokenReward, pChain } = appState;
     const [ev, setEv] = useState(false)
     const [apiError, setApiError] = useState(false)
     const [success, setSuccess] = useState(false)
     const [oid, setOid] = useState(null)
     const [pState, setPState] = useState(0)
-    const [loading, setLoading] = useState(false)
     const [ready, setReady] = useState(false)
-
+    const {switchNetwork} = useSwitchNetwork();
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
     const handleBack = () => {
@@ -104,7 +103,6 @@ const Create = ({ setStep }) => {
         } catch (err) {
             console.log(err)
             await setApiError(true)
-            await setLoading(false)
         }
     }
 
@@ -118,15 +116,14 @@ const Create = ({ setStep }) => {
             handleTokenReward()
         }
         await setEv(true);
-        await setLoading(false)
     }
 
     const { config, isError } = usePrepareContractWrite({
         addressOrName: add,
         contractInterface: donation.abi,
         functionName: 'createFund',
-        chain: 80001,
-        args: [pm1, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E', tokenReward.amount],
+        chain: pChain,
+        args: [pm1, tokenReward.address, tokenReward.amount],
     })
 
 
@@ -146,7 +143,6 @@ const Create = ({ setStep }) => {
         } catch (err) {
             console.log(err)
             setApiError(true)
-            await setLoading(false)
         }
     }
 
@@ -160,7 +156,7 @@ const Create = ({ setStep }) => {
                 "type": pType,
                 "owner": address,
                 "state": pState,
-                "chain": chain.id,
+                "chainId": pChain,
                 "bookmarks": [address], // Add owner to bookmark
                 "rewards": rewards,
                 "imageUrl": pImageUrl
@@ -170,13 +166,11 @@ const Create = ({ setStep }) => {
         } catch (err) {
             console.log(err)
             setApiError(true)
-            await setLoading(false)
         }
     }
 
 
     const handleSubmit = async () => {
-        await setLoading(true)
         if (pType !== 'Stream'){
             await handleContract()
         } else if (pType === 'Stream'){
@@ -201,7 +195,6 @@ const Create = ({ setStep }) => {
         <MainContainer>
             <SectionTitle title='Create project' subtitle='Meet crowdfunding rules' />
             <RulesContainer>
-                {chain && !chain.name === 'Mumbai' && <>Go to Mumbai</>}
                 <RulesTitle>Conditions and rules</RulesTitle>
                 <WarningBox>
                     <Li>If any of your goals are not met in 30 days of crowdfunding period, collected resources will be returned back to the backers. No fees will be collected by Eyeseek.</Li>
@@ -234,16 +227,17 @@ const Create = ({ setStep }) => {
                     </SumHalf>   
                     </SumRow>
                 </Summary> : <Rainbow/>}
-                {!ready ? 
-                <ButtonRow>
-                    <NextButton onClick={handleBack}>Back</NextButton>
-                      {tokenReward.amount > 0 && 
-                        <ApprovalBox><ApproveText>ERC20 supported only</ApproveText>
-                            <ApproveUniversal tokenContract={tokenReward.address} spender={process.env.NEXT_PUBLIC_AD_DONATOR} amount={tokenReward.amount}/>
-                        </ApprovalBox>}
-                    {pType === 'Stream' ? <NextButton onClick={handleSubmit}>Create project</NextButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
-                </ButtonRow> :
-                    <>{pType === 'Stream' ?                     
+            {!ready ? <>
+                {chain && pChain === chain.id ? 
+                    <ButtonRow>
+                        <NextButton onClick={handleBack}>Back</NextButton>
+                        {tokenReward.amount > 0 && 
+                            <ApprovalBox><ApproveText>ERC20 supported only</ApproveText>
+                                <ApproveUniversal tokenContract={tokenReward.address} spender={process.env.NEXT_PUBLIC_AD_DONATOR} amount={tokenReward.amount}/>
+                            </ApprovalBox>}
+                        {pType === 'Stream' ? <NextButton onClick={handleSubmit}>Create project</NextButton> : <NextButton disabled={!write} onClick={handleSubmit}>Create project</NextButton>}
+                        </ButtonRow> : <NextButton onClick={()=>{switchNetwork(pChain)}}>Wrong network</NextButton>} 
+                </> : <>{pType === 'Stream' ?                     
                     <TxStatus>Transaction status
                         <LogRow><InfoTag>Info</InfoTag> Project was initiated</LogRow>
                         {!apiError && <LogRow><InfoTag>Info</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}
