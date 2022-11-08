@@ -104,7 +104,7 @@ const Project: NextPage = () => {
           pType={project.type}
         />}
       {mode === 'Rewards' && <><RewardList oid={objectId}/>
-        {address === project.owner && <RewardCreate objectId={objectId} rewards={project.rewards}/>}
+        {address === project.owner && <RewardCreate objectId={objectId} bookmarks={project.bookmarks}/>}
       </>}
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/>
         {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/>}

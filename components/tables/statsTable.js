@@ -18,16 +18,16 @@ const StatsTable = ({pid, chain}) => {
 
     const Container = styled.div`
         padding-bottom: 2%;
-        padding-top: 2%;
+        padding-top: 5%;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding-left: 10%;
         padding-right: 10%;
         @media (max-width: 768px) {
-        flex-wrap: wrap;
-        padding-left: 3%;
-        padding-right: 3%;
+            flex-wrap: wrap;
+            padding-left: 3%;
+            padding-right: 3%;
   }
     `
     const Table = styled.table`
@@ -152,7 +152,7 @@ const StatsTable = ({pid, chain}) => {
     }, [])
 
     return (<>
-        <SectionTitle title='Project transactions'/>
+        <SectionTitle title='Project transactions' subtitle='Transparent on-chain records'/>
         <Container>
             <Sub><Subtitle text='Donations'/></Sub>
             {loading && <Loading />}
