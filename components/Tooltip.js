@@ -9,7 +9,7 @@ const Container = styled.div`
   color: white;
   min-width: 200px;
   text-align: center;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
   font-size: 0.8em;
   font-family: 'Neucha';
   border: 1px solid #2F2F2F;

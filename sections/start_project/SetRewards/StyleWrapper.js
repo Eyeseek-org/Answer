@@ -62,13 +62,6 @@ export const RewardDesc = styled.div`
     }
 `
 
-export const TokenTooltip = styled.div`
-  position: absolute;
-  bottom: -30px;
-  right: -250px;
-  width: 100%;
-`
-
 export const ButtonBox = styled.div`
   position: fixed;
   display: flex;
@@ -93,12 +86,14 @@ export const RewardButton = styled.div`
   font-size: 1.1em;
   text-align: left;
   letter-spacing: 0.2px;
+  transition: 0.2s;
   padding-bottom: 5px;
   border-bottom: 1px solid #3a3a3a;
   font-family: 'Neucha';
   &:hover{
     cursor: pointer;
     opacity: 0.9;
+    box-shadow: inset 0px 5px 20px rgba(255, 255, 255, 0.25);
   }
   @media (max-width: 768px) {
     border: none;
@@ -109,5 +104,26 @@ export const RewardButton = styled.div`
 export const RewardAction = styled.div`
   @media (max-width: 1228px) {
     display: none;
+  }
+`
+
+export const Disclaimer = styled.div`
+  font-size: 0.9em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+`
+
+export const DisclaimerAdd = styled.div`
+  margin-top: 5%;
+  letter-spacing: 0.2px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #3a3a3a;
+  font-family: 'Neucha';
+  font-size: 1.3em;
+  box-shadow: inset 0px 5px 20px rgba(255, 255, 255, 0.25);
+  &:hover{
+    cursor: pointer;
+    opacity: 0.9;
   }
 `
