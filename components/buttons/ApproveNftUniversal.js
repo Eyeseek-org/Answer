@@ -1,12 +1,13 @@
 import {useState} from 'react'
-import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent, useContractRead } from 'wagmi'
 import styled from 'styled-components'
-import token from '../../abi/token.json'
+import multi from '../../abi/multi.json'
 import Rainbow from './Rainbow'
 import Lottie from "react-lottie";
 import successAnimation from '../../data/successAnimation.json'
 import smallLoading from '../../data/smallLoading.json'
 import ButtonAlt from './ButtonAlt'
+
 
 // Animation configs 
 const okAnim = {
@@ -52,7 +53,7 @@ const Amount = styled.div`
     font-family: 'Gemunu Libre';
 `
 
-const ApproveUniversal = ({tokenContract, spender, amount}) => {
+const ApproveNftUniversal = ({tokenContract, spender, amount, nftId}) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -61,18 +62,18 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         await setEv(true)
         await setLoading(false)
     }
-    const { config } = usePrepareContractWrite({
-        address: tokenContract,
-        abi: token.abi,
-        functionName: 'approve',
-        args: [spender, amount],
-    })
 
+    const { config } = usePrepareContractWrite({
+        address: tokenContract, 
+        abi: multi.abi,
+        functionName: 'setApprovalForAll',
+        args: [spender, true],
+    })
 
     useContractEvent({
         address: tokenContract,
-        abi: token.abi,
-        eventName: 'Approval',
+        abi: multi.abi,
+        eventName: 'ApprovalForAll',
         listener: (event) => listened(event),
         once: true
       })
@@ -90,6 +91,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         <ApprovalBox>
             {ev && loading && <><Lottie height={30} width={30} options={okAnim} /></>} 
             {!ev && loading && <><Lottie height={50} width={50} options={loadingAnim} /></>}
+
         </ApprovalBox>
         {!address && <Rainbow/>}
         {address && <>
@@ -104,4 +106,4 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
     </Container>
 }
 
-export default ApproveUniversal
+export default ApproveNftUniversal

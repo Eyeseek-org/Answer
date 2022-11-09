@@ -158,10 +158,8 @@ const Donate: NextPage = () => {
   const [rewardType, setRewardType] = useState('none')
   const [currency, setCurrency] = useState("USDC");
   const [apiError, setApiError] = useState(false);
-  const [project, setProject] = useState();
-  const [tokenName, setTokenName] = useState();
-  const [tokenAddress, setTokenAddress] = useState();
-  const [tokenAmount, setTokenAmount] = useState();
+  const [project, setProject] = useState([]);
+  const [tokenReward, setTokenRewards] = useState([])
   const [rewards, setRewards] = useState();
   const [bookmarks, setBookmarks] = useState();
   const [pid, setPid] = useState();
@@ -291,7 +289,6 @@ const Donate: NextPage = () => {
   useEffect(() => {
     if(!router.isReady) return;
     getProjectDetail()
-    getTokenReward()
     getRewards()
   },[router.isReady]);
 
@@ -313,26 +310,11 @@ const Donate: NextPage = () => {
     }
 }
 
-const getTokenReward = async () => {
-  try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/TokenReward?where={"project":"${objectId}"}`,moralisApiConfig)
-      if (res.data.results.length > 0) {
-        setTokenAmount(res.data.results[0].tokenAmount)
-        setTokenName(res.data.results[0].tokenName)
-        setTokenAddress(res.data.results[0].tokenAddress)
-      }
-      setApiError(false)
-  } catch (err) {
-      console.log(err)
-      setApiError(true)
-  }
-}
-
 const getRewards = async () => {
   try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${objectId}"}`,moralisApiConfig)
       if (res.data.results.length > 0) {
-        setRewards(res.data.results)
+        setTokenRewards(res.data.results)
       }
       setApiError(false)
   } catch (err) {
@@ -340,8 +322,6 @@ const getRewards = async () => {
       setApiError(true)
   }
 }
-
-  /// TBD after axelar, handle mutlichain conditions
   /// TBD bookmark after donate
 
 
@@ -395,18 +375,7 @@ const getRewards = async () => {
         })}
         </OptionItemWrapper>
       </DonateOption>
-      {tokenAddress  && 
-        <DonateOption>
-          <DonateOptionTitle>
-            <Row>Token pool</Row>
-            <DonateOptionSub>Proportional reward for all backers</DonateOptionSub>
-          </DonateOptionTitle>
-          <OptionItemWrapper>
-            <OptionReward>
-                Token pool of {tokenName} - {tokenAmount}x, {tokenAddress}
-            </OptionReward>
-          </OptionItemWrapper>
-        </DonateOption>}
+
         {rewardType === 'none' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={homechain} />}
         {rewardType === 'token' && <DonateWithout pid={pid} currency={currency} bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={homechain}/>}
     </DonateContentWrapper>

@@ -99,18 +99,19 @@ const Create = ({ setStep }) => {
     // 1. Update state and project id (pid) as key between web2/web3
     // 2. Activate rewards in the db
     const useEv = async(event) => {
-        if (Array.isArray(event)) {
-            const pid = parseInt(event[2] && event[2]) - 1;
-            handleUpdateMoralis(pid); 
-        }
+        const pid = event - 1
+        handleUpdateMoralis(pid); 
+        // if (Array.isArray(event)) {
+        //     const pid = parseInt(event[2] && event[2]) - 1;   
+        // }
         await setEv(true);
     }
 
     const { config, isError } = usePrepareContractWrite({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         functionName: 'createFund',
-        chain: pChain,
+        chainId: pChain,
         args: [pm1],
     })
 
@@ -155,9 +156,10 @@ const Create = ({ setStep }) => {
     }
 
     useContractEvent({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         eventName: 'FundCreated',
+        chainId: pChain,
         listener: (event) => useEv(event),
         once: true
     })

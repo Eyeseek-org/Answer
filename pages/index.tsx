@@ -9,8 +9,6 @@ import Footer from "../sections/Footer";
 import LandingMain from "../sections/Landing/LandingMain";
 import LatestProjects from "../sections/Landing/LatestProjects";
 import Features from "../sections/Landing/Features";
-// DELETE
-import StatsTable from "../components/tables/StatsTable";
 
 
 const Container = styled.div`

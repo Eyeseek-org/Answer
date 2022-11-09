@@ -51,12 +51,12 @@ const RenderBlockchain = () => {
       <Row>
       {blockchains.map((bc, index) => {
         const { logo, chainId } = bc;
-        return  <>
+        return  <div key={index}>
                   {chain.id === chainId ? 
-                      <ImgActiveBox key={index}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
+                      <ImgActiveBox><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgActiveBox> : 
                       <ImgBox onClick={()=>{handleSwitchNetwork(chainId)}}><Image src={logo} alt='alt' width={'40'} height={'40'}/></ImgBox> 
                   }
-                </>
+                </div>
         })}
     </Row>
     </ImageContainer>

@@ -43,6 +43,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     const [success, setSuccess] = useState(false)
     const {chain} = useNetwork()
     const { switchNetwork } = useSwitchNetwork()
+    const [rewardId, setRewardId] = useState(0)
 
     const router = useRouter()
     const { objectId } = router.query
@@ -54,8 +55,8 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     }
 
     useContractEvent({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         chainId: home,
         eventName: 'Donated',
         listener: (event) => useEv(event),
@@ -63,8 +64,8 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     })
 
     useContractEvent({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         chainId: home,
         eventName: 'MicroCreated',
         listener: (event) => useEv(event),
@@ -74,11 +75,11 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
 
 
     const { config, error } = usePrepareContractWrite({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         chainId: home,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, curr, false],
+        args: [amountM, amountD, pid, curr, rewardId],
     });
 
     const { write, data } = useContractWrite(config);

@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing'
 import SectionTitle from '../../components/typography/SectionTitle'
 import Address from '../../components/functional/Address'
+import RewardCard from "../../components/cards/RewardCard"
 import { NftIcon } from '../../components/icons/Project'
 
 const Main = styled.div`
@@ -150,7 +151,7 @@ const RewardList = ({oid}) => {
     }, [])
 
     const header = {
-        headers: {accept: 'application/json', 'x-api-key': process.env.MORALIS_API_KEY, 'Content-Type': 'application/json'}
+        headers: {accept: 'application/json', 'x-api-key': process.env.NEXT_PUBLIC_MORALIS_API_KEY, 'Content-Type': 'application/json'}
     }
 
     const params = {
@@ -160,7 +161,7 @@ const RewardList = ({oid}) => {
         try {
             const res = await axios.get(`https://deep-index.moralis.io/api/v2/nft/${address}/${id}`, {params}, {
                 headers: {
-                    'x-api-key': process.env.MORALIS_API_KEY,
+                    'x-api-key': process.env.NEXT_PUBLIC_MORALIS_API_KEY,
                     'Content-Type': 'application/json'
                 }
             }   
@@ -177,10 +178,13 @@ const RewardList = ({oid}) => {
     /// TBD incorrect icons + Microfund vs Donate 
     /// TBD push to the donate
     return <>
-        <SectionTitle title="Rewards" subtitle={'Display current rewards'} />
+        <SectionTitle title="Rewards" subtitle={'Project rewards'} />
         <Main>
 
     <Container>
+        {/* {rewards.map((reward, index) => {
+            return <RewardCard key={index} title={reward.title} pledge={reward.requiredPledge}/>
+        })} */}
        {rewards.map((reward, index) => {
               return  <Modal key={index}>
                     <Row><ModalTitle>{reward.title}</ModalTitle><ModalAmount>${reward.amount}</ModalAmount></Row>

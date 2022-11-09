@@ -11,6 +11,7 @@ import RewardCreate from "../../sections/ProjectDetail/RewardCreate";
 import UpdateCreate from "../../sections/ProjectDetail/UpdateCreate";
 import UpdateOverview from "../../sections/ProjectDetail/UpdateOverview";
 import RewardList from "../../sections/ProjectDetail/RewardList";
+import Verification from "../../sections/ProjectDetail/Verification";
 import { moralisApiConfig } from "../../data/moralisApiConfig";
 import StatsTable from "../../components/tables/StatsTable";
 import SectionTitle from "../../components/typography/SectionTitle";
@@ -24,11 +25,11 @@ const Container = styled.div`
 
 const TabBox = styled.div`
 display: flex;
-  margin-left: 17%;
+  padding-left: 17%;
   margin-top: 5%;
   @media (max-width: 768px) {
         flex-wrap: wrap;
-        margin-left: 5%;
+        padding-left: 5%;
         justify-content: center;
         
   }
@@ -79,10 +80,12 @@ const Project: NextPage = () => {
           o2={'Updates'} 
           o3={"Rewards"} 
           o4={"Transactions"}
+          o5={"Verification"}
           change1={()=>handleMode('Overview')} 
           change2={()=>handleMode('Updates')} 
           change3={()=>handleMode('Rewards')}
           change4={()=>handleMode('Transactions')}
+          change5={()=>handleMode('Verification')}
           />
       </TabBox>
         {/* {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
@@ -104,13 +107,14 @@ const Project: NextPage = () => {
           pType={project.type}
         />}
       {mode === 'Rewards' && <><RewardList oid={objectId}/>
-        {address === project.owner && <RewardCreate objectId={objectId} bookmarks={project.bookmarks}/>}
+        {address === project.owner && <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId}/>}
       </>}
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/>
         {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title}/>}
       </>}
       {mode === 'Transactions' && <StatsTable  pid={project.pid} chain={project.chainId}/>}
       </> : <>{apiError && <>Project failed to fetch</>}</>}
+      {mode === 'Verification' && address === project.owner && project.verified === false && <Verification/>}
       </Container>
     </>
   )

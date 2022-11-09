@@ -50,16 +50,16 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
     const [conn, setConn] = useState("")
 
     const outcome = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         functionName: 'calcOutcome',
         chainId: home,
         args: [pid, amountD]
     })
 
     const connections = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         functionName: 'calcInvolvedMicros',
         chainId: home,
         args: [pid, amountD]
