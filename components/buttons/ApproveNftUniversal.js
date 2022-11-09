@@ -74,7 +74,7 @@ const ApproveNftUniversal = ({tokenContract, spender, amount}) => {
     useContractEvent({
         address: tokenContract,
         abi: multi.abi,
-        eventName: 'Approval',
+        eventName: 'ApprovalForAll',
         listener: (event) => listened(event),
         once: true
       })

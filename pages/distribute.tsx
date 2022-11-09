@@ -102,8 +102,8 @@ const Distribute: NextPage = () => {
     }
     
     const { config } = usePrepareContractWrite({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         chainId: chainId,
         functionName: 'distribute',
         args: [identifier, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E'],
@@ -114,8 +114,8 @@ const Distribute: NextPage = () => {
     const handleContract = async () => { write?.()}
 
     useContractEvent({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         chainId: 80001,
         eventName: 'DistributionAccomplished',
         listener: (event) => handleListener(event),

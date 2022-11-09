@@ -93,7 +93,7 @@ const My: NextPage = () => {
                  
                  
                  </>: <NotProject/>}
-            {mode === 'Rewards' && <><RewardList oid={project.objectId}/><RewardCreate objectId={project.objectId} rewards={project.rewards}/></>}
+            {mode === 'Rewards' && <><RewardList oid={project.objectId}/><RewardCreate objectId={project.objectId} bookmarks={project.rewards} home={project.chain} pid={project.pid}/></>}
             {mode === 'Updates' && <><UpdateOverview objectId={project.objectId}/><UpdateCreate objectId={project.objectId} bookmarks={project.bookmarks} title={project.title}/></>}
             {mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId}/>}
             {mode === 'History' &&  <LatestProjects my />}

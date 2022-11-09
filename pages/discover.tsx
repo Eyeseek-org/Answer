@@ -53,12 +53,14 @@ const BrowsePro: NextPage = () => {
                                         description={project.description}
                                         category={project.category}
                                         subcategory={project.subcategory}
+                                        hasFungible={project.hasFungible}
+                                        hasNft={project.hasNft}
                                         link={`/project/${project.objectId}`}
                                         state={project.state}
-                                        chain={project.chainId}
+                                        chainId={project.chainId}
                                         pid={project.pid}
-                                        imageUrl={undefined}
-                                        pType={undefined}
+                                        imageUrl={project.imageUrl}
+                                        pType={project.type}
                                     />
                                 )}
                             </ProjectBox>
