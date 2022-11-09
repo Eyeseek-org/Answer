@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { TabRow, TooltipBox, IconBox } from "../start_project/SetRewards/StyleWrapper";
+import donation from "../../abi/donation.json"
 import InputContainer from "../../components/form/InputContainer";
 import Tab from "../../components/form/Tab";
 import Tooltip from "../../components/Tooltip";
@@ -13,8 +14,10 @@ import SectionTitle from '../../components/typography/SectionTitle';
 import ErrText from "../../components/typography/ErrText";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
+import RewardNftSubmit from './RewardNftSubmit';
+import { GetFundingAddress } from '../../components/functional/GetContractAddress';
 
-const RewardCreate = ({objectId, bookmarks}) => {
+const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     const pType = "Standard" // Until stream is implemented
     const [rType, setRType] = useState('Microfund')
     const [tokenType, setTokenType] = useState('Classic')
@@ -36,6 +39,12 @@ const RewardCreate = ({objectId, bookmarks}) => {
     const [nftType, setNftType] = useState(false)
  
     const [apiError, setApiError] = useState(false)
+
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+
+    useEffect (() => {
+        setAdd(GetFundingAddress(home))
+    },[])
     
     const handleProjectNft = async (oid) => {
         try {
@@ -123,6 +132,16 @@ const RewardCreate = ({objectId, bookmarks}) => {
           })
         }
       }
+
+      // Use event -> If ok hide buttons 
+        //       if (home=== 80001) {
+        //     setExplorer('https://mumbai.polygonscan.com/tx/')
+        // } else if (home  === 97) {
+        //     setExplorer('https://bscscan.com/tx/')
+        // } else if (home === 4002){
+        //     setExplorer('https://testnet.ftmscan.com/tx')
+        // }
+
 
     return <MainContainer>
         <SectionTitle title='Create new reward' subtitle='Add a new reward to your project' />
@@ -222,6 +241,7 @@ const RewardCreate = ({objectId, bookmarks}) => {
                         </IconBox></>}
                         type={'number'}
                     />}
+                    {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add}/>}
                     {apiError && <ErrText>Not all fields filled correctly</ErrText>}
                     {!success && !apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>}
                     {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}

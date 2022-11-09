@@ -153,8 +153,8 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   },[])
 
   const { config } = usePrepareContractWrite({
-    addressOrName: add,
-    contractInterface: donation.abi,
+    address: add,
+    abi: donation.abi,
     functionName: 'cancelFund',
     args: [pid],
   })
@@ -162,7 +162,6 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
 
   const { write } = useContractWrite(config)
 
-  /// TBD create before the cancellation event is confirmed
 
   const useEv = async(e) => {
     await cancelMoralis(objectId);
@@ -171,8 +170,8 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   }
 
   useContractEvent({
-    addressOrName: add,
-    contractInterface: donation.abi,
+    address: add,
+    abi: donation.abi,
     eventName: 'Cancelled',
     listener: () => useEv(e),
     once: true

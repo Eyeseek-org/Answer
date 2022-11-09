@@ -110,8 +110,8 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
     let daiBalance = 'n/a';
 
     const funds = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         functionName: 'funds',
         chainId: chainId,
         args: [pid],
@@ -141,8 +141,8 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
     }
 
     const backers = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
+      address: add,
+      abi: donation.abi,
         functionName: 'getBackers',
         chainId: chainId,
         args: [pid],
@@ -154,8 +154,8 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
     }
 
     const micros = useContractRead({
-      addressOrName: add,
-      contractInterface: donation.abi,
+      address: add,
+      abi: donation.abi,
       functionName: 'getConnectedMicroFunds',
       chainId: chainId,
       args: [pid],

@@ -26,8 +26,8 @@ const ApprovedComponent = ({address}) => {
     var fullValue
 
     const {data} = useContractRead({
-        addressOrName: tokenAdd,
-        contractInterface: token.abi,
+        address: tokenAdd,
+        abi: token.abi,
         functionName: 'allowance',
         args: [address, add],
         watch: true,

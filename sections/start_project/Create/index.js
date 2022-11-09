@@ -107,8 +107,8 @@ const Create = ({ setStep }) => {
     }
 
     const { config, isError } = usePrepareContractWrite({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         functionName: 'createFund',
         chain: pChain,
         args: [pm1],
@@ -155,8 +155,8 @@ const Create = ({ setStep }) => {
     }
 
     useContractEvent({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         eventName: 'FundCreated',
         listener: (event) => useEv(event),
         once: true

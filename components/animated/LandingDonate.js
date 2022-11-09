@@ -31,8 +31,8 @@ const LandingDonate = () => {
     }
 
     useContractEvent({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         eventName: 'Donated',
         listener: (_event) => handleContractListener(),
         once: false

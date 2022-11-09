@@ -82,16 +82,16 @@ const ApproveButton = (sum) => {
         await setLoading(false)
     }
     const { config } = usePrepareContractWrite({
-        addressOrName: tokenAdd,
-        contractInterface: token.abi,
+        address: tokenAdd,
+        abi: token.abi,
         functionName: 'approve',
         args: [add, amount],
     })
 
 
     useContractEvent({
-        addressOrName: tokenAdd,
-        contractInterface: token.abi,
+        address: tokenAdd,
+        abi: token.abi,
         eventName: 'Approval',
         listener: (event) => listened(event),
         once: true

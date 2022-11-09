@@ -136,8 +136,8 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     let max = 'n/a';
 
     const funds = useContractRead({
-        addressOrName: add,
-        contractInterface: donation.abi,
+        address: add,
+        abi: donation.abi,
         functionName: 'funds',
         chain: chainId,
         args: [pid],

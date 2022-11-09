@@ -19,8 +19,8 @@ const ImageBox = styled(motion.div)`
 const Faucet = ({address, currency}) => {
     const [done, setDone] = useState(false)
     const { config } = usePrepareContractWrite({
-        addressOrName: address,
-        contractInterface: faucet.abi,
+        address: address,
+        abi: faucet.abi,
         functionName: 'requestTokens',
     })
 
@@ -28,8 +28,8 @@ const Faucet = ({address, currency}) => {
         await setDone(true)
     }
     useContractEvent({
-        addressOrName: address,
-        contractInterface: faucet.abi,
+        address: address,
+        abi: faucet.abi,
         eventName: 'FaucetReceived',
         listener: (event) => listened(event),
         once: true
