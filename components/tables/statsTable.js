@@ -8,13 +8,23 @@ import Loading from "../Loading"
 import SectionTitle from "../typography/SectionTitle"
 import Address from "../functional/Address"
 import Subtitle from "../typography/Subtitle"
+import { ExpandIcon } from '../icons/Notifications'
 
 const StatsTable = ({pid, chain}) => {
     const [loading, setLoading] = useState(true)
+
     const [microCreatedLogs, setMicroCreatedLogs] = useState([]);
+    const [filteredMicroCreatedLogs, setFilteredMicroCreatedLogs] = useState([]);
+
     const [transactionLogs, setTransactionLogs] = useState([]);
     const [filteredTransactionLogs, setFilteredTransactionLogs] = useState([]);
-    const [filteredMicroCreatedLogs, setFilteredMicroCreatedLogs] = useState([]);
+    
+    //ERC20 Logs
+    const [erc20Logs, setErc20Logs] = useState([]);
+    //ERC20 CONST
+    const usdc_polygon = process.env.NEXT_PUBLIC_AD_USDC
+    const usdc_bnb = process.env.NEXT_PUBLIC_AD_USDC_BNB
+    const usdc_ftm = process.env.NEXT_PUBLIC_AD_USDC_FTM
 
     const Container = styled.div`
         padding-bottom: 2%;
@@ -28,7 +38,7 @@ const StatsTable = ({pid, chain}) => {
             flex-wrap: wrap;
             padding-left: 3%;
             padding-right: 3%;
-  }
+        }
     `
     const Table = styled.table`
         width: 100%;
@@ -60,8 +70,15 @@ const StatsTable = ({pid, chain}) => {
     const AddressCell = styled(Cell)`
         width: 150px;
         @media (max-width: 768px) {
-        width: 50px;
-  }
+            width: 50px;
+        }
+    `
+
+    const TxnCell = styled(Cell)`
+        width: 150px;
+        @media (max-width: 768px) {
+            width: 50px;
+        }
     `
 
     const Sub = styled.div`
@@ -76,12 +93,15 @@ const StatsTable = ({pid, chain}) => {
                 <thead>
                     <Row>
                         {Object.keys(data[0]).map((key, index) => {
-                            if(key != "fund_id"){
+                            if(key != "fund_id" && key != "txn_hash"){
                                 const formattedKey = key.split("_").map((word) => {
                                     return word.charAt(0).toUpperCase() + word.slice(1);
                                 }
                                 ).join(" ");
                                 return <Header key={index}>{formattedKey}</Header>
+                            }
+                            if(key === "txn_hash"){
+                                return <Header key={index}> </Header>
                             }
                         })}
                     </Row>
@@ -91,6 +111,7 @@ const StatsTable = ({pid, chain}) => {
                         return (
                             <Row key={index}>
                                 {Object.keys(row).map((key, index) => {
+                                    console.log('key is',key)
                                     if (key != "fund_id") {
                                         if (key === "donator_address" || key === "owner") {
                                             return <AddressCell key={index}>
@@ -103,6 +124,14 @@ const StatsTable = ({pid, chain}) => {
                                                 {row[key] == 2 && "USDT"}
                                                 {row[key] == 3 && "DAI"}
                                                 </Cell>
+                                        }
+                                        //if it's the tx hash, make it a link
+                                        if (key === "txn_hash") {
+                                            return <Cell key={index}>
+                                                <a href={`https://mumbai.polygonscan.com/tx/${row[key]}`} target="_blank" rel="noreferrer">
+                                                    <ExpandIcon width={20} height={20}/>
+                                                </a>
+                                            </Cell>
                                         }
                                         else{
                                             return <Cell key={index}>{row[key]}</Cell>
@@ -132,7 +161,7 @@ const StatsTable = ({pid, chain}) => {
             const transactionEvents = logEvents.total_txn_log_data;
             setMicroCreatedLogs(microCreatedEvents);
             setTransactionLogs(transactionEvents);
-
+            
             // filter data to render by the finding the logs that match the fund id to the incoming pid
             const filteredMicroCreatedLogs = microCreatedEvents.filter((log) => {
                 return log.fund_id === pid;
@@ -145,10 +174,11 @@ const StatsTable = ({pid, chain}) => {
             // setFilteredMicroCreatedLogs(filteredMicroCreatedLogs);
             setFilteredTransactionLogs(filteredTransactionLogs);
             setFilteredMicroCreatedLogs(filteredMicroCreatedLogs);
-
+            console.log('filtered micro created logs*************', filteredMicroCreatedLogs)
             setLoading(false);
         }
         getData();
+        
     }, [])
 
     return (<>
