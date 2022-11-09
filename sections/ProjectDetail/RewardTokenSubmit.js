@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import {useContractWrite, usePrepareContractWrite, useContractEvent} from 'wagmi'
 import donation from "../../abi/donation.json"
-import multi from "../../abi/multi.json"
-import ApproveNftUniversal from '../../components/buttons/ApproveNftUniversal';
+import token from "../../abi/token.json"
+import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import ErrText from '../../components/typography/ErrText';
 
@@ -20,7 +20,7 @@ const ButtonBox = styled.div`
     justify-content: flex-end;
 `
 
-const RewardNftSubmit = ({add, home, pid, pledge, tokenAddress, nftId, cap}) => {
+const RewardTokenSubmit = ({add, home, pid, tokenAddress, cap}) => {
     const [ev, setEv] = useState(false)
 
     const listened = async() => {
@@ -30,31 +30,34 @@ const RewardNftSubmit = ({add, home, pid, pledge, tokenAddress, nftId, cap}) => 
     const handleSubmit = async () => {
         await write?.()
     }
+
     useContractEvent({
         address: tokenAddress,
-        abi: multi.abi,
-        eventName: 'ApprovalForAll',
+        abi: token.abi,
+        eventName: 'Approval',
         listener: (event) => listened(event),
         once: true
       })
-
+    
+    
     const { config, error } = usePrepareContractWrite({
         address: add,
         abi: donation.abi,
         chainId: home,
-        functionName: 'createNftReward',
-        args: [pid, cap, tokenAddress, nftId],
+        functionName: 'createTokenReward',
+        args: [pid, cap, cap, tokenAddress],
     });
 
     const { write } = useContractWrite(config);
 
     return <Container>
         <ButtonBox>
-             <ApproveNftUniversal tokenContract={tokenAddress} spender={add} cap={cap} nftId={nftId} />
-             <ButtonAlt text={'Submit'} onClick={()=>{handleSubmit()}}  />
+             <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={cap} />
+            <> <ButtonAlt text={'Submit'} onClick={()=>{handleSubmit()}}  />
+             {error && <ErrText text={'Missing/Incorrect parameter'} />}</>
         </ButtonBox> 
-        {error && <ErrText text={'Missing/Incorrect parameter'} />}
+     
     </Container>
 }
 
-export default RewardNftSubmit
+export default RewardTokenSubmit

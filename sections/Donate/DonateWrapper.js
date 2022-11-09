@@ -43,6 +43,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     const [success, setSuccess] = useState(false)
     const {chain} = useNetwork()
     const { switchNetwork } = useSwitchNetwork()
+    const [rewardId, setRewardId] = useState(0)
 
     const router = useRouter()
     const { objectId } = router.query
@@ -78,7 +79,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
         abi: donation.abi,
         chainId: home,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, curr, false],
+        args: [amountM, amountD, pid, curr, rewardId],
     });
 
     const { write, data } = useContractWrite(config);

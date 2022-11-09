@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import {useContractEvent} from 'wagmi'
 import { TabRow, TooltipBox, IconBox } from "../start_project/SetRewards/StyleWrapper";
 import donation from "../../abi/donation.json"
 import InputContainer from "../../components/form/InputContainer";
@@ -15,6 +16,7 @@ import ErrText from "../../components/typography/ErrText";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
 import RewardNftSubmit from './RewardNftSubmit';
+import RewardTokenSubmit from './RewardTokenSubmit';
 import { GetFundingAddress } from '../../components/functional/GetContractAddress';
 
 const RewardCreate = ({objectId, bookmarks, home, pid}) => {
@@ -37,6 +39,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     const [tokenAmount, setTokenAmount] = useState('')
     const [nftId, setNftId] = useState(0)
     const [nftType, setNftType] = useState(false)
+    const [rewardId, setRewardId] = useState(0)
  
     const [apiError, setApiError] = useState(false)
 
@@ -78,7 +81,8 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
             "tokenAmount": Number(tokenAmount),
             "requiredPledge": Number(pledge),
             "nftId": Number(nftId),
-            "nftType": nftType
+            "nftType": nftType,
+            "rewardId": rewardId
           }, moralisApiConfig)
           setApiError(false)
         } catch (error) {
@@ -133,6 +137,19 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
         }
       }
 
+    useContractEvent({
+        address: add,
+        abi: donation.abi,
+        eventName: 'RewardCreated',
+        listener: (event) => listened(event),
+        once: true
+      })
+
+    const listened = async(event) => {
+        await setRewardId(parseInt(event))
+        await handleSubmit(objectId)
+      }
+
       // Use event -> If ok hide buttons 
         //       if (home=== 80001) {
         //     setExplorer('https://mumbai.polygonscan.com/tx/')
@@ -177,7 +194,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         type={'textArea'}
                     />
                     {rType === 'Microfund' && <InputContainer
-                        label={'Amount'}
+                        label={'Pledge'}
                         placeholder={'1000'}
                         onChange={(e) => setPledge(e.target.value)}
                         description={
@@ -189,7 +206,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         type={'number'}
                     />}
                     {rType === 'Donate' && <InputContainer
-                        label={'Amount'}
+                        label={'Pledge'}
                         placeholder={'1000'}
                         onChange={(e) => setPledge(e.target.value)}
                         description={
@@ -241,9 +258,10 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         </IconBox></>}
                         type={'number'}
                     />}
-                    {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add}/>}
+                    {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
+                    {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge}/>}
                     {apiError && <ErrText>Not all fields filled correctly</ErrText>}
-                    {!success && !apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>}
+                    {tokenType === 'Classic' && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>} 
                     {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}
                     {success && <NextButton onClick={() => router.push('/')}>Success: Back to the overview</NextButton>}
                 </MilestoneContainer>

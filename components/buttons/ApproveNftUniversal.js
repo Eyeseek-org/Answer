@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi'
+import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent, useContractRead } from 'wagmi'
 import styled from 'styled-components'
 import multi from '../../abi/multi.json'
 import Rainbow from './Rainbow'
@@ -53,7 +53,7 @@ const Amount = styled.div`
     font-family: 'Gemunu Libre';
 `
 
-const ApproveNftUniversal = ({tokenContract, spender, amount}) => {
+const ApproveNftUniversal = ({tokenContract, spender, amount, nftId}) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -69,7 +69,6 @@ const ApproveNftUniversal = ({tokenContract, spender, amount}) => {
         functionName: 'setApprovalForAll',
         args: [spender, true],
     })
-
 
     useContractEvent({
         address: tokenContract,
@@ -92,6 +91,7 @@ const ApproveNftUniversal = ({tokenContract, spender, amount}) => {
         <ApprovalBox>
             {ev && loading && <><Lottie height={30} width={30} options={okAnim} /></>} 
             {!ev && loading && <><Lottie height={50} width={50} options={loadingAnim} /></>}
+
         </ApprovalBox>
         {!address && <Rainbow/>}
         {address && <>
