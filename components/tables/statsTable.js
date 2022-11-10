@@ -12,21 +12,15 @@ import { ExpandIcon } from '../icons/Notifications'
 
 const StatsTable = ({pid, chain}) => {
     const [loading, setLoading] = useState(true)
-
+    //MicroCreated States
     const [microCreatedLogs, setMicroCreatedLogs] = useState([]);
     const [filteredMicroCreatedLogs, setFilteredMicroCreatedLogs] = useState([]);
-
+    //Transaction States
     const [transactionLogs, setTransactionLogs] = useState([]);
     const [filteredTransactionLogs, setFilteredTransactionLogs] = useState([]);
-
+    //Explorer State for Txn Display
     const [explorer, setExplorer] = useState("")
-    
-    //ERC20 Logs
-    const [erc20Logs, setErc20Logs] = useState([]);
-    //ERC20 CONST
-    const usdc_polygon = process.env.NEXT_PUBLIC_AD_USDC
-    const usdc_bnb = process.env.NEXT_PUBLIC_AD_USDC_BNB
-    const usdc_ftm = process.env.NEXT_PUBLIC_AD_USDC_FTM
+
 
     const Container = styled.div`
         padding-bottom: 2%;
@@ -149,7 +143,6 @@ const StatsTable = ({pid, chain}) => {
 
     useEffect(() => {
         const getData = async () => {
-            console.log('chain is',chain)
             // switch case to set explorer url based on which chain is passed in
             switch(chain){
                 case 80001:
@@ -166,7 +159,6 @@ const StatsTable = ({pid, chain}) => {
                     break;
             }
 
-            
             //Grab latest block height to determine how many blocks to go back
             const latestBlockHeight = await getLatestBlockHeight(chain);
             console.log('latest blockheight',latestBlockHeight)
@@ -190,7 +182,6 @@ const StatsTable = ({pid, chain}) => {
                 return log.fund_id === pid;
             }
             )
-            // setFilteredMicroCreatedLogs(filteredMicroCreatedLogs);
             setFilteredTransactionLogs(filteredTransactionLogs);
             setFilteredMicroCreatedLogs(filteredMicroCreatedLogs);
             setLoading(false);

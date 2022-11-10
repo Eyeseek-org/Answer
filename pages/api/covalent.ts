@@ -56,7 +56,7 @@ export const getLogEvents = async (startingBlock: number ,  chain: number) => {
     for (let i = 0; i < response.data.data.items.length; i++) {
         // Parse Data for Donation Events
         if(response.data.data.items[i].raw_log_topics[0] === donated_hash) {
-            console.log('donation event found', response.data);
+
             const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256','uint256','uint256','uint256'], response.data.data.items[i].raw_log_data);
             const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
             const donator_address = decoded_raw_log_data[0]._hex;
@@ -97,8 +97,8 @@ export const getLogEvents = async (startingBlock: number ,  chain: number) => {
         }
     }
 
-    console.log('total_txn_log_data:',total_txn_log_data);
-    console.log('micro_created_log_data:',micro_created_log_data);
+    // console.log('total_txn_log_data:',total_txn_log_data);
+    // console.log('micro_created_log_data:',micro_created_log_data);
 
     return {
         total_txn_log_data,

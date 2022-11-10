@@ -169,14 +169,13 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
     console.log(e)
   }
 
-  // useContractEvent({
-  //   address: add,
-  //   abi: donation.abi,
-  //   eventName: 'Cancelled',
-  //   // listener: () => useEv(e),
-  //   listener: () => setCanceled(true),
-  //   once: true
-  // })
+  useContractEvent({
+    address: add,
+    abi: donation.abi,
+    eventName: 'Cancelled',
+    listener: () => useEv(e),
+    once: true
+  })
 
   const cancel = async () => {
     await write?.()
