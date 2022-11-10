@@ -53,11 +53,11 @@ const SetRewards = ({ setStep }) => {
   }
 
   return (<>
-    <SectionTitle title='Offer rewards for your backers' subtitle='Promise traditional crowdfunding reward' />
+    <SectionTitle title='Offer rewards for your backers' subtitle='Promise traditional crowdfunding benefits' />
     <MainContainer>
       {rewardsCounts === 0 && 
       <Disclaimer>
-         <Subtitle text={'ERC20 and ERC1155 could be locked only to the existing project'}/>
+         <Subtitle text={'ERC20 and ERC1155 could be added only after project creation'}/>
          <DisclaimerAdd onClick={() => setRewardsCount(rewardsCounts + 1)}><RewardAction>Add reward (optional) </RewardAction><AddIcon width={20} height={20}/></DisclaimerAdd>
       </Disclaimer>}
       <RewardContainer>

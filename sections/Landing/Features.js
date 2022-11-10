@@ -7,6 +7,7 @@ import cross from '../../public/cross.gif'
 import chaindonation from '../../public/chaindonation.gif'
 import fee from '../../public/fee.gif'
 import SectionTitle from '../../components/typography/SectionTitle'
+import {P, B, F, G, R} from '../../components/typography/ColoredTexts'
 
 const Container = styled.div`
     position: relative;
@@ -24,36 +25,14 @@ const ContentBox = styled.div`
     margin-top: 5%;
 `
 
-const A = styled.a`
-    color: #989898;
-`
 
-const P = styled.a`
-    color: #8247e5;
-`
-
-const B = styled.a`
-    color: #FFC107;
-`
-
-const F = styled.a`
-    color: #19e1ff;
-`
-
-const G = styled.a`
-    color: #00FC83;
-`
-
-const R = styled.a`
-    color: #FF0000;
-`
 
 const Texts = {
-    title1: "Crosschain UX",
+    title1: "Multichain experience",
     description1: "No matter from which chain backers donate, thanks to the Axelar Network, total amount will sum up across all. Currently supported backing from Polygon, BNB Chain, Fantom.",
     title2: "Microfunds",
     description2: "Backers can deploy microfunds instead of classic donations and each time someone after donates, the same amount is charged from all microfunds until they are depleted. With good strategy even $1 donation could have $100 impact.",
-    title3: "Lowest fees in the industry",
+    title3: "Cheapest crowdfunding around",
     description3: "Our infrastructure is powered by blockchain smart contracts, the infrastructure is much more cheaper than traditional crowdfunding companies like Kickstarter, which takes 5% platform fee for successful projects.",
     title4: "Money streaming",
     description4: "Already started project and need long-term support? Create a funding type using our crypto payment streaming, backers can flow resources real-time and turn on/off the streams based on your delivery.",
@@ -62,7 +41,7 @@ const Texts = {
 
 const CrossDescription = () => {
     return <>
-        No matter from which chain backers donate, thanks to the <A>Axelar Network</A>, total amount will sum up across all. Currently supported backing from <P>Polygon</P>, <B>BNB Chain</B>, <F>Fantom</F>.
+        You can create and donate to projects on multiple blockchains, currently supported <P>Polygon</P>, <B>BNB Chain</B>, and <F>Fantom</F>.
     </>
 }
 
@@ -105,8 +84,8 @@ const Features = () => {
         <ContentBox>
             <Row>
                 {demoMicro ? 
-                    <FeatureCard icon={<BlockchainIcon width={55} />} title={Texts.title1} description={<Image unoptimized={true}  src={cross} width={500} height={300} />} onClick={() => { setDemoMicro(!demoMicro) }} /> :
-                    <FeatureCard icon={<BlockchainIcon width={55} />}  anim={<CrossAnim width={200}/>} title={Texts.title1} description={<CrossDescription />} onClick={() => { setDemoMicro(!demoMicro) }} />}
+                    <FeatureCard icon={<BlockchainIcon width={55} />} title={Texts.title1} description={<Image unoptimized={true}  src={cross} width={500} height={300} />}/> :
+                    <FeatureCard icon={<BlockchainIcon width={55} />}  anim={<CrossAnim width={200}/>} title={Texts.title1} description={<CrossDescription />}  />}
 
                 {demoFunding ? 
                     <FeatureCard icon={<MicrofundIcon width={55} />} title={Texts.title2} description={<Image unoptimized={true} src={chaindonation} width={500} height={300} />} onClick={() => { setDemoFunding(!demoFunding) }} /> :
@@ -120,14 +99,14 @@ const Features = () => {
                 }
 
                 {demoStream ? 
-                    <FeatureCard icon={<StreamIcon width={55} />} title={Texts.title4} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>} onClick={() => { setDemoStream(!demoStream) }} /> :
-                    <FeatureCard icon={<StreamIcon width={55} />} anim={<StreamAnim width={200}/>}  title={Texts.title4} description={<StreamDescription />} onClick={() => { setDemoStream(!demoStream) }} />
+                    <FeatureCard icon={<StreamIcon width={55} />} title={Texts.title4} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>}  /> :
+                    <FeatureCard icon={<StreamIcon width={55} />} anim={<StreamAnim width={200}/>}  title={Texts.title4} description={<StreamDescription />}  />
                 }
             </Row>
             <Row>
                 {demoReward ? 
-                    <FeatureCard icon={<RewardLandingIcon width={5}  />} title={Texts.title5} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>} onClick={() => { setDemoReward(!demoReward) }} /> :
-                    <FeatureCard icon={<RewardLandingIcon width={55}  />} anim={<RewardAnim width={180}/>}  title={Texts.title5} description={<RewardDescription />} onClick={() => { setDemoReward(!demoReward) }} />
+                    <FeatureCard icon={<RewardLandingIcon width={5}  />} title={Texts.title5} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>}  /> :
+                    <FeatureCard icon={<RewardLandingIcon width={55}  />} anim={<RewardAnim width={180}/>}  title={Texts.title5} description={<RewardDescription />} />
                  }
             </Row>
         </ContentBox>

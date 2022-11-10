@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {motion} from 'framer-motion'
 import { MicrofundIcon } from '../../components/icons/Landing'
-import { NftIcon } from '../../components/icons/Project'
+import { DonateIcon, NftIcon } from '../../components/icons/Project'
 import Address from '../../components/functional/Address'
 import Tooltip from '../Tooltip'
 import { useState } from 'react'
@@ -50,6 +50,7 @@ const Modal = styled(motion.div)`
 const ActModal = styled(Modal)`
     border: 1px solid #005b00;
     cursor: default;
+    animation: none;
 `
 
 const ModalTitle = styled.div`
@@ -122,7 +123,7 @@ const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,
         <ModalDesc>{description}</ModalDesc>
         {tokenName && tokenAddress && <ModalDesc><div>{tokenName}</div><Address address={tokenAddress}/></ModalDesc>}
         <NumberBox> {eligibleActual} of {cap} </NumberBox>
-        <TypeBox>{type === 'Donate' ? <MicrofundIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
+        <TypeBox>{type === 'Donate' ? <DonateIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
     </Modal>
     : 
     <ActModal 
@@ -136,7 +137,7 @@ const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,
         <ModalDesc>{description}</ModalDesc>
         {tokenName && tokenAddress && <ModalDesc><div>{tokenName}</div><Address address={tokenAddress}/></ModalDesc>}
         <NumberBox> {eligibleActual} of {cap} </NumberBox>
-        <TypeBox>{type === 'Donate' ? <MicrofundIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
+        <TypeBox>{type === 'Donate' ? <DonateIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
     </ActModal>
     } 
 

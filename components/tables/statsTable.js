@@ -8,6 +8,7 @@ import Loading from "../Loading"
 import SectionTitle from "../typography/SectionTitle"
 import Address from "../functional/Address"
 import Subtitle from "../typography/Subtitle"
+import { useBlockNumber } from 'wagmi'
 
 const StatsTable = ({pid, chain}) => {
     const [loading, setLoading] = useState(true)
@@ -15,6 +16,10 @@ const StatsTable = ({pid, chain}) => {
     const [transactionLogs, setTransactionLogs] = useState([]);
     const [filteredTransactionLogs, setFilteredTransactionLogs] = useState([]);
     const [filteredMicroCreatedLogs, setFilteredMicroCreatedLogs] = useState([]);
+
+    const blockNumber = useBlockNumber({
+        chainId: chain,
+      })
 
     const Container = styled.div`
         padding-bottom: 2%;
@@ -121,13 +126,15 @@ const StatsTable = ({pid, chain}) => {
         const getData = async () => {
             //Grab latest block height to determine how many blocks to go back
             const latestBlockHeight = await getLatestBlockHeight(chain);
-            console.log('latest blockheight',latestBlockHeight)
 
+            // TBD I guess I broke the parsing by changing the event structure 
             // Covalent goes back 999 blocks, so we set the starting block back 999
-            const startingBlock = latestBlockHeight - 999;
+            const startingBlock = blockNumber - 999;
+            console.log('latest blockheight',blockNumber)
+            console.log('get blockheight',latestBlockHeight)
 
             // Get all Log Events and then sort them into two event categories, MicroCreated and Transaction
-            const logEvents = await getLogEvents(startingBlock, chain);
+            const logEvents = await getLogEvents(startingBlock, chain, blockNumber);
             const microCreatedEvents = logEvents.micro_created_log_data;
             const transactionEvents = logEvents.total_txn_log_data;
             setMicroCreatedLogs(microCreatedEvents);

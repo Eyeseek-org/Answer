@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import styled from 'styled-components';
 import {useContractEvent} from 'wagmi'
 import { TabRow, TooltipBox, IconBox } from "../start_project/SetRewards/StyleWrapper";
 import donation from "../../abi/donation.json"
@@ -18,6 +19,21 @@ import Subtitle from '../../components/typography/Subtitle';
 import RewardNftSubmit from './RewardNftSubmit';
 import RewardTokenSubmit from './RewardTokenSubmit';
 import { GetFundingAddress } from '../../components/functional/GetContractAddress';
+import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
+import SuccessDisButton from '../../components/buttons/SuccessDisButton';
+import Amount from '../../components/functional/Amount';
+
+const Summary = styled.div`
+    margin-top: 1%;
+    padding-top: 1%;
+    border-top: 1px solid #E5E5E5;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+`
 
 const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     const pType = "Standard" // Until stream is implemented
@@ -102,6 +118,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
         } else if (tokenType === 'Classic') {
             await handleRewardNotifications('Classic')
         }
+        await setSuccess(true)
     }
 
     // Calculate total tokens 
@@ -190,7 +207,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                     <InputContainer
                         label={'Description'}
                         placeholder={'Backer receives autographed copy of the book'}
-                        description={'Describe what backer receives for this reward'}
+                        description={'Describe briefly what backer receives for this reward'}
                         onChange={(e) => setRewardDesc(e.target.value)}
                         type={'textArea'}
                     />
@@ -199,7 +216,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         placeholder={'1000'}
                         onChange={(e) => setPledge(e.target.value)}
                         description={
-                            <Row>Microfund cap amount per backer
+                            <Row>Required amount of backer's microfund
                                 <IconBox onMouseEnter={() => setMicroTooltip(true)} onMouseLeave={() => setMicroTooltip(false)}>
                                     <InfoIcon width={15} />
                                 </IconBox>
@@ -211,7 +228,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         placeholder={'1000'}
                         onChange={(e) => setPledge(e.target.value)}
                         description={
-                            <Row>Donation mount to receive this reward
+                            <Row>Required amount of donation
                                 <IconBox onMouseEnter={() => setDonationTooltip(true)} onMouseLeave={() => setDonationTooltip(false)}>
                                     <InfoIcon width={15} />
                                 </IconBox>
@@ -221,7 +238,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                     <InputContainer
                         label={'Capacity'}
                         placeholder={'10'}
-                        description={'How many rewards could be claimed in this edition'}
+                        description={'Number of claimable rewards'}
                         onChange={(e) => setCap(e.target.value)}
                         type={'number'}
                     />
@@ -259,12 +276,20 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         </IconBox></>}
                         type={'number'}
                     />}
+                    <Summary>
+                        {rType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
+                        {rType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
+                        {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b>$<Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
+                    </Summary>
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
-                    {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge}/>}
+                    {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
                     {apiError && <ErrText>Not all fields filled correctly</ErrText>}
-                    {tokenType === 'Classic' && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>} 
-                    {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}
-                    {success && <NextButton onClick={() => router.push('/')}>Success: Back to the overview</NextButton>}
+                    {!success ? 
+                        <>
+                            {tokenType === 'Classic' && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>} 
+                            {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}
+                        </> : <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>
+                    }
                 </MilestoneContainer>
             </MainMilestoneContainer>
         </RewardContainer>

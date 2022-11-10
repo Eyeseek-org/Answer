@@ -9,6 +9,7 @@ import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
 import FaqCard from '../components/cards/FaqCard';
 
+
 const Container = styled.div`
 `
 const Row = styled.div`
@@ -66,6 +67,7 @@ const EyeSevenBox = styled.div`
     text-align: center;
     position: relative;
 `;
+ 
 
 const texts = {
     "q1": "Why Eyeseek Funding?",
@@ -88,9 +90,9 @@ const texts = {
     "p34": "Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit",
     "q4": "How does it work?",
     "a4": "Creators can set up project in 5 simple steps",
-    "p41": "With possibility to offer additional reward, tokens and NFTs",
-    "p42": "Backers discover projects based on their interests",
-    "p43": "For each project, backers can donate any amount or create microfunds",
+    "p41": "Possibility to offer limited amount of rewards, tokens and NFTs",
+    "p42": "Backers discover projects based on their interests and donate",
+    "p43": "Larger backers can play a game and deploy microfunds instead of donating",
     "p44": "Microfunds incentivize smaller backers to join the ride with larger impact",
 }
 
