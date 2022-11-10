@@ -24,6 +24,9 @@ export const AppProvider = (props) => {
     subcategory: "Board",
     // Step 1 is default, because step 0 is always prefilled
     stepLock: 1,
+    rewMAmount: 0,
+    rewDAmount: 0,
+    rewId: 0
   });
 
 

@@ -73,6 +73,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
             "title": rewardTitle,
             "description": rewardDesc,
             "eligibleActual": Number(cap),
+            "cap": Number(cap),
             "active": true,
             "type": rType,
             "project": objectId,
