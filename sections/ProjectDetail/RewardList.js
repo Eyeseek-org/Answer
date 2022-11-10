@@ -24,7 +24,7 @@ const Container = styled.div`
 
 // Display rewards
 // Add reward types and other metadata
-const RewardList = ({oid}) => {
+const RewardList = ({oid, chain}) => {
     const [tokenRewards, setTokenRewards] = useState([])
     const { setAppState } = useApp();
     const [apiError, setApiError] = useState(false)
@@ -39,7 +39,7 @@ const RewardList = ({oid}) => {
     const getRewards = async () => {
         setLoading(true)
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${oid}", "nftType": false}`,moralisApiConfig)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${oid}"}`,moralisApiConfig)
             await setTokenRewards(res.data.results), 
             await setApiError(false)
             setTimeout(() => {
@@ -86,8 +86,7 @@ const RewardList = ({oid}) => {
             console.log(err)
         }
     }
-    /// TBD incorrect icons + Microfund vs Donate 
-    /// TBD push to the donate
+
     return <>
         <Main>
       <Container>
@@ -106,6 +105,7 @@ const RewardList = ({oid}) => {
                 nftId={reward.nftId}
                 tokenName={reward.tokenName}
                 selected={selected}
+                chain={chain}
                 onClick={()=>{handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId)}}
               />
        })} </> : <>

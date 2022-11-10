@@ -5,6 +5,7 @@ import { DonateIcon, NftIcon } from '../../components/icons/Project'
 import Address from '../../components/functional/Address'
 import Tooltip from '../Tooltip'
 import { useState } from 'react'
+import NFTDisplay from '../functional/NftDisplay'
 
 const Container = styled.div`
     position: relative;
@@ -103,7 +104,7 @@ const ToolBox = styled.div`
     top: -25px;
 `
 
-const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,onClick, nftId, tokenName, tokenAddress, selected}) => {
+const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,onClick, nftId, tokenName, tokenAddress, selected, chain}) => {
     const [typeTooltip, setTypeTooltip] = useState(false)
     
     return <Container>
@@ -121,6 +122,7 @@ const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,
             {nftId === 0 ? <ModalAmount>${pledge}</ModalAmount> : <NftIcon width={30}/>}
         </Row>
         <ModalDesc>{description}</ModalDesc>
+        <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} />
         {tokenName && tokenAddress && <ModalDesc><div>{tokenName}</div><Address address={tokenAddress}/></ModalDesc>}
         <NumberBox> {eligibleActual} of {cap} </NumberBox>
         <TypeBox>{type === 'Donate' ? <DonateIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
@@ -135,6 +137,7 @@ const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,
             {nftId === 0 ? <ModalAmount>${pledge}</ModalAmount> : <NftIcon width={30}/>}
         </Row>
         <ModalDesc>{description}</ModalDesc>
+        <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} />
         {tokenName && tokenAddress && <ModalDesc><div>{tokenName}</div><Address address={tokenAddress}/></ModalDesc>}
         <NumberBox> {eligibleActual} of {cap} </NumberBox>
         <TypeBox>{type === 'Donate' ? <DonateIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>

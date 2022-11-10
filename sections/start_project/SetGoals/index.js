@@ -103,6 +103,7 @@ const RenderMilestones = () => {
             description={'Set amount to reach the funding milestone'} 
             onChange={(e) => setAppState((prev) => ({ ...prev, amount: e.target.value }))}
             type={'number'}
+            min={1000}
           />
           <InputContainer 
             label={'Describe goal spending'} 

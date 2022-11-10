@@ -105,8 +105,10 @@ const Project: NextPage = () => {
           owner={project.owner}
           chainId={project.chainId}
           pType={project.type}
+          urlSocial={project.urlSocial}
+          urlProject={project.urlProject}
         />}
-      {mode === 'Rewards' && <><RewardList oid={objectId}/>
+      {mode === 'Rewards' && <><RewardList oid={objectId} chain={project.chainId}/>
         {address === project.owner && <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId}/>}
       </>}
       {mode === 'Updates' && <><UpdateOverview objectId={objectId}/>
@@ -114,7 +116,7 @@ const Project: NextPage = () => {
       </>}
       {mode === 'Transactions' && <StatsTable  pid={project.pid} chain={project.chainId}/>}
       </> : <>{apiError && <>Project failed to fetch</>}</>}
-      {mode === 'Verification' && address === project.owner && project.verified === false && <Verification/>}
+      {mode === 'Verification' && address === project.owner && project.verified === false && <Verification objectId={objectId}/>}
       </Container>
     </>
   )

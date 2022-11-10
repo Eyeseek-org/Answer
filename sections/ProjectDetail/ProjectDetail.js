@@ -7,7 +7,7 @@ import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount
 import Tag from "../../components/typography/Tag"
 import ErrText from '../../components/typography/ErrText'
 import ImgSkeleton from "../../components/skeletons/ImgSkeleton"
-import { CancelIcon, VerifiedIcon, NonVerifiedIcon} from '../../components/icons/Common'
+import { CancelIcon, VerifiedIcon, NonVerifiedIcon, UrlIcon, UrlSocialsIcon} from '../../components/icons/Common'
 import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
 import donation from '../../abi/donation.json'
@@ -134,7 +134,7 @@ const LeftTopTooltip = styled.div`
   top: 0;
 `
 
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chainId }) => {
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chainId, urlSocial, urlProject }) => {
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
@@ -142,6 +142,8 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
   const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
   const [chainTooltip, setChainTooltip] = useState(false)
+  const [urlWebTooltip, setUrlWebTooltip] = useState(false)
+  const [urlSocialsTooltip, setUrlSocialsTooltip] = useState(false)
   const [canceled, setCanceled] = useState(false)
   const [apiError, setApiError] = useState(false)
 
@@ -243,9 +245,21 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
    
         {canceled && <CanceledBox><CanceledTypo width={400} /></CanceledBox>}
         {address === owner && <ActionPanel>
-          {cancelTooltip && <Tooltip margin={'25px'} text='Cancel project' />}
+          {cancelTooltip && <Tooltip margin={'-35px'} text='Cancel project' />}
+          {urlWebTooltip && <Tooltip margin={'-35px'} text='External link to project website' />}
+          {urlSocialsTooltip && <Tooltip margin={'-35px'} text='External link to project primary socials' />}
+              <IconWrapper onMouseEnter={() => { setUrlWebTooltip(true) }} onMouseLeave={() => { setUrlWebTooltip(false) }}>
+                <a href={urlSocial} target='_blank' rel='noreferrer'>
+                  <UrlSocialsIcon width={30} />
+                </a>
+              </IconWrapper>
+              <a href={urlProject} target='_blank' rel='noreferrer'>
+                <IconWrapper onMouseEnter={() => { setUrlSocialsTooltip(true) }} onMouseLeave={() => { setUrlSocialsTooltip(false) }}>
+                    <UrlIcon width={30} />
+                </IconWrapper>
+              </a>
               <IconWrapper onClick={()=>{cancel()}} onMouseEnter={() => { setCancelTooltip(true) }} onMouseLeave={() => { setCancelTooltip(false) }}>
-                <CancelIcon width={30} />
+                  <CancelIcon width={30} />
               </IconWrapper>
         </ActionPanel>}
         <LeftPart>

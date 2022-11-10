@@ -66,7 +66,7 @@ const Container = styled.div`
   }
 `;
 
-const InputContainer = ({label, name, placeholder,onChange, description, type, maxLength, isError, errorText}) => {
+const InputContainer = ({label, name, placeholder,onChange, description, type, maxLength, isError, errorText, min}) => {
     const [counter, setCounter] = useState(0);
 
     const handleChange = (e) => {
@@ -77,7 +77,7 @@ const InputContainer = ({label, name, placeholder,onChange, description, type, m
     return <Container>
         <label className="input_label">{label}</label>
         <div className="input_container">
-            {type === 'number' &&  <input name={name} className="input_style" type="number" maxLength={maxLength} placeholder={placeholder} onChange={handleChange}/> }
+            {type === 'number' &&  <input name={name} className="input_style" type="text" inputMode="numeric"  maxLength={maxLength} placeholder={placeholder} onChange={handleChange}/> }
             {type === 'textArea' &&  <textarea name={name} className="input_style" type="text" maxLength={maxLength} placeholder={placeholder} onChange={handleChange}/> }
             {type === 'text' && <input name={name} className="input_style" type="text" maxLength={maxLength} placeholder={placeholder} onChange={handleChange} />}
          <div className="input_description_container">
