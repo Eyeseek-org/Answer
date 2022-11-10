@@ -8,7 +8,7 @@ const utils = ethers.utils;
 const key = process.env.NEXT_PUBLIC_COVALENT;
 
 // contract addresses
-const eye_seek_contract_address = process.env.NEXT_PUBLIC_AD_DONATOR;
+const eye_seek_contract_address = '0x37D38734253472Efc971dD4da1C107E630DE08AC';
 
 // Chain : ChainID
 const polygonChainId = 137;
@@ -56,19 +56,22 @@ export const getLogEvents = async (startingBlock: number ,  chain: number, lates
     for (let i = 0; i < response.data.data.items.length; i++) {
         // Parse Data for Donation Events
         if(response.data.data.items[i].raw_log_topics[0] === donated_hash) {
+
             const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256','uint256','uint256','uint256'], response.data.data.items[i].raw_log_data);
             const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
             const donator_address = decoded_raw_log_data[0]._hex;
             const amount = parseInt(decoded_raw_log_data[1]._hex);
             const fund_id = parseInt(decoded_raw_log_data[2]._hex);
             const currency_id = parseInt(decoded_raw_log_data[3]._hex);
+            const txn_hash = response.data.data.items[i].tx_hash;
 
             total_txn_log_data.push({
                 "donator_address" : donator_address,
                 "amount" : amount,
                 "currency_id" : currency_id,
                 "date" : date,
-                "fund_id" : fund_id
+                "fund_id" : fund_id,
+                "txn_hash" : txn_hash
             });
         }
 
@@ -80,19 +83,22 @@ export const getLogEvents = async (startingBlock: number ,  chain: number, lates
             const cap = parseInt(decoded_raw_log_data[1]._hex);
             const fund_id = parseInt(decoded_raw_log_data[2]._hex);
             const currency_id = parseInt(decoded_raw_log_data[3]._hex);
+            const txn_hash = response.data.data.items[i].tx_hash;
     
             micro_created_log_data.push({
                 "owner" : owner,
                 "amount" : cap,
                 "currency_id" : currency_id,
                 "date" : date,
-                "fund_id" : fund_id
+                "fund_id" : fund_id,
+                "txn_hash" : txn_hash
+
             });
         }
     }
 
-    console.log('total_txn_log_data:',total_txn_log_data);
-    console.log('micro_created_log_data:',micro_created_log_data);
+    // console.log('total_txn_log_data:',total_txn_log_data);
+    // console.log('micro_created_log_data:',micro_created_log_data);
 
     return {
         total_txn_log_data,
