@@ -11,7 +11,7 @@ import donation from "../../abi/donation.json";
 import token from "../../abi/token.json";
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetFundingAddress, GetTokenAddress } from '../../components/functional/GetContractAddress';
+import { GetTokenAddress } from '../../components/functional/GetContractAddress';
 
 const DonateButtonWrapper = styled.div`
   position: relative;
