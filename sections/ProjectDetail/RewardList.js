@@ -29,6 +29,7 @@ const RewardList = ({oid}) => {
     const { setAppState } = useApp();
     const [apiError, setApiError] = useState(false)
     const [selected, setSelected] = useState("")
+    const [loading, setLoading] = useState(false)
 
     // Dummy data
     const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json')
@@ -36,13 +37,18 @@ const RewardList = ({oid}) => {
     // Extract image json.image, display it 
 
     const getRewards = async () => {
+        setLoading(true)
         try {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${oid}", "nftType": false}`,moralisApiConfig)
-            setTokenRewards(res.data.results), 
-            setApiError(false)
+            await setTokenRewards(res.data.results), 
+            await setApiError(false)
+            setTimeout(() => {
+                setLoading(false)
+            }, 1000);
         } catch (err) {
-            console.log(err)
-            setApiError(true)
+            console.error(err)
+            await setApiError(true)
+            await setLoading(false)
         }
     }
 
@@ -102,7 +108,9 @@ const RewardList = ({oid}) => {
                 selected={selected}
                 onClick={()=>{handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId)}}
               />
-       })} </> : <NoFound text={''}/>}
+       })} </> : <>
+            {!loading ? <NoFound text={'No limited rewards offered'}/> : null}
+        </>}
         {apiError && <ErrText text={'Communication error - please try again later'}/>}
     </Container></Main></>
 }

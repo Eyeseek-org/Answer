@@ -70,10 +70,12 @@ const Option = styled.div`
   }
 `
 
-const DisReward = styled(Option)`
-  background: #3d0000;
-  opacity: 0.2;
-  cursor: not-allowed;
+const SelectionWrapper = styled.div`
+  width: 100%;
+  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  border: 1px solid #3C3C3C;
+  border-radius: 5px;
+  padding: 15px;
 `
 
 const OptionItemWrapper = styled.div`
@@ -150,7 +152,6 @@ const Donate: NextPage = () => {
   const [currency, setCurrency] = useState("USDC");
   const [apiError, setApiError] = useState(false);
   const [project, setProject] = useState([]);
-  const [rewards, setRewards] = useState();
   const [bookmarks, setBookmarks] = useState();
   const [pid, setPid] = useState();
   const { chain } = useNetwork()
@@ -307,7 +308,6 @@ const Donate: NextPage = () => {
           setProject(res.data.results[0])
           setPid(res.data.results[0].pid)
           setBookmarks(res.data.results[0].bookmarks)
-          setRewards(res.data.results[0].rewards)
           setHomechain(res.data.results[0].chainId)
         }
         setApiError(false)
@@ -318,16 +318,12 @@ const Donate: NextPage = () => {
 }
 
 
-/// Do kontextu nejspíš - Locknout amount a inputy
-/// Dát obě částky do kontextu, nemíchat komponenty
-/// Create tab as an option
-
   return <Container>
     <SectionTitle title={'Donate'} subtitle={'Select an option below'}/>
     <DonateContentWrapper>
       <DonateOption>
        {/* @ts-ignore */}
-        {tooltip && <Tooltip text='Chain on which crowdfunding project was created' />}
+        {tooltip && <Tooltip text='Donates accepted only on this chain' />}
         <DonateOptionTitle>
           <Row>Blockchain <InfoBox onMouseEnter={() => { setTooltip(true) }} onMouseLeave={() => { setTooltip(false) }}> <InfoIcon width={15} /></InfoBox></Row>
           {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
@@ -355,6 +351,7 @@ const Donate: NextPage = () => {
         <DonateOptionTitle>
           <Row>Rewards</Row><DonateOptionSub>Choose one of the reward options</DonateOptionSub>
         </DonateOptionTitle>
+        {/* @ts-ignore */}
             <Tab o1={'No reward'} o2={'Limited rewards'} active={active} change1={()=>{handleNoReward()}} change2={()=>{handleOnReward()}} />       
       </DonateOption>
       {showRewards ? <><RewardList oid={objectId}/>
