@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from "wagmi";
 import axios from "axios";
 import Link from "next/link";
+import {BigNumber} from 'ethers'
 
 import SectionTitle from "../../../components/typography/SectionTitle";
 import { ButtonRow } from "../SetRewards/StyleWrapper";
@@ -62,7 +63,7 @@ const Create = ({ setStep }) => {
     const { appState } = useApp();
     const { address } = useAccount()
     const {chain} = useNetwork();
-    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, pChain} = appState;
+    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, pChain, pSocial, pWeb} = appState;
     const [ev, setEv] = useState(false)
     const [apiError, setApiError] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -107,6 +108,8 @@ const Create = ({ setStep }) => {
         await setEv(true);
     }
 
+    // const fullValue = (pm1 * (10 ** 18));
+
     const { config, isError } = usePrepareContractWrite({
         address: add,
         abi: donation.abi,
@@ -128,6 +131,8 @@ const Create = ({ setStep }) => {
                 "description": pDesc,
                 "category": category,
                 "subcategory": subcategory,
+                "urlProject": pSocial,
+                "urlSocials": pWeb,
                 "type": pType,
                 "owner": address,
                 "state": pState,

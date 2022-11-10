@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
 import SectionTitle from '../../components/typography/SectionTitle';
 import ErrText from "../../components/typography/ErrText";
+import NftDisplay from "../../components/functional/NftDisplay";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
 import RewardNftSubmit from './RewardNftSubmit';
@@ -168,16 +169,6 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
         await handleSubmit(objectId)
       }
 
-      // Use event -> If ok hide buttons 
-        //       if (home=== 80001) {
-        //     setExplorer('https://mumbai.polygonscan.com/tx/')
-        // } else if (home  === 97) {
-        //     setExplorer('https://bscscan.com/tx/')
-        // } else if (home === 4002){
-        //     setExplorer('https://testnet.ftmscan.com/tx')
-        // }
-
-
     return <MainContainer>
         <SectionTitle title='Create new reward' subtitle='Add a new reward to your project' />
         <RewardContainer>
@@ -270,10 +261,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         label={'Token ID'}
                         placeholder={'1561891981'}
                         onChange={(e) => setNftId(e.target.value)}
-                        description={<>        
-                        <IconBox onMouseEnter={() => setNftTooltip(true)} onMouseLeave={() => setNftTooltip(false)}>
-                          Nft tooltip <InfoIcon width={15} />
-                        </IconBox></>}
+                        description={<>ERC1155 token id defining the asset</>}
                         type={'number'}
                     />}
                     <Summary>
@@ -281,15 +269,15 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         {rType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
                         {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b>$<Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
                     </Summary>
-                    {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
+                {rewardDesc !== "" ?  <> {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
-                    {apiError && <ErrText>Not all fields filled correctly</ErrText>}
+                    {apiError && <ErrText text='Not all fields filled correctly'/>}
                     {!success ? 
                         <>
                             {tokenType === 'Classic' && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>} 
                             {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}
-                        </> : <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>
-                    }
+                        </> : <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>}
+                    </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>
             </MainMilestoneContainer>
         </RewardContainer>

@@ -39,7 +39,7 @@ const ApprovedComponent = ({address}) => {
 
         
     return <Container>
-        {data && <>Approved: <Amount value={fullValue} /></>}
+        {data && <>Approved: <Amount value={data} /></>}
     </Container>
 }
 

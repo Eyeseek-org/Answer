@@ -4,7 +4,7 @@ const Amount = ({value}) => {
     if (Number.isNaN(numberValue)) {
         return <>{numberValue}</>
     }
-    return <>{numberValue.toLocaleString(undefined, {minimumFractionDigits: 3})}</>
+    return <>{numberValue.toLocaleString(undefined, {minimumFractionDigits: 0})}</>
 }
 
 export default Amount
