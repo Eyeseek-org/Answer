@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork } from "wagmi";
-import {useState} from 'react'
+import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork, useContractRead } from "wagmi";
+import {useState, useEffect} from 'react'
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent'
 import ApprovedComponent from '../../components/functional/ApprovedComponent'
@@ -8,8 +8,10 @@ import Button from "../../components/buttons/Button";
 import ApproveButton from "../../components/buttons/ApproveButton";
 import { SuccessIcon } from "../../components/icons/Common";
 import donation from "../../abi/donation.json";
+import token from "../../abi/token.json";
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
+import { GetTokenAddress } from '../../components/functional/GetContractAddress';
 
 const DonateButtonWrapper = styled.div`
   position: relative;
@@ -37,16 +39,36 @@ const Metrics = styled.div`
 `
 
 
-const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add, home}) => {
+const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add, home, rid}) => {
     const { address } = useAccount();
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
     const [success, setSuccess] = useState(false)
     const {chain} = useNetwork()
     const { switchNetwork } = useSwitchNetwork()
-    const [rewardId, setRewardId] = useState(0)
 
     const router = useRouter()
     const { objectId } = router.query
+
+    const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_TOKEN)
+
+    useEffect(() => {
+        setTokenAdd(GetTokenAddress(home))
+    },[])
+
+    var all = 0;
+
+    const allowance = useContractRead({
+        address: tokenAdd,
+        abi: token.abi,
+        functionName: 'allowance',
+        chainId: home,
+        args: [address, add],
+        watch: true,
+      })
+
+      if (allowance.data){
+        all = Number(allowance.data.toString())
+      }
     
 
     const useEv = (event) => {
@@ -74,12 +96,13 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
 
 
 
+
     const { config, error } = usePrepareContractWrite({
         address: add,
         abi: donation.abi,
         chainId: home,
         functionName: 'contribute',
-        args: [amountM, amountD, pid, curr, rewardId],
+        args: [amountM, amountD, pid, curr, rid],
     });
 
     const { write, data } = useContractWrite(config);
@@ -87,11 +110,11 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
 
     const handleSubmit = async () => {
         await write?.()
-        if (chain && chain.id === 80001) {
+        if (home === 80001) {
             setExplorer('https://mumbai.polygonscan.com/tx/')
-        } else if (chain && chain.id  === 97) {
+        } else if (home === 97) {
             setExplorer('https://bscscan.com/tx/')
-        } else if (chain && chain.id === 4002){
+        } else if (home === 4002){
             setExplorer('https://testnet.ftmscan.com/tx')
         }
     }
@@ -123,12 +146,12 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
             <div>
                 {!success && (
                     <>
-                        {error ? <Button text='Donate' width={'200px'} error /> : <Button onClick={() => handleSubmit?.()} text='Donate' width={'200px'} />}
+                        {all < sum ? <Button text='Donate' width={'200px'} onClick={() => handleSubmit()}  error /> : <Button onClick={() => handleSubmit()} text='Donate' width={'200px'} />}
                     </>
                 )}{(!error && success) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>
-            {error ? <Err>Insufficient balance or blockchain error</Err> : null}
-        </DonateButtonWrapper> : <Button text='Wrong network' onClick={() => switchNetwork?.(home)} width={'200px'} /> }
+            {error ? <Err>Insufficient balance or allowance</Err> : null}
+        </DonateButtonWrapper> : <Button text='Wrong network' onClick={() => switchNetwork(home)} width={'200px'} /> }
     </div>
 }
 

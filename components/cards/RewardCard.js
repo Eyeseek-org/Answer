@@ -1,17 +1,39 @@
 import styled from 'styled-components'
 import {motion} from 'framer-motion'
+import { MicrofundIcon } from '../../components/icons/Landing'
+import { DonateIcon, NftIcon } from '../../components/icons/Project'
+import Address from '../../components/functional/Address'
+import Tooltip from '../Tooltip'
+import { useState } from 'react'
+
+const Container = styled.div`
+    position: relative;
+    padding-left: 7%;
+`
 
 const Modal = styled(motion.div)`  
     position: relative;
     font-family: 'Montserrat';
-    height: 200px;
+    height: 250px;
     margin: 1%;
-    padding: 3%;
+    padding: 6%;
     width: 300px;
     background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-    border: 1px solid #3C3C3C;
+    border:  1px solid #3C3C3C;
     border-radius: 5px;
+    cursor: pointer;
     animation: fadeIn 0.5s;
+    ::-webkit-scrollbar {
+      width: 2px;
+    
+    }
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #9bffff;
+    }
     @keyframes fadeIn {
         0% {
         opacity: 0;
@@ -23,6 +45,12 @@ const Modal = styled(motion.div)`
     @media (min-width: 1750px){
         font-size: 1.3em;
     }
+`
+
+const ActModal = styled(Modal)`
+    border: 1px solid #005b00;
+    cursor: default;
+    animation: none;
 `
 
 const ModalTitle = styled.div`
@@ -62,16 +90,58 @@ const TypeBox = styled.div`
     bottom: 0;
 `
 
-const RewardCard = ({key, pledge, title, description, eligibleActual, type}) => {
-    return <Modal 
-        key={key}
-        whileHover={{ scale: 1.05 }} 
-        onClick={onClick}>
-    <Row><ModalTitle>{title}</ModalTitle><ModalAmount>${pledge}</ModalAmount></Row>
-    <ModalDesc>{description}</ModalDesc>
-    <NumberBox> {eligibleActual} of {cap} </NumberBox>
-    <TypeBox>{type === 'Donate' ? <BlockchainIcon width={30}/> : <StreamIcon width={30}/>}</TypeBox>
-</Modal>
+const NumberBox = styled.div`
+    position: absolute;
+    left: 5px;
+    font-size: 0.8em;
+    bottom: 10px;
+    font-family: 'Neucha';
+`
+
+const ToolBox = styled.div`
+    position: absolute;
+    top: -25px;
+`
+
+const RewardCard = ({key, pledge, title, description, eligibleActual, type, cap,onClick, nftId, tokenName, tokenAddress, selected}) => {
+    const [typeTooltip, setTypeTooltip] = useState(false)
+    
+    return <Container>
+           {typeTooltip &&   <ToolBox><Tooltip text={`Reward requires backing ${type} ${pledge} `} /></ToolBox>}
+    {selected !== title ?
+    <Modal 
+            key={key}
+            whileHover={{ scale: 1.05 }} 
+            onClick={onClick}
+            onMouseEnter={() => { setTypeTooltip(true) }} onMouseLeave={() => { setTypeTooltip(false) }}
+            >
+ 
+        <Row>
+            <ModalTitle>{title}</ModalTitle>
+            {nftId === 0 ? <ModalAmount>${pledge}</ModalAmount> : <NftIcon width={30}/>}
+        </Row>
+        <ModalDesc>{description}</ModalDesc>
+        {tokenName && tokenAddress && <ModalDesc><div>{tokenName}</div><Address address={tokenAddress}/></ModalDesc>}
+        <NumberBox> {eligibleActual} of {cap} </NumberBox>
+        <TypeBox>{type === 'Donate' ? <DonateIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
+    </Modal>
+    : 
+    <ActModal 
+            key={key}
+            onMouseEnter={() => { setTypeTooltip(true) }} onMouseLeave={() => { setTypeTooltip(false) }}
+            >
+        <Row>
+            <ModalTitle>{title}</ModalTitle>
+            {nftId === 0 ? <ModalAmount>${pledge}</ModalAmount> : <NftIcon width={30}/>}
+        </Row>
+        <ModalDesc>{description}</ModalDesc>
+        {tokenName && tokenAddress && <ModalDesc><div>{tokenName}</div><Address address={tokenAddress}/></ModalDesc>}
+        <NumberBox> {eligibleActual} of {cap} </NumberBox>
+        <TypeBox>{type === 'Donate' ? <DonateIcon width={30}/> : <MicrofundIcon width={30}/>}</TypeBox>
+    </ActModal>
+    } 
+
+</Container>
 }
 
 export default RewardCard 

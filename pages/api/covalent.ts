@@ -38,10 +38,10 @@ export const getLatestBlockHeight = async (chain: number) => {
 }
 
 // GET LOG EVENTS FOR A CONTRACT
-export const getLogEvents = async (startingBlock: number ,  chain: number) => {
+export const getLogEvents = async (startingBlock: number ,  chain: number, latest: number) => {
     try {
         console.log('passing in these params: ', polygonMumbaiChainId, eye_seek_contract_address, startingBlock);
-        console.log('covalent link with params:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=latest&key=${key}`)
+        console.log('covalent link with params:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`)
         console.log('link we are using for now:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`)
         const response = await axios.get(
             //Test Link w/ block height hardcoded

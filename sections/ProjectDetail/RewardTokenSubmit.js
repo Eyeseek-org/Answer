@@ -20,8 +20,10 @@ const ButtonBox = styled.div`
     justify-content: flex-end;
 `
 
-const RewardTokenSubmit = ({add, home, pid, tokenAddress, cap}) => {
+const RewardTokenSubmit = ({add, home, pid, tokenAddress, cap, tokenAmount}) => {
     const [ev, setEv] = useState(false)
+
+    var total = cap * tokenAmount
 
     const listened = async() => {
         await setEv(true)
@@ -39,20 +41,20 @@ const RewardTokenSubmit = ({add, home, pid, tokenAddress, cap}) => {
         once: true
       })
     
-    
+    // Total, Reward AMount
     const { config, error } = usePrepareContractWrite({
         address: add,
         abi: donation.abi,
         chainId: home,
         functionName: 'createTokenReward',
-        args: [pid, cap, cap, tokenAddress],
+        args: [pid, cap, total, tokenAddress],
     });
 
     const { write } = useContractWrite(config);
 
     return <Container>
         <ButtonBox>
-             <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={cap} />
+             <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} />
             <> <ButtonAlt text={'Submit'} onClick={()=>{handleSubmit()}}  />
              {error && <ErrText text={'Missing/Incorrect parameter'} />}</>
         </ButtonBox> 

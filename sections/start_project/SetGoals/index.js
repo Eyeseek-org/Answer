@@ -33,13 +33,14 @@ const octaAnim = {
 };
 
 const RenderBlockchain = () => {
-  const { appState, setAppState } = useApp();
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
-  const handleSwitchNetwork = async(c) => {
-    await switchNetwork(c)
-    await setAppState((prev) => ({ ...prev, pChain: c }));
+
+  /// TBD refactor condition, if user rejects metamask switch
+
+  const handleSwitchNetwork = async(chainId) => {
+    await switchNetwork(chainId)
   }
   
   return (
@@ -120,16 +121,21 @@ const RenderMilestones = () => {
 
 const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { pm1, pm1Desc, pType } = { ...appState };
+  const { pm1, pm1Desc, pType, pChain } = { ...appState };
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
-  const handleClick = () => {
-    setStep((prev) => (prev += 1));
-    setAppState((prev) => ({ ...prev }));
+  
+
+  const handleClick = async() => {
+    await setStep((prev) => (prev += 1));
+    await setAppState((prev) => ({ ...prev }));
     // If milestone 1 amount is greater than 0, we allow user to access reward & create project pages
     if (pm1 > 0) {
-      setAppState((prev) => ({ ...prev, stepLock: 4 }));
+      await setAppState((prev) => ({ ...prev, stepLock: 4}));
+    }
+    if (chain){
+      await setAppState((prev) => ({ ...prev, pChain: chain.id }));
     }
   };
 
@@ -166,7 +172,7 @@ const SetGoals = ({ setStep }) => {
           />
         </MilestoneContainer>
       </MainMilestoneContainer>
-        {pm1 < 1000 && <>At least 1 milestone is needed, $1000 minimum</>}
+        {pm1 < 1000 && <>$1000 is a minimum amount for the funding goal</>}
         <ButtonContainer>
           <NextButton onClick={handleBack}>Back</NextButton>
           {pm1 >= 1000 ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton>Next</DisButton>}

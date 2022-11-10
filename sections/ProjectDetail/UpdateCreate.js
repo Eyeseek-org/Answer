@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -9,6 +8,7 @@ import InputContainer from "../../components/form/InputContainer";
 import { NextButton } from "../start_project/Category/StyleWrapper";
 import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers'
 import { HTTPS_URL_REGEX } from '../../util/regex'
+import SuccessDisButton from '../../components/buttons/SuccessDisButton'
 
 const Description = styled.div`
   font-size: 1em;
@@ -37,6 +37,7 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const handleUpdate = async (oid) => {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Update`, {
+        'title': updateTitle,
         'url': url,
         'project': oid
       }, moralisApiConfig)
@@ -107,9 +108,9 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
             onChange={(e) => setUrl(e.target.value)}
             type={'text'}
           />
-          {!success && !error && !url !== 'URL example' && <NextButton onClick={() => { handleUpdate(objectId) }}>Sent update notification</NextButton>}
+          {!success && !error && !url !== 'URL example' && <NextButton onClick={() => { handleUpdate(objectId) }}>Send notification</NextButton>}
           {error && <NextButton onClick={() => { handleUpdate(objectId) }}>Technical error: Please try again later</NextButton>}
-          {success && <NextButton disabled>Success!</NextButton>}
+          {success && <SuccessDisButton width={'100%'} text='Success! Watchers were notified'></SuccessDisButton>}
         </MilestoneContainer>
       </MainMilestoneContainer>
     </RewardContainer>
