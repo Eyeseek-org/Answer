@@ -18,6 +18,8 @@ const StatsTable = ({pid, chain}) => {
 
     const [transactionLogs, setTransactionLogs] = useState([]);
     const [filteredTransactionLogs, setFilteredTransactionLogs] = useState([]);
+
+    const [explorer, setExplorer] = useState("")
     
     //ERC20 Logs
     const [erc20Logs, setErc20Logs] = useState([]);
@@ -111,7 +113,6 @@ const StatsTable = ({pid, chain}) => {
                         return (
                             <Row key={index}>
                                 {Object.keys(row).map((key, index) => {
-                                    console.log('key is',key)
                                     if (key != "fund_id") {
                                         if (key === "donator_address" || key === "owner") {
                                             return <AddressCell key={index}>
@@ -128,7 +129,7 @@ const StatsTable = ({pid, chain}) => {
                                         //if it's the tx hash, make it a link
                                         if (key === "txn_hash") {
                                             return <Cell key={index}>
-                                                <a href={`https://mumbai.polygonscan.com/tx/${row[key]}`} target="_blank" rel="noreferrer">
+                                                <a href={`${explorer}${row[key]}`} target="_blank" rel="noreferrer">
                                                     <ExpandIcon width={20} height={20}/>
                                                 </a>
                                             </Cell>
@@ -148,6 +149,24 @@ const StatsTable = ({pid, chain}) => {
 
     useEffect(() => {
         const getData = async () => {
+            console.log('chain is',chain)
+            // switch case to set explorer url based on which chain is passed in
+            switch(chain){
+                case 80001:
+                    setExplorer("https://mumbai.polygonscan.com/tx/")
+                    break;
+                case 97:
+                    setExplorer("https://testnet.bscscan.com/tx/")
+                    break;
+                case 4002:
+                    setExplorer("https://explorer.testnet.fantom.network/tx/")
+                    break;
+                default:
+                    setExplorer("https://mumbai.polygonscan.com/tx/")
+                    break;
+            }
+
+            
             //Grab latest block height to determine how many blocks to go back
             const latestBlockHeight = await getLatestBlockHeight(chain);
             console.log('latest blockheight',latestBlockHeight)
@@ -174,7 +193,6 @@ const StatsTable = ({pid, chain}) => {
             // setFilteredMicroCreatedLogs(filteredMicroCreatedLogs);
             setFilteredTransactionLogs(filteredTransactionLogs);
             setFilteredMicroCreatedLogs(filteredMicroCreatedLogs);
-            console.log('filtered micro created logs*************', filteredMicroCreatedLogs)
             setLoading(false);
         }
         getData();
