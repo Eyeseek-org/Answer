@@ -5,7 +5,6 @@ import Image from "next/image";
 import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from "wagmi";
 import axios from "axios";
 import Link from "next/link";
-import {BigNumber} from 'ethers'
 
 import SectionTitle from "../../../components/typography/SectionTitle";
 import { ButtonRow } from "../SetRewards/StyleWrapper";
@@ -21,7 +20,6 @@ import Eye10 from '../../../public/Eye10.png'
 import Rainbow from "../../../components/buttons/Rainbow";
 import { moralisApiConfig } from "../../../data/moralisApiConfig";
 import { GetFundingAddress } from "../../../components/functional/GetContractAddress";
-import ErrText from "../../../components/typography/ErrText";
 
 // Animation configs 
 const okAnim = {
@@ -64,7 +62,7 @@ const Create = ({ setStep }) => {
     const { appState } = useApp();
     const { address } = useAccount()
     const {chain} = useNetwork();
-    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, pChain, pSocial, pWeb, pm1Desc} = appState;
+    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, pChain} = appState;
     const [ev, setEv] = useState(false)
     const [apiError, setApiError] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -109,8 +107,6 @@ const Create = ({ setStep }) => {
         await setEv(true);
     }
 
-    // const fullValue = (pm1 * (10 ** 18));
-
     const { config, isError } = usePrepareContractWrite({
         address: add,
         abi: donation.abi,
@@ -120,7 +116,7 @@ const Create = ({ setStep }) => {
     })
 
 
-    const { write, error } = useContractWrite(config)
+    const { write } = useContractWrite(config)
 
     const handleContract = async () => { write?.() }
 
@@ -132,10 +128,6 @@ const Create = ({ setStep }) => {
                 "description": pDesc,
                 "category": category,
                 "subcategory": subcategory,
-                "urlProject": pSocial,
-                "urlSocials": pWeb,
-                "goal": pm1,
-                "descM": pm1Desc,
                 "type": pType,
                 "owner": address,
                 "state": pState,
@@ -193,12 +185,8 @@ const Create = ({ setStep }) => {
                         <SumItem><SumTitle>Funding type</SumTitle><SumValue>{pType}</SumValue></SumItem>
                         <SumItem><SumTitle>Title</SumTitle><SumValue>{pTitle}</SumValue></SumItem>
                         <SumItem><SumTitle>Category</SumTitle><SumValue>{category}-{subcategory}</SumValue></SumItem>
-                        <SumItem><SumTitle>Destimation chain</SumTitle><SumValue>
-                                {pChain === 80001 && <>Mumbai</>}
-                                {pChain === 97 && <>BNB Testnet</>}
-                                {pChain === 4002 && <>Fantom testnet</>}
-                            </SumValue></SumItem>
-                        <SumItem><SumTitle>Funding goal</SumTitle><SumValue>${pm1}</SumValue></SumItem>
+                        <SumItem><SumTitle>Destimation chain</SumTitle><SumValue>Mumbai</SumValue></SumItem>
+                        <SumItem><SumTitle>Funding goal</SumTitle><SumValue>{pm1} USDC</SumValue></SumItem>
                         <SumItem><SumTitle>Owner</SumTitle><SumValue> {address}</SumValue></SumItem>
                     </SumHalf>
                     <EyeBox><Image src={Eye10} alt='Eye' width={'200px'}  height={'150px'}/> </EyeBox>
@@ -229,11 +217,7 @@ const Create = ({ setStep }) => {
                         <LogRow><InfoTag>Info</InfoTag> Project was initiated</LogRow>
                         <LogRow><InfoTag>Info</InfoTag> ...Waiting for blockchain confirmation</LogRow>
                         {!ev && <LogRow>Please stay on page until transactions is confirmed</LogRow>}
-                        <LogRow><div>Blockchain status:
-                            {error && <><ErrText text='Transaction failed or rejected' />
-                                <NextButton onClick={handleSubmit}>Retry</NextButton>
-                            </>}
-                        </div>
+                        <LogRow><div>Blockchain status:</div>
                             {ev && <Ok>Success: Transaction was processed</Ok>} {apiError && <Err>Failed: Transaction failed on chain</Err>}
                         </LogRow>
                         {ev && <LogRow><InfoTag>Success</InfoTag> Your project is created on <Link href={`/project/${oid}`}><Ref> this page</Ref></Link></LogRow>}
