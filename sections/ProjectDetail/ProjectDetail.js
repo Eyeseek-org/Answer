@@ -14,7 +14,7 @@ import donation from '../../abi/donation.json'
 import ProjectDetailRight from "./ProjectDetailRight"
 import ProjectDescription from "./ProjectDescription"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
-import { GetFundingAddress } from "../../components/functional/GetContractAddress"
+import { GetProjectFundingAddress } from "../../components/functional/GetContractAddress"
 import { moralisApiConfig } from "../../data/moralisApiConfig"
 import polygon from "../../public/icons/donate/polygon.png"
 import bnb from "../../public/icons/donate/bnb.png"
@@ -151,7 +151,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chainId))
+    setAdd(GetProjectFundingAddress(chainId))
   },[])
 
   const { config } = usePrepareContractWrite({

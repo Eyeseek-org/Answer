@@ -217,32 +217,32 @@ const Donate: NextPage = () => {
 
   const handleSwitchCurrency = (c: string) => {
     if (c === 'USDC'){
-      if (chain && chain.id === 80001){
+      if (homechain === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC)
-      } else if (chain && chain.id === 97){
+      } else if (homechain === 97){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB)
-      } else if (chain && chain.id === 4002){
+      } else if (homechain === 4002){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM)
       }
       setCurrency('USDC')
       setCurr(1)
     } else if (c === 'USDT'){
       console.log(curr)
-      if (chain && chain.id === 80001){
+      if (homechain === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT)
-      } else if (chain && chain.id === 97){
+      } else if (homechain === 97){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB)
-      } else if (chain && chain.id === 4002){
+      } else if (homechain === 4002){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM)
       }
       setCurrency('USDT')
       setCurr(2)
     } else if (c === 'DAI'){
-      if (chain && chain.id === 80001){
+      if (homechain === 80001){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI)
-      } else if (chain && chain.id === 97){
+      } else if (homechain === 97){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB)
-      } else if (chain && chain.id === 4002){
+      } else if (homechain === 4002){
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM)
       }
       setCurrency('DAI')

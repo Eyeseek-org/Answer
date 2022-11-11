@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ethers } from "ethers";
+import { GetProjectFundingAddress } from "../../components/functional/GetContractAddress";
 
 //Ethers functions
 const utils = ethers.utils;
@@ -7,14 +8,6 @@ const utils = ethers.utils;
 // covalent key
 const key = process.env.NEXT_PUBLIC_COVALENT;
 
-// contract addresses
-const eye_seek_contract_address = '0x37D38734253472Efc971dD4da1C107E630DE08AC';
-
-// Chain : ChainID
-const polygonChainId = 137;
-const polygonMumbaiChainId = 80001;
-const bnbChainId = 56;
-const fantomChainId = 250;
 
 // GET TOPIC HASHES (Events: Micro Created, Donation)
 const micro_created_sig = 'MicroCreated(address,uint256,uint256,uint256)'; //0x982b08aefe79525577026fc60aa3d85b642f6336a5078e50f2836434719770a5
@@ -39,10 +32,10 @@ export const getLatestBlockHeight = async (chain: number) => {
 
 // GET LOG EVENTS FOR A CONTRACT
 export const getLogEvents = async (startingBlock: number ,  chain: number, latest: number) => {
+    const eye_seek_contract_address = GetProjectFundingAddress(chain);
     try {
-        console.log('passing in these params: ', polygonMumbaiChainId, eye_seek_contract_address, startingBlock);
-        console.log('covalent link with params:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`)
-        console.log('link we are using for now:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`)
+       // console.log('covalent link with params:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`)
+       // console.log('link we are using for now:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`)
         const response = await axios.get(
             //Test Link w/ block height hardcoded
             `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`
@@ -57,7 +50,7 @@ export const getLogEvents = async (startingBlock: number ,  chain: number, lates
         // Parse Data for Donation Events
         if(response.data.data.items[i].raw_log_topics[0] === donated_hash) {
 
-            const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256','uint256','uint256','uint256'], response.data.data.items[i].raw_log_data);
+            const decoded_raw_log_data = utils.defaultAbiCoder.decode(['uint256','uint256','uint256','uint256','uint256'], response.data.data.items[i].raw_log_data);
             const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
             const donator_address = decoded_raw_log_data[0]._hex;
             const amount = parseInt(decoded_raw_log_data[1]._hex);
@@ -105,20 +98,6 @@ export const getLogEvents = async (startingBlock: number ,  chain: number, lates
         micro_created_log_data
     }
 
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-// GET ERC20 TRANSFERS
-export const getERC20Transfers = async () => {
-    try {
-        const response = await axios.get(
-        //https://api.covalenthq.com/v1/80001/address/0xaf28cb0d9E045170E1642321B964740784E7dC64/transfers_v2/?&key=ckey_da302f1c19694bdbbab1f7ae1ce
-        `https://api.covalenthq.com/v1/${polygonMumbaiChainId}/address/${eye_seek_contract_address}/transfers_v2/?&key=${key}`
-        );
-        console.log('erc20 transfers: ', response);
-        return response
     } catch (error) {
         console.log(error);
     }

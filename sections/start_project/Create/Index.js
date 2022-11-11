@@ -80,6 +80,7 @@ const Create = ({ setStep }) => {
 
     useEffect (() => {
         setAdd(GetFundingAddress(chain))
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     },[])
 
     // Update project with PID retrieved from blockchain

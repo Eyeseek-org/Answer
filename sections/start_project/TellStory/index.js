@@ -1,5 +1,5 @@
-import {FormStyle, Mandatory, TellContainer} from "./StyleWrapper";
-import {useState} from 'react'
+import {FormStyle, TellContainer} from "./StyleWrapper";
+import {useState, useEffect} from 'react'
 import {useApp} from "../../utils/appContext";
 import {ButtonContainer, MainContainer, NextButton} from "../Category/StyleWrapper";
 import SectionTitle from "../../../components/typography/SectionTitle";
@@ -13,6 +13,11 @@ const TellStory = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { pTitle, pDesc, pWeb, pSocial } = { ...appState };
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
 
   const HTTPS_URL_REGEX = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
 

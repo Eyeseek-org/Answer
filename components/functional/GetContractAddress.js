@@ -30,6 +30,20 @@ export const GetProjectFundingAddress = (chain) => {
 }
 
 
+export const GetProjectTokenAddress = (chain) => {
+
+    if (chain === 80001){
+        return (process.env.NEXT_PUBLIC_AD_USDC)
+    } else if (chain === 97){
+        return (process.env.NEXT_PUBLIC_AD_USDC_BNB)
+    } else if (chain === 4002){
+        return (process.env.NEXT_PUBLIC_AD_USDC_FTM)
+    } else {
+        return (process.env.NEXT_PUBLIC_AD_USDC)
+    }
+
+}
+
 export const GetTokenAddress = (chain) => {
 
     if (chain && chain.id === 80001){
