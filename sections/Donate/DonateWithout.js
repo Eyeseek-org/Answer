@@ -44,7 +44,7 @@ const FormInfo = styled.div`
 
 const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, home, rid}) => {
     const [amountM, setAmountM] = useState(0);
-    const [amountD, setAmountD] = useState(1)
+    const [amountD, setAmountD] = useState(0)
 
     const [multi, setMulti] = useState("")
     const [conn, setConn] = useState("")
@@ -91,27 +91,23 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
         <InputRow
             id='directDonation'
             name='Donate'
-            min={1}
-            type='number'
+            min={0}
             placeholder='1000'
             onChange={handleChangeD}
             onBlur={formik.handleBlur}
             tooltip={'Multiplier represents the number of deployed microfunds by other users'}
             currency={currency}
-            formik={formik}
         />
         <CalcOutcome multi={multi} conn={conn} />
         <InputRow
             id="microfund"
             name="Create microfund"
-            min={1}
-            type="number"
+            min={0}
             placeholder="1000"
             onChange={handleChangeM}
             onBlur={formik.handleBlur}
             tooltip={'Anytime someone donates, the same amount is charged from all active microfunds until it is depleted. Non-depleted amount will be returned to you upon project finish.'}
             currency={currency}
-            formik={formik}
         />
     </FormWrapper>
         <WarningCard title={'Beware of scammers!'} description={'TBD'} />

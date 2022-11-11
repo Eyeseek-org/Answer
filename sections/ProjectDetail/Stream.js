@@ -328,12 +328,12 @@ const Stream = ({ objectId, recipient }) => {
               <RowRightItem>Value</RowRightItem>
             </ValueRow>
             <ButtonBox>
-             {address && recipient !== address ? <ButtonAlt width={'100%'} text='Start stream!'  /> : <ButtonAlt width={'100%'} text='You cannot stream to your own project' />}
+             {address && recipient !== address ? <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  /> : <></>}
             </ButtonBox>
           </> : <> 
           <Title><Subtitle text={'No active stream found'} /></Title>
               <ButtonBox>
-                  <ButtonAlt width={'100%'} text='Start stream!'/>
+                  <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />
               </ButtonBox>
               </>
           }

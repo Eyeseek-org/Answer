@@ -74,14 +74,14 @@ const InfoBox = styled.div`
   }
 `
 
-const InputRow = ({ id, name, min, type, placeholder,onChange, onBlur,tooltip,currency, formik }) => {
+const InputRow = ({ id, name, min, placeholder,onChange, onBlur,tooltip,currency }) => {
     const [isTooltip, setIsTooltip] = useState()
 
     return    <InputWrapper>
     {isTooltip && <Tooltip text={tooltip}/>}
     <DonationRow> <div>{name}</div> <InfoBox onMouseEnter={() => { setIsTooltip(true) }} onMouseLeave={() => { setIsTooltip(false) }}> <InfoIcon width={15} /></InfoBox></DonationRow>
     <InputInnerWrapper>
-        <Input id={id} name={name} min={min} type={type} placeholder={placeholder} onChange={onChange} onBlur={onBlur} />
+        <Input id={id} name={name} min={min} type="text" placeholder={placeholder} onChange={onChange} onBlur={onBlur} inputMode="numeric"  />
         <InputAmount>{currency}</InputAmount>
     </InputInnerWrapper>
 </InputWrapper>

@@ -19,7 +19,7 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
 import RewardNftSubmit from './RewardNftSubmit';
 import RewardTokenSubmit from './RewardTokenSubmit';
-import { GetFundingAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
 import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
@@ -63,7 +63,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
 
     useEffect (() => {
-        setAdd(GetFundingAddress(home))
+        setAdd(GetProjectFundingAddress(home))
     },[])
     
     const handleProjectNft = async (oid) => {

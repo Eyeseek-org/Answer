@@ -14,7 +14,7 @@ import donation from '../../abi/donation.json'
 import ProjectDetailRight from "./ProjectDetailRight"
 import ProjectDescription from "./ProjectDescription"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
-import { GetFundingAddress } from "../../components/functional/GetContractAddress"
+import { GetProjectFundingAddress } from "../../components/functional/GetContractAddress"
 import { moralisApiConfig } from "../../data/moralisApiConfig"
 import polygon from "../../public/icons/donate/polygon.png"
 import bnb from "../../public/icons/donate/bnb.png"
@@ -148,17 +148,17 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [canceled, setCanceled] = useState(false)
   const [apiError, setApiError] = useState(false)
 
-  const {chain} = useNetwork()
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chain))
+    setAdd(GetProjectFundingAddress(chainId))
   },[])
 
   const { config } = usePrepareContractWrite({
     address: add,
     abi: donation.abi,
     functionName: 'cancelFund',
+    chainId: chainId,
     args: [pid],
   })
 
@@ -175,6 +175,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   useContractEvent({
     address: add,
     abi: donation.abi,
+    chainId: chainId,
     eventName: 'Cancelled',
     listener: () => useEv(e),
     once: true
@@ -269,7 +270,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
             {category && <>
               {category === 'Art' && <Tag tag={category} color={"#7E0000"} />}
               {category === 'Games' && <Tag tag={category} color={"#7E3D00"} />}
-              {category === 'Open_Source' && <Tag tag={category} color={"#7C007E"} />}
+              {category === 'OpenSource' && <Tag tag={category} color={"#7C007E"} />}
               {category === 'Science' && <Tag tag={category} color={"#00502E"} />}
               {category === 'Technology' && <Tag tag={category} color={"#2B2B2B"} />}
               {category === 'Web3' && <Tag tag={category} color={"#687900"} />}

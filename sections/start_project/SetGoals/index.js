@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import { useApp } from "../../utils/appContext";
 import InputContainer from '../../../components/form/InputContainer'
 import { TellContainer } from "../TellStory/StyleWrapper";
@@ -126,6 +127,9 @@ const SetGoals = ({ setStep }) => {
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   
 
   const handleClick = async() => {
@@ -158,7 +162,7 @@ const SetGoals = ({ setStep }) => {
 
         <MilestoneContainer>
           <InputContainer 
-            label={'Amount'} 
+            label={'Amount ($)'} 
             placeholder={'Enter the amount'} 
             description={'Set amount to reach the funding milestone'} 
             onChange={(e) => setAppState((prev) => ({ ...prev, pm1: e.target.value }))}

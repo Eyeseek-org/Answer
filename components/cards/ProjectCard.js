@@ -6,7 +6,7 @@ import Tag from "../../components/typography/Tag"
 import donation from '../../abi/donation.json'
 import { useContractRead } from 'wagmi'
 import { BlockchainIcon, StreamIcon } from '../icons/Landing'
-import {GetFundingAddress} from '../functional/GetContractAddress'
+import {GetProjectFundingAddress} from '../functional/GetContractAddress'
 import { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
 
@@ -116,6 +116,7 @@ const ImagePart = styled.div`
     display: flex;
     justify-content: center;
     margin-bottom: 4%;
+    min-height: 200px;
 `
 
 
@@ -128,18 +129,19 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     const [erc20Tooltip, setErc20Tooltip] = useState(false)
 
     useEffect(() => {
-        setAdd(GetFundingAddress(chainId))
+        const res = GetProjectFundingAddress(chainId)
+        setAdd(res)
     }, [])
 
     let bal = 'n/a';
     let days = 'n/a';
     let max = 'n/a';
-
+    
     const funds = useContractRead({
         address: add,
         abi: donation.abi,
         functionName: 'funds',
-        chain: chainId,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })
@@ -153,7 +155,6 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         const diffInTime = test.getTime() - today.getTime()
         const diffInDays = diffInTime / (1000 * 3600 * 24);
         days = Math.trunc(diffInDays)
-        console.log(days)
         max = funds.data.level1.toString()
     }
 
@@ -196,7 +197,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <div>{category && <>
               {category === 'Art' && <Tag tag={category} color={"#7E0000"} />}
               {category === 'Games' && <Tag tag={category} color={"#7E3D00"} />}
-              {category === 'Open_Source' && <Tag tag={category} color={"#7C007E"} />}
+              {category === 'OpenSource' && <Tag tag={category} color={"#7C007E"} />}
               {category === 'Science' && <Tag tag={category} color={"#00502E"} />}
               {category === 'Technology' && <Tag tag={category} color={"#2B2B2B"} />}
               {category === 'Web3' && <Tag tag={category} color={"#687900"} />}
@@ -205,7 +206,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <div>{subcategory && <Tag tag={subcategory} color={"#035201"} />}</div>
                 </Row>
                 <Amount>
-                    {bal} / {max}
+                  {pType === 'Standard' ? <>{bal} / {max}</> : <></>}
                 </Amount>
             </Row>
             <Row>

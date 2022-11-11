@@ -37,7 +37,6 @@ const RewardList = ({oid, chain}) => {
     // Extract image json.image, display it 
 
     const getRewards = async () => {
-        setLoading(true)
         try {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${oid}"}`,moralisApiConfig)
             await setTokenRewards(res.data.results), 
@@ -53,6 +52,7 @@ const RewardList = ({oid, chain}) => {
     }
 
     useEffect(() => {
+        setLoading(true)
         getRewards()
     }, [])
 

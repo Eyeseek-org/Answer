@@ -28,6 +28,7 @@ const ApprovedComponent = ({address}) => {
     const {data} = useContractRead({
         address: tokenAdd,
         abi: token.abi,
+        chainId: chain.id,
         functionName: 'allowance',
         args: [address, add],
         watch: true,

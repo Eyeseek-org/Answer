@@ -16,8 +16,8 @@ const Category = ({ setStep }) => {
     setAppState((prev) => ({ ...prev, isNext: subcategory !== undefined }));
   }, []);
 
-  const categoryKey = Object.keys(categories).map((cat) => ({ label: cat, value: cat }));
-  const subcategoryKey = categories[category] && categories[category].map((cat) => ({ label: cat, value: cat }));
+  const categoryKey = Object.keys(categories).sort().map((cat) => ({ label: cat, value: cat }));
+  const subcategoryKey = categories[category] && categories[category].sort().map((cat) => ({ label: cat, value: cat }));
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));

@@ -11,7 +11,7 @@ import donation from "../../abi/donation.json";
 import token from "../../abi/token.json";
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetTokenAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectTokenAddress } from '../../components/functional/GetContractAddress';
 
 const DonateButtonWrapper = styled.div`
   position: relative;
@@ -52,7 +52,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
     const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_TOKEN)
 
     useEffect(() => {
-        setTokenAdd(GetTokenAddress(home))
+        setTokenAdd(GetProjectTokenAddress(home))
     },[])
 
     var all = 0;
@@ -146,7 +146,7 @@ const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, 
             <div>
                 {!success && (
                     <>
-                        {all < sum ? <Button text='Donate' width={'200px'} onClick={() => handleSubmit()}  error /> : <Button onClick={() => handleSubmit()} text='Donate' width={'200px'} />}
+                        {all && all < sum ? <Button text='Donate' width={'200px'} onClick={() => handleSubmit()}  error /> : <Button onClick={() => handleSubmit()} text='Donate' width={'200px'} />}
                     </>
                 )}{(!error && success) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
             </div>

@@ -1,6 +1,5 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useApp} from "../../utils/appContext";
-
 import SectionTitle from "../../../components/typography/SectionTitle";
 import {ButtonRow, IconBox, RewardContainer, RewardDesc, TabRow, TooltipBox, ButtonBox, RewardButton, RewardAction, Disclaimer, DisclaimerAdd} from "./StyleWrapper";
 import {MainContainer, NextButton} from "../Category/StyleWrapper";
@@ -21,6 +20,10 @@ const SetRewards = ({ setStep }) => {
   const [rewards, setRewards] = useState([])
   const [rewardsCounts, setRewardsCount] = useState(0);
   const [donationTooltip, setDonationTooltip] = useState(false)
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));

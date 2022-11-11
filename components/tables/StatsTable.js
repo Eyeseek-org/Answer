@@ -11,8 +11,6 @@ import Subtitle from "../typography/Subtitle"
 
 import { ExpandIcon } from '../icons/Notifications'
 
-import { useBlockNumber } from 'wagmi'
-
 
 const StatsTable = ({pid, chain}) => {
     const [loading, setLoading] = useState(true)
@@ -25,10 +23,6 @@ const StatsTable = ({pid, chain}) => {
     //Explorer State for Txn Display
     const [explorer, setExplorer] = useState("")
 
-
-    const blockNumber = useBlockNumber({
-        chainId: chain,
-      })
 
     const Container = styled.div`
         padding-bottom: 2%;
@@ -170,14 +164,11 @@ const StatsTable = ({pid, chain}) => {
             //Grab latest block height to determine how many blocks to go back
             const latestBlockHeight = await getLatestBlockHeight(chain);
 
-            // TBD I guess I broke the parsing by changing the event structure 
             // Covalent goes back 999 blocks, so we set the starting block back 999
-            const startingBlock = blockNumber - 999;
-            console.log('latest blockheight',blockNumber)
-            console.log('get blockheight',latestBlockHeight)
+            const startingBlock = latestBlockHeight - 999;
 
             // Get all Log Events and then sort them into two event categories, MicroCreated and Transaction
-            const logEvents = await getLogEvents(startingBlock, chain, blockNumber);
+            const logEvents = await getLogEvents(startingBlock, chain, latestBlockHeight);
             const microCreatedEvents = logEvents.micro_created_log_data;
             const transactionEvents = logEvents.total_txn_log_data;
             setMicroCreatedLogs(microCreatedEvents);
@@ -207,7 +198,7 @@ const StatsTable = ({pid, chain}) => {
             {loading && <Loading />}
             {!loading && filteredTransactionLogs.length > 0 && mapDataToTable(filteredTransactionLogs)}
             {!loading && filteredTransactionLogs.length === 0 && <p>No transactions have been made in last 999 blocks</p>}
-            <Sub><Subtitle text='Microfunds'/></Sub>
+            <Sub><Subtitle text='Deployed Microfunds'/></Sub>
             {!loading && filteredMicroCreatedLogs.length > 0 && mapDataToTable(filteredMicroCreatedLogs)}
             {!loading && filteredMicroCreatedLogs.length === 0 && <p>No microfunds created in last 999 blocks</p>}
         </Container></>

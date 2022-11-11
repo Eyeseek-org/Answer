@@ -13,8 +13,8 @@ export const InactiveImage = styled.img`
 
 const ImageSelect = ({ active, logo, onClick }) => {
 
-  if (active) return <Image src={logo} onClick={onClick} />;
-  return <InactiveImage src={logo} onClick={onClick} />;
+  if (active) return <Image src={logo} onClick={onClick} alt="icon" />;
+  return <InactiveImage src={logo} onClick={onClick} alt="icon" />;
 };
 
 export default ImageSelect;
