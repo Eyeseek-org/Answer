@@ -122,7 +122,7 @@ const RenderMilestones = () => {
 
 const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
-  const { pm1, pm1Desc, pType, pChain } = { ...appState };
+  const { pm1, pType } = { ...appState };
   const { chain } = useNetwork()
   const {switchNetwork} = useSwitchNetwork();
 

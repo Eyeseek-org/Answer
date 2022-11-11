@@ -1,5 +1,6 @@
+import {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import {useBalance} from 'wagmi'
+import {useNetwork, useBalance} from 'wagmi'
 import Amount from "./Amount";
 
 const Container = styled.div`
@@ -9,14 +10,24 @@ const Container = styled.div`
     font-family: 'Gemunu Libre';
 `
 const BalanceComponent = ({token, address}) => {
+    const [ch, setCh] = useState(80001)
+    const {chain} = useNetwork()
+
+    useEffect(() => {
+        if (chain){
+            setCh(chain.id)
+        }
+    }, [])
+
 
     const {data} = useBalance({
         addressOrName: address,
-        token: token
+        token: token,
+        chainId: ch
       })
 
     return <Container>
-        <>Balance: <Amount value={data?.formatted} /> {data?.symbol}</>
+        <>Balance:<Amount value={data?.formatted} /> {data?.symbol}</>
     </Container>
 }
 

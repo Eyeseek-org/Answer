@@ -120,7 +120,7 @@ const ImagePart = styled.div`
 
 
 const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chainId, hasFungible, hasNft }) => {
-    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+    const [add, setAdd] = useState()
     const [chainTooltip, setChainTooltip] = useState(false)
     const [streamTypeTooltip, setStreamTypeTooltip] = useState(false)
     const [standardTypeTooltip, setStandardTypeTooltip] = useState(false)
@@ -159,6 +159,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         <Container
             whileHover={{ scale: 1.05 }} 
         >
+
             {chainTooltip && <Tooltip text={<>Project chain: 
                 {chainId === 80001 && <> Polygon Mumbai</>}
                 {chainId === 97 && <> BNB Chain testnet</>}
@@ -176,7 +177,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <IconWrapper onMouseEnter={() => { setChainTooltip(true) }} onMouseLeave={() => { setChainTooltip(false) }}>
                         {chainId === 80001 && <><Image src={polygon} alt={'matic'} width={30} height={30}/> </>}
                         {chainId === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
-                        {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
+                        {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={30} height={30}/></>}
                       </IconWrapper>
               {hasFungible && <IconWrapper onMouseEnter={() => { setErc20Tooltip(true) }} onMouseLeave={() => { setErc20Tooltip(false) }}>
                     <Erc20Icon width={50} height={70} />

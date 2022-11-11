@@ -96,6 +96,7 @@ const Project: NextPage = () => {
       {project ?  <>
     {mode === 'Overview' &&   <ProjectDetail 
           description={project.description}  title={project.title} category={project.category} subcategory={project.subcategory} 
+          descM={project.descM}
           imageUrl={project.imageUrl} 
           bookmarks={project.bookmarks}
           verified={project.verified}

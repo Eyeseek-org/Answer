@@ -194,7 +194,7 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
         {pType !== 'Stream' ?
         <div>
             <Row title={<Balances/>} desc={`pledged of ${max} goal`} color="#00FFA3" right={<Bookmark objectId={objectId} bookmarks={bookmarks} />} />
-            <Row title={backing} desc={<Link href={`/stats/${objectId}`}><Backers>backers</Backers></Link>} 
+            <Row title={backing} desc={"backers"} 
             color="white" />
             <Row title={microInvolved} desc={`microfunds active`} color="white" />
             <FlexRow>

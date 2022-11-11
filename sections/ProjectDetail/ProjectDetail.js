@@ -12,6 +12,7 @@ import Tooltip from '../../components/Tooltip'
 import { CanceledTypo } from '../../components/icons/Typography'
 import donation from '../../abi/donation.json'
 import ProjectDetailRight from "./ProjectDetailRight"
+import ProjectDescription from "./ProjectDescription"
 import { BlockchainIcon, StreamIcon } from "../../components/icons/Landing"
 import { GetFundingAddress } from "../../components/functional/GetContractAddress"
 import { moralisApiConfig } from "../../data/moralisApiConfig"
@@ -134,7 +135,7 @@ const LeftTopTooltip = styled.div`
   top: 0;
 `
 
-const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chainId, urlSocial, urlProject }) => {
+const ProjectDetail = ({ objectId, pid, title, description, category, subcategory, imageUrl, bookmarks, verified, state, pType, owner, chainId, urlSocial, urlProject, descM }) => {
   const {address} = useAccount()
   const [cancelTooltip, setCancelTooltip] = useState(false)
   const [verifiedTooltip, setVerifiedTooltip] = useState(false)
@@ -238,7 +239,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
           <IconWrapper onMouseEnter={() => { setChainTooltip(true) }} onMouseLeave={() => { setChainTooltip(false) }}>
             {chainId === 80001 && <><Image src={polygon} alt={'matic'} width={30} height={30}/> </>}
             {chainId === 97 && <><Image src={bnb} alt={'bnb'} width={30} height={30}/></>}
-            {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={20} height={30}/></>}
+            {chainId === 4002 && <><Image src={ftm} alt={'ftm'} width={30} height={30}/></>}
           </IconWrapper>
 
         </ProjectType>
@@ -281,6 +282,8 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
         {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add} chainId={chainId}/> }
       </DetailBox>
     </Container>
+
+    <ProjectDescription  descM={descM}/>
   </>
 }
 
