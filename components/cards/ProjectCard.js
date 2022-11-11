@@ -6,7 +6,7 @@ import Tag from "../../components/typography/Tag"
 import donation from '../../abi/donation.json'
 import { useContractRead } from 'wagmi'
 import { BlockchainIcon, StreamIcon } from '../icons/Landing'
-import {GetFundingAddress} from '../functional/GetContractAddress'
+import {GetProjectFundingAddress} from '../functional/GetContractAddress'
 import { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
 
@@ -129,18 +129,19 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
     const [erc20Tooltip, setErc20Tooltip] = useState(false)
 
     useEffect(() => {
-        setAdd(GetFundingAddress(chainId))
+        const res = GetProjectFundingAddress(chainId)
+        setAdd(res)
     }, [])
 
     let bal = 'n/a';
     let days = 'n/a';
     let max = 'n/a';
-
+    
     const funds = useContractRead({
         address: add,
         abi: donation.abi,
         functionName: 'funds',
-        chain: chainId,
+        chainId: chainId,
         args: [pid],
         watch: false,
     })

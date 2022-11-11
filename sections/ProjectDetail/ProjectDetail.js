@@ -148,17 +148,17 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   const [canceled, setCanceled] = useState(false)
   const [apiError, setApiError] = useState(false)
 
-  const {chain} = useNetwork()
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chain))
+    setAdd(GetFundingAddress(chainId))
   },[])
 
   const { config } = usePrepareContractWrite({
     address: add,
     abi: donation.abi,
     functionName: 'cancelFund',
+    chainId: chainId,
     args: [pid],
   })
 
@@ -175,6 +175,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
   useContractEvent({
     address: add,
     abi: donation.abi,
+    chainId: chainId,
     eventName: 'Cancelled',
     listener: () => useEv(e),
     once: true
