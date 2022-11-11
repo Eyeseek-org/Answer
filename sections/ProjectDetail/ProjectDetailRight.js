@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import donation from '../../abi/donation.json'
 import { useContractRead, useAccount } from 'wagmi'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
@@ -206,9 +205,8 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
             </FlexRow>
         </div> : <Stream recipient={owner} objectId={objectId} />}
         <ButtonBox>
-        {pType === 'Standard' &&  <ButtonAlt width={'100%'} text="Fund it!" onClick={() => router.push(`/donate/${objectId}`)}/> 
-        }
-        {pType === 'Stream' && owner !== address && <ButtonAlt width={'100%'} text="Stream!!" />}
+        {pType === 'Standard' &&  <ButtonAlt width={'100%'} text="Fund it!" onClick={() => router.push(`/donate/${objectId}`)}/> }
+
         </ButtonBox>
 
     </RightPart>

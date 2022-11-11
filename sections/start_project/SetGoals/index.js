@@ -158,7 +158,7 @@ const SetGoals = ({ setStep }) => {
 
         <MilestoneContainer>
           <InputContainer 
-            label={'Amount'} 
+            label={'Amount ($)'} 
             placeholder={'Enter the amount'} 
             description={'Set amount to reach the funding milestone'} 
             onChange={(e) => setAppState((prev) => ({ ...prev, pm1: e.target.value }))}

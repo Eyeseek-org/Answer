@@ -38,7 +38,7 @@ const defaultProfile = {
         "Neuroscience": false,
         "Other": false,
     },
-    "Open_Source": {
+    "OpenSource": {
         "AI": false,
         "Big Data": false,
         "Cloud": false,

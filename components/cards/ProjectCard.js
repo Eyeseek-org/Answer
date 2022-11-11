@@ -116,6 +116,7 @@ const ImagePart = styled.div`
     display: flex;
     justify-content: center;
     margin-bottom: 4%;
+    min-height: 200px;
 `
 
 
@@ -153,7 +154,6 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         const diffInTime = test.getTime() - today.getTime()
         const diffInDays = diffInTime / (1000 * 3600 * 24);
         days = Math.trunc(diffInDays)
-        console.log(days)
         max = funds.data.level1.toString()
     }
 
@@ -196,7 +196,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <div>{category && <>
               {category === 'Art' && <Tag tag={category} color={"#7E0000"} />}
               {category === 'Games' && <Tag tag={category} color={"#7E3D00"} />}
-              {category === 'Open_Source' && <Tag tag={category} color={"#7C007E"} />}
+              {category === 'OpenSource' && <Tag tag={category} color={"#7C007E"} />}
               {category === 'Science' && <Tag tag={category} color={"#00502E"} />}
               {category === 'Technology' && <Tag tag={category} color={"#2B2B2B"} />}
               {category === 'Web3' && <Tag tag={category} color={"#687900"} />}
@@ -205,7 +205,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
                     <div>{subcategory && <Tag tag={subcategory} color={"#035201"} />}</div>
                 </Row>
                 <Amount>
-                    {bal} / {max}
+                  {pType === 'Standard' ? <>{bal} / {max}</> : <></>}
                 </Amount>
             </Row>
             <Row>
