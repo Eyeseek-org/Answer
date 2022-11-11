@@ -3,7 +3,7 @@ Working repository for https://github.com/Eyeseek-org/funding, needed to fall ba
 <div>
   <div align="center">
     <h1 style="font-weight: bold">Eyeseek Funding</h1>
-    <img src="./public/project-logo.png" alt="Logo" style="width: 30%" />
+    <img src="./public/Logo.png" alt="Logo" style="width: 30%" />
     <br />
     <br />
     <p align="center">
