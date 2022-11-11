@@ -149,7 +149,11 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         /// TBD Fix deadline - Block timestamp - current deadline?
         const d = funds.data.deadline.toString()
         const test = new Date(d * 1000);
-        days = test.getDate()
+        const today = new Date();
+        const diffInTime = test.getTime() - today.getTime()
+        const diffInDays = diffInTime / (1000 * 3600 * 24);
+        days = Math.trunc(diffInDays)
+        console.log(days)
         max = funds.data.level1.toString()
     }
 

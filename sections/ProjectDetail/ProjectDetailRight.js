@@ -125,7 +125,10 @@ const ProjectDetailRight = ({pid, objectId, bookmarks, pType, owner, add, chainI
         // Get fund deadline
         const d = funds.data.deadline.toString()
         const test = new Date(d * 1000);
-        days = test.getDate()
+        const today = new Date();
+        const diffInTime = test.getTime() - today.getTime()
+        const diffInDays = diffInTime / (1000 * 3600 * 24);
+        days = Math.trunc(diffInDays)
 
         // Get fund cap
         max = funds.data.level1.toString()
