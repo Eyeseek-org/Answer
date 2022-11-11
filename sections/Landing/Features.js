@@ -93,21 +93,20 @@ const Features = () => {
                 }
             </Row>
             <Row>
-                {demoFee ? 
-                    <FeatureCard icon={<PiggyIcon width={55} />} title={Texts.title3} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>} onClick={() => { setDemoFee(!demoFee) }} /> :
-                    <FeatureCard icon={<PiggyIcon width={55} />} anim={<CostAnim width={200}/>}  title={Texts.title3} description={<FeeDescription />} onClick={() => { setDemoFee(!demoFee) }} />
-                }
-
+                 {demoReward ? 
+                    <FeatureCard icon={<RewardLandingIcon width={5}  />} title={Texts.title5} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>}  /> :
+                    <FeatureCard icon={<RewardLandingIcon width={55}  />} anim={<RewardAnim width={180}/>}  title={Texts.title5} description={<RewardDescription />} />
+                 }
                 {demoStream ? 
                     <FeatureCard icon={<StreamIcon width={55} />} title={Texts.title4} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>}  /> :
                     <FeatureCard icon={<StreamIcon width={55} />} anim={<StreamAnim width={200}/>}  title={Texts.title4} description={<StreamDescription />}  />
                 }
             </Row>
             <Row>
-                {demoReward ? 
-                    <FeatureCard icon={<RewardLandingIcon width={5}  />} title={Texts.title5} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>}  /> :
-                    <FeatureCard icon={<RewardLandingIcon width={55}  />} anim={<RewardAnim width={180}/>}  title={Texts.title5} description={<RewardDescription />} />
-                 }
+                {demoFee ? 
+                    <FeatureCard icon={<PiggyIcon width={55} />} title={Texts.title3} description={<Image unoptimized={true}  src={fee} width={500} height={300}/>} onClick={() => { setDemoFee(!demoFee) }} /> :
+                    <FeatureCard icon={<PiggyIcon width={55} />} anim={<CostAnim width={200}/>}  title={Texts.title3} description={<FeeDescription />} onClick={() => { setDemoFee(!demoFee) }} />
+                }
             </Row>
         </ContentBox>
     </Container>

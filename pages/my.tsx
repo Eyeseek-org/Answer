@@ -74,8 +74,7 @@ const My: NextPage = () => {
           />
       </TabBox>
     {/* @ts-ignore */}
-          {project && project.objectId ? <>     
-        {mode === 'Overview' && <ProjectDetail 
+          {project && project.objectId ? <>      {mode === 'Overview' && <ProjectDetail 
                 objectId={project.objectId} 
                 pid={project.pid} 
                 description={project.description} 
@@ -93,7 +92,7 @@ const My: NextPage = () => {
                  
                  
                  </>: <NotProject/>}
-            {mode === 'Rewards' && <><RewardList oid={project.objectId}/><RewardCreate objectId={project.objectId} bookmarks={project.rewards} home={project.chain} pid={project.pid}/></>}
+            {mode === 'Rewards' && <><RewardList oid={project.objectId} chain={project.chainId}/><RewardCreate objectId={project.objectId} bookmarks={project.rewards} home={project.chain} pid={project.pid}/></>}
             {mode === 'Updates' && <><UpdateOverview objectId={project.objectId}/><UpdateCreate objectId={project.objectId} bookmarks={project.bookmarks} title={project.title}/></>}
             {mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId}/>}
             {mode === 'History' &&  <LatestProjects my />}

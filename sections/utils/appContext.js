@@ -19,7 +19,7 @@ export const AppProvider = (props) => {
     pImageUrl: "",
     pChain: 80001,
     pm1: 0,
-    pmDesc: 'Some description',
+    pm1Desc: 'Some description',
     category: "Games",
     subcategory: "Board",
     // Step 1 is default, because step 0 is always prefilled

@@ -354,6 +354,7 @@ const Donate: NextPage = () => {
         {/* @ts-ignore */}
             <Tab o1={'No reward'} o2={'Limited rewards'} active={active} change1={()=>{handleNoReward()}} change2={()=>{handleOnReward()}} />       
       </DonateOption>
+           {/* @ts-ignore */}
       {showRewards ? <><RewardList oid={objectId}/>
           <DonateWrapper 
             amountM={rewMAmount} 
