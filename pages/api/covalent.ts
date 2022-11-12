@@ -14,7 +14,7 @@ const micro_created_sig = 'MicroCreated(address,uint256,uint256,uint256)'; //0x9
 const micro_created_topic = utils.toUtf8Bytes(micro_created_sig);
 const micro_created_hash = utils.keccak256(micro_created_topic);
 
-const donated_sig = 'Donated(address,uint256,uint256,uint256)'; //0x8d09c6745838fd32e92a7aec9e4c21f8fcc0ddf4300881dcffdbf060ba8bcff2
+const donated_sig = 'Donated(address,uint256,uint256,uint256,uint256)'; //0x8d09c6745838fd32e92a7aec9e4c21f8fcc0ddf4300881dcffdbf060ba8bcff2
 const donated_topic = utils.toUtf8Bytes(donated_sig);
 const donated_hash = utils.keccak256(donated_topic);
 
@@ -56,6 +56,7 @@ export const getLogEvents = async (startingBlock: number ,  chain: number, lates
             const amount = parseInt(decoded_raw_log_data[1]._hex);
             const fund_id = parseInt(decoded_raw_log_data[2]._hex);
             const currency_id = parseInt(decoded_raw_log_data[3]._hex);
+            const drainedMicro = parseInt(decoded_raw_log_data[4]._hex);
             const txn_hash = response.data.data.items[i].tx_hash;
 
             total_txn_log_data.push({
@@ -64,6 +65,7 @@ export const getLogEvents = async (startingBlock: number ,  chain: number, lates
                 "currency_id" : currency_id,
                 "date" : date,
                 "fund_id" : fund_id,
+                "drained" : drainedMicro,
                 "txn_hash" : txn_hash
             });
         }
