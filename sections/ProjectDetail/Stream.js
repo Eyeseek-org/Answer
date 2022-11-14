@@ -130,6 +130,9 @@ const Stream = ({ objectId, recipient }) => {
   const [newStream, setNewStream] = useState(false)
   const [displayRate, setDisplayRate] = useState(50)
 
+
+  // Maybe rather call on backend - Aggregate automations 
+
   const getFlowData = async () => {
     // Key service to retrieve current deposit 
     const sf = await Framework.create({
@@ -148,12 +151,10 @@ const Stream = ({ objectId, recipient }) => {
         receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
         providerOrSigner: provider
       })
-      console.log(flow)
       if (flow.flowRate !== '0') {
+        setStreamFound(true)
         setDeposit(flow.deposit)
         setOwedDeposit(flow.owedDeposit)
-        console.log(deposit)
-        console.log(owedDeposit)
         setFlowRate(flow.flowRate)
       }
     } catch (err) {
@@ -168,7 +169,7 @@ const Stream = ({ objectId, recipient }) => {
   const addStreamState = async (oid) => {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
-        'project': oid,
+        'projectId': oid,
         'flowRate': flowRate,
         'owner': "0xcfA132E353cB4E398080B9700609bb008eceB125",
         'isActive': true,
@@ -182,6 +183,7 @@ const Stream = ({ objectId, recipient }) => {
   }
 
   const getStreamState = async (oid) => {
+    await getFlowData();
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream?where={"projectId":"${oid}", "isActive": true }`, moralisApiConfig)
       if (res.data.results.length > 0) {
@@ -228,6 +230,7 @@ const Stream = ({ objectId, recipient }) => {
       chainId: 80001
     })
 
+
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
     const amount = flowRate.toString();
@@ -239,8 +242,7 @@ const Stream = ({ objectId, recipient }) => {
         superToken: DAIx
       });
 
-      const result = await createFlowOperation.exec(signer);
-      console.log("Success" + result);
+      await createFlowOperation.exec(signer);
       await addStreamState(objectId)
       setApiError(false)
       await setNewStream(false)
