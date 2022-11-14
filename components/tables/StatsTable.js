@@ -45,6 +45,8 @@ const StatsTable = ({pid, chain}) => {
         border: none;
         text-align: center;
         background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+        box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
+        margin-bottom: 2%;
     `
     const Header = styled.th`
         border: none;

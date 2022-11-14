@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components';
 import {useContractEvent} from 'wagmi'
+import {ethers} from 'ethers'
 import { TabRow, TooltipBox, IconBox } from "../start_project/SetRewards/StyleWrapper";
 import donation from "../../abi/donation.json"
 import InputContainer from "../../components/form/InputContainer";
@@ -23,6 +24,7 @@ import { GetProjectFundingAddress } from '../../components/functional/GetContrac
 import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
+import { G, R } from '../../components/typography/ColoredTexts';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -57,6 +59,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     const [nftId, setNftId] = useState(0)
     const [nftType, setNftType] = useState(false)
     const [rewardId, setRewardId] = useState(0)
+    const [validAddress, setValidAddress] = useState(false)
  
     const [apiError, setApiError] = useState(false)
 
@@ -169,6 +172,17 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
         await handleSubmit(objectId)
       }
 
+    const handleAddressChange = async (e) => {
+        const add = ethers.utils.isAddress(e.target.value) 
+        if (add) {
+            await setTokenAddress(e.target.value)
+            setValidAddress(true)
+        } else {
+            setValidAddress(false)
+        }
+        
+    }
+
     return <MainContainer>
         <SectionTitle title='Create new reward' subtitle='Add a new reward to your project' />
         <RewardContainer>
@@ -243,8 +257,10 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                    {tokenType !== 'Classic'  && <InputContainer
                         label={'Token address'}
                         placeholder={process.env.NEXT_PUBLIC_AD_TOKEN}
-                        onChange={(e) => setTokenAddress(e.target.value)}
-                        description={'Contract address of the locked token'}
+                        onChange={(e) => handleAddressChange(e)}
+                        description={<Row>Contract address of the locked token - 
+                            {!validAddress && tokenType !== 'Classic' ? <R>Token address is not valid</R> : <G>Token address is valid</G>}
+                        </Row>}
                         type={'text'}
                     />}
                     {tokenType === 'ERC20' && <InputContainer
