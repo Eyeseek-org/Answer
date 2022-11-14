@@ -5,7 +5,7 @@ const StreamCounter = ({startValue, endValue}) => {
     const endValueNumber = parseInt(endValue);
     const [counter, setCounter] = useState(startValueNumber);
 
-    const cutCounter = counter.toFixed(8);
+    const cutCounter = counter.toFixed(6);
 
     const isIncreasing = startValueNumber < endValueNumber;
 

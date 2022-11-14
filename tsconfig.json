@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "components/tables/StatsTable.js", "components/tables/StreamTable.js"  ],
   "exclude": [
     "node_modules"
   ]

@@ -12,6 +12,7 @@
     "@axelar-network/axelarjs-sdk": "^0.11.6",
     "@rainbow-me/rainbowkit": "^0.7.2",
     "@superfluid-finance/sdk-core": "^0.5.7",
+    "@tanstack/react-table": "^8.5.27",
     "@types/styled-components": "^5.1.26",
     "@walletconnect/web3-provider": "^1.8.0",
     "@web3auth/web3auth": "^2.1.3",

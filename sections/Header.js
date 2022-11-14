@@ -63,7 +63,7 @@ const ImageBox = styled.div`
 const MenuBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 75px;
+  gap: 50px;
 
   @media (max-width: 960px) {
     padding: 0;
@@ -134,7 +134,8 @@ const Header = () => {
     { title: "Discover", url: "/discover" },
     { title: "Start a project", url: "/startproject" },
     { title: "FAQ", url: "/faq" },
-    { title: "My projects", url: "/my" },
+    { title: "My", url: "/my" },
+    { title: "Stats", url: "/stats" },
   ]
 
   const handleNotiWindow = (b) => {
