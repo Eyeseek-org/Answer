@@ -4,13 +4,6 @@ export const AppContext = createContext({});
 export const AppProvider = (props) => {
   const [appState, setAppState] = useState({
     milestones: [],
-    rewards: [{
-      title: "Godspeed",
-      description: "Jesus will smile on you",
-      amount: 100,
-      type: "Donate",  // OR Donate OR Stream // OR Microfund
-      cap: 10,
-    }],
     pTitle: "Default project title",
     pDesc: "",
     pWeb: "https://www.d3vlibrary.com",

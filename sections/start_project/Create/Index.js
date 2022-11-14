@@ -64,7 +64,7 @@ const Create = ({ setStep }) => {
     const { appState } = useApp();
     const { address } = useAccount()
     const {chain} = useNetwork();
-    const { pTitle, pDesc, category, subcategory, pm1, pType, rewards, pImageUrl, pChain, pSocial, pWeb, pm1Desc} = appState;
+    const { pTitle, pDesc, category, subcategory, pm1, pType, pImageUrl, pChain, pSocial, pWeb, pm1Desc} = appState;
     const [ev, setEv] = useState(false)
     const [apiError, setApiError] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -73,6 +73,8 @@ const Create = ({ setStep }) => {
     const [ready, setReady] = useState(false)
     const {switchNetwork} = useSwitchNetwork();
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
+
+    // TBD fill right half with something
 
     const handleBack = () => {
         setStep((prev) => (prev -= 1));
@@ -99,8 +101,7 @@ const Create = ({ setStep }) => {
     }
 
     // Event upon successful project creation on blockchain
-    // 1. Update state and project id (pid) as key between web2/web3
-    // 2. Activate rewards in the db
+    // Update state and project id (pid) as key between web2/web3
     const useEv = async(event) => {
         const pid = event - 1
         handleUpdateMoralis(pid); 
@@ -142,7 +143,6 @@ const Create = ({ setStep }) => {
                 "state": pState,
                 "chainId": pChain,
                 "bookmarks": [address], // Add owner to bookmark
-                "rewards": rewards,
                 "imageUrl": pImageUrl
             }, moralisApiConfig)
             setOid(res.data.objectId)
@@ -209,11 +209,7 @@ const Create = ({ setStep }) => {
                     </SumHalf>
                     <EyeBox><Image src={Eye10} alt='Eye' width={'200px'}  height={'150px'}/> </EyeBox>
                     <SumHalf align={'right'}>
-                       {rewards.length >= 1 && <SumItem><SumTitle>Reward #1</SumTitle><SumValue>{rewards[0].title} - ${rewards[0].amount} x{rewards[0].cap}</SumValue></SumItem>}
-                        {rewards.length >= 2 && <SumItem><SumTitle>Reward #2</SumTitle><SumValue>{rewards[1].title} - ${rewards[1].amount} x{rewards[1].cap}</SumValue></SumItem>}
-                        {rewards.length >= 3 && <SumItem><SumTitle>Reward #3</SumTitle><SumValue>{rewards[2].title} - ${rewards[2].amount} x{rewards[2].cap}</SumValue></SumItem>}
-                        {rewards.length >= 4 && <SumItem><SumTitle>Reward #4</SumTitle><SumValue>{rewards[3].title} - ${rewards[3].amount} x{rewards[3].cap}</SumValue></SumItem>}
-                        {rewards.length == 5 && <SumItem><SumTitle>Reward #5</SumTitle><SumValue>{rewards[4].title} - ${rewards[4].amount} x{rewards[4].cap}</SumValue></SumItem>}
+
                     </SumHalf>   
                     </SumRow>
                 </Summary> : <Rainbow/>}
