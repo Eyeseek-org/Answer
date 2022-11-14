@@ -1,5 +1,5 @@
-import {motion} from 'framer-motion'
-import styled from 'styled-components'
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
 const MyButton = styled(motion.button)`
   background: rgba(167, 255, 176, 0.3);
@@ -8,7 +8,7 @@ const MyButton = styled(motion.button)`
   box-sizing: border-box;
   color: white;
   display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   height: 40px;
@@ -33,20 +33,16 @@ const MyButton = styled(motion.button)`
   @media (min-width: 1580px) {
     font-size: 1em;
   }
-`
+`;
 
 const SuccessDisButton = ({ text, onClick, width }) => {
   return (
     <>
-      <MyButton     
-          whileHover={{ scale: 1.01 }} 
-          transition={{ type: "spring", stiffness: 500, damping: 3 }} 
-          onClick={onClick} width={width}
-        >
+      <MyButton whileHover={{ scale: 1.01 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }} onClick={onClick} width={width}>
         {text}
       </MyButton>
     </>
-  )
-}
+  );
+};
 
-export default SuccessDisButton
+export default SuccessDisButton;

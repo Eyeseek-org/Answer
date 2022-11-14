@@ -1,8 +1,8 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 
 const Box = styled.div`
   font-size: 3.4em;
-  font-family: "Gemunu Libre";
+  font-family: 'Gemunu Libre';
   font-style: normal;
   font-weight: 400;
   letter-spacing: 1px;
@@ -13,10 +13,10 @@ const Box = styled.div`
   @media (min-width: 1980px) {
     font-size: 4em;
   }
-`
+`;
 
 const Title = ({ text }) => {
-  return <Box>{text}</Box>
-}
+  return <Box>{text}</Box>;
+};
 
-export default Title
+export default Title;

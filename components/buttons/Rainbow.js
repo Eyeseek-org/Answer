@@ -1,6 +1,6 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import styled from 'styled-components'
-import { useMoralis } from "react-moralis";
+import styled from 'styled-components';
+import { useMoralis } from 'react-moralis';
 import Image from 'next/image';
 
 const ConnectBtn = styled.button`
@@ -10,53 +10,39 @@ const ConnectBtn = styled.button`
   border: none;
   font-size: 1em;
   color: black;
-  font-family: "Gemunu Libre", sans-serif;
+  font-family: 'Gemunu Libre', sans-serif;
   font-style: normal;
   cursor: pointer;
-  &:hover{
+  &:hover {
     opacity: 0.9;
   }
   @media (min-width: 1580px) {
     font-size: 1.2em;
   }
-`
+`;
 
 const Rainbow = () => {
-    
   const { authenticate, isAuthenticated } = useMoralis();
-    
+
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        authenticationStatus,
-        mounted,
-      }) => {
+      {({ account, chain, openAccountModal, openChainModal, openConnectModal, authenticationStatus, mounted }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
         const ready = mounted && authenticationStatus !== 'loading';
-        const auth = async() => {
-            await openConnectModal()
-            if (!isAuthenticated){
-                await authenticate()
-            }
-        }
+        const auth = async () => {
+          await openConnectModal();
+          if (!isAuthenticated) {
+            await authenticate();
+          }
+        };
 
-        const connected =
-          ready &&
-          account &&
-          chain &&
-          (!authenticationStatus ||
-            authenticationStatus === 'authenticated');
+        const connected = ready && account && chain && (!authenticationStatus || authenticationStatus === 'authenticated');
         return (
           <div
             {...(!ready && {
               'aria-hidden': true,
-              'style': {
+              style: {
                 opacity: 0,
                 pointerEvents: 'none',
                 userSelect: 'none',
@@ -80,11 +66,7 @@ const Rainbow = () => {
               }
               return (
                 <div style={{ display: 'flex', gap: 12 }}>
-                  <ConnectBtn
-                    onClick={openChainModal}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    type="button"
-                  >
+                  <ConnectBtn onClick={openChainModal} style={{ display: 'flex', alignItems: 'center' }} type="button">
                     {chain.hasIcon && (
                       <div
                         style={{
@@ -96,23 +78,14 @@ const Rainbow = () => {
                           marginRight: 4,
                         }}
                       >
-                        {chain.iconUrl && (
-                          <Image
-                            alt={chain.name ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                            width={12}
-                            height={12}
-                          />
-                        )}
+                        {chain.iconUrl && <Image alt={chain.name ?? 'Chain icon'} src={chain.iconUrl} width={12} height={12} />}
                       </div>
                     )}
                     {chain.name}
                   </ConnectBtn>
                   <ConnectBtn onClick={openAccountModal} type="button">
                     {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ''}
+                    {account.displayBalance ? ` (${account.displayBalance})` : ''}
                   </ConnectBtn>
                 </div>
               );
@@ -124,4 +97,4 @@ const Rainbow = () => {
   );
 };
 
-export default Rainbow
+export default Rainbow;

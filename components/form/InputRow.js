@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import {useState} from 'react'
-import { InfoIcon } from '../icons/Common'
-import Tooltip from "../../components/Tooltip";
+import styled from 'styled-components';
+import { useState } from 'react';
+import { InfoIcon } from '../icons/Common';
+import Tooltip from '../../components/Tooltip';
 
 const InputWrapper = styled.div`
   position: relative;
@@ -9,7 +9,7 @@ const InputWrapper = styled.div`
   align-items: center;
   padding: 2%;
   color: white;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   @media (max-width: 500px) {
     flex-direction: column;
   }
@@ -66,25 +66,50 @@ const DonationRow = styled.div`
   @media (min-width: 1580px) {
     font-size: 1.3em;
   }
-`
+`;
 
 const InfoBox = styled.div`
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
-`
+`;
 
-const InputRow = ({ id, name, min, placeholder,onChange, onBlur,tooltip,currency }) => {
-    const [isTooltip, setIsTooltip] = useState()
+const InputRow = ({ id, name, min, placeholder, onChange, onBlur, tooltip, currency }) => {
+  const [isTooltip, setIsTooltip] = useState();
 
-    return    <InputWrapper>
-    {isTooltip && <Tooltip text={tooltip}/>}
-    <DonationRow> <div>{name}</div> <InfoBox onMouseEnter={() => { setIsTooltip(true) }} onMouseLeave={() => { setIsTooltip(false) }}> <InfoIcon width={15} /></InfoBox></DonationRow>
-    <InputInnerWrapper>
-        <Input id={id} name={name} min={min} type="text" placeholder={placeholder} onChange={onChange} onBlur={onBlur} inputMode="numeric"  />
+  return (
+    <InputWrapper>
+      {isTooltip && <Tooltip text={tooltip} />}
+      <DonationRow>
+        {' '}
+        <div>{name}</div>{' '}
+        <InfoBox
+          onMouseEnter={() => {
+            setIsTooltip(true);
+          }}
+          onMouseLeave={() => {
+            setIsTooltip(false);
+          }}
+        >
+          {' '}
+          <InfoIcon width={15} />
+        </InfoBox>
+      </DonationRow>
+      <InputInnerWrapper>
+        <Input
+          id={id}
+          name={name}
+          min={min}
+          type="text"
+          placeholder={placeholder}
+          onChange={onChange}
+          onBlur={onBlur}
+          inputMode="numeric"
+        />
         <InputAmount>{currency}</InputAmount>
-    </InputInnerWrapper>
-</InputWrapper>
-}
+      </InputInnerWrapper>
+    </InputWrapper>
+  );
+};
 
-export default InputRow
+export default InputRow;

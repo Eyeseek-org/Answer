@@ -1,69 +1,69 @@
-import Head from "next/head";
-import "../styles/globals.css";
+import Head from 'next/head';
+import '../styles/globals.css';
 
 //Web3 auth
-import styled from "styled-components";
-import { Chain, createClient, configureChains, WagmiConfig } from "wagmi";
-import { AppProvider } from "../sections/utils/appContext";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { SessionProvider } from "next-auth/react";
-import { MoralisProvider } from "react-moralis";
-import "@rainbow-me/rainbowkit/styles.css";
-import Header from "../sections/Header";
-import Loading from "../components/Loading";
+import styled from 'styled-components';
+import { Chain, createClient, configureChains, WagmiConfig } from 'wagmi';
+import { AppProvider } from '../sections/utils/appContext';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { publicProvider } from 'wagmi/providers/public';
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { SessionProvider } from 'next-auth/react';
+import { MoralisProvider } from 'react-moralis';
+import '@rainbow-me/rainbowkit/styles.css';
+import Header from '../sections/Header';
+import Loading from '../components/Loading';
 
 const Container = styled.div`
   color: white;
   background: #141414;
   font-family: Inter, sans-serif !important;
-`
+`;
 
 const mumbai: Chain = {
   id: 80_001,
-  name: "Mumbai",
-  network: "mumbai",
+  name: 'Mumbai',
+  network: 'mumbai',
   nativeCurrency: {
     decimals: 18,
-    name: "MATIC",
-    symbol: "MATIC",
+    name: 'MATIC',
+    symbol: 'MATIC',
   },
   rpcUrls: {
-    default: "https://rpc-mumbai.maticvigil.com",
+    default: 'https://rpc-mumbai.maticvigil.com',
   },
   testnet: true,
 };
 
 const fantomTest: Chain = {
   id: 4_002,
-  name: "Fantom Testnet",
-  network: "fantom",
+  name: 'Fantom Testnet',
+  network: 'fantom',
   nativeCurrency: {
     decimals: 18,
-    name: "FTM",
-    symbol: "FTM",
+    name: 'FTM',
+    symbol: 'FTM',
   },
   rpcUrls: {
-    default: "https://rpc.testnet.fantom.network",
+    default: 'https://rpc.testnet.fantom.network',
   },
   testnet: true,
-}
+};
 
 const bnbTest: Chain = {
   id: 97,
-  name: "BNB Testnet",
-  network: "binance",
+  name: 'BNB Testnet',
+  network: 'binance',
   nativeCurrency: {
     decimals: 18,
-    name: "BNB",
-    symbol: "BNB",
+    name: 'BNB',
+    symbol: 'BNB',
   },
   rpcUrls: {
-    default: "https://data-seed-prebsc-1-s1.binance.org:8545",
+    default: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   },
   testnet: true,
-}
+};
 
 const { provider, webSocketProvider, chains } = configureChains(
   [mumbai, fantomTest, bnbTest],
@@ -71,7 +71,7 @@ const { provider, webSocketProvider, chains } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
+  appName: 'My RainbowKit App',
   chains,
 });
 
@@ -112,8 +112,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <meta name="theme-color" content="#317EFB" />
               </Head>
               <AppProvider>
-                  <Header />
-                  <Loading>
+                <Header />
+                <Loading>
                   <Component {...pageProps} />
                 </Loading>
               </AppProvider>

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const FormStyle = styled.form`
   display: flex;
@@ -6,11 +6,11 @@ export const FormStyle = styled.form`
   width: 100%;
   gap: 20px;
   background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3C3C3C;
+  border: 1px solid #3c3c3c;
   border-radius: 5px;
   padding: 4%;
 
-  input[type="file"] {
+  input[type='file'] {
     display: none;
   }
 
@@ -41,10 +41,9 @@ export const TellContainer = styled.div`
   padding-left: 18%;
   padding-right: 18%;
   margin-top: 3%;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   @media (max-width: 768px) {
     padding-left: 3%;
     padding-right: 3%;
   }
 `;
-

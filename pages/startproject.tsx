@@ -1,16 +1,16 @@
-import { useState } from "react";
-import Stepper from "../components/form/Stepper";
-import SetGoals from "../sections/start_project/SetGoals";
-import Category from "../sections/start_project/Category";
-import TellStory from "../sections/start_project/TellStory";
-import Create from "../sections/start_project/Create";
+import { useState } from 'react';
+import Stepper from '../components/form/Stepper';
+import SetGoals from '../sections/start_project/SetGoals';
+import Category from '../sections/start_project/Category';
+import TellStory from '../sections/start_project/TellStory';
+import Create from '../sections/start_project/Create';
 
 interface ItemProps {
   step: Number;
 }
 
 const StartProject = () => {
-  const steps = ["Categorize", "Tell story", "Set goals", "Create project"];
+  const steps = ['Categorize', 'Tell story', 'Set goals', 'Create project'];
   const [step, setStep] = useState<Number>(0);
 
   const handleStepper = (e: Number) => {
@@ -30,7 +30,7 @@ const StartProject = () => {
 
       case 3:
         return <Create setStep={setStep} />;
-      }
+    }
 
     return null;
   };
