@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import Subtitle from "../../components/typography/Subtitle"
+import ProgressBar from "../../components/ProgressBar"
 
 const Container = styled.div`
     margin-top: 5%;
@@ -16,8 +17,16 @@ const DescriptionBox = styled.div`
 `
 
 const ProjectDescription = ({descM}) => {
+    
+    // Amount + Cap needed to retrieve from chain probably, in parrent ?
+    const amount = 1000
+    const cap = 10000
+    const ratio = amount / cap * 100
+
     return <Container>
+        
         <Subtitle text='Project milestones'/>
+        <ProgressBar ratio={ratio}/>
         <DescriptionBox></DescriptionBox>
         {descM}
     </Container>

@@ -1,6 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import styled from 'styled-components'
-import { useMoralis } from "react-moralis";
 import Image from 'next/image';
 
 const ConnectBtn = styled.button`
@@ -22,8 +21,6 @@ const ConnectBtn = styled.button`
 `
 
 const Rainbow = () => {
-    
-  const { authenticate, isAuthenticated } = useMoralis();
     
   return (
     <ConnectButton.Custom>

@@ -87,6 +87,7 @@ type AppProps = {
   pageProps: any;
 };
 
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;

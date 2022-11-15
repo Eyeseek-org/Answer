@@ -21,8 +21,17 @@ const NavItem = styled.div`
   font-family: "Gemunu Libre", sans-serif;
   font-style: normal;
   align-items: center;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.05);
   letter-spacing: 1px;
-
+  transition: 0.3s;
+  &:hover{
+    cursor: pointer;
+    box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.25);
+  }
   @media (max-width: 768px) {
     font-size: 1em;
     flex-wrap: wrap;
@@ -37,10 +46,8 @@ const HeadBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: transparent;
   color: #b0f6ff;
-  padding: 5%;
-  padding-top: 2%;
+  padding: 2%;
   @media (max-width: 768px) {
     justify-content: center;
   }
@@ -63,7 +70,7 @@ const ImageBox = styled.div`
 const MenuBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: 30px;
 
   @media (max-width: 960px) {
     padding: 0;

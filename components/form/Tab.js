@@ -5,10 +5,9 @@ import { Erc20ActiveIcon, Erc20Icon, NftActiveIcon, NftIcon, RewardActiveIcon } 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 3%;
+  gap: 1%;
   color: white;
   padding: 0.5%;
- 
   width: 40%;
   @media (max-width: 768px) {
     width: 100%;
@@ -18,10 +17,13 @@ const Container = styled.div`
 const Inactive = styled.div`
     font-size: 0.9em;
     font-family: 'Montserrat';
+    padding: 2%;
     cursor: pointer;
+    border-radius: 15px;
+    border: 1px solid #373737;
+    background: rgba(0, 0, 0, 0.05);
     transition: 0.2s;
     box-shadow: 0px 0px 0px 0px #ffffff;
-    padding-bottom: 1%;
     &:hover{
         opacity: 0.7;
     }
@@ -65,6 +67,7 @@ const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, c
                 {text === 'ERC20' && <IconBox><Erc20Icon width={120} /></IconBox>}
                 {text === 'ERC1155' && <IconBox><NftIcon width={120}  height={110} /></IconBox>}
                 {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
+
             </Inactive>
         }</>
     }
