@@ -265,7 +265,7 @@ const ProjectDetail = ({ objectId, pid, title, description, category, subcategor
               </IconWrapper>
         </ActionPanel>}
         <LeftPart>
-          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} layout='fill' />}
+          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'320px'} height={'260px'}/>}
           <Categories>
             {category && <>
               {category === 'Art' && <Tag tag={category} color={"#7E0000"} />}

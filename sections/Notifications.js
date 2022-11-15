@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Preferences from './Preferences'
 import {CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon} from '../components/icons/Notifications'
 import { RewardIcon, SuccessIcon } from '../components/icons/Common'
 import ReactTimeAgo from 'react-time-ago'

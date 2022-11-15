@@ -7,6 +7,7 @@ import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import { moralisApiConfig } from "../../data/moralisApiConfig"
+import Timeline from '../../Sections/Timeline'
 
 TimeAgo.addDefaultLocale(en)
 
@@ -16,10 +17,11 @@ const Container = styled.div`
 `
 
 const List = styled.div`
+    margin-top: 5%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 16%;
+    margin-left: 17%;
     font-family: 'Neucha';
     
 `
@@ -70,16 +72,17 @@ const UpdateOverview = ({objectId}) => {
     return <Container>
         <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
         <List>
-            {updates.length > 0 && 
+            {updates.length > 0 ?
                 updates.map((update)=> 
                     <RefCard key={update.objectId}
                         whileHover={{ scale: 1.05 }} 
                     >
                         <A href={`${update.url}`} rel="noopener noreferrer" target="_blank"><>{update.title}</></A>
                         <Created><ReactTimeAgo date={update.createdAt} locale="en-US"/></Created>
-                  </RefCard>)
+                  </RefCard>) : <>No updates published by the author</>
             }        
         </List>
+        <Timeline/>
     </Container>
 }
 
