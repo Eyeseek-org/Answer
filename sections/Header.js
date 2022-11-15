@@ -4,9 +4,9 @@ import { useMoralis } from 'react-moralis';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { useAccount, useQuery } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { motion } from 'framer-motion';
-
+import {useQuery} from '@tanstack/react-query'
 import Logo from '../public/Logo.png';
 import Rainbow from '../components/buttons/Rainbow';
 import Notifications from '../sections/Notifications';

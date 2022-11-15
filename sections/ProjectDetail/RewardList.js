@@ -5,7 +5,7 @@ import RewardCard from '../../components/cards/RewardCard';
 import ErrText from '../../components/typography/ErrText';
 import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
-import { useQuery } from 'wagmi';
+import { useQuery } from '@tanstack/react-query';
 import { DapAPIService } from '../../services/DapAPIService';
 
 const Main = styled.div`

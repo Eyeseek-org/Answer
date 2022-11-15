@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
-import {  useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { useAccount, useQuery } from 'wagmi';
+import { useAccount } from 'wagmi';
 import ProjectDetail from '../../sections/ProjectDetail/ProjectDetail';
 import Tab from '../../components/form/Tab';
 import RewardCreate from '../../sections/ProjectDetail/RewardCreate';
@@ -13,6 +13,7 @@ import Verification from '../../sections/ProjectDetail/Verification';
 import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { DapAPIService } from '../../services/DapAPIService';
+import { useQuery } from '@tanstack/react-query';
 
 const Container = styled.div`
   margin-top: 5%;

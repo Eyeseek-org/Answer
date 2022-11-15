@@ -12,7 +12,7 @@ import DonateWithout from '../../sections/Donate/DonateWithout';
 import { Row } from '../../components/format/Row';
 import { InfoIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
-import { useNetwork, useQuery, useSwitchNetwork } from 'wagmi';
+import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { blockchains } from '../../data/blockchains';
 import { currencies } from '../../data/currencies';
 import { testChains } from '../../data/contracts';
@@ -23,6 +23,7 @@ import RewardList from '../../sections/ProjectDetail/RewardList';
 import Tab from '../../components/form/Tab';
 import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { DapAPIService } from '../../services/DapAPIService';
+import { useQuery } from '@tanstack/react-query';
 
 const Container = styled.div`
   margin-top: 8%;

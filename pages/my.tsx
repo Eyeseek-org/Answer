@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
-import { useAccount, useQuery } from 'wagmi';
+import { useAccount } from 'wagmi';
 import styled from 'styled-components';
 
 import LatestProjects from '../sections/Landing/LatestProjects';
@@ -16,6 +16,7 @@ import UpdateCreate from '../sections/ProjectDetail/UpdateCreate';
 import StatsTable from '../components/tables/StatsTable';
 import SectionTitle from '../components/typography/SectionTitle';
 import { DapAPIService } from '../services/DapAPIService';
+import { useQuery } from '@tanstack/react-query';
 
 const Container = styled.div`
   display: flex;
@@ -77,7 +78,6 @@ const My: NextPage = () => {
                   verified={project.verified}
                   pType={project.type}
                   owner={project.owner}
-                  
                 />
               )}
             </>
