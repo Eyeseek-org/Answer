@@ -179,7 +179,6 @@ const ImageBox = styled.div`
 `
 
 const Notifications = ({notis}) => {
-    const [profile, setProfile] = useState(false)
     const [expand, setExpand] = useState(false)
 
     useEffect(() => {
@@ -198,7 +197,7 @@ const Notifications = ({notis}) => {
       }
 
     return <Container expand={expand}>  
-       {!profile ?<NotiBox> 
+       <NotiBox> 
         {notis && notis.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((noti, index) => <NotiItem key={index}>
             <Link href={`/project/${noti.project}`}><Row>            
                  <IconWrapper>
@@ -215,10 +214,9 @@ const Notifications = ({notis}) => {
             </Row></Link>
             </NotiItem>)}
             {expand && <ImageBox><Image src={Eye1} alt={'eyee'} width={'2000px'} height={'2000px'}/></ImageBox>}
-        </NotiBox> : <Preferences/>}
+        </NotiBox>
         <ButtonRow>
-            {!profile ? <Buttons onClick={()=>{setProfile(true)}}>Edit preferences</Buttons> : 
-        <Buttons onClick={()=>{setProfile(false)}}>Notifications</Buttons>}      
+        <Buttons>Notifications</Buttons>   
         <Buttons  onClick={()=>{setExpand(!expand)}}>
             {!expand ? <ExpandIcon width={20} height={20}/> : <ShrinkIcon width={20} height={20}/>}
         </Buttons>

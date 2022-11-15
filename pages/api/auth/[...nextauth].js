@@ -2,6 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
 import Moralis from 'moralis';
 
+
 export default NextAuth({
     providers: [
         CredentialsProvider({
@@ -24,7 +25,7 @@ export default NextAuth({
                   // we described them in "credentials" above
                   const { message, signature } = credentials;
 
-                  await Moralis.start({ apiKey: process.env.MORALIS_API_KEY });
+                  await Moralis.start({ apiKey: "53DdXn3RtWHuEWmRPaQiXgdl4u3YLc8OTQVLeBNqxACou395pwJVL6b2qoG9M4pW" });
 
                   const { address, profileId } = (
                     await Moralis.Auth.verify({ message, signature, network: 'evm' })
