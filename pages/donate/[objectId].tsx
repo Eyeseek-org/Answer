@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useApp } from '../../sections/utils/appContext';
 import polygon from '../../public/icons/polygon.png';
 import fantom from '../../public/icons/fantom.png';
@@ -13,8 +12,7 @@ import DonateWithout from '../../sections/Donate/DonateWithout';
 import { Row } from '../../components/format/Row';
 import { InfoIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
-import { useNetwork, useSwitchNetwork } from 'wagmi';
-import { moralisApiConfig } from '../../data/moralisApiConfig';
+import { useNetwork, useQuery, useSwitchNetwork } from 'wagmi';
 import { blockchains } from '../../data/blockchains';
 import { currencies } from '../../data/currencies';
 import { testChains } from '../../data/contracts';
@@ -24,6 +22,7 @@ import LandingDonate from '../../components/animated/LandingDonate';
 import RewardList from '../../sections/ProjectDetail/RewardList';
 import Tab from '../../components/form/Tab';
 import DonateWrapper from '../../sections/Donate/DonateWrapper';
+import { DapAPIService } from '../../services/DapAPIService';
 
 const Container = styled.div`
   margin-top: 8%;
@@ -150,12 +149,8 @@ const Donate: NextPage = () => {
   const { objectId } = router.query;
   const [currency, setCurrency] = useState('USDC');
   const [apiError, setApiError] = useState(false);
-  const [project, setProject] = useState([]);
-  const [bookmarks, setBookmarks] = useState();
-  const [pid, setPid] = useState();
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-  const [homechain, setHomechain] = useState(80001);
 
   const [tooltip, setTooltip] = useState(false);
 
@@ -170,6 +165,8 @@ const Donate: NextPage = () => {
   const { appState, setAppState } = useApp();
   const { rewMAmount, rewDAmount, rewId } = appState;
   const [showRewards, setShowRewards] = useState(false);
+
+  const { data: projectDetail } = useQuery(['project-detail'], () => DapAPIService.getProjectDetail(objectId));
 
   const handleSwitchNetwork = (id) => {
     switchNetwork(id);
@@ -216,32 +213,31 @@ const Donate: NextPage = () => {
 
   const handleSwitchCurrency = (c: string) => {
     if (c === 'USDC') {
-      if (homechain === 80001) {
+      if (projectDetail.chainId === 80001) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC);
-      } else if (homechain === 97) {
+      } else if (projectDetail.chainId === 97) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB);
-      } else if (homechain === 4002) {
+      } else if (projectDetail.chainId === 4002) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM);
       }
       setCurrency('USDC');
       setCurr(1);
     } else if (c === 'USDT') {
-      console.log(curr);
-      if (homechain === 80001) {
+      if (projectDetail.chainId === 80001) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT);
-      } else if (homechain === 97) {
+      } else if (projectDetail.chainId === 97) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB);
-      } else if (homechain === 4002) {
+      } else if (projectDetail.chainId === 4002) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM);
       }
       setCurrency('USDT');
       setCurr(2);
     } else if (c === 'DAI') {
-      if (homechain === 80001) {
+      if (projectDetail.chainId === 80001) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI);
-      } else if (homechain === 97) {
+      } else if (projectDetail.chainId === 97) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB);
-      } else if (homechain === 4002) {
+      } else if (projectDetail.chainId === 4002) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM);
       }
       setCurrency('DAI');
@@ -303,11 +299,6 @@ const Donate: NextPage = () => {
     );
   };
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    getProjectDetail();
-  }, [router.isReady]);
-
   const handleNoReward = async () => {
     await setAppState({ ...appState, rewAAmount: 0 });
     await setAppState({ ...appState, rewDAmount: 0 });
@@ -318,22 +309,6 @@ const Donate: NextPage = () => {
   const handleOnReward = async () => {
     setActive('Limited rewards');
     setShowRewards(true);
-  };
-
-  const getProjectDetail = async () => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId":"${objectId}"}`, moralisApiConfig);
-      if (res.data.results.length > 0) {
-        setProject(res.data.results[0]);
-        setPid(res.data.results[0].pid);
-        setBookmarks(res.data.results[0].bookmarks);
-        setHomechain(res.data.results[0].chainId);
-      }
-      setApiError(false);
-    } catch (err) {
-      console.log(err);
-      setApiError(true);
-    }
   };
 
   return (
@@ -360,9 +335,9 @@ const Donate: NextPage = () => {
             </Row>
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
           </DonateOptionTitle>
-          {homechain === 80001 && <Image src={polygon} alt="polygon" width={'40'} height={'40'} />}
-          {homechain === 97 && <Image src={binance} alt="binance" width={'40'} height={'40'} />}
-          {homechain === 4002 && <Image src={fantom} alt="fantom" width={'40'} height={'40'} />}
+          {projectDetail?.chainId === 80001 && <Image src={polygon} alt="polygon" width={'40'} height={'40'} />}
+          {projectDetail?.chainId === 97 && <Image src={binance} alt="binance" width={'40'} height={'40'} />}
+          {projectDetail?.chainId === 4002 && <Image src={fantom} alt="fantom" width={'40'} height={'40'} />}
         </DonateOption>
         <DonateOption>
           <FaucetBox>
@@ -401,28 +376,28 @@ const Donate: NextPage = () => {
         {/* @ts-ignore */}
         {showRewards ? (
           <>
-            <RewardList oid={objectId} />
+            <RewardList chain={chain} oid={objectId} />
             <DonateWrapper
               amountM={rewMAmount}
               amountD={rewDAmount}
               rid={rewId}
-              pid={pid}
-              bookmarks={bookmarks}
+              pid={projectDetail?.pid}
+              bookmarks={projectDetail?.bookmarks}
               currencyAddress={currencyAddress}
               add={add}
               curr={curr}
-              home={homechain}
+              home={projectDetail?.chainId}
             />
           </>
         ) : (
           <DonateWithout
-            pid={pid}
+            pid={projectDetail?.pid}
             currency={currency}
-            bookmarks={bookmarks}
+            bookmarks={projectDetail?.bookmarks}
             currencyAddress={currencyAddress}
             add={add}
             curr={curr}
-            home={homechain}
+            home={projectDetail?.chainId}
             rid={rewId}
           />
         )}

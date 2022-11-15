@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
-import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { useEffect } from 'react';
 import RewardCard from '../../components/cards/RewardCard';
 import ErrText from '../../components/typography/ErrText';
 import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
+import { useQuery } from 'wagmi';
+import { DapAPIService } from '../../services/DapAPIService';
 
 const Main = styled.div`
   display: flex;
@@ -24,35 +24,14 @@ const Container = styled.div`
 // Display rewards
 // Add reward types and other metadata
 const RewardList = ({ oid, chain }) => {
-  const [tokenRewards, setTokenRewards] = useState([]);
   const { setAppState } = useApp();
-  const [apiError, setApiError] = useState(false);
   const [selected, setSelected] = useState('');
-  const [loading, setLoading] = useState(false);
 
   // Dummy data
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
 
   // Extract image json.image, display it
-
-  const getRewards = async () => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward?where={"project":"${oid}"}`, moralisApiConfig);
-      await setTokenRewards(res.data.results), await setApiError(false);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    } catch (err) {
-      console.error(err);
-      await setApiError(true);
-      await setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    getRewards();
-  }, []);
+  const { data: rewards, isLoading: isRewardsLoading, error: rewardError } = useQuery(['rewards'], () => DapAPIService.getRewards(oid), {});
 
   const handleRewardClick = (sel, rewAmount, type, rid) => {
     setSelected(sel);
@@ -92,9 +71,9 @@ const RewardList = ({ oid, chain }) => {
     <>
       <Main>
         <Container>
-          {tokenRewards.length > 0 ? (
+          {rewards.length > 0 ? (
             <>
-              {tokenRewards.map((reward) => {
+              {rewards.map((reward) => {
                 return (
                   <RewardCard
                     key={reward.objectId}
@@ -110,17 +89,15 @@ const RewardList = ({ oid, chain }) => {
                     tokenName={reward.tokenName}
                     selected={selected}
                     chain={chain}
-                    onClick={() => {
-                      handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId);
-                    }}
+                    onClick={() => handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId)}
                   />
                 );
-              })}{' '}
+              })}
             </>
           ) : (
-            <>{!loading ? <NoFound text={'No limited rewards offered'} /> : null}</>
+            <>{!isRewardsLoading ? <NoFound text={'No limited rewards offered'} /> : null}</>
           )}
-          {apiError && <ErrText text={'Communication error - please try again later'} />}
+          {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Container>
       </Main>
     </>

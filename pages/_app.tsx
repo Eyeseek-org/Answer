@@ -13,6 +13,7 @@ import { MoralisProvider } from 'react-moralis';
 import '@rainbow-me/rainbowkit/styles.css';
 import Header from '../sections/Header';
 import Loading from '../components/Loading';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const Container = styled.div`
   color: white;
@@ -87,40 +88,45 @@ type AppProps = {
   pageProps: any;
 };
 
+const queryClient = new QueryClient();
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
 
   return (
-    <Container>
-      <WagmiConfig client={client}>
-        <MoralisProvider appId={appId} serverUrl={serverUrl}>
-          <SessionProvider session={pageProps.session} refetchInterval={10000}>
-            <RainbowKitProvider chains={chains}>
-              <Head>
-                <meta charSet="utf-8" />
-                <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-                <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-                <meta name="description" content="Description" />
-                <meta name="keywords" content="Keywords" />
-                <title>Eyeseek fund</title>
-
-                <link rel="manifest" href="/manifest.json" />
-                <link href="/icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16" />
-                <link href="/icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32" />
-                <link rel="apple-touch-icon" href="/apple-icon.png"></link>
-                <meta name="theme-color" content="#317EFB" />
-              </Head>
-              <AppProvider>
-                <Header />
-                <Loading>
-                  <Component {...pageProps} />
-                </Loading>
-              </AppProvider>
-            </RainbowKitProvider>
-          </SessionProvider>
-        </MoralisProvider>
-      </WagmiConfig>
-    </Container>
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Container>
+          <WagmiConfig client={client}>
+            <MoralisProvider appId={appId} serverUrl={serverUrl}>
+              <SessionProvider session={pageProps.session} refetchInterval={10000}>
+                <RainbowKitProvider chains={chains}>
+                  <Head>
+                    <meta charSet="utf-8" />
+                    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+                    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+                    <meta name="description" content="Description" />
+                    <meta name="keywords" content="Keywords" />
+                    <title>Eyeseek fund</title>
+                    <link rel="manifest" href="/manifest.json" />
+                    <link href="/icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16" />
+                    <link href="/icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32" />
+                    <link rel="apple-touch-icon" href="/apple-icon.png"></link>
+                    <meta name="theme-color" content="#317EFB" />
+                  </Head>
+                  <AppProvider>
+                    <Header />
+                    <Loading>
+                      <Component {...pageProps} />
+                    </Loading>
+                  </AppProvider>
+                </RainbowKitProvider>
+              </SessionProvider>
+            </MoralisProvider>
+          </WagmiConfig>
+        </Container>
+      </Hydrate>
+    </QueryClientProvider>
   );
 }

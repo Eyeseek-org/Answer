@@ -1,10 +1,8 @@
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
-import { useAccount } from 'wagmi';
-
+import { useAccount, useQuery } from 'wagmi';
 import ProjectDetail from '../../sections/ProjectDetail/ProjectDetail';
 import Tab from '../../components/form/Tab';
 import RewardCreate from '../../sections/ProjectDetail/RewardCreate';
@@ -12,9 +10,9 @@ import UpdateCreate from '../../sections/ProjectDetail/UpdateCreate';
 import UpdateOverview from '../../sections/ProjectDetail/UpdateOverview';
 import RewardList from '../../sections/ProjectDetail/RewardList';
 import Verification from '../../sections/ProjectDetail/Verification';
-import { moralisApiConfig } from '../../data/moralisApiConfig';
 import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
+import { DapAPIService } from '../../services/DapAPIService';
 
 const Container = styled.div`
   margin-top: 5%;
@@ -39,35 +37,18 @@ const Project: NextPage = () => {
   const [active, setActive] = useState('Overview');
   const { address } = useAccount();
 
-  const [project, setProject] = useState<any>();
-  const [apiError, setApiError] = useState(false);
-
-  const getProjectDetail = async () => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId":"${objectId}"}`, moralisApiConfig);
-      if (res.data.results.length > 0) {
-        setProject(res.data.results[0]);
-      }
-      setApiError(false);
-    } catch (err) {
-      console.log(err);
-      setApiError(true);
-    }
-  };
+  const { data: project, error: projectError } = useQuery(['project-detail'], () => DapAPIService.getProjectDetail(objectId), {
+    enabled: !!router.isReady,
+  });
 
   const handleMode = (mode: string) => {
     setMode(mode);
     setActive(mode);
   };
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    getProjectDetail();
-  }, [router.isReady]);
-
   return (
     <>
-      {project && <SectionTitle title={'Project detail'} subtitle={project.title} />}
+      {project ? <SectionTitle title={'Project detail'} subtitle={project.title} /> : null}
       <TabBox>
         <Tab
           active={active}
@@ -127,7 +108,7 @@ const Project: NextPage = () => {
             {mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId} />}
           </>
         ) : (
-          <>{apiError && <>Project failed to fetch</>}</>
+          <>{projectError && <>Project failed to fetch</>}</>
         )}
         {mode === 'Verification' && address === project.owner && project.verified === false && <Verification objectId={objectId} />}
       </Container>

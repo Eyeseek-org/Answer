@@ -1,19 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useMoralis } from 'react-moralis';
 
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import axios from 'axios';
-import { useAccount } from 'wagmi';
+import { useAccount, useQuery } from 'wagmi';
 import { motion } from 'framer-motion';
 
 import Logo from '../public/Logo.png';
 import Rainbow from '../components/buttons/Rainbow';
 import Notifications from '../sections/Notifications';
 import { BellIcon } from '../components/icons/Landing';
-import { moralisApiConfig } from '../data/moralisApiConfig';
 import { CloseIcon } from '../components/icons/Notifications';
+import { DapAPIService } from '../services/DapAPIService';
 
 const NavItem = styled.div`
   display: flex;
@@ -143,20 +142,13 @@ const Header = () => {
     setNotiNumber(0);
   };
 
-  const getData = async () => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification?where={"user":"${address}"}`, moralisApiConfig);
-      await setNotis(res.data.results.slice(0, 20));
-      const unread = res.data.results.filter((item) => item.isRead === false);
-      await setNotiNumber(unread.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  useQuery(['notification-data'], () => DapAPIService.getNotificationData(address), {
+    onSuccess: (data) => {
+      setNotis(data.slice(0, 20));
+      const unread = data.filter((item) => item.isRead === false);
+      setNotiNumber(unread.length);
+    },
+  });
 
   return (
     <>

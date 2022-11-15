@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import axios from 'axios';
-import { useState, useReducer, useEffect } from 'react';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Address from '../functional/Address';
-import StreamCounter from '../functional/StreamCounter';
+import { useQuery } from '@tanstack/react-query';
+import { DapAPIService } from '../../services/DapAPIService';
 
 const Table = styled.table`
   width: 100%;
@@ -80,50 +78,21 @@ const columns = [
 ];
 
 const StreamTable = (col) => {
-  const [data, setData] = useState([]);
-  const [apiError, setApiError] = useState();
-  const rerender = useReducer(() => ({}), {})[1];
-
-  const getStreams = async () => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream?where={"isActive": true}`, moralisApiConfig);
-      if (res.data.results.length > 0) {
-        setData(res.data.results);
-      }
-      setApiError(false);
-    } catch (error) {
-      console.log(error);
-      setApiError(true);
-    }
-  };
-
-  const getProject = async (projectId) => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"objectId": ${projectId}}`, moralisApiConfig);
-      if (res.data.results.length > 0) {
-        const project = res.data.results[0];
-        console.log(project);
-      }
-      setApiError(false);
-    } catch (error) {
-      console.log(error);
-      setApiError(true);
-    }
-  };
-
-  useEffect(() => {
-    getStreams();
-  }, []);
+  const { data: activeStreams } = useQuery(['active-streams'], DapAPIService.getActiveStreams, {
+    onError: (err) => {
+      console.log('err', err);
+    },
+  });
 
   const table = useReactTable({
-    data,
+    data: activeStreams,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <>
-      {data && data.length > 0 && (
+      {activeStreams && activeStreams.length > 0 && (
         <Table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
