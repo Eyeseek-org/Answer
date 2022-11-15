@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import { 
+import {
     getLatestBlockHeight,
-    getLogEvents, 
+    getLogEvents,
 } from "../../pages/api/covalent"
 import { useEffect, useState } from "react"
 import Loading from "../Loading"
@@ -11,8 +11,75 @@ import Subtitle from "../typography/Subtitle"
 
 import { ExpandIcon } from '../icons/Notifications'
 
+const Box = styled.div`
+    margin-top: 5%;
+`
 
-const StatsTable = ({pid, chain}) => {
+
+const Container = styled.div`
+    padding-bottom: 2%;
+    padding-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
+    @media (max-width: 768px) {
+    flex-wrap: wrap;
+    padding-left: 3%;
+    padding-right: 3%;
+    }
+`
+const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+    box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
+    margin-bottom: 2%;
+`
+const Header = styled.th`
+    border: none;
+    padding: 1%;
+    background-color: transparent;
+    font-family: "Roboto";
+`
+const Row = styled.tr`
+    padding: 1%;
+    border-bottom: 1px solid grey;
+    transition: 0.1s;
+    &:hover{
+    background: rgba(56, 56, 56, 0.4);
+    }
+`
+const Cell = styled.td`
+    padding: 2px;
+    font-family: "Neucha";
+`
+
+const AddressCell = styled(Cell)`
+    width: 150px;
+    @media (max-width: 768px) {
+    width: 50px;
+    }
+`
+
+const TxnCell = styled(Cell)`
+width: 150px;
+@media (max-width: 768px) {
+   width: 50px;
+}
+`
+
+const Sub = styled.div`
+    display: flex;
+    margin: 3%;
+`
+
+
+const StatsTable = ({ pid, chain }) => {
     const [loading, setLoading] = useState(true)
     //MicroCreated States
     const [microCreatedLogs, setMicroCreatedLogs] = useState([]);
@@ -24,67 +91,6 @@ const StatsTable = ({pid, chain}) => {
     const [explorer, setExplorer] = useState("")
 
 
-    const Container = styled.div`
-        padding-bottom: 2%;
-        padding-top: 5%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-left: 10%;
-        padding-right: 10%;
-        @media (max-width: 768px) {
-            flex-wrap: wrap;
-            padding-left: 3%;
-            padding-right: 3%;
-        }
-    `
-    const Table = styled.table`
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 10px;
-        border: none;
-        text-align: center;
-        background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-        box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
-        margin-bottom: 2%;
-    `
-    const Header = styled.th`
-        border: none;
-        padding: 1%;
-        background-color: transparent;
-        font-family: "Roboto";
-    `
-    const Row = styled.tr`
-        padding: 1%;
-        border-bottom: 1px solid grey;
-        transition: 0.1s;
-        &:hover{
-            background: rgba(56, 56, 56, 0.4);
-        }
-    `
-    const Cell = styled.td`
-        padding: 2px;
-        font-family: "Neucha";
-    `
-
-    const AddressCell = styled(Cell)`
-        width: 150px;
-        @media (max-width: 768px) {
-            width: 50px;
-        }
-    `
-
-    const TxnCell = styled(Cell)`
-        width: 150px;
-        @media (max-width: 768px) {
-            width: 50px;
-        }
-    `
-
-    const Sub = styled.div`
-        display: flex;
-        margin: 3%;
-    `
 
     //create function that maps data into a table using keys as headers
     const mapDataToTable = (data) => {
@@ -93,14 +99,14 @@ const StatsTable = ({pid, chain}) => {
                 <thead>
                     <Row>
                         {Object.keys(data[0]).map((key, index) => {
-                            if(key != "fund_id" && key != "txn_hash"){
+                            if (key != "fund_id" && key != "txn_hash") {
                                 const formattedKey = key.split("_").map((word) => {
                                     return word.charAt(0).toUpperCase() + word.slice(1);
                                 }
                                 ).join(" ");
                                 return <Header key={index}>{formattedKey}</Header>
                             }
-                            if(key === "txn_hash"){
+                            if (key === "txn_hash") {
                                 return <Header key={index}> </Header>
                             }
                         })}
@@ -117,22 +123,22 @@ const StatsTable = ({pid, chain}) => {
                                                 <Address address={row[key]} />
                                             </AddressCell>
                                         }
-                                        if (key === "currency_id"){
+                                        if (key === "currency_id") {
                                             return <Cell key={index}>
                                                 {row[key] == 1 && "USDC"}
                                                 {row[key] == 2 && "USDT"}
                                                 {row[key] == 3 && "DAI"}
-                                                </Cell>
+                                            </Cell>
                                         }
                                         //if it's the tx hash, make it a link
                                         if (key === "txn_hash") {
                                             return <Cell key={index}>
                                                 <a href={`${explorer}${row[key]}`} target="_blank" rel="noreferrer">
-                                                    <ExpandIcon width={20} height={20}/>
+                                                    <ExpandIcon width={20} height={20} />
                                                 </a>
                                             </Cell>
                                         }
-                                        else{
+                                        else {
                                             return <Cell key={index}>{row[key]}</Cell>
                                         }
                                     }
@@ -148,7 +154,7 @@ const StatsTable = ({pid, chain}) => {
     useEffect(() => {
         const getData = async () => {
             // switch case to set explorer url based on which chain is passed in
-            switch(chain){
+            switch (chain) {
                 case 80001:
                     setExplorer("https://mumbai.polygonscan.com/tx/")
                     break;
@@ -175,7 +181,7 @@ const StatsTable = ({pid, chain}) => {
             const transactionEvents = logEvents.total_txn_log_data;
             setMicroCreatedLogs(microCreatedEvents);
             setTransactionLogs(transactionEvents);
-            
+
             // filter data to render by the finding the logs that match the fund id to the incoming pid
             const filteredMicroCreatedLogs = microCreatedEvents.filter((log) => {
                 return log.fund_id === pid;
@@ -190,20 +196,20 @@ const StatsTable = ({pid, chain}) => {
             setLoading(false);
         }
         getData();
-        
+
     }, [])
 
-    return (<>
-        <SectionTitle title='Project transactions' subtitle='Transparent on-chain records'/>
+    return (<Box>
+        <SectionTitle title='Project transactions' subtitle='Transparent on-chain records' />
         <Container>
-            <Sub><Subtitle text='Donations'/></Sub>
+            <Sub><Subtitle text='Donations' /></Sub>
             {loading && <Loading />}
             {!loading && filteredTransactionLogs.length > 0 && mapDataToTable(filteredTransactionLogs)}
             {!loading && filteredTransactionLogs.length === 0 && <p>No transactions have been made in last 999 blocks</p>}
-            <Sub><Subtitle text='Deployed Microfunds'/></Sub>
+            <Sub><Subtitle text='Deployed Microfunds' /></Sub>
             {!loading && filteredMicroCreatedLogs.length > 0 && mapDataToTable(filteredMicroCreatedLogs)}
             {!loading && filteredMicroCreatedLogs.length === 0 && <p>No microfunds created in last 999 blocks</p>}
-        </Container></>
+        </Container></Box>
     )
 }
 

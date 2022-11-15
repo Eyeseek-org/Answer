@@ -7,7 +7,7 @@ import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import { moralisApiConfig } from "../../data/moralisApiConfig"
-import Timeline from '../../Sections/Timeline'
+import Timeline from '../../components/Timeline'
 
 TimeAgo.addDefaultLocale(en)
 

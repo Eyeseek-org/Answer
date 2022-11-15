@@ -118,10 +118,6 @@ const dummy = [
 const Timeline = () => {
     const [milestones, setMilestones] = useState(dummy)
 
-    // TBD import dynamic data source 
-    // Last 10 items sorted desc
-    // Date is formated as "YYYY-MM-DD"
-
     const handleClick = (e) => {
         console.log('Clicked')
     }
