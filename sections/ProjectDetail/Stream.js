@@ -11,6 +11,8 @@ import ButtonAlt from "../../components/buttons/ButtonAlt";
 import Subtitle from "../../components/typography/Subtitle";
 import ApproveUniversal from "../../components/buttons/ApproveUniversal";
 import StreamCounter from "../../components/functional/StreamCounter";
+import BalanceComponent from "../../components/functional/BalanceComponent.js";
+import Allowance from "../../components/functional/Allowance.js";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -25,8 +27,8 @@ const StreamComponent = styled.div`
   flex-direction: column;
   justify-content: space-between ;
   width: 100%;
-
-  padding-left: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
   min-height: 280px;
 `
 
@@ -113,6 +115,19 @@ const SuperRef = styled.div`
   &:hover{
     opacity: 1;
   }
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9em;
+  padding-bottom: 1%;
+`
+
+const BalancesBox = styled.div`
+  padding: 5%;
 `
 
 
@@ -288,7 +303,7 @@ const Stream = ({ objectId, recipient }) => {
           <Title><Subtitle text={'New stream'} /></Title>
           <ErrorBox>
        Highly experimental feature - accepts only
-  <A href='https://docs.superfluid.finance/superfluid/developers/super-tokens/super-token-faucet' rel="noopener noreferrer" target="_blank">Super token</A> 
+        <A href='https://docs.superfluid.finance/superfluid/developers/super-tokens/super-token-faucet' rel="noopener noreferrer" target="_blank">Super token</A> 
         </ErrorBox>
           <ValueRow>
             <RowItem>Recipient</RowItem>
@@ -306,9 +321,10 @@ const Stream = ({ objectId, recipient }) => {
             <RowRightItem>dai/mo</RowRightItem>
           </ValueRow>
 
-          <ButtonBox>
+       <ButtonBox>
             <ApproveUniversal tokenContract={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} spender={'0xcfA132E353cB4E398080B9700609bb008eceB125'} amount={flowRate} />
-            <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} /></ButtonBox>
+            {address && <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} />}
+            </ButtonBox>
           {apiError && <ErrorBox>Insufficient funds, no approval, or owner = backer</ErrorBox>}
 
         </> : <>
@@ -330,12 +346,12 @@ const Stream = ({ objectId, recipient }) => {
               <RowRightItem>Value</RowRightItem>
             </ValueRow>
             <ButtonBox>
-             {address && recipient !== address ? <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  /> : <></>}
+                <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{setNewStream(true)}}  />
             </ButtonBox>
           </> : <> 
           <Title><Subtitle text={'No active stream found'} /></Title>
               <ButtonBox>
-                  <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />
+               {address && recipient !== address ? <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  /> : <></>}
               </ButtonBox>
               </>
           }
@@ -345,7 +361,17 @@ const Stream = ({ objectId, recipient }) => {
                 <SuperRef>Manage your streams in Superfluid App</SuperRef>
                </a>
             </ButtonBox>
-      </StreamComponent>
+        </StreamComponent>
+   {newStream &&    <BalancesBox>
+            <Row><div>Wrapped balance</div> <BalanceComponent token={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} address={address}/></Row>
+            <Row><div>Native balance</div> <BalanceComponent token={'0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063'} address={address}/></Row>
+            <Row><div>Approved amount</div> <Allowance address={address} spender={"0xcfA132E353cB4E398080B9700609bb008eceB125"} apprToken={"0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"} tokenSymbol={'fDAIx'} /></Row>
+          <ButtonBox>
+               <a href='https://app.superfluid.finance/wrap?upgrade' rel="noopener noreferrer" target="_blank">  
+                <SuperRef>Wrap/Unwrap stablecoin securely (temporary)</SuperRef>
+               </a>
+            </ButtonBox>
+         </BalancesBox>}
     </Container>
   </>
 }

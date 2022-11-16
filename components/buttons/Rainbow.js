@@ -38,9 +38,6 @@ const Rainbow = () => {
         const ready = mounted && authenticationStatus !== 'loading';
         const auth = async() => {
             await openConnectModal()
-            if (!isAuthenticated){
-                await authenticate()
-            }
         }
 
         const connected =

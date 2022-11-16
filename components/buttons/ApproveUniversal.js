@@ -99,7 +99,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
                 onClick={() => handleApprove()} 
                 text={<Approve><div>Approve</div><Amount>{amount}</Amount></Approve>} />
                 : 
-            <ButtonAlt width={'200px'} text={'Approved'} />}
+            <ButtonAlt width={'200px'} text={'Approve again'} onClick={() => handleApprove()}  />}
          </>}
     </Container>
 }

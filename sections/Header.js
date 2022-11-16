@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { useMoralis } from "react-moralis";
 
 import Link from "next/link"
 import Image from "next/image"
@@ -135,7 +134,6 @@ const Header = () => {
   const [noti, setNoti] = useState(false)
   const [notis, setNotis] = useState([])
   const [notiNumber, setNotiNumber] = useState(notis.length)
-  const { isAuthenticated } = useMoralis();
   const {address} = useAccount()
   const header = [
     { title: "Discover", url: "/discover" },
@@ -210,7 +208,7 @@ const Header = () => {
 
         <ConnectBox>
           <Rainbow />
-          {isAuthenticated && <IconFrame onClick={() => { handleNotiWindow(!noti) }}>
+          {address && <IconFrame onClick={() => { handleNotiWindow(!noti) }}>
             {!noti ? <BellIcon/> : <CloseIcon width={20}/>}
             {notiNumber > 0 && 
             <Notis
