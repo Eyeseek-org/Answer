@@ -32,20 +32,24 @@ Working repository for https://github.com/Eyeseek-org/funding, needed to fall ba
 ## Built-with
 
 ### Frontend Stack
+
 - [Next.js](https://nextjs.org/)
 - [Wagmi](https://wagmi.sh/)
-- [Styled Components](https://styled-components.com/) 
+- [Styled Components](https://styled-components.com/)
 
 ### Blockchain Stack
+
 - [Superfluid](https://superfluid.finance/) - Superfluid is a protocol for building and deploying real-time finance applications.
 - [Moralis](https://moralis.io/) - Moralis is an all-in-one backend solution for Web3 applications.
-- [Covalent](https://www.covalenthq.com/) - Covalent is a blockchain data API that provides a unified interface to blockchain data. 
+- [Covalent](https://www.covalenthq.com/) - Covalent is a blockchain data API that provides a unified interface to blockchain data.
 - [Axelar](https://axelar.network/) - Axelar is a decentralized network for cross-chain applications.
-  
+
 ### Supported chains
+
 Project is currently maintained in testnet environment and operates with valueless assets.
 
 Users can test project creation and crowdfunding features on the following chains:
+
 - [Polygon Mumbai](https://ethereum.org/en/)
 - [BNB testnet](https://www.binance.org/en)
 - [Fantom testnet](https://fantom.foundation/)
@@ -87,6 +91,5 @@ git push origin feature/AmazingFeature
 ```
 
 - PR is reviewed then by the core team and merge/rejected based on the quality of the code.
-
 
 Anyone can participate and discuss product development on Discord channel: https://discord.gg/DM3Eh6srkY

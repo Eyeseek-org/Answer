@@ -1,8 +1,8 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 
 const Box = styled.div`
   font-size: 1.6em;
-  font-family: "Neucha";
+  font-family: 'Neucha';
   font-style: normal;
   letter-spacing: 0.5px;
   font-weight: 300;
@@ -12,10 +12,10 @@ const Box = styled.div`
   @media (min-width: 1980px) {
     font-size: 2em;
   }
-`
+`;
 
 const Subtitle = ({ text }) => {
-  return <Box>{text}</Box>
-}
+  return <Box>{text}</Box>;
+};
 
-export default Subtitle
+export default Subtitle;

@@ -8,8 +8,8 @@ export const EmailIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const DiscordIcon = ({ width, height }) => {
   return (
@@ -21,8 +21,8 @@ export const DiscordIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const TwitterIcon = ({ width, height }) => {
   return (
@@ -34,8 +34,8 @@ export const TwitterIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const MediumIcon = ({ width, height }) => {
   return (
@@ -47,8 +47,8 @@ export const MediumIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const LinkedIcon = ({ width, height }) => {
   return (
@@ -62,7 +62,15 @@ export const LinkedIcon = ({ width, height }) => {
         />
       </g>
       <defs>
-        <filter id="filter0_d_202_1972" x="0" y="0" width="585.917" height="591.478" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+        <filter
+          id="filter0_d_202_1972"
+          x="0"
+          y="0"
+          width="585.917"
+          height="591.478"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
           <feOffset dy="4" />
@@ -74,5 +82,5 @@ export const LinkedIcon = ({ width, height }) => {
         </filter>
       </defs>
     </svg>
-  )
-}
+  );
+};

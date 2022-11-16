@@ -1,6 +1,6 @@
-import Image from "next/image";
-import styled from "styled-components"
-import {useApp} from "../../sections/utils/appContext";
+import Image from 'next/image';
+import styled from 'styled-components';
+import { useApp } from '../../sections/utils/appContext';
 
 const Container = styled.div`
   position: relative;
@@ -9,7 +9,7 @@ const Container = styled.div`
   justify-content: center;
   margin-top: 2%;
   margin-bottom: 2%;
-`
+`;
 
 const Circle = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const Circle = styled.div`
   border: 1px solid #ffffff;
   box-sizing: border-box;
   border-radius: 50%;
-`
+`;
 
 const NotCircle = styled(Circle)`
   background: #3a3a3a;
@@ -29,11 +29,11 @@ const NotCircle = styled(Circle)`
     cursor: pointer;
     opacity: 0.8;
   }
-`
+`;
 
 const DisabledCircle = styled(Circle)`
   background: #3a3a3a;
-`
+`;
 
 const YesCircle = styled(Circle)`
   background: #b0f6ff;
@@ -41,7 +41,7 @@ const YesCircle = styled(Circle)`
     cursor: pointer;
     opacity: 0.8;
   }
-`
+`;
 
 const Line = styled.div`
   display: flex;
@@ -58,34 +58,33 @@ const Line = styled.div`
     margin: 0;
     margin-top: 20px;
   }
-`
+`;
 
 const StepContainer = styled.div`
   display: flex;
   flex-direction: row;
   position: relative;
-`
+`;
 
 const StepContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 80px;
-
-`
+`;
 
 const StepText = styled.div`
-    font-family: 'Roboto';
-    font-size: 0.9em;
-    margin-top: 5%;
-`
+  font-family: 'Roboto';
+  font-size: 0.9em;
+  margin-top: 5%;
+`;
 
 const ImageBox = styled.div`
   top: -110px;
   position: absolute;
   z-index: 100;
   right: 0;
-`
+`;
 
 const Stepper = ({ handleStep, steps, step }) => {
   const { appState } = useApp();
@@ -95,46 +94,48 @@ const Stepper = ({ handleStep, steps, step }) => {
     if (stepLock >= step) {
       handleStep(step);
     }
-  }
+  };
 
   const Step = ({ s }) => {
     return (
       <>
-        {s < step && <YesCircle onClick={() => handleStepClick(s)}/>}
+        {s < step && <YesCircle onClick={() => handleStepClick(s)} />}
         {s === step && <Circle />}
         {s > step && s <= stepLock && <NotCircle onClick={() => handleStepClick(s)} />}
         {s > step && s > stepLock && <DisabledCircle />}
       </>
-    )
-  }
+    );
+  };
 
   /// TBD finds some picture
 
-  return (<> 
-    <Container>
-      {steps.map((st, index) => {
-        if (index + 1 === steps.length) {
+  return (
+    <>
+      <Container>
+        {steps.map((st, index) => {
+          if (index + 1 === steps.length) {
+            return (
+              <StepContent key={index}>
+                <Step s={index} />
+                <StepText>{st}</StepText>
+              </StepContent>
+            );
+          }
+
           return (
-            <StepContent key={index}>
-              <Step s={index} />
-              <StepText>{st}</StepText>
-            </StepContent>
-          )
-        }
+            <StepContainer key={index}>
+              <StepContent>
+                <Step s={index} />
+                <StepText>{st}</StepText>
+              </StepContent>
 
-        return (
-          <StepContainer key={index}>
-            <StepContent>
-              <Step s={index} />
-              <StepText>{st}</StepText>
-            </StepContent>
+              <Line />
+            </StepContainer>
+          );
+        })}
+      </Container>
+    </>
+  );
+};
 
-            <Line />
-          </StepContainer>
-        )
-      })}
-    </Container></>
-  )
-}
-
-export default Stepper
+export default Stepper;

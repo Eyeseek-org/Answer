@@ -1,5 +1,5 @@
-import {motion} from 'framer-motion'
-import styled from 'styled-components'
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
 const MyButton = styled(motion.button)`
   background-color: #3c4048;
@@ -11,7 +11,7 @@ const MyButton = styled(motion.button)`
   color: black;
   cursor: pointer;
   display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   height: 40px;
@@ -38,20 +38,16 @@ const MyButton = styled(motion.button)`
   @media (min-width: 1580px) {
     font-size: 1em;
   }
-`
+`;
 
 const ButtonAlt = ({ text, onClick, width }) => {
   return (
     <>
-      <MyButton     
-          whileHover={{ scale: 0.98 }} 
-          transition={{ type: "spring", stiffness: 500, damping: 3 }} 
-          onClick={onClick} width={width}
-        >
+      <MyButton whileHover={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }} onClick={onClick} width={width}>
         {text}
       </MyButton>
     </>
-  )
-}
+  );
+};
 
-export default ButtonAlt
+export default ButtonAlt;

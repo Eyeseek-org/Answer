@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Image = styled.img`
   width: 40px;
@@ -24,14 +24,14 @@ export const ImageContainer = styled.div`
 export const SelectionWrapper = styled.div`
   width: 100%;
   background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3C3C3C;
+  border: 1px solid #3c3c3c;
   border-radius: 5px;
   padding: 15px;
-`
+`;
 
 export const Label = styled.label`
   width: 100px;
-`
+`;
 
 export const MilestoneContainer = styled.div`
   position: relative;
@@ -49,7 +49,7 @@ export const MilestoneTitle = styled.span`
 export const MainMilestoneContainer = styled.div`
   position: relative;
   background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3C3C3C;
+  border: 1px solid #3c3c3c;
   border-radius: 5px;
   width: 100%;
   padding: 5%;
@@ -68,14 +68,14 @@ export const CancelButton = styled.button`
   border-style: none;
   border-radius: 5px;
   padding: 8px 10px;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;
 
 export const BlockchainDesc = styled.div`
   font-size: 0.7em;
-`
+`;
 
 export const StreamAnnouncement = styled.div`
   display: flex;
@@ -85,4 +85,4 @@ export const StreamAnnouncement = styled.div`
   font-family: 'Neucha';
   margin-right: 17%;
   margin-left: 17%;
-`
+`;

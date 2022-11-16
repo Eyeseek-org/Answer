@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 
 const Container = styled.input`
   display: inline-block;
@@ -8,14 +8,12 @@ const Container = styled.input`
   border-radius: 50%;
   transition: all 150ms;
   padding: 1px;
-`
+`;
 
 /// TBD refactor
 
-const CheckBox = ({checked, onChange}) => {
+const CheckBox = ({ checked, onChange }) => {
+  return <Container type="checkbox" checked={checked} onChange={onChange} />;
+};
 
-    return  <Container type="checkbox" checked={checked} onChange={onChange}/>
-
-}
-
-export default CheckBox
+export default CheckBox;
