@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Address from '../functional/Address';
 import { useQuery } from '@tanstack/react-query';
-import { DapAPIService } from '../../services/DapAPIService';
+import { UniService } from '../../services/DapAPIService';
 
 const Table = styled.table`
   width: 100%;
@@ -77,12 +77,15 @@ const columns = [
   // }),
 ];
 
-const StreamTable = (col) => {
-  const { data: activeStreams } = useQuery(['active-streams'], DapAPIService.getActiveStreams, {
+const StreamTable = () => {
+
+  const query = `/classes/Stream?where={"isActive": true}`
+  const { data: activeStreams } = useQuery(['streams'], () => UniService.getDataAll(query), {
     onError: (err) => {
       console.log('err', err);
     },
   });
+
 
   const table = useReactTable({
     data: activeStreams,
@@ -116,10 +119,6 @@ const StreamTable = (col) => {
           </tbody>
         </Table>
       )}
-      <div className="h-4" />
-      <button onClick={() => getStreams()} className="border p-2">
-        Rerender
-      </button>
     </>
   );
 };

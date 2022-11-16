@@ -12,7 +12,7 @@ import RewardList from '../../sections/ProjectDetail/RewardList';
 import Verification from '../../sections/ProjectDetail/Verification';
 import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
-import { DapAPIService } from '../../services/DapAPIService';
+import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 
 const Container = styled.div`
@@ -38,9 +38,11 @@ const Project: NextPage = () => {
   const [active, setActive] = useState('Overview');
   const { address } = useAccount();
 
-  const { data: project, error: projectError } = useQuery(['project-detail'], () => DapAPIService.getProjectDetail(objectId), {
+  const query = `/classes/Project?where={"objectId":"${objectId}"}`
+  const { data: project, error: projectError } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
     enabled: !!router.isReady,
   });
+
 
   const handleMode = (mode: string) => {
     setMode(mode);
@@ -111,7 +113,7 @@ const Project: NextPage = () => {
         ) : (
           <>{projectError && <>Project failed to fetch</>}</>
         )}
-        {mode === 'Verification' && address === project.owner && project.verified === false && <Verification objectId={objectId} />}
+        {project && mode === 'Verification' && address === project.owner && project.verified === false && <Verification objectId={objectId} />}
       </Container>
     </>
   );

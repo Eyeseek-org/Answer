@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 import Link from "next/link"
 import Image from "next/image"
 import styled from "styled-components"
-import axios from 'axios'
+import { useQuery } from '@tanstack/react-query';
 import {useAccount} from 'wagmi'
 import {motion} from 'framer-motion'
-
+import { UniService } from "../services/DapAPIService";
 import Logo from "../public/Logo.png"
 import Rainbow from '../components/buttons/Rainbow'
 import Notifications from '../sections/Notifications'
 import { BellIcon } from "../components/icons/Landing";
-import { moralisApiConfig } from "../data/moralisApiConfig";
 import { CloseIcon } from "../components/icons/Notifications";
 
 const NavItem = styled.div`
@@ -144,16 +143,19 @@ const Header = () => {
   ];
 
   const handleNotiWindow = (toggle) => {
-    setNotificationWindow(toggle);
+    setNoti(toggle);
     setNotiNumber(0);
   };
 
-  const { data: notifications } = useQuery(['notification-data'], () => DapAPIService.getNotificationData(address), {
+  const query = `/classes/Notification?where={"user":"${address}"}`
+
+  const { data: notifications } = useQuery(['notification-data'], () => UniService.getDataAll(query), {
     onSuccess: (data) => {
       const unread = data.filter((item) => item.isRead === false);
       setNotiNumber(unread.length);
     },
   });
+
 
   return (
     <>
@@ -161,9 +163,7 @@ const Header = () => {
         <ImageBox>
           <NavItem onClick={() => setActive('Home')}>
             <Link href="/">
-              <A>
-                <Image src={Logo} alt="Logo" width={'110%'} height={'50%'} />
-              </A>
+              <A><Image src={Logo} alt="Logo" width={'110%'} height={'50%'} /> </A>
             </Link>
           </NavItem>
         </ImageBox>
@@ -173,8 +173,7 @@ const Header = () => {
             const { title, url } = h;
 
             return (
-              <NavItem
-                key={index}
+              <NavItem key={index}
                 onClick={() => {
                   setActive(title);
                 }}
@@ -206,7 +205,7 @@ const Header = () => {
                   {notiNumber}</Notis>}
           </IconFrame>}
         </ConnectBox>
-        {notificationWindow && <Notifications notis={notifications.slice(0, 20)} />}
+        {noti && <Notifications notis={notifications.slice(0, 20)} />}
       </HeadBox>
     </>
   );
