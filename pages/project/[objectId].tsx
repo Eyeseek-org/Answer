@@ -102,7 +102,7 @@ const Project: NextPage = () => {
                 )}
               </>
             )}
-            {mode === 'Updates' && (
+            {project && mode === 'Updates' && (
               <>
                 <UpdateOverview objectId={objectId} />
                 {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title} />}

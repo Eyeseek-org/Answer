@@ -47,8 +47,6 @@ const RenderBlockchain = () => {
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
 
-  /// TBD refactor condition, if user rejects metamask switch
-
   const handleSwitchNetwork = async (chainId) => {
     await switchNetwork(chainId);
   };
@@ -177,6 +175,7 @@ const SetGoals = ({ setStep }) => {
           <SelectionWrapper>
             <RenderBlockchain />
           </SelectionWrapper>
+          <StreamAnnouncement>Crowdfunding period length is set to 30 days</StreamAnnouncement>
           <MainMilestoneContainer>
             <MilestoneHeader>
               <MilestoneTitle>Funding goal</MilestoneTitle>
@@ -199,7 +198,7 @@ const SetGoals = ({ setStep }) => {
               />
             </MilestoneContainer>
           </MainMilestoneContainer>
-          {pm1 < 1000 && <>$1000 is a minimum amount for the funding goal</>}
+          {pm1 < 1000 && <StreamAnnouncement>$1000 is a minimum amount for the funding goal</StreamAnnouncement>}
           <ButtonContainer>
             <NextButton onClick={handleBack}>Back</NextButton>
             {pm1 >= 1000 ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton>Next</DisButton>}

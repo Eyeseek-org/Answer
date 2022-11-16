@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import styled from "styled-components";
 import Footer from "../sections/Footer";
 import MyProjects from '../sections/my/MyProjects'
+import MyBookmarks from '../sections/my/MyBookmarks'
 import TabImage from "../components/form/TabImage";
 
 const Container = styled.div`
@@ -43,6 +44,7 @@ const My: NextPage = () => {
         />
       </TabBox>
           {mode === 'Projects' && <MyProjects/>}
+          {mode === 'Bookmarks' && <MyBookmarks/>}
         <Footer />
     </Container>
 }

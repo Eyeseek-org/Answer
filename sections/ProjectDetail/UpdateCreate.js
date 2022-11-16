@@ -26,6 +26,8 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const [url, setUrl] = useState('');
   const [updateTitle, setUpdateTitle] = useState('');
 
+  // Missing auth for parse, maybe master: true needed
+ // const { mutate: updateParseProject, isSuccess, isError } = useMutation(DapAPIService.updateParseProject);
   const { mutate: updateProject, isSuccess, isError } = useMutation(DapAPIService.updateProject);
 
   const { mutate: notifyReward } = useMutation(DapAPIService.handleRewardNotification);

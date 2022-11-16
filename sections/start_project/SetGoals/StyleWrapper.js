@@ -81,8 +81,11 @@ export const StreamAnnouncement = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1.1em;
-  font-family: 'Neucha';
+  color: #b0f6ff;
+  letter-spacing: 0.4px;
+  font-size: 1.2em;
+  margin-top: 2%;
+  font-family: 'Gemunu Libre';
   margin-right: 17%;
   margin-left: 17%;
 `;
