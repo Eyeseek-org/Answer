@@ -314,8 +314,8 @@ const ProjectDetail = ({
         </LeftPart>
         {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add} chainId={chainId}/> }
       </DetailBox>
-    </Container>
       <ProjectDescription descM={descM} />
+    </Container>
     </>
 };
 

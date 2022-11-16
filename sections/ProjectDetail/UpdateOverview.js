@@ -57,17 +57,25 @@ const RefCard = styled(motion.div)`
 const UpdateOverview = ({objectId}) => {
     const [apiError, setApiError] = useState(false)
 
-    const query = `${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`
-    const { data: updates } = useQuery(['updates'], () => UniService.getDataAll(query),{
+    const query = `/classes/Update?where={"project":"${objectId}"}`
+    // const { data: updates } = useQuery(['updates'], () => UniService.getDataAll(query),{
+    //     onError: () => {
+    //         setApiError(true)
+    //     },
+    // });
+
+    const { data: updates } = useQuery(['updates'], () => UniService.getParseAll(query),{
         onError: () => {
             setApiError(true)
         },
     });
 
+
     return <Container>
         <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
+        <Timeline/>
         <List>
-            {updates.length > 0 ?
+            {updates && updates.length > 0 ?
                 updates.map((update)=> 
                     <RefCard key={update.objectId}
                         whileHover={{ scale: 1.05 }} 
@@ -77,7 +85,7 @@ const UpdateOverview = ({objectId}) => {
                   </RefCard>) : <>No updates published by the author</>
             }        
         </List>
-        <Timeline/>
+
     </Container>
 }
 

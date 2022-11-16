@@ -1,4 +1,4 @@
-import { DapAxiosInstance } from '../helpers/axiosInstance';
+import { DapAxiosInstance, ParseAxiosInstance } from '../helpers/axiosInstance';
 
 export class UniService {
   static async getDataAll(query: string) {
@@ -10,11 +10,30 @@ export class UniService {
     const response = await DapAxiosInstance.get(query);
     return response.data.results[0];
   }
+
+  static async postData(query: string, data: any) {
+    const response = await DapAxiosInstance.post(query, data);
+    return response.data;
+  }
+
+  static async getParseAll(query: string) {
+    const response = await ParseAxiosInstance.get(query);
+    return response.data.results;
+  }
+
 }
 
 export class DapAPIService {
   static async updateProject({ id, title, url }: { title: string; url: string; id: string }) {
     return await DapAxiosInstance.post(`/classes/Update`, {
+      title,
+      url,
+      project: id,
+    });
+  }
+
+  static async updateParseProject({ id, title, url }: { title: string; url: string; id: string }) {
+    return await ParseAxiosInstance.post(`/classes/Update`, {
       title,
       url,
       project: id,

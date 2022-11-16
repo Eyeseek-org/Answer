@@ -3,13 +3,11 @@ import styled from 'styled-components'
 import {motion} from 'framer-motion'
 
 const Container = styled.div`
-    background: linear-gradient(180deg, rgba(22, 0, 0, 0) 50%, rgba(22, 0, 0, 0.75)  100%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 500px;
-    margin-top: 25%;
-    padding-bottom: 20%;
+    margin-top: 9%;
+    padding-bottom: 5%;
     @media (max-width: 1068px) {
         display: none;
     }
