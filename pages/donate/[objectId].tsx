@@ -22,7 +22,7 @@ import LandingDonate from '../../components/animated/LandingDonate';
 import RewardList from '../../sections/ProjectDetail/RewardList';
 import Tab from '../../components/form/Tab';
 import DonateWrapper from '../../sections/Donate/DonateWrapper';
-import { DapAPIService } from '../../services/DapAPIService';
+import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 
 const Container = styled.div`
@@ -68,14 +68,6 @@ const Option = styled.div`
   @media (min-width: 1580px) {
     font-size: 1em;
   }
-`;
-
-const SelectionWrapper = styled.div`
-  width: 100%;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3c3c3c;
-  border-radius: 5px;
-  padding: 15px;
 `;
 
 const OptionItemWrapper = styled.div`
@@ -167,7 +159,13 @@ const Donate: NextPage = () => {
   const { rewMAmount, rewDAmount, rewId } = appState;
   const [showRewards, setShowRewards] = useState(false);
 
-  const { data: projectDetail } = useQuery(['project-detail'], () => DapAPIService.getProjectDetail(objectId));
+  const query = `/classes/Project?where={"objectId":"${objectId}"}`
+  // @ts-ignore
+  const { data: projectDetail } = useQuery(['project-detail'], UniService.getDataSingle(query), {
+    onError: (err) => {
+      console.log('err', err);
+    },
+  });
 
   const handleSwitchNetwork = (id) => {
     switchNetwork(id);

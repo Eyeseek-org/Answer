@@ -40,7 +40,7 @@ const colStream = [
 
 // Create couple of common tables
 
-const Stats = () => {
+const Stats = ({col}) => {
   return (
     <>
       <SectionTitle title={'Streams'} subtitle={'Overview'} />

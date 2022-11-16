@@ -1,12 +1,12 @@
 import styled from "styled-components"
 import SectionTitle from "../../components/typography/SectionTitle"
-import axios from 'axios'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
+import { useQuery } from "@tanstack/react-query"
 import {motion} from 'framer-motion'
+import { UniService } from "../../services/DapAPIService"
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
-import { moralisApiConfig } from "../../data/moralisApiConfig"
 import Timeline from '../../components/Timeline'
 
 TimeAgo.addDefaultLocale(en)
@@ -55,20 +55,15 @@ const RefCard = styled(motion.div)`
 `
 
 const UpdateOverview = ({objectId}) => {
-    const [updates, setUpdates] = useState([])
+    const [apiError, setApiError] = useState(false)
 
-    useEffect(() => {
-        getUpdates()
-      }, []);
+    const query = `${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`
+    const { data: updates } = useQuery(['updates'], () => UniService.getDataAll(query),{
+        onError: () => {
+            setApiError(true)
+        },
+    });
 
-    const getUpdates = async () => {
-        try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Update?where={"project":"${objectId}"}`, moralisApiConfig)
-            setUpdates(res.data.results)
-        } catch (error) {
-            console.log(error)
-        }
-    }
     return <Container>
         <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
         <List>

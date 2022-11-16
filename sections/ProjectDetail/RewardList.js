@@ -6,7 +6,7 @@ import ErrText from '../../components/typography/ErrText';
 import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
 import { useQuery } from '@tanstack/react-query';
-import { DapAPIService } from '../../services/DapAPIService';
+import { UniService } from '../../services/DapAPIService';
 
 const Main = styled.div`
   display: flex;
@@ -31,7 +31,8 @@ const RewardList = ({ oid, chain }) => {
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
 
   // Extract image json.image, display it
-  const { data: rewards, isLoading: isRewardsLoading, error: rewardError } = useQuery(['rewards'], () => DapAPIService.getRewards(oid), {});
+  const query = `/classes/Reward?where={"project":"${oid}"}`
+  const { data: rewards, isLoading: isRewardsLoading, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
 
   const handleRewardClick = (sel, rewAmount, type, rid) => {
     setSelected(sel);
@@ -71,7 +72,7 @@ const RewardList = ({ oid, chain }) => {
     <>
       <Main>
         <Container>
-          {rewards.length > 0 ? (
+          {rewards && rewards.length > 0 ? (
             <>
               {rewards.map((reward) => {
                 return (

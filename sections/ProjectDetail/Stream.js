@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { abi } from '../../abi/supertoken.js'
+import { useQuery } from "@tanstack/react-query";
+import { UniService } from "../../services/DapAPIService";
 import styled from 'styled-components'
 import axios from 'axios'
 import { moralisApiConfig } from '../../data/moralisApiConfig'
@@ -138,12 +140,32 @@ const Stream = ({ objectId, recipient }) => {
   const provider = useProvider()
   const { data: signer } = useSigner()
   const [streamFound, setStreamFound] = useState(false)
-  const [streamData, setStreamData] = useState()
   const [deposit, setDeposit] = useState(0)
   const [owedDeposit, setOwedDeposit] = useState(0)
   const [superfluidError, setSuperfluidError] = useState(false)
   const [newStream, setNewStream] = useState(false)
   const [displayRate, setDisplayRate] = useState(50)
+
+
+  const query = `/classes/Stream?where={"projectId":"${objectId}", "isActive": true }`
+  const { data: streamData } = useQuery(['streams'], () => UniService.getDataAll(query),{
+    onError: () => {
+      setApiError(true)
+    },
+    onSuccess: () => {
+      setApiError(false)
+      if (streamData.length > 0) {
+        setStreamFound(true)
+        for (let i = 0; i < streamData.length; i++) {
+          if (streamData[i].flowRate) {
+            /// Error here - For each array item add number to the displayRate total
+            setDisplayRate(displayRate + streamData[i].flowRate)
+            console.log(displayRate)
+          }
+        }
+      }
+    }
+  });
 
 
   // Maybe rather call on backend - Aggregate automations 
@@ -197,31 +219,6 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-  const getStreamState = async (oid) => {
-    await getFlowData();
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream?where={"projectId":"${oid}", "isActive": true }`, moralisApiConfig)
-      if (res.data.results.length > 0) {
-        setStreamFound(true)
-        setStreamData(res.data.results)
-        for (let i = 0; i < res.data.results.length; i++) {
-          if (res.data.results[i].flowRate) {
-            /// Error here - For each array item add number to the displayRate total
-            setDisplayRate(displayRate + res.data.results[i].flowRate)
-            console.log(displayRate)
-          }
-        }
-        // Set display rate, aggregation of all streams
-      } else {
-        setStreamFound(false)
-      }
-      setApiError(false)
-    } catch (error) {
-      console.log(error)
-      setApiError(true)
-    }
-  }
-
   const deleteStreamState = async (oid) => {
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
@@ -235,9 +232,6 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-  useEffect(() => {
-    getStreamState(objectId);
-  }, [])
 
   async function startStream() {
     const sf = await Framework.create({

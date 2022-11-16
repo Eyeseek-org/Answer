@@ -1,7 +1,8 @@
 import styled from 'styled-components'
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAccount } from 'wagmi';
-import axios from "axios"
+import { useQuery } from '@tanstack/react-query';
+import { UniService } from "../../services/DapAPIService";
 
 import LatestProjects from "../Landing/LatestProjects";
 import ProjectDetail from "../ProjectDetail/ProjectDetail"
@@ -15,7 +16,6 @@ import UpdateOverview from "../ProjectDetail/UpdateOverview";
 import UpdateCreate from "../ProjectDetail/UpdateCreate";
 import StatsTable from "../../components/tables/StatsTable";
 import SectionTitle from "../../components/typography/SectionTitle";
-import { moralisApiConfig } from '../../data/moralisApiConfig';
 
 const TabBox = styled.div`
   margin-top: 5%;
@@ -24,7 +24,6 @@ const TabBox = styled.div`
 
 const MyProjects = () => {
     const {address} = useAccount();
-    const [project, setProject] = useState()
     const [mode, setMode] = useState("Overview")
     const [active, setActive] = useState("Overview")
 
@@ -33,21 +32,13 @@ const MyProjects = () => {
         setActive(m)
       }
 
-    const getActiveProject = async () => {
-        try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project?where={"owner":"${address}", "state": 1}`, moralisApiConfig)
-            if (res.data.results.length > 0) {
-                setProject(res.data.results[0])
-              }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getActiveProject()
-      }, [])
-
+  const query = `/classes/Project?where={"owner":"${address}", "state": 1}`
+  const { data: project } = useQuery(['active-project'], () => UniService.getDataSingle(query),{
+    onError: (err) => {
+      console.log(err)
+    },
+  });
+  
     return (
         <div>
           {address ? <div>

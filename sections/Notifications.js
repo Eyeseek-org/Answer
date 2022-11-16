@@ -9,6 +9,7 @@ import en from 'javascript-time-ago/locale/en.json'
 import { moralisApiConfig } from '../data/moralisApiConfig'
 import Image from 'next/image'
 import Eye1 from '../public/Eye1.png'
+import Link from 'next/link'
 
 TimeAgo.addDefaultLocale(en)
 

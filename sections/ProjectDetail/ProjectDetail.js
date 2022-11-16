@@ -226,8 +226,7 @@ const ProjectDetail = ({
     }
   };
 
-  return (
-    <>
+  return <>
       <Container>
         {apiError && <ErrText text={'Error with Moralis connection, please try again later'} />}
         <DetailBox>
@@ -251,74 +250,27 @@ const ProjectDetail = ({
           </LeftTopTooltip>
           <ProjectType>
             {verified ? (
-              <IconWrapper
-                onMouseEnter={() => {
-                  setVerifiedTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setVerifiedTooltip(false);
-                }}
-              >
+              <IconWrapper onMouseEnter={() => { setVerifiedTooltip(true);}} onMouseLeave={() => { setVerifiedTooltip(false);}}>
                 <VerifiedIcon width={30} height={30} />
               </IconWrapper>
             ) : (
-              <IconWrapper
-                onMouseEnter={() => {
-                  setNonVerifiedTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setNonVerifiedTooltip(false);
-                }}
-              >
+              <IconWrapper onMouseEnter={() => { setNonVerifiedTooltip(true);}} onMouseLeave={() => {setNonVerifiedTooltip(false);}}>
                 <NonVerifiedIcon width={70} height={70} />
               </IconWrapper>
             )}
             {pType === 'Stream' ? (
-              <IconWrapper
-                onMouseEnter={() => {
-                  setStreamTypeTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setStreamTypeTooltip(false);
-                }}
-              >
+              <IconWrapper onMouseEnter={() => { setStreamTypeTooltip(true);}} onMouseLeave={() => { setStreamTypeTooltip(false);}}>
                 <StreamIcon width={30} />
               </IconWrapper>
             ) : (
-              <IconWrapper
-                onMouseEnter={() => {
-                  setStandardTypeTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setStandardTypeTooltip(false);
-                }}
-              >
+              <IconWrapper onMouseEnter={() => { setStandardTypeTooltip(true);}} onMouseLeave={() => { setStandardTypeTooltip(false);}}>
                 <BlockchainIcon width={30} />
               </IconWrapper>
             )}
-            <IconWrapper
-              onMouseEnter={() => {
-                setChainTooltip(true);
-              }}
-              onMouseLeave={() => {
-                setChainTooltip(false);
-              }}
-            >
-              {chainId === 80001 && (
-                <>
-                  <Image src={polygon} alt={'matic'} width={30} height={30} />{' '}
-                </>
-              )}
-              {chainId === 97 && (
-                <>
-                  <Image src={bnb} alt={'bnb'} width={30} height={30} />
-                </>
-              )}
-              {chainId === 4002 && (
-                <>
-                  <Image src={ftm} alt={'ftm'} width={30} height={30} />
-                </>
-              )}
+            <IconWrapper onMouseEnter={() => { setChainTooltip(true); }}onMouseLeave={() => { setChainTooltip(false);}} >
+              {chainId === 80001 && (<><Image src={polygon} alt={'matic'} width={30} height={30} /></>)}
+              {chainId === 97 && (<><Image src={bnb} alt={'bnb'} width={30} height={30} /></> )}
+              {chainId === 4002 && ( <> <Image src={ftm} alt={'ftm'} width={30} height={30} /> </> )}
             </IconWrapper>
           </ProjectType>
 
@@ -327,46 +279,20 @@ const ProjectDetail = ({
               <CanceledTypo width={400} />
             </CanceledBox>
           )}
-          {address === owner && (
+          {address === owner && 
             <ActionPanel>
               {cancelTooltip && <Tooltip margin={'-35px'} text="Cancel project" />}
               {urlWebTooltip && <Tooltip margin={'-35px'} text="External link to project website" />}
               {urlSocialsTooltip && <Tooltip margin={'-35px'} text="External link to project primary socials" />}
-              <IconWrapper
-                onMouseEnter={() => {
-                  setUrlWebTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setUrlWebTooltip(false);
-                }}
-              >
-                <a href={urlSocial} target="_blank" rel="noreferrer">
-                  <UrlSocialsIcon width={30} />
-                </a>
+              <IconWrapper onMouseEnter={() => {setUrlWebTooltip(true);}} onMouseLeave={() => {setUrlWebTooltip(false);}}  >
+                <a href={urlSocial} target="_blank" rel="noreferrer"><UrlSocialsIcon width={30} /> </a>
               </IconWrapper>
               <a href={urlProject} target="_blank" rel="noreferrer">
-                <IconWrapper
-                  onMouseEnter={() => {
-                    setUrlSocialsTooltip(true);
-                  }}
-                  onMouseLeave={() => {
-                    setUrlSocialsTooltip(false);
-                  }}
-                >
+                <IconWrapper onMouseEnter={() => {setUrlSocialsTooltip(true); }} onMouseLeave={() => {setUrlSocialsTooltip(false);}}>
                   <UrlIcon width={30} />
                 </IconWrapper>
               </a>
-              <IconWrapper
-                onClick={() => {
-                  cancel();
-                }}
-                onMouseEnter={() => {
-                  setCancelTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setCancelTooltip(false);
-                }}
-              >
+              <IconWrapper onClick={() => { cancel();}} onMouseEnter={() => { setCancelTooltip(true);}} onMouseLeave={() => { setCancelTooltip(false); }}>
                 <CancelIcon width={30} />
               </IconWrapper>
         </ActionPanel>}
@@ -391,7 +317,6 @@ const ProjectDetail = ({
     </Container>
       <ProjectDescription descM={descM} />
     </>
-  );
 };
 
 export default ProjectDetail;

@@ -5,7 +5,9 @@ import { useAccount } from 'wagmi';
 import Loading from '../components/Loading';
 import { categories } from '../data/categories';
 import defaultProfile from '../data/profile';
+import { useQuery } from '@tanstack/react-query';
 import { moralisApiConfig } from '../data/moralisApiConfig';
+import { UniService } from "../services/DapAPIService";
 
 const Container = styled.div`
   display: flex;
@@ -73,27 +75,22 @@ const Label = styled.label`
 
 const Preferences = () => {
   const [loading, setLoading] = useState(true);
-  const [objectId, setObjectId] = useState(null);
   const { address } = useAccount();
-  const [profile, setProfile] = useState(defaultProfile);
+  const [ref, setPref] = useState(defaultProfile);
 
-  const getProfile = async () => {
-    try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_DAPP}/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`,
-        moralisApiConfig
-      );
-      setProfile(res.data.results[0].pref[0]);
-      setObjectId(res.data.results[0].objectId);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const query = `/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`
+
+  const { data: user } = useQuery(['preferences'], () => UniService.getDataSingle(url), {
+    onSuccess: (data) => {
+      setPref(data.pref[0]);
+    },
+  });
+
 
   const updateProfile = async (e) => {
     // update profile in database
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User/${objectId}`, { pref: [profile] }, moralisApiConfig);
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User/${user.objectId}`, { pref: [profile] }, moralisApiConfig);
       localStorage.setItem('localProfile', JSON.stringify(profile));
     } catch (error) {
       console.log(error);
@@ -101,9 +98,9 @@ const Preferences = () => {
   };
 
   const handleSelect = async (category, subcategory) => {
-    const newProfile = { ...profile };
+    const newProfile = { ...pref };
     newProfile[category][subcategory] = !newProfile[category][subcategory];
-    setProfile(newProfile);
+    address(newProfile);
     updateProfile();
   };
 
@@ -111,13 +108,12 @@ const Preferences = () => {
   useEffect(() => {
     const localProfile = localStorage.getItem('localProfile');
     if (localProfile) {
-      setProfile(JSON.parse(localProfile));
+      setPref(JSON.parse(localProfile));
       setLoading(false);
     } else {
       localStorage.setItem('localProfile', JSON.stringify(profile));
       setLoading(false);
     }
-    getProfile();
   }, []);
 
   return (
