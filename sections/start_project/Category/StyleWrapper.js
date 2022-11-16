@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -8,7 +8,7 @@ export const Container = styled.div`
   margin-top: 2%;
   margin-bottom: 2%;
   gap: 20px;
-`
+`;
 
 export const SiteContainer = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const SiteContainer = styled.div`
     padding-left: 3%;
     padding-right: 3%;
   }
-`
+`;
 
 export const NextButton = styled.button`
   border-radius: 5px;
@@ -33,7 +33,7 @@ export const NextButton = styled.button`
   color: black;
   cursor: pointer;
   display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   height: 40px;
@@ -55,9 +55,9 @@ export const NextButton = styled.button`
     background-color: #9bffff;
   }
   @media (min-width: 1768px) {
-        font-size: 1.2em;
-    }
-`
+    font-size: 1.2em;
+  }
+`;
 
 export const ErrButton = styled(NextButton)`
   background: rgba(97, 0, 0, 0.5);
@@ -65,14 +65,14 @@ export const ErrButton = styled(NextButton)`
   &:hover {
     background: rgba(97, 0, 0, 0.5);
   }
-`
+`;
 
 export const DisButton = styled(NextButton)`
   opacity: 0.2;
-  &:hover{
+  &:hover {
     cursor: not-allowed;
   }
-`
+`;
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -81,18 +81,18 @@ export const ButtonContainer = styled.div`
   justify-content: space-between;
   margin-top: 5%;
   margin-bottom: 15%;
-`
+`;
 
 export const MainContainer = styled.div`
   padding-top: 5%;
   margin-bottom: 10%;
   animation: fadeIn 0.7s;
-    @keyframes fadeIn {
-        0% {
-        opacity: 0;
-        }
-        100% {
-        opacity: 1;
-        }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
     }
-`
+    100% {
+      opacity: 1;
+    }
+  }
+`;

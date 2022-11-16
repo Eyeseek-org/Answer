@@ -1,65 +1,74 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import {useContractWrite, usePrepareContractWrite, useContractEvent} from 'wagmi'
-import donation from "../../abi/donation.json"
-import token from "../../abi/token.json"
+import { useContractWrite, usePrepareContractWrite, useContractEvent } from 'wagmi';
+import donation from '../../abi/donation.json';
+import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import ErrText from '../../components/typography/ErrText';
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-`
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+`;
 
 const ButtonBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    justify-content: flex-end;
-`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: flex-end;
+`;
 
-const RewardTokenSubmit = ({add, home, pid, tokenAddress, cap, tokenAmount}) => {
-    const [ev, setEv] = useState(false)
+const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) => {
+  const [ev, setEv] = useState(false);
 
-    var total = cap * tokenAmount
+  var total = cap * tokenAmount;
 
-    const listened = async() => {
-        await setEv(true)
-    }
+  const listened = async () => {
+    await setEv(true);
+  };
 
-    const handleSubmit = async () => {
-        await write?.()
-    }
+  const handleSubmit = async () => {
+    await write?.();
+  };
 
-    useContractEvent({
-        address: tokenAddress,
-        abi: token.abi,
-        eventName: 'Approval',
-        listener: (event) => listened(event),
-        once: true
-      })
-    
-    // Total, Reward AMount
-    const { config, error } = usePrepareContractWrite({
-        address: add,
-        abi: donation.abi,
-        chainId: home,
-        functionName: 'createTokenReward',
-        args: [pid, cap, total, tokenAddress],
-    });
+  useContractEvent({
+    address: tokenAddress,
+    abi: token.abi,
+    eventName: 'Approval',
+    listener: (event) => listened(event),
+    once: true,
+  });
 
-    const { write } = useContractWrite(config);
+  // Total, Reward AMount
+  const { config, error } = usePrepareContractWrite({
+    address: add,
+    abi: donation.abi,
+    chainId: home,
+    functionName: 'createTokenReward',
+    args: [pid, cap, total, tokenAddress],
+  });
 
-    return <Container>
-        <ButtonBox>
-             <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} />
-            <> <ButtonAlt text={'Submit'} onClick={()=>{handleSubmit()}}  />
-             {error && <ErrText text={'Missing/Incorrect parameter'} />}</>
-        </ButtonBox> 
-     
+  const { write } = useContractWrite(config);
+
+  return (
+    <Container>
+      <ButtonBox>
+        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} />
+        <>
+          {' '}
+          <ButtonAlt
+            text={'Submit'}
+            onClick={() => {
+              handleSubmit();
+            }}
+          />
+          {error && <ErrText text={'Missing/Incorrect parameter'} />}
+        </>
+      </ButtonBox>
     </Container>
-}
+  );
+};
 
-export default RewardTokenSubmit
+export default RewardTokenSubmit;

@@ -1,7 +1,5 @@
-
-
 const Notifier = () => {
-    return <></>
-}
+  return <></>;
+};
 
-export default Notifier
+export default Notifier;

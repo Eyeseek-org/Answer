@@ -1,24 +1,23 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const MainContainer = styled.div`
   padding-top: 5%;
   margin-bottom: 10%;
   animation: fadeIn 0.7s;
-    @keyframes fadeIn {
-        0% {
-        opacity: 0;
-        }
-        100% {
-        opacity: 1;
-        }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
     }
-`
-
+    100% {
+      opacity: 1;
+    }
+  }
+`;
 
 export const MainMilestoneContainer = styled.div`
   margin-top: 20px;
   background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3C3C3C;
+  border: 1px solid #3c3c3c;
   border-radius: 5px;
   width: 100%;
   padding: 5%;
@@ -41,8 +40,8 @@ export const RewardContainer = styled.div`
   padding-right: 18%;
   margin-top: 3%;
   @media (max-width: 768px) {
-        flex-wrap: wrap;
-        padding-left: 3%;
-        padding-right: 3%;
+    flex-wrap: wrap;
+    padding-left: 3%;
+    padding-right: 3%;
   }
-`
+`;

@@ -17,7 +17,7 @@ import { CloseIcon } from "../components/icons/Notifications";
 const NavItem = styled.div`
   display: flex;
   font-size: 1.6em;
-  font-family: "Gemunu Libre", sans-serif;
+  font-family: 'Gemunu Libre', sans-serif;
   font-style: normal;
   align-items: center;
   padding: 5px;
@@ -38,7 +38,7 @@ const NavItem = styled.div`
   @media (min-width: 1580px) {
     font-size: 2em;
   }
-`
+`;
 
 const HeadBox = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const HeadBox = styled.div`
   @media (max-width: 768px) {
     justify-content: center;
   }
-`
+`;
 
 const ImageBox = styled.div`
   display: block;
@@ -64,7 +64,7 @@ const ImageBox = styled.div`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const MenuBox = styled.div`
   display: flex;
@@ -79,25 +79,25 @@ const MenuBox = styled.div`
   @media (min-width: 1780px) {
     gap: 125px;
   }
-`
+`;
 
 const ConnectBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 20px;
-`
+`;
 
 const A = styled.div`
   &:hover {
     opacity: 0.8;
     cursor: pointer;
   }
-`
+`;
 
 const AB = styled(A)`
   font-weight: bold;
-`
+`;
 
 const IconFrame = styled.div`
   position: relative;
@@ -109,10 +109,10 @@ const IconFrame = styled.div`
   border: 1px solid white;
   padding: 4px;
   border-radius: 5px;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const Notis = styled(motion.div)`
   position: absolute;
@@ -127,7 +127,7 @@ const Notis = styled(motion.div)`
   background: #ab0000;
   right: -10%;
   top: -20%;
-`
+`;
 
 const Header = () => {
   const [active, setActive] = useState("Home")
@@ -136,46 +136,33 @@ const Header = () => {
   const [notiNumber, setNotiNumber] = useState(notis.length)
   const {address} = useAccount()
   const header = [
-    { title: "Discover", url: "/discover" },
-    { title: "Start a project", url: "/startproject" },
-    { title: "FAQ", url: "/faq" },
-    { title: "My", url: "/my" },
-    { title: "Stats", url: "/stats" },
-  ]
+    { title: 'Discover', url: '/discover' },
+    { title: 'Start a project', url: '/startproject' },
+    { title: 'FAQ', url: '/faq' },
+    { title: 'My', url: '/my' },
+    { title: 'Stats', url: '/stats' },
+  ];
 
-  const handleNotiWindow = (b) => {
-    setNoti(b)
-    setNotiNumber(0)
-  }
+  const handleNotiWindow = (toggle) => {
+    setNotificationWindow(toggle);
+    setNotiNumber(0);
+  };
 
-
-  const getData = async () => {
-      try {
-          const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification?where={"user":"${address}"}`, moralisApiConfig);
-          await setNotis(res.data.results.slice(0,20));
-          const unread = res.data.results.filter((item) => item.isRead === false)
-          await setNotiNumber(unread.length)
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    useEffect(() => {
-        getData()
-    }, []);
+  const { data: notifications } = useQuery(['notification-data'], () => DapAPIService.getNotificationData(address), {
+    onSuccess: (data) => {
+      const unread = data.filter((item) => item.isRead === false);
+      setNotiNumber(unread.length);
+    },
+  });
 
   return (
     <>
       <HeadBox>
         <ImageBox>
-          <NavItem
-            onClick={() => {
-              setActive("Home")
-            }}
-          >
+          <NavItem onClick={() => setActive('Home')}>
             <Link href="/">
               <A>
-                <Image src={Logo} alt="Logo" width={"110%"} height={"50%"} />
+                <Image src={Logo} alt="Logo" width={'110%'} height={'50%'} />
               </A>
             </Link>
           </NavItem>
@@ -183,13 +170,13 @@ const Header = () => {
 
         <MenuBox>
           {header.map((h, index) => {
-            const { title, url } = h
+            const { title, url } = h;
 
             return (
               <NavItem
                 key={index}
                 onClick={() => {
-                  setActive(title)
+                  setActive(title);
                 }}
               >
                 {active === title ? (
@@ -202,7 +189,7 @@ const Header = () => {
                   </Link>
                 )}
               </NavItem>
-            )
+            );
           })}
         </MenuBox>
 
@@ -219,10 +206,10 @@ const Header = () => {
                   {notiNumber}</Notis>}
           </IconFrame>}
         </ConnectBox>
-        {noti && <Notifications notis={notis} />}
+        {notificationWindow && <Notifications notis={notifications.slice(0, 20)} />}
       </HeadBox>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
