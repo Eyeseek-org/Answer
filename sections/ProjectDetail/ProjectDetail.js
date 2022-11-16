@@ -369,41 +369,26 @@ const ProjectDetail = ({
               >
                 <CancelIcon width={30} />
               </IconWrapper>
-            </ActionPanel>
-          )}
-          <LeftPart>
-            {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} layout="fill" />}
-            <Categories>
-              {category && (
-                <>
-                  {category === 'Art' && <Tag tag={category} color={'#7E0000'} />}
-                  {category === 'Games' && <Tag tag={category} color={'#7E3D00'} />}
-                  {category === 'OpenSource' && <Tag tag={category} color={'#7C007E'} />}
-                  {category === 'Science' && <Tag tag={category} color={'#00502E'} />}
-                  {category === 'Technology' && <Tag tag={category} color={'#2B2B2B'} />}
-                  {category === 'Web3' && <Tag tag={category} color={'#687900'} />}
-                </>
-              )}
-              {subcategory && <Tag tag={subcategory} color={'#035201'} />}
-            </Categories>
-            <Desc>{description}</Desc>
-          </LeftPart>
-          {state === 4 ? (
-            <Inactive>Inactive</Inactive>
-          ) : (
-            <ProjectDetailRight
-              pid={pid}
-              objectId={objectId}
-              bookmarks={bookmarks}
-              pType={pType}
-              owner={owner}
-              add={add}
-              chainId={chainId}
-            />
-          )}
-        </DetailBox>
-      </Container>
-
+        </ActionPanel>}
+        <LeftPart>
+          {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'320px'} height={'260px'}/>}
+          <Categories>
+            {category && <>
+              {category === 'Art' && <Tag tag={category} color={"#7E0000"} />}
+              {category === 'Games' && <Tag tag={category} color={"#7E3D00"} />}
+              {category === 'OpenSource' && <Tag tag={category} color={"#7C007E"} />}
+              {category === 'Science' && <Tag tag={category} color={"#00502E"} />}
+              {category === 'Technology' && <Tag tag={category} color={"#2B2B2B"} />}
+              {category === 'Web3' && <Tag tag={category} color={"#687900"} />}
+              
+            </>}
+            {subcategory && <Tag tag={subcategory} color={"#035201"} />}
+          </Categories>
+          <Desc>{description}</Desc>
+        </LeftPart>
+        {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add} chainId={chainId}/> }
+      </DetailBox>
+    </Container>
       <ProjectDescription descM={descM} />
     </>
   );
