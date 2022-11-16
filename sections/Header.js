@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useMoralis } from 'react-moralis';
+import { useState, useEffect } from "react"
 
-import Link from 'next/link';
-import Image from 'next/image';
-import styled from 'styled-components';
-import { useAccount } from 'wagmi';
-import { motion } from 'framer-motion';
-import { useQuery } from '@tanstack/react-query';
-import Logo from '../public/Logo.png';
-import Rainbow from '../components/buttons/Rainbow';
-import Notifications from '../sections/Notifications';
-import { BellIcon } from '../components/icons/Landing';
-import { CloseIcon } from '../components/icons/Notifications';
-import { DapAPIService } from '../services/DapAPIService';
+import Link from "next/link"
+import Image from "next/image"
+import styled from "styled-components"
+import axios from 'axios'
+import {useAccount} from 'wagmi'
+import {motion} from 'framer-motion'
+
+import Logo from "../public/Logo.png"
+import Rainbow from '../components/buttons/Rainbow'
+import Notifications from '../sections/Notifications'
+import { BellIcon } from "../components/icons/Landing";
+import { moralisApiConfig } from "../data/moralisApiConfig";
+import { CloseIcon } from "../components/icons/Notifications";
 
 const NavItem = styled.div`
   display: flex;
@@ -130,11 +130,11 @@ const Notis = styled(motion.div)`
 `;
 
 const Header = () => {
-  const [active, setActive] = useState('Home');
-  const [notificationWindow, setNotificationWindow] = useState(false);
-  const [notiNumber, setNotiNumber] = useState(0);
-  const { isAuthenticated } = useMoralis();
-  const { address } = useAccount();
+  const [active, setActive] = useState("Home")
+  const [noti, setNoti] = useState(false)
+  const [notis, setNotis] = useState([])
+  const [notiNumber, setNotiNumber] = useState(notis.length)
+  const {address} = useAccount()
   const header = [
     { title: 'Discover', url: '/discover' },
     { title: 'Start a project', url: '/startproject' },
@@ -195,22 +195,16 @@ const Header = () => {
 
         <ConnectBox>
           <Rainbow />
-          {isAuthenticated && (
-            <IconFrame onClick={() => handleNotiWindow(!notificationWindow)}>
-              {!notificationWindow ? <BellIcon /> : <CloseIcon width={20} />}
-              {notiNumber > 0 && (
-                <Notis
-                  animate={{
-                    scale: [1, 2, 2, 1, 1],
-                    rotate: [0, 0, 270, 270, 0],
-                    borderRadius: ['20%', '20%', '50%', '50%', '20%'],
-                  }}
-                >
-                  {notiNumber}
-                </Notis>
-              )}
-            </IconFrame>
-          )}
+          {address && <IconFrame onClick={() => { handleNotiWindow(!noti) }}>
+            {!noti ? <BellIcon/> : <CloseIcon width={20}/>}
+            {notiNumber > 0 && 
+            <Notis
+              animate={{
+                scale: [1, 2, 2, 1, 1],
+                rotate: [0, 0, 270, 270, 0],
+                borderRadius: ["20%", "20%", "50%", "50%", "20%"]}}>
+                  {notiNumber}</Notis>}
+          </IconFrame>}
         </ConnectBox>
         {notificationWindow && <Notifications notis={notifications.slice(0, 20)} />}
       </HeadBox>
