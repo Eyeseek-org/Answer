@@ -6,7 +6,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useAccount } from 'wagmi';
 import { motion } from 'framer-motion';
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query';
 import Logo from '../public/Logo.png';
 import Rainbow from '../components/buttons/Rainbow';
 import Notifications from '../sections/Notifications';
@@ -124,9 +124,8 @@ const Notis = styled(motion.div)`
 
 const Header = () => {
   const [active, setActive] = useState('Home');
-  const [noti, setNoti] = useState(false);
-  const [notis, setNotis] = useState([]);
-  const [notiNumber, setNotiNumber] = useState(notis.length);
+  const [notificationWindow, setNotificationWindow] = useState(false);
+  const [notiNumber, setNotiNumber] = useState(0);
   const { isAuthenticated } = useMoralis();
   const { address } = useAccount();
   const header = [
@@ -137,14 +136,13 @@ const Header = () => {
     { title: 'Stats', url: '/stats' },
   ];
 
-  const handleNotiWindow = (b) => {
-    setNoti(b);
+  const handleNotiWindow = (toggle) => {
+    setNotificationWindow(toggle);
     setNotiNumber(0);
   };
 
-  useQuery(['notification-data'], () => DapAPIService.getNotificationData(address), {
+  const { data: notifications } = useQuery(['notification-data'], () => DapAPIService.getNotificationData(address), {
     onSuccess: (data) => {
-      setNotis(data.slice(0, 20));
       const unread = data.filter((item) => item.isRead === false);
       setNotiNumber(unread.length);
     },
@@ -154,11 +152,7 @@ const Header = () => {
     <>
       <HeadBox>
         <ImageBox>
-          <NavItem
-            onClick={() => {
-              setActive('Home');
-            }}
-          >
+          <NavItem onClick={() => setActive('Home')}>
             <Link href="/">
               <A>
                 <Image src={Logo} alt="Logo" width={'110%'} height={'50%'} />
@@ -195,12 +189,8 @@ const Header = () => {
         <ConnectBox>
           <Rainbow />
           {isAuthenticated && (
-            <IconFrame
-              onClick={() => {
-                handleNotiWindow(!noti);
-              }}
-            >
-              {!noti ? <BellIcon /> : <CloseIcon width={20} />}
+            <IconFrame onClick={() => handleNotiWindow(!notificationWindow)}>
+              {!notificationWindow ? <BellIcon /> : <CloseIcon width={20} />}
               {notiNumber > 0 && (
                 <Notis
                   animate={{
@@ -215,7 +205,7 @@ const Header = () => {
             </IconFrame>
           )}
         </ConnectBox>
-        {noti && <Notifications notis={notis} />}
+        {notificationWindow && <Notifications notis={notifications.slice(0, 20)} />}
       </HeadBox>
     </>
   );

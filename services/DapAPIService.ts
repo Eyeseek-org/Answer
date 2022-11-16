@@ -49,4 +49,29 @@ export class DapAPIService {
       user: bookmark,
     });
   }
+
+  static async getProjectsByCategory(category: string) {
+    const response = await DapAxiosInstance.get(`/classes/Project?where={"category":"${category}", "state": 1}`);
+  }
+
+  static async getAllProjects() {
+    const response = await DapAxiosInstance.get('/classes/Project?where={"state":1}');
+    return response.data.results;
+  }
+
+  static async getMyProjects(address: string) {
+    const response = await DapAxiosInstance.get(`/classes/Project?where={"owner":"${address}"}`);
+    return response.data.results;
+  }
+
+  static async getStreamState(id: string) {
+    const response = await DapAxiosInstance.get(`/classes/Stream?where={"projectId":"${id}", "isActive": true }`);
+    console.log('response', response);
+    return response.data.results;
+  }
+
+  static async getProjectUpdates(id: string) {
+    const response = await DapAxiosInstance.get(`/classes/Update?where={"project":"${id}"}`);
+    return response.data.results;
+  }
 }

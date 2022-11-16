@@ -11,6 +11,8 @@ import ButtonAlt from '../../components/buttons/ButtonAlt';
 import Subtitle from '../../components/typography/Subtitle';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import StreamCounter from '../../components/functional/StreamCounter';
+import { useQuery } from '@tanstack/react-query';
+import { DapAPIService } from '../../services/DapAPIService';
 
 const Container = styled.div`
   padding-left: 1%;
@@ -182,20 +184,15 @@ const Stream = ({ objectId, recipient }) => {
     }
   };
 
-  const getStreamState = async (oid) => {
-    await getFlowData();
-    try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_DAPP}/classes/Stream?where={"projectId":"${oid}", "isActive": true }`,
-        moralisApiConfig
-      );
-      if (res.data.results.length > 0) {
+  useQuery(['stream'], () => DapAPIService.getStreamState(objectId), {
+    onSuccess: (data) => {
+      if (data.length > 0) {
         setStreamFound(true);
-        setStreamData(res.data.results);
-        for (let i = 0; i < res.data.results.length; i++) {
-          if (res.data.results[i].flowRate) {
+        setStreamData(data);
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].flowRate) {
             /// Error here - For each array item add number to the displayRate total
-            setDisplayRate(displayRate + res.data.results[i].flowRate);
+            setDisplayRate(displayRate + data[i].flowRate);
             console.log(displayRate);
           }
         }
@@ -203,12 +200,9 @@ const Stream = ({ objectId, recipient }) => {
       } else {
         setStreamFound(false);
       }
-      setApiError(false);
-    } catch (error) {
-      console.log(error);
-      setApiError(true);
-    }
-  };
+    },
+    onError: () => setApiError(true),
+  });
 
   const deleteStreamState = async (oid) => {
     try {
@@ -226,10 +220,6 @@ const Stream = ({ objectId, recipient }) => {
       setApiError(true);
     }
   };
-
-  useEffect(() => {
-    getStreamState(objectId);
-  }, []);
 
   async function startStream() {
     const sf = await Framework.create({

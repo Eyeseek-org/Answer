@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useAccount } from 'wagmi';
 import styled from 'styled-components';
@@ -38,7 +38,9 @@ const My: NextPage = () => {
     setActive(mode);
   };
 
-  const { data: project } = useQuery(['active-project'], () => DapAPIService.getActiveProject(address));
+  const { data: project } = useQuery(['active-project'], () => DapAPIService.getActiveProject(address), {
+    enabled: !!address,
+  });
 
   return (
     <Container>
