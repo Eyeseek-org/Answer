@@ -20,7 +20,6 @@ export class UniService {
     const response = await ParseAxiosInstance.get(query);
     return response.data.results;
   }
-
 }
 
 export class DapAPIService {
@@ -50,4 +49,7 @@ export class DapAPIService {
     });
   }
 
+  static async updateReadNotifications(notificationId: string) {
+    return await DapAxiosInstance.put(`/classes/Notification/${notificationId}`, { isRead: true });
+  }
 }

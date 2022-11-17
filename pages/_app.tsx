@@ -11,7 +11,7 @@ import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { SessionProvider } from 'next-auth/react';
 import { MoralisProvider } from 'react-moralis';
 import '@rainbow-me/rainbowkit/styles.css';
-import Header from '../sections/Header';
+import Header from '../sections/Header/Header';
 import Loading from '../components/Loading';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
