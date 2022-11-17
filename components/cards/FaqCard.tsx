@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IFAQ } from '../../pages/faq';
 
 const Card = styled.div`
   padding: 2%;
@@ -13,7 +14,7 @@ const Card = styled.div`
     flex-wrap: wrap;
   }
 `;
-const An = styled.div`
+const Answer = styled.div`
   margin-top: 2%;
   font-family: 'Neucha';
   margin-bottom: 4%;
@@ -22,7 +23,7 @@ const An = styled.div`
   }
 `;
 
-const Li = styled.li`
+const Point = styled.li`
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 300;
@@ -35,14 +36,13 @@ const Li = styled.li`
   }
 `;
 
-const FaqCard = ({ answer, point1, point2, point3, point4 }) => {
+const FaqCard = ({ answer, points }: Omit<IFAQ, 'question' | 'image'>): JSX.Element => {
   return (
     <Card>
-      <An>{answer}</An>
-      <Li>{point1}</Li>
-      <Li>{point2}</Li>
-      {point3 && <Li>{point3}</Li>}
-      {point4 && <Li>{point4}</Li>}
+      <Answer>{answer}</Answer>
+      {points.map((point, index) => {
+        return <Point key={index}>{point}</Point>;
+      })}
     </Card>
   );
 };

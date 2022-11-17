@@ -10,9 +10,10 @@ import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Com
 import FaqCard from '../components/cards/FaqCard';
 
 const Container = styled.div``;
+
 const Row = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${(props: { reverse: boolean }) => (props.reverse ? 'row-reverse' : 'row')};
   width: 100%;
   margin-top: 7%;
   padding-bottom: 4%;
@@ -33,7 +34,7 @@ const FaqContainer = styled.div`
   }
 `;
 
-const Q = styled.div`
+const Question = styled.div`
   font-family: 'Neucha';
   font-style: normal;
   text-align: center;
@@ -66,32 +67,59 @@ const EyeSevenBox = styled.div`
   position: relative;
 `;
 
-const texts = {
-  q1: 'Why Eyeseek Funding?',
-  a1: 'Benefits over other crowdfunding platforms',
-  p11: 'Platform fee costs only 1% per successfully funded project',
-  p12: 'Developer & Startup friendly environment, we are on the same page',
-  p13: 'No personal data needed. Wallet address is your primary identity',
-  p14: 'Extends crowdfunding features never seen before',
-  q2: 'What do I need as a project owner?',
-  a2: 'Rules to follow to be eligible of Eyeseek funding',
-  p21: 'Owner has to inform regularly backers with project updates',
-  p22: 'Projects must create something to share with others',
-  p23: 'Projects and backer statistics must be honest and clearly presented',
-  p24: "Projects can't involve prohibited items",
-  q3: 'Why blockchain?',
-  a3: 'Possibilities granted by blockchain technology',
-  p31: 'Introduction of the game theory into crowdfunding thanks to the microfunds',
-  p32: 'Accept cryptocurrency payments from multiple blockchains at once',
-  p33: 'Real-time money streaming from backers to project owners',
-  p34: 'Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit',
-  q4: 'How does it work?',
-  a4: 'Creators can set up project in 5 simple steps',
-  p41: 'Possibility to offer limited amount of rewards, tokens and NFTs',
-  p42: 'Backers discover projects based on their interests and donate',
-  p43: 'Larger backers can play a game and deploy microfunds instead of donating',
-  p44: 'Microfunds incentivize smaller backers to join the ride with larger impact',
-};
+export interface IFAQ {
+  question: string;
+  answer: string;
+  points: string[];
+  image: JSX.Element;
+}
+
+const FAQS: IFAQ[] = [
+  {
+    question: 'Why Eyeseek Funding?',
+    answer: 'Benefits over other crowdfunding platforms',
+    points: [
+      'Platform fee costs only 1% per successfully funded project',
+      'Developer & Startup friendly environment, we are on the same page',
+      'No personal data needed. Wallet address is your primary identity',
+      'Extends crowdfunding features never seen before',
+    ],
+    image: <BookIcon width={150} />,
+  },
+  {
+    question: 'What do I need as a project owner?',
+    answer: 'Rules to follow to be eligible of Eyeseek funding',
+    points: [
+      'Owner has to inform regularly backers with project updates',
+      'Projects must create something to share with others',
+      'Projects and backer statistics must be honest and clearly presented',
+      "Projects can't involve prohibited items",
+    ],
+    image: <DeniedIcon width={150} />,
+  },
+  {
+    question: 'Why blockchain?',
+    answer: 'Possibilities granted by blockchain technology',
+    points: [
+      'Introduction of the game theory into crowdfunding thanks to the microfunds',
+      'Accept cryptocurrency payments from multiple blockchains at once',
+      'Real-time money streaming from backers to project owners',
+      'Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit',
+    ],
+    image: <KeyIcon width={70} />,
+  },
+  {
+    question: 'How does it work?',
+    answer: 'Creators can set up project in 5 simple steps',
+    points: [
+      'Possibility to offer limited amount of rewards, tokens and NFTs',
+      'Backers discover projects based on their interests and donate',
+      'Larger backers can play a game and deploy microfunds instead of donating',
+      'Microfunds incentivize smaller backers to join the ride with larger impact',
+    ],
+    image: <WorkIcon width={100} height={150} />,
+  },
+];
 
 const Faq: NextPage = () => {
   return (
@@ -99,42 +127,18 @@ const Faq: NextPage = () => {
       <Container>
         <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
         <FaqContainer>
-          <Row>
-            <Q>
-              <div>{texts.q1} </div>
-              <ImageBox>
-                <BookIcon width={150} />
-              </ImageBox>{' '}
-            </Q>
-            <FaqCard answer={texts.a1} point1={texts.p11} point2={texts.p12} point3={texts.p13} point4={texts.p14} />
-          </Row>
-          <Row>
-            <FaqCard answer={texts.a2} point1={texts.p21} point2={texts.p22} point3={texts.p23} point4={texts.p24} />
-            <Q>
-              <div>{texts.q2} </div>
-              <ImageBox>
-                <DeniedIcon width={150} />
-              </ImageBox>
-            </Q>
-          </Row>
-          <Row>
-            <Q>
-              <div>{texts.q3} </div>
-              <ImageBox>
-                <KeyIcon width={70} />
-              </ImageBox>{' '}
-            </Q>
-            <FaqCard answer={texts.a3} point1={texts.p31} point2={texts.p32} point3={texts.p33} point4={texts.p34} />
-          </Row>
-          <Row>
-            <FaqCard answer={texts.a4} point1={texts.p41} point2={texts.p42} point3={texts.p43} point4={texts.p44} />
-            <Q>
-              <div>{texts.q4} </div>
-              <ImageBox>
-                <WorkIcon width={100} height={150} />
-              </ImageBox>
-            </Q>
-          </Row>
+          {FAQS.map(({ answer, image: Image, points, question }, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <Row reverse={isEven} key={index}>
+                <FaqCard answer={answer} points={points} />
+                <Question>
+                  <div>{question}</div>
+                  <ImageBox>{Image}</ImageBox>
+                </Question>
+              </Row>
+            );
+          })}
         </FaqContainer>
       </Container>
       <EyeSevenBox>
