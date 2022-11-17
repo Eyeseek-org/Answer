@@ -107,19 +107,28 @@ const TypeTitle = styled.div`
   }
 `;
 
-const text = {
-  a1: 'Recommended for new projects boosting ideas from scratch.',
-  p11: 'Kickstarter-like multichain donations',
-  p12: 'Offer usual rewards, ERC20 tokens or ERC1155 NFTs',
-  p13: 'Supported on Polygon, BNB Chain, Fantom',
-  p14: 'Microfund strategies, incentivize smaller backers',
-  a2: 'Ideal for already built projects looking to fund open-source or non-profit activities.',
-  p21: 'Single-chain payment streaming',
-  p22: 'Supported only on polygon',
-  p23: 'Payment in super token (Wrapped ERC20)',
-  p24: 'Powered by Superfluid',
-};
+const projects = [
+  {
+    answer: 'Recommended for new projects boosting ideas from scratch.',
+    points: [
+      'Kickstarter-like multichain donations',
+      'Offer usual rewards, ERC20 tokens or ERC1155 NFTs',
+      'Supported on Polygon, BNB Chain, Fantom',
+      'Microfund strategies, incentivize smaller backers',
+    ],
+  },
+  {
+    answer: 'Ideal for already built projects looking to fund open-source or non-profit activities.',
+    points: [
+      'Single-chain payment streaming',
+      'Supported only on polygon',
+      'Payment in super token (Wrapped ERC20)',
+      'Powered by Superfluid',
+    ],
+  },
+];
 
+// TODO: refactor - remove styles from states
 const ProjectTypeSelection = () => {
   const [standColor, setStandColor] = useState(
     'radial-gradient(111.37% 111.37% at 50% 50%, rgba(0, 119, 12, 0.06) 0%, rgba(5, 0, 233, 0) 97.7%)'
@@ -159,7 +168,7 @@ const ProjectTypeSelection = () => {
             <TypeTitle color={standTitleColor}>Standard</TypeTitle>
           </Clickable>
           <TextBox>
-            <FaqCard answer={text.a1} point1={text.p11} point2={text.p12} point3={text.p13} point4={text.p14} />
+            <FaqCard answer={projects[0].answer} points={projects[0].points} />
           </TextBox>
         </Col>
         <Col color={streamColor}>
@@ -172,7 +181,7 @@ const ProjectTypeSelection = () => {
             <TypeTitle color={streamTitleColor}>Stream</TypeTitle>
           </Clickable>
           <TextBox>
-            <FaqCard answer={text.a2} point1={text.p21} point2={text.p22} point3={text.p23} point4={text.p24} />
+            <FaqCard answer={projects[1].answer} points={projects[1].points} />
           </TextBox>
         </Col>
       </Row>

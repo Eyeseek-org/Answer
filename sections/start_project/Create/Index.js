@@ -73,13 +73,17 @@ const loadingAnim = {
   },
 };
 
-const texts = {
-  title: 'Rules to follow to be eligible of Eyeseek funding',
-  p1: 'Owner has to inform regularly backers with project updates',
-  p2: 'Projects must create something to share with others',
-  p3: 'Projects and backer statistics must be honest and clearly presented',
-  p4: "Projects can't involve prohibited items",
-};
+const texts = [
+  {
+    title: 'Rules to follow to be eligible of Eyeseek funding',
+    points: [
+      'Owner has to inform regularly backers with project updates',
+      'Projects must create something to share with others',
+      'Projects and backer statistics must be honest and clearly presented',
+      "Projects can't involve prohibited items",
+    ],
+  },
+];
 
 const Create = ({ setStep }) => {
   const { appState } = useApp();
@@ -220,7 +224,7 @@ const Create = ({ setStep }) => {
             <ImageBox>
               <BookIcon width={150} />
             </ImageBox>
-            <FaqCard answer={texts.title} point1={texts.p1} point2={texts.p2} point3={texts.p3} point4={texts.p4} />
+            <FaqCard answer={texts[0].title} points={texts[0].points} />
           </Row>
         </WarningBox>
         {address ? (
