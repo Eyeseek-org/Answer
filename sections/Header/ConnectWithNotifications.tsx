@@ -13,11 +13,6 @@ export const ConnectWithNotifications = () => {
   const { address } = useAccount();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-  const handleNotiWindow = (toggle) => {
-    setNotificationsOpen(toggle);
-    // setNotiNumber(0);
-  };
-
   const { data: notifications } = useQuery(['notification-data'], () =>
     UniService.getDataAll(`/classes/Notification?where={"user":"${address}"}`)
   );
@@ -31,7 +26,7 @@ export const ConnectWithNotifications = () => {
       <ConnectWalletBox>
         <Rainbow />
         {address && (
-          <IconFrame onClick={() => handleNotiWindow(!notificationsOpen)}>
+          <IconFrame onClick={() => setNotificationsOpen(!notificationsOpen)}>
             {!notificationsOpen ? <BellIcon /> : <CloseIcon width={20} height={20} />}
             {undreadNotifications.length > 0 && (
               <Notis
