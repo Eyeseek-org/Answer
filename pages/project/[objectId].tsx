@@ -67,10 +67,6 @@ const Project: NextPage = () => {
           change5={() => handleMode('Verification')}
         />
       </TabBox>
-      {/* {rewardTooltip && <Tooltip margin={'25px'} text='Add project reward' />}
-          {updateTooltip && <Tooltip margin={'25px'} text='Send project update to users' />}
-          <IconWrapper onClick={() => { setMode('Update') }} onMouseEnter={() => { setUpdateTooltip(true) }} onMouseLeave={() => {setUpdateTooltip(false)}}><UpdateSvg width={75} /></IconWrapper>
-          <IconWrapper onClick={() => { setMode('Reward') }} onMouseEnter={() => { setRewardTooltip(true) }} onMouseLeave={() => {setRewardTooltip(false)}}><RewardIcon width={25} /></IconWrapper> */}
       <Container>
         {project ? (
           <>
@@ -113,7 +109,7 @@ const Project: NextPage = () => {
         ) : (
           <>{projectError && <>Project failed to fetch</>}</>
         )}
-        {project && mode === 'Verification' && address === project.owner && project.verified === false && <Verification objectId={objectId} />}
+        {project && mode === 'Verification' && address === project.owner && project.verified !== true && <Verification objectId={objectId} owner={project.owner} />}
       </Container>
     </>
   );

@@ -3,16 +3,8 @@ import {useContractRead} from 'wagmi'
 import Subtitle from "../../components/typography/Subtitle"
 import ProgressBar from "../../components/ProgressBar"
 import donation from '../../abi/donation.json';
+import { BodyBox } from "../../components/format/Box";
 
-const Container = styled.div`
-    margin-top: 5%;
-    padding-left: 15%;
-    padding-right: 15%;
-    @media (max-width: 768px) {
-        padding-left: 2%;
-        padding-right: 2%;
-    }
-`
 
 const DescriptionBox = styled.div`
     padding-bottom: 5%;
@@ -55,13 +47,12 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
     }
     
 
-    return <Container>
-        
+    return <BodyBox>
         <Subtitle text='Project milestones'/>
         <ProgressBar ratio={ratio} bal={bal} max={max}/>
         <DescriptionBox></DescriptionBox>
         {descM}
-    </Container>
+    </BodyBox>
 }
 
 export default ProjectDescription

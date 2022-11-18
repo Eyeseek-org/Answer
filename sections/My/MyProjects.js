@@ -9,6 +9,7 @@ import ProjectDetail from "../ProjectDetail/ProjectDetail"
 import NotAuth from '../NotAuth'
 import NotProject from '../NotProject'
 
+import BodyBox from '../../components/format/Box'
 import Tab from "../../components/form/Tab";
 import RewardList from "../ProjectDetail/RewardList";
 import RewardCreate from "../ProjectDetail/RewardCreate";
@@ -17,10 +18,6 @@ import UpdateCreate from "../ProjectDetail/UpdateCreate";
 import StatsTable from "../../components/tables/StatsTable";
 import SectionTitle from "../../components/typography/SectionTitle";
 
-const TabBox = styled.div`
-  margin-top: 5%;
-  margin-left: 17%;
-`
 
 const MyProjects = () => {
     const {address} = useAccount();
@@ -43,7 +40,7 @@ const MyProjects = () => {
         <div>
           {address ? <div>
             {project && <SectionTitle title={'Active project'} subtitle={project.title} />}
-            <TabBox>  
+            <BodyBox>  
             <Tab 
                 active={active} 
                 o1={'Overview'} 

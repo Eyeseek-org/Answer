@@ -98,7 +98,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
           tooltip={'Multiplier represents the number of deployed microfunds by other users'}
           currency={currency}
         />
-        <CalcOutcome multi={multi} conn={conn} />
+        <CalcOutcome multi={multi} conn={conn} currency={currency} />
         <InputRow
           id="microfund"
           name="Create microfund"
@@ -116,7 +116,6 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
       <FormInfo>
         <li>Funded amount must be approved before sending to the Eyeseek contract</li>
       </FormInfo>
-
       <DonateWrapper
         amountM={amountM}
         amountD={amountD}

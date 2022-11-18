@@ -118,7 +118,7 @@ const Timeline = ({milestones}) => {
     return <>
     <Container>
         <TimeBox>
-            {milestones.map((mil) => {
+            {milestones && milestones.map((mil) => {
                             return <Mil
                                 key={mil.objectId}
                                 date={mil.createdAt}

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { getLatestBlockHeight, getLogEvents } from '../../pages/api/covalent';
 import { useEffect, useState } from 'react';
 import Loading from '../Loading';
-import SectionTitle from '../typography/SectionTitle';
 import Address from '../functional/Address';
 import Subtitle from '../typography/Subtitle';
 
@@ -192,7 +191,6 @@ const StatsTable = ({ pid, chain }) => {
 
   return (
     <>
-      <SectionTitle title="Project transactions" subtitle="Transparent on-chain records" />
       <Container>
         <Sub>
           <Subtitle text="Donations" />

@@ -31,7 +31,7 @@ const Value = styled.div`
   font-family: 'Gemunu Libre';
 `;
 
-const CalcOutcome = ({ conn, multi }) => {
+const CalcOutcome = ({ conn, multi, currency }) => {
   return (
     <Container>
       <Row>
@@ -40,7 +40,7 @@ const CalcOutcome = ({ conn, multi }) => {
       </Row>
       <Row>
         <Item>Fund receives (in total)</Item>
-        <Value>{multi} USDC</Value>
+       {currency &&  <Value>{multi} {currency}</Value>}
       </Row>
     </Container>
   );

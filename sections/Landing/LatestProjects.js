@@ -115,7 +115,7 @@ const LatestProjects = ({ my }) => {
   return (
     <Container>
       {my ? (
-        <SectionTitle title="Project history" subtitle="Looking back at your success" />
+        <></>
       ) : (
         <SectionTitle title="Recently added" subtitle={'Support latest projects'} />
       )}

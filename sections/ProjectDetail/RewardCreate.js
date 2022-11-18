@@ -9,11 +9,10 @@ import InputContainer from "../../components/form/InputContainer";
 import Tab from "../../components/form/Tab";
 import Tooltip from "../../components/Tooltip";
 import { InfoIcon } from "../../components/icons/Common";
-import { Row } from "../../components/format/Row";
+import { Row, BetweenRow } from "../../components/format/Row";
 import { NextButton } from "../start_project/Category/StyleWrapper";
 import { useRouter } from 'next/router';
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
-import SectionTitle from '../../components/typography/SectionTitle';
 import ErrText from "../../components/typography/ErrText";
 import NftDisplay from "../../components/functional/NftDisplay";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
@@ -184,15 +183,20 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     }
 
     return <MainContainer>
-        <SectionTitle title='Create new reward' subtitle='Add a new reward to your project' />
         <RewardContainer>
-           <TabRow><Tab active={tokenType} o1={'Classic'} o2={'ERC20'} o3={'ERC1155'} change1={() => { handleChangeTokenType('Classic') }} change2={() => {handleChangeTokenType('ERC20')}}  change3={() => {handleChangeTokenType('ERC1155')}} /></TabRow>
             <MainMilestoneContainer>
-                <Subtitle text={<>
-                    {tokenType === 'Classic' && <>Classic crowdfunding reward</>}
-                    {tokenType === 'ERC20' && <>Fungible token reward</>}
-                    {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
-                </>}/>
+                <BetweenRow>
+                    <Subtitle text={<>
+                        {tokenType === 'Classic' && <>Classic crowdfunding reward</>}
+                        {tokenType === 'ERC20' && <>Fungible token reward</>}
+                        {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
+                    </>}/>
+                    <TabRow><Tab active={tokenType} o1={'Classic'} o2={'ERC20'} o3={'ERC1155'} 
+                        change1={() => { handleChangeTokenType('Classic') }} 
+                        change2={() => {handleChangeTokenType('ERC20')}}  
+                        change3={() => {handleChangeTokenType('ERC1155')}} />
+                    </TabRow>
+                </BetweenRow>
                 <MilestoneContainer>
                     <TabRow> {pType === 'Standard' && <Tab active={rType} o1={'Microfund'} o2={'Donate'} change1={() => { setRType('Microfund') }} change2={() => { setRType('Donate') }} />}
                         <TooltipBox>

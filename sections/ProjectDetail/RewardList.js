@@ -11,13 +11,11 @@ import { UniService } from '../../services/DapAPIService';
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 280px;
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 5%;
   flex-wrap: wrap;
 `;
 

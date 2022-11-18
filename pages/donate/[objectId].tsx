@@ -159,13 +159,12 @@ const Donate: NextPage = () => {
   const { rewMAmount, rewDAmount, rewId } = appState;
   const [showRewards, setShowRewards] = useState(false);
 
+
   const query = `/classes/Project?where={"objectId":"${objectId}"}`
-  // @ts-ignore
-  const { data: projectDetail } = useQuery(['project-detail'], UniService.getDataSingle(query), {
-    onError: (err) => {
-      console.log('err', err);
-    },
+  const { data: projectDetail } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
+    enabled: !!router.isReady,
   });
+
 
   const handleSwitchNetwork = (id) => {
     switchNetwork(id);
@@ -310,6 +309,8 @@ const Donate: NextPage = () => {
     setShowRewards(true);
   };
 
+  console.log(projectDetail)
+
   return (
     <Container>
       <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
@@ -340,7 +341,7 @@ const Donate: NextPage = () => {
         </DonateOption>
         <DonateOption>
           <FaucetBox>
-            Hackathon purpose:
+            Test purpose:
             <Faucet currency={'USDC'} address={usdcFaucet} />
             <Faucet currency={'USDT'} address={usdtFaucet} />
             <NativeFaucet />

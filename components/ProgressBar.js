@@ -13,11 +13,17 @@ const ProgressFilter = styled.div`
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    max-width: 100%;
     width: ${props => props.ratio}%;
     border-radius: inherit;
     text-align: right;
     background: linear-gradient(90.31deg, rgba(0, 224, 255, 0.85) 0.44%, rgba(0, 224, 255, 0) 94.79%);
     font-family: 'Gemunu Libre';
+`
+
+const FullFilter = styled(ProgressFilter)`
+    width: 100%;
+    background: rgba(0, 224, 255, 0.85);
 `
 
 const Row = styled.div`
@@ -37,12 +43,15 @@ const LineButton = styled.button`
 const ProgressBar = ({ratio, bal, max}) => {
     return <>
         <ProgressContainer>
-            <ProgressFilter ratio={ratio}>
+            {bal < max ? <ProgressFilter ratio={ratio}>
+                {bal !== '0' && <>
                 <div><LineButton/></div>
-                <div>{bal}</div>
-                </ProgressFilter>
+                <div>{bal}</div></>}
+                </ProgressFilter> : <FullFilter/>}
         </ProgressContainer>
-        <Row><div>0</div><div>{max}</div></Row>
+        <Row>
+            <div>0</div>
+            <div>{max} {bal >= max && <>reached</>} </div></Row>
     </>
 }
 

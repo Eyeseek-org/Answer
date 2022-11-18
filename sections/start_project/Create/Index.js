@@ -175,6 +175,7 @@ const Create = ({ setStep }) => {
           chainId: pChain,
           bookmarks: [address], // Add owner to bookmark
           imageUrl: pImageUrl,
+          verified: false,
         },
         moralisApiConfig
       );
