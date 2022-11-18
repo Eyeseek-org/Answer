@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import SectionTitle from "../../components/typography/SectionTitle"
+import Subtitle from "../../components/typography/Subtitle"
 import {useState} from 'react'
 import { useQuery } from "@tanstack/react-query"
 import {motion} from 'framer-motion'
@@ -64,16 +64,15 @@ const UpdateOverview = ({objectId}) => {
     //     },
     // });
 
-    const { data: updates } = useQuery(['updates'], () => UniService.getParseAll(query),{
+    const { data: updates } = useQuery(['updates'], () => UniService.getDataAll(query),{
         onError: () => {
             setApiError(true)
         },
     });
-
+    
 
     return <Container>
-        <SectionTitle title={'Project updates'} subtitle={'Latest project news'}/>
-        <Timeline/>
+        <Timeline milestones={updates}/>
         <List>
             {updates && updates.length > 0 ?
                 updates.map((update)=> 

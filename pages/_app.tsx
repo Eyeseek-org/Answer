@@ -90,9 +90,9 @@ type AppProps = {
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  //const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
+  const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
-  const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
+  //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
 
   return (
     <QueryClientProvider client={queryClient}>

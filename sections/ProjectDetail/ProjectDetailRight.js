@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import donation from '../../abi/donation.json';
-import { useContractRead, useAccount } from 'wagmi';
+import { useContractRead } from 'wagmi';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
@@ -95,7 +95,6 @@ const SmallBal = styled.div`
 `;
 
 const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chainId }) => {
-  const { address } = useAccount();
   const router = useRouter();
 
   let bal = 'n/a';
@@ -197,7 +196,6 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
     );
   };
 
-  /// TBD backers will be moved elsewhere
   return (
     <RightPart>
       {pType !== 'Stream' ? (

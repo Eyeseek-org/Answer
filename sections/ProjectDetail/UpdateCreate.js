@@ -10,6 +10,7 @@ import { HTTPS_URL_REGEX } from '../../util/regex';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import { useMutation } from '@tanstack/react-query';
 import { DapAPIService } from '../../services/DapAPIService';
+import Subtitle from '../../components/typography/Subtitle';
 
 const Description = styled.div`
   font-size: 1em;
@@ -84,6 +85,7 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
       <RewardContainer>
         <MainMilestoneContainer>
           <MilestoneContainer>
+             <Subtitle text="Create new update" />
             <Description>
               Notify backers and stakeholders about your project updates, rewards and followups. Insert reference to the project page or
               socials where your progress is described in more detail
