@@ -94,14 +94,14 @@ const Project: NextPage = () => {
                 urlProject={project.urlProject}
               />
             )}
-            {mode === 'Rewards' && (
+            {project && mode === 'Rewards' && project.type !== 'Stream' ? 
               <>
                 <RewardList oid={objectId} chain={project.chainId} />
                 {address === project.owner && (
                   <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} />
                 )}
-              </>
-            )}
+              </> : null
+            }
             {project && mode === 'Updates' && (
               <>
                 <UpdateOverview objectId={objectId} />

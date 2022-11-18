@@ -16,7 +16,6 @@ import StreamCounter from "../../components/functional/StreamCounter";
 import BalanceComponent from "../../components/functional/BalanceComponent.js";
 import Allowance from "../../components/functional/Allowance.js";
 import { ethers } from "ethers";
-import InputContainer from "../../components/form/InputContainer.js";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -146,7 +145,6 @@ const Stream = ({ objectId, recipient }) => {
   const { data: signer } = useSigner()
   const [streamFound, setStreamFound] = useState(false)
   const [deposit, setDeposit] = useState(0)
-  const [owedDeposit, setOwedDeposit] = useState(0)
   const [superfluidError, setSuperfluidError] = useState(false)
   const [newStream, setNewStream] = useState(false)
   const [displayRate, setDisplayRate] = useState(50)
@@ -160,7 +158,7 @@ const Stream = ({ objectId, recipient }) => {
     },
     onSuccess: () => {
       setApiError(false)
-      if (streamData.length > 0) {
+      if (streamData && streamData.length > 0) {
         setStreamFound(true)
         for (let i = 0; i < streamData.length; i++) {
           if (streamData[i].flowRate) {
@@ -197,7 +195,6 @@ const Stream = ({ objectId, recipient }) => {
       if (flow.flowRate !== '0') {
         setStreamFound(true)
         setDeposit(flow.deposit)
-        setOwedDeposit(flow.owedDeposit)
         setFlowRate(flow.flowRate)
       }
     } catch (err) {
@@ -340,7 +337,7 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-  async function deleteFlow() {
+  async function stopStream() {
     const sf = await Framework.create({
       provider: provider,
       chainId: 80001
@@ -350,7 +347,7 @@ const Stream = ({ objectId, recipient }) => {
     try {
       const deleteFlowOperation = sf.cfaV1.deleteFlow({
         sender: address,
-        receiver: recipient,
+        receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
         superToken: DAIx
       });
 
@@ -358,6 +355,7 @@ const Stream = ({ objectId, recipient }) => {
 
       await deleteFlowOperation.exec(signer);
       await deleteStreamState(objectId)
+      setStreamFound(false)
 
     } catch (error) {
       console.error(error);
@@ -414,7 +412,7 @@ const Stream = ({ objectId, recipient }) => {
               <RowRightItem>Value</RowRightItem>
             </ValueRow>
             <ButtonBox>
-                <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{setNewStream(true)}}  />
+                <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  />
             </ButtonBox>
           </> : <> 
           <Title><Subtitle text={'No active stream found'} /></Title>

@@ -81,64 +81,29 @@ const Date = styled.div`
     font-weight: 500;
     font-size: 1.2em;
 `
-const dummy = [
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-},
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-},
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-},
-{
-    "date": "2021-10-01",
-    "title": "Whitepaper finished",
-},{
-    "date": "2021-09-01",
-    "title": "Project funded",
-}
 
-]
+const Timeline = ({milestones}) => {
+    
 
-const Timeline = () => {
-    const [milestones, setMilestones] = useState(dummy)
-
-    const handleClick = (e) => {
-        console.log('Clicked')
-    }
-
-    const Mil = ({date, title}) => {
+    const Mil = ({date, title, url}) => {
         const [show, setShow] = useState(false)
         return <>
                 <O>
+                    <a href={url} rel="noopener noreferrer" target="_blank" >
                   <Circle 
                     whileHover={{ scale: 2 }}  
                     transition={{ type: "spring", stiffness: 500, damping: 3 }} 
                     onHoverStart={() => setShow(true)}
                     onHoverEnd={() => setShow(false)}
-                    onClick={() => handleClick()}
                     
-                    /> 
+                    /> </a>
                   {show && 
                     <Line
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1}}
                         transition={{ duration: 1.1 }}
                     />}
-                  <Date>{date}</Date>
+                  <Date>{date.substring(0,10)}</Date>
                   {show &&    <Milestone>
                     <MileTitle
                         initial={{ opacity: 0, x: -100 }}
@@ -153,11 +118,12 @@ const Timeline = () => {
     return <>
     <Container>
         <TimeBox>
-            {milestones.map((mil, index) => {
+            {milestones.map((mil) => {
                             return <Mil
-                                key={index}
-                                date={mil.date}
+                                key={mil.objectId}
+                                date={mil.createdAt}
                                 title={mil.title}
+                                url={mil.url}
                             />
                         })}
         </TimeBox>

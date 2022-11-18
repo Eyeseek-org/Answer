@@ -1,6 +1,8 @@
 import styled from "styled-components"
+import {useContractRead} from 'wagmi'
 import Subtitle from "../../components/typography/Subtitle"
 import ProgressBar from "../../components/ProgressBar"
+import donation from '../../abi/donation.json';
 
 const Container = styled.div`
     margin-top: 5%;
@@ -16,17 +18,47 @@ const DescriptionBox = styled.div`
     padding-bottom: 5%;
 `
 
-const ProjectDescription = ({descM}) => {
+const ProjectDescription = ({descM, pid, add, chainId}) => {
+
+    let bal = 'n/a';
+    let max = 'n/a';
+    let usdcBalance = 'n/a';
+    let usdtBalance = 'n/a';
+    let daiBalance = 'n/a';
+    let ratio = 'n/a';
+  
+    const funds = useContractRead({
+      address: add,
+      abi: donation.abi,
+      functionName: 'funds',
+      chainId: chainId,
+      args: [pid],
+      watch: true,
+    });
+  
+    if (funds.data) {
+      // Get fund balance
+      bal = funds.data.balance.toString();
+  
+      // Get fund cap
+      max = funds.data.level1.toString();
+      ratio = bal / max * 100
+  
+      // Get fund usdc balance
+      usdcBalance = funds.data.usdcBalance.toString();
+  
+      // Get fund usdt balance
+      usdtBalance = funds.data.usdtBalance.toString();
+  
+      // Get fund dai balance
+      daiBalance = funds.data.daiBalance.toString();
+    }
     
-    // Amount + Cap needed to retrieve from chain probably, in parrent ?
-    const amount = 1000
-    const cap = 10000
-    const ratio = amount / cap * 100
 
     return <Container>
         
         <Subtitle text='Project milestones'/>
-        <ProgressBar ratio={ratio}/>
+        <ProgressBar ratio={ratio} bal={bal} max={max}/>
         <DescriptionBox></DescriptionBox>
         {descM}
     </Container>

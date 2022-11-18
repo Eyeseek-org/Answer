@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount, useNetwork } from 'wagmi';
+import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi';
 
 import Tag from '../../components/typography/Tag';
 import ErrText from '../../components/typography/ErrText';
@@ -314,7 +314,7 @@ const ProjectDetail = ({
         </LeftPart>
         {state === 4 ? <Inactive>Inactive</Inactive> : <ProjectDetailRight pid={pid} objectId={objectId} bookmarks={bookmarks} pType={pType} owner={owner} add={add} chainId={chainId}/> }
       </DetailBox>
-      <ProjectDescription descM={descM} />
+      {pType !== 'Stream' && <ProjectDescription descM={descM} pid={pid} add={add} chainId={chainId}/>}
     </Container>
     </>
 };

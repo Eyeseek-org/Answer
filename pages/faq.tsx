@@ -7,7 +7,10 @@ import Eye7 from '../public/Eye7.png';
 import Footer from '../sections/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
+import { BoardGameIcon, MobileGameIcon, RoboticsIcon, WearablesIcon } from '../components/icons/Categories';
 import FaqCard from '../components/cards/FaqCard';
+import Subtitle from '../components/typography/Subtitle';
+import Tooltip from '../components/Tooltip';
 
 const Container = styled.div``;
 
@@ -67,11 +70,33 @@ const EyeSevenBox = styled.div`
   position: relative;
 `;
 
+const CatBox = styled.div`
+  padding-top: 3%;
+  display: flex;
+  flex-direction: column;
+`
+
+const CatIcons = styled.div`
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+`
+
+const TooltipBox = styled.div`
+  position: absolute;
+`
+
 export interface IFAQ {
   question: string;
   answer: string;
   points: string[];
   image: JSX.Element;
+}
+
+export interface ICats {
+  text: string;
+  icon: JSX.Element;
 }
 
 const FAQS: IFAQ[] = [
@@ -121,7 +146,32 @@ const FAQS: IFAQ[] = [
   },
 ];
 
+const ICats: ICats[] = [
+  {
+    text: 'Wearables',
+    icon: <WearablesIcon width={50} height={50} />,
+  },
+  {
+    text: 'Robotics',
+    icon: <RoboticsIcon width={50} height={50} />,
+  },
+  {
+    text: 'Mobile Games',
+    icon: <MobileGameIcon width={50} height={50} />,
+  },
+  {
+    text: 'Board games',
+    icon: <BoardGameIcon width={50} height={50} />
+  }
+]
+
 const Faq: NextPage = () => {
+  const [catTooltip, setCatTooltip] = React.useState('');
+
+  const CatIcon = ({text, icon}) => {
+    return <div onMouseEnter={()=>setCatTooltip(text)} onMouseLeave={()=>setCatTooltip('')} >{icon}</div>
+  }
+
   return (
     <>
       <Container>
@@ -139,7 +189,18 @@ const Faq: NextPage = () => {
               </Row>
             );
           })}
+        
+        <CatBox>
+          {catTooltip !== '' && <TooltipBox><Tooltip text={catTooltip} margin={'45px'}/></TooltipBox>}
+          <Subtitle text='Categories'/>
+          <CatIcons>
+            {ICats.map(({text, icon}, index) => {
+              return <CatIcon text={text} icon={icon} key={index}/>
+            })}
+          </CatIcons>
+        </CatBox>
         </FaqContainer>
+ 
       </Container>
       <EyeSevenBox>
         <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
