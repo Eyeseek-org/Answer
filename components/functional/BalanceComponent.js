@@ -28,7 +28,6 @@ const BalanceComponent = ({ token, address }) => {
   return (
     <Container>
       <>
-        Balance:
         <Amount value={data?.formatted} /> {data?.symbol}
       </>
     </Container>
