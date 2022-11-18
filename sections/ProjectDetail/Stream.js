@@ -15,6 +15,8 @@ import ApproveUniversal from "../../components/buttons/ApproveUniversal";
 import StreamCounter from "../../components/functional/StreamCounter";
 import BalanceComponent from "../../components/functional/BalanceComponent.js";
 import Allowance from "../../components/functional/Allowance.js";
+import { ethers } from "ethers";
+import InputContainer from "../../components/form/InputContainer.js";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -65,6 +67,7 @@ const ButtonBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 4%;
+  gap: 2%;
   width: 100%;
 `
 // TBD component to create a stream 
@@ -109,6 +112,8 @@ const A = styled.a`
 `
 
 const SuperRef = styled.div`
+  margin-top: 3%;
+  padding-bottom: 2%;
   color: #B0F6FF;
   font-family: 'Neucha';
   text-decoration: underline;
@@ -146,6 +151,7 @@ const Stream = ({ objectId, recipient }) => {
   const [newStream, setNewStream] = useState(false)
   const [displayRate, setDisplayRate] = useState(50)
 
+  const [wrappedAmount, setWrappedAmount] = useState(1000)
 
   const query = `/classes/Stream?where={"projectId":"${objectId}", "isActive": true }`
   const { data: streamData } = useQuery(['streams'], () => UniService.getDataAll(query),{
@@ -229,6 +235,74 @@ const Stream = ({ objectId, recipient }) => {
     } catch (error) {
       console.log(error)
       setApiError(true)
+    }
+  }
+
+  const wrap = async(amt) => {
+    const sf = await Framework.create({
+      provider: provider,
+      chainId: 80001
+    })
+  
+  
+    const DAIx = await sf.loadSuperToken(
+      "0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"
+    );
+
+  
+    try {
+      console.log(`upgrading $${amt} DAI to DAIx`);
+      const amtToUpgrade = ethers.utils.parseEther(amt.toString());
+      const upgradeOperation = DAIx.upgrade({
+        amount: amtToUpgrade.toString()
+      });
+      const upgradeTxn = await upgradeOperation.exec(signer);
+      await upgradeTxn.wait().then(function (tx) {
+        console.log(
+          `
+          Congrats - you've just upgraded DAI to DAIx!
+        `
+        );
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  async function unwrap(amt) {
+    const sf = await Framework.create({
+      provider: provider,
+      chainId: 80001
+    })
+
+  
+    const DAIx = await sf.loadSuperToken(
+      "0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"
+    );
+  
+  
+    try {
+      console.log(`Downgrading $${amt} fDAIx...`);
+      const amtToDowngrade = ethers.utils.parseEther(amt.toString());
+      const downgradeOperation = DAIx.downgrade({
+        amount: amtToDowngrade.toString()
+      });
+      const downgradeTxn = await downgradeOperation.exec(signer);
+      await downgradeTxn.wait().then(function (tx) {
+        console.log(
+          `
+          Congrats - you've just downgraded DAIx to DAI!
+          You can see this tx at https://goerli.etherscan.io/tx/${tx.transactionHash}
+          Network: Goerli
+          NOTE: you downgraded the dai of 0xDCB45e4f6762C3D7C61a00e96Fb94ADb7Cf27721.
+          You can use this code to allow your users to do it in your project.
+          Or you can downgrade tokens at app.superfluid.finance/dashboard.
+        `
+        );
+      });
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -358,13 +432,16 @@ const Stream = ({ objectId, recipient }) => {
         </StreamComponent>
    {newStream &&    <BalancesBox>
             <Row><div>Wrapped balance</div> <BalanceComponent token={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} address={address}/></Row>
-            <Row><div>Native balance</div> <BalanceComponent token={'0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063'} address={address}/></Row>
+            <Row><div>Native balance</div> <BalanceComponent token={'0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7'} address={address}/></Row>
             <Row><div>Approved amount</div> <Allowance address={address} spender={"0xcfA132E353cB4E398080B9700609bb008eceB125"} apprToken={"0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"} tokenSymbol={'fDAIx'} /></Row>
           <ButtonBox>
-               <a href='https://app.superfluid.finance/wrap?upgrade' rel="noopener noreferrer" target="_blank">  
-                <SuperRef>Wrap/Unwrap stablecoin securely (temporary)</SuperRef>
-               </a>
+              <Input type='number' placeholder='un/wrap amount' onChange={(e) => { setWrappedAmount(e.target.value) }} />
+               <ButtonAlt width={100} text='Wrap' onClick={()=>{wrap(wrappedAmount)}}/>
+               <ButtonAlt width={100} text='Unwrap' onClick={()=>{unwrap(wrappedAmount)}}/>
             </ButtonBox>
+            <a href='https://app.superfluid.finance/wrap?upgrade' rel="noopener noreferrer" target="_blank">  
+                <SuperRef>Alternatively Wrap/Unwrap stablecoin on Superfluid</SuperRef>
+               </a>
          </BalancesBox>}
     </Container>
   </>
