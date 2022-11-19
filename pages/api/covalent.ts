@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
-import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
 //Ethers functions
 const utils = ethers.utils;

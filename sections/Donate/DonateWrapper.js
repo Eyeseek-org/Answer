@@ -19,7 +19,7 @@ import donation from '../../abi/donation.json';
 import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { Row, RowEnd } from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';

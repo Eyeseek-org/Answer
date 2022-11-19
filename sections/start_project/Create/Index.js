@@ -42,7 +42,7 @@ import smallLoading from '../../../data/smallLoading.json';
 import Eye10 from '../../../public/Eye10.png';
 import Rainbow from '../../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../../data/moralisApiConfig';
-import { GetFundingAddress } from '../../../components/functional/GetContractAddress';
+import { GetFundingAddress } from '../../../helpers/GetContractAddress';
 import ErrText from '../../../components/typography/ErrText';
 
 // Animation configs

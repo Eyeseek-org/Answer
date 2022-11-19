@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import FaqCard from '../../components/cards/FaqCard';
 import Lottie from 'react-lottie';
 import { useApp } from '../utils/appContext';
-import blockchainAnimation from '../../data/blockchainAnimation.json';
-import streamAnimation from '../../data/streamAnimation.json';
+import blockchainAnimation from '../../data/animations/blockchainAnimation.json';
+import streamAnimation from '../../data/animations/streamAnimation.json';
 import { useState } from 'react';
 
 const animOptions = {

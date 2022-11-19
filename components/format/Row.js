@@ -22,8 +22,16 @@ export const RowEnd = styled.div`
   gap: 1rem;
 `
 
+export const RowStart = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`
+
 
 export const Col = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;

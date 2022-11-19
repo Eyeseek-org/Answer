@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Row, Col } from '../format/Row';
 import { WarningIcon } from '../icons/Common';
+import { WarnDesc } from '../typography/Descriptions';
+import { WarnTitle } from '../typography/Titles';
 
 const Container = styled.div`
   position: relative;
@@ -10,29 +12,6 @@ const Container = styled.div`
   padding: 3%;
   display: flex;
   flex-direction: column;
-`;
-
-const Title = styled.div`
-  position: relative;
-  font-family: 'Neucha';
-  font-style: normal;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  font-size: 0.9em;
-  color: #ffffff;
-  margin-bottom: 2%;
-  margin-left: 2%;
-`;
-
-const Description = styled.div`
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 300;
-  font-size: 0.8em;
-  line-height: 20px;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  margin-left: 2%;
 `;
 
 const AbsoluteBox = styled.div`
@@ -49,12 +28,12 @@ const WarningCard = ({ title, description }) => {
       </AbsoluteBox>
       <Row>
         <Col>
-          <Title>{title}</Title>
-          <Description>
+          <WarnTitle>{title}</WarnTitle>
+          <WarnDesc>
             Project founders are not obligated to verify their identities to the Eyeseek. Backing is provided on your own risk, it is
             recommended to verify project validity on project website and socials. Do not trust projects without any reference to Eyeseeek
             funding.
-          </Description>
+          </WarnDesc>
         </Col>
       </Row>
     </Container>

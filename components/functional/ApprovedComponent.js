@@ -3,7 +3,7 @@ import { useContractRead, useNetwork } from 'wagmi';
 import styled from 'styled-components';
 import token from '../../abi/token.json';
 import Amount from './Amount';
-import { GetFundingAddress } from './GetContractAddress';
+import { GetFundingAddress } from '../../helpers/GetContractAddress';
 import { ethers } from 'ethers';
 
 const Container = styled.div`

@@ -4,9 +4,6 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useApp } from '../../sections/utils/appContext';
-import polygon from '../../public/icons/polygon.png';
-import fantom from '../../public/icons/fantom.png';
-import binance from '../../public/icons/binance.png';
 import SectionTitle from '../../components/typography/SectionTitle';
 import DonateWithout from '../../sections/Donate/DonateWithout';
 import { Row } from '../../components/format/Row';
@@ -24,6 +21,8 @@ import Tab from '../../components/form/Tab';
 import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
+import { Wrapper } from '../../components/format/Box';
+import {ChainIcon} from '../../helpers/MultichainHelpers'
 
 const Container = styled.div`
   margin-top: 8%;
@@ -44,18 +43,6 @@ const DonateOption = styled.div`
   }
 `;
 
-const DonateContentWrapper = styled.div`
-  padding-top: 5%;
-  padding-left: 18%;
-  padding-right: 18%;
-  @media (max-width: 750px) {
-    padding: 0 5%;
-  }
-  @media (min-width: 2000px) {
-    padding-left: 25%;
-    padding-right: 25%;
-  }
-`;
 
 const Option = styled.div`
   display: flex;
@@ -207,8 +194,6 @@ const Donate: NextPage = () => {
     }
   };
 
-  // Switching currency is done incorrectly
-
   const handleSwitchCurrency = (c: string) => {
     if (c === 'USDC') {
       if (projectDetail.chainId === 80001) {
@@ -309,35 +294,23 @@ const Donate: NextPage = () => {
     setShowRewards(true);
   };
 
-  console.log(projectDetail)
-
   return (
     <Container>
       <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
-      <DonateContentWrapper>
+      <Wrapper>
         <DonateOption>
           {/* @ts-ignore */}
           {tooltip && <Tooltip text="Donates accepted only on this chain" />}
           <DonateOptionTitle>
             <Row>
-              Blockchain{' '}
-              <InfoBox
-                onMouseEnter={() => {
-                  setTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  setTooltip(false);
-                }}
-              >
-                {' '}
+              Blockchain
+              <InfoBox onMouseEnter={() => {setTooltip(true);}} onMouseLeave={() => {setTooltip(false); }}>
                 <InfoIcon width={15} />
               </InfoBox>
             </Row>
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
           </DonateOptionTitle>
-          {projectDetail?.chainId === 80001 && <Image src={polygon} alt="polygon" width={'40'} height={'40'} />}
-          {projectDetail?.chainId === 97 && <Image src={binance} alt="binance" width={'40'} height={'40'} />}
-          {projectDetail?.chainId === 4002 && <Image src={fantom} alt="fantom" width={'40'} height={'40'} />}
+            <ChainIcon chain={projectDetail.chainId} />
         </DonateOption>
         <DonateOption>
           <FaucetBox>
@@ -401,7 +374,7 @@ const Donate: NextPage = () => {
             rid={rewId}
           />
         )}
-      </DonateContentWrapper>
+      </Wrapper>
     </Container>
   );
 };

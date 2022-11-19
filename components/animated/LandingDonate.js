@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useContractEvent, useNetwork } from 'wagmi';
 import donation from '../../abi/donation.json';
-import { GetFundingAddress } from '../functional/GetContractAddress';
+import { GetFundingAddress } from '../../helpers/GetContractAddress';
 
 const Container = styled.div`
   margin-top: 50px;

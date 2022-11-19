@@ -17,7 +17,10 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
     let usdcBalance = 'n/a';
     let usdtBalance = 'n/a';
     let daiBalance = 'n/a';
-    let ratio = 'n/a';
+    let ratio = 0;
+    let usdcRatio = 0;
+    let usdtRatio = 0;
+    let daiRatio = 0;
   
     const funds = useContractRead({
       address: add,
@@ -44,12 +47,16 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
   
       // Get fund dai balance
       daiBalance = funds.data.daiBalance.toString();
+
+      usdcRatio = usdcBalance / max * 100
+      usdtRatio = usdtBalance / max * 100
+      daiRatio = daiBalance / max * 100
     }
     
 
     return <BodyBox>
         <Subtitle text='Project milestones'/>
-        <ProgressBar ratio={ratio} bal={bal} max={max}/>
+        <ProgressBar ratio={ratio} bal={bal} max={max} secRatio={usdcRatio} terRatio={usdtRatio} quaRatio={daiRatio}/>
         <DescriptionBox></DescriptionBox>
         {descM}
     </BodyBox>

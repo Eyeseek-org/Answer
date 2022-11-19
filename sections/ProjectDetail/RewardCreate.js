@@ -19,7 +19,7 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
 import RewardNftSubmit from './RewardNftSubmit';
 import RewardTokenSubmit from './RewardTokenSubmit';
-import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';

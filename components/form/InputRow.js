@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { InfoIcon } from '../icons/Common';
 import Tooltip from '../../components/Tooltip';
 
+// To descope
+
 const InputWrapper = styled.div`
   position: relative;
   display: flex;

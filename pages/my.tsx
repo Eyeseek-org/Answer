@@ -5,11 +5,8 @@ import Footer from "../sections/Footer";
 import MyProjects from '../sections/my/MyProjects'
 import MyBookmarks from '../sections/my/MyBookmarks'
 import TabImage from "../components/form/TabImage";
+import { Col } from "../components/format/Row";
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-`
 
 const TabBox = styled.div`
   margin-top: 3%;
@@ -28,7 +25,7 @@ const My: NextPage = () => {
         setActive(m)
       }
 
-    return <Container>
+    return <Col>
       <TabBox>
         {/* @ts-ignore */}
         <TabImage
@@ -46,7 +43,7 @@ const My: NextPage = () => {
           {mode === 'Projects' && <MyProjects/>}
           {mode === 'Bookmarks' && <MyBookmarks/>}
         <Footer />
-    </Container>
+    </Col>
 }
 
 export default My

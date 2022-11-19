@@ -14,7 +14,7 @@ import donation from '../../abi/donation.json';
 import ProjectDetailRight from './ProjectDetailRight';
 import ProjectDescription from './ProjectDescription';
 import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing';
-import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import polygon from '../../public/icons/donate/polygon.png';
 import bnb from '../../public/icons/donate/bnb.png';
