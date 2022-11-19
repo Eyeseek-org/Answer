@@ -8,7 +8,7 @@ import ProjectDetail from "../ProjectDetail/ProjectDetail"
 import NotAuth from '../NotAuth'
 import NotProject from '../NotProject'
 
-import BodyBox from '../../components/format/Box'
+import { BodyBox } from '../../components/format/Box'
 import Tab from "../../components/form/Tab";
 import RewardList from "../ProjectDetail/RewardList";
 import RewardCreate from "../ProjectDetail/RewardCreate";
