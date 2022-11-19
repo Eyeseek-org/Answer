@@ -1,7 +1,8 @@
 import { DapAxiosInstance, ParseAxiosInstance } from '../helpers/axiosInstance';
+import { Project } from '../types/project';
 
 export class UniService {
-  static async getDataAll(query: string) {
+  static async getDataAll<T>(query: string): Promise<T[]> {
     const response = await DapAxiosInstance.get(query);
     return response.data.results;
   }
@@ -51,5 +52,13 @@ export class DapAPIService {
 
   static async updateReadNotifications(notificationId: string) {
     return await DapAxiosInstance.put(`/classes/Notification/${notificationId}`, { isRead: true });
+  }
+
+  static async getBatchProjectsById(ids: string[]) {
+    return await Promise.all<Project>(
+      ids.map((id) => {
+        return UniService.getDataSingle(`/classes/Project?where={"objectId":"${id}"}`);
+      })
+    );
   }
 }
