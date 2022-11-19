@@ -5,5 +5,5 @@ export const ProjectAmount = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 1em;
-  color: #00ffa3;
+  color: ${(props) => props.theme.colors.secondary};
 `

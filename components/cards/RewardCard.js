@@ -23,7 +23,7 @@ const Modal = styled(motion.div)`
   margin: 1%;
   padding: 6%;
   width: 300px;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.gradient};
   border: 1px solid #3c3c3c;
   border-radius: 5px;
   cursor: pointer;

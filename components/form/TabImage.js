@@ -7,7 +7,7 @@ import { DonateActiveIcon, DonateIcon, ProjectActiveIcon, ProjectIcon } from '..
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   padding: 0.5%;
   width: 100%;
   @media (max-width: 768px) {

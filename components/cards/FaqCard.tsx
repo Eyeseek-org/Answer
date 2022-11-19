@@ -4,8 +4,8 @@ import { IFAQ } from '../../pages/faq';
 const Card = styled.div`
   padding: 2%;
   padding-left: 17px;
-  background: #000000;
-  border: 1px solid #4e4e4e;
+  background: ${(props) => props.theme.colors.black};
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 25px;
   max-height: 250px;
   @media (max-width: 1168px) {
@@ -30,7 +30,7 @@ const Point = styled.li`
   font-size: 0.8em;
   line-height: 29px;
   letter-spacing: 0.01em;
-  color: #ffffff;
+  color: ${(props) => props.theme.colors.font};
   @media (min-width: 1780px) {
     font-size: 1em;
   }

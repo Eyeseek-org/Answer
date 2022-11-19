@@ -35,7 +35,7 @@ const Input = styled.div`
   margin-top: 8%;
   max-width: 500px;
   gap: 15px;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   padding: 2%;
   border-radius: 15px;
 `;

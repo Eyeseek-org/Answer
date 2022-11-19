@@ -16,8 +16,8 @@ const FormStyle = styled.form`
   flex-direction: column;
   width: 100%;
   gap: 20px;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3c3c3c;
+  background: ${(props) => props.theme.colors.gradient};
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 5px;
   padding: 4%;
   margin-bottom: 5%;
@@ -29,7 +29,7 @@ const FormStyle = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px dashed #ccc;
+    border: 1px dashed ${(props) => props.theme.colors.font};
     padding: 6px 12px;
     cursor: pointer;
     border-radius: 5px;

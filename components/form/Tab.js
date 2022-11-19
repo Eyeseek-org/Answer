@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1%;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   padding: 0.5%;
   width: 40%;
   @media (max-width: 768px) {
@@ -20,9 +20,9 @@ const Inactive = styled.div`
     padding: 2%;
     cursor: pointer;
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.05);
+    background: ${(props) => props.theme.colors.invisible};
     transition: 0.2s;
-    box-shadow: 0px 0px 0px 0px #ffffff;
+    box-shadow: 0px 0px 0px 0px ${(props) => props.theme.colors.font};
     &:hover{
         opacity: 0.7;
     }
@@ -32,7 +32,7 @@ const Inactive = styled.div`
 `
 
 const Active = styled(Inactive)`
-    color: #b0f6ff;
+    color: ${(props) => props.theme.colors.primary};
 `
 
 
@@ -42,7 +42,7 @@ const IconBox = styled.div`
 
 const ActBox = styled(IconBox)`
     border-radius: 90px;
-    box-shadow: 0px 2px 10px 0px #ffffff;
+    box-shadow: 0px 2px 10px 0px ${(props) => props.theme.colors.font};
 `
 
 const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, change5 }) => {

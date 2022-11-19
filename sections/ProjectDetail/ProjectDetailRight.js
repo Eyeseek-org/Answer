@@ -55,7 +55,7 @@ const RowTitle = styled.div`
 `;
 
 const RowDesc = styled.div`
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
@@ -70,13 +70,6 @@ const ButtonBox = styled.div`
   margin-top: 4%;
 `;
 
-const Backers = styled.div`
-  color: #b0f6ff;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.9;
-  }
-`;
 
 const Bal = styled.div`
   display: flex;
@@ -88,7 +81,7 @@ const SmallBal = styled.div`
   margin-left: 20px;
   font-family: 'Gemunu Libre';
   opacity: 0.9;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   display: flex;
   flex-direction: row;
   gap: 7px;

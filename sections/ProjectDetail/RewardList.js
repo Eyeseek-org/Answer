@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
 import RewardCard from '../../components/cards/RewardCard';
@@ -7,17 +6,8 @@ import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
+import { Col, Row } from '../../components/format/Row';
 
-const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`;
 
 // Display rewards
 // Add reward types and other metadata
@@ -68,8 +58,8 @@ const RewardList = ({ oid, chain }) => {
 
   return (
     <>
-      <Main>
-        <Container>
+      <Col>
+        <Row>
           {rewards && rewards.length > 0 ? (
             <>
               {rewards.map((reward) => {
@@ -97,8 +87,8 @@ const RewardList = ({ oid, chain }) => {
             <>{!isRewardsLoading ? <NoFound text={'No limited rewards offered'} /> : null}</>
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
-        </Container>
-      </Main>
+        </Row>
+      </Col>
     </>
   );
 };

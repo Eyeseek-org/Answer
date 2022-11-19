@@ -11,7 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   padding: 15%;
   padding-top: 10%;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   text-align: center;
 `;
 

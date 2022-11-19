@@ -23,7 +23,7 @@ const ApprovalBox = styled.div`
 const Amount = styled.div`
   font-size: 0.8em;
   position: absolute;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   right: 0;
   top: -3px;
   font-family: 'Gemunu Libre';

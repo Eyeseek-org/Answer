@@ -19,7 +19,7 @@ const CopyRow = styled.div`
   letter-spacing: 0.3px;
   transition: all 0.1s ease;
   font-family: 'Neucha';
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   &:hover {
     cursor: pointer;
     box-shadow: 0px 1px 5px rgba(255, 255, 255, 0.05);

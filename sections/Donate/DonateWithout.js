@@ -12,7 +12,7 @@ import donation from '../../abi/donation.json';
 // Donates directly any amount without reward
 
 const FormWrapper = styled.div`
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.gradient};
   border: 1px solid #3c3c3c;
   border-radius: 5px;
   padding: 10px 20px;

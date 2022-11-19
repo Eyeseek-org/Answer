@@ -39,12 +39,12 @@ export const NavItem = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;
-  box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.invisible};;
   letter-spacing: 1px;
   transition: 0.3s;
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.25);
+    box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.transparent};
   }
   @media (max-width: 768px) {
     font-size: 1em;
@@ -93,7 +93,7 @@ export const IconFrame = styled.div`
 
 export const Notis = styled(motion.div)`
   position: absolute;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   text-align: center;
   align-items: center;
   width: 17px;
@@ -111,7 +111,7 @@ export const HeaderBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   padding: 2%;
   @media (max-width: 768px) {
     justify-content: center;

@@ -28,8 +28,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3c3c3c;
+  background: ${(props) => props.theme.colors.gradient};
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 5px;
 `;
 

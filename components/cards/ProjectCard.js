@@ -16,7 +16,7 @@ import ftm from '../../public/icons/donate/ftm.png';
 import Tooltip from '../Tooltip';
 import { Erc20Icon, NftIcon } from '../../components/icons/Project';
 import {ProjectAmount} from '../../components/typography/Amounts';
-import { BetweenRow } from '../format/Row';
+import { BetweenRow, Row } from '../format/Row';
 import {ImageBoxSm} from '../format/Images'
 import { ProjectTitle } from '../typography/Titles';
 import { ProjectDesc } from '../typography/Descriptions';
@@ -29,7 +29,7 @@ const A = styled(Link)`
 `;
 
 const Container = styled(motion.div)`
-  background: rgba(0, 0, 0, 0.25);
+  background: ${(props) => props.theme.colors.transparent};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -150,21 +150,20 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         </AbsoluteLeft>
         <ImageBoxSm> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'220px'} height={'200px'} />}</ImageBoxSm>
         <BetweenRow>
-          <BetweenRow>
-            <div>
+          <Row>
               {category && (
-                <>
+                <div>
                   {category === 'Art' && <Tag tag={category} color={'#7E0000'} />}
                   {category === 'Games' && <Tag tag={category} color={'#7E3D00'} />}
                   {category === 'OpenSource' && <Tag tag={category} color={'#7C007E'} />}
                   {category === 'Science' && <Tag tag={category} color={'#00502E'} />}
                   {category === 'Technology' && <Tag tag={category} color={'#2B2B2B'} />}
                   {category === 'Web3' && <Tag tag={category} color={'#687900'} />}
-                </>
+                </div>
               )}
-            </div>
-            <div>{subcategory && <Tag tag={subcategory} color={'#035201'} />}</div>
-          </BetweenRow>
+              <div>{subcategory && <Tag tag={subcategory} color={'#035201'} />}</div>
+
+          </Row>
           <ProjectAmount>
             {pType === 'Standard' ? (
               <> {bal} / {max} </>

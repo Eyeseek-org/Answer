@@ -19,7 +19,7 @@ const Container = styled.div`
 const Circle = styled(motion.div)`
     height: 12px;
     width: 12px;
-    background: white;
+    background: ${(props) => props.theme.colors.font};
     box-shadow: 0px 2px 15px white, inset 0px 1px 3px white;
     border-radius: 45px;
     &:hover {
@@ -44,7 +44,7 @@ const MileTitle = styled(motion.div)`
     text-align: left;
     letter-spacing: 0.8px;
     font-size: 1.3em;
-    color: #B0F6FF;
+    color: ${(props) => props.theme.colors.primary};
     margin-bottom: 2%;
 `
 
@@ -56,7 +56,7 @@ const Line = styled(motion.div)`
     position: absolute;
     height: 100px;
     width: 2px;
-    background: white;
+    background: ${(props) => props.theme.colors.font};
     left: 5px;
 `
 
@@ -77,7 +77,7 @@ const Date = styled.div`
     font-family: 'Neucha';
     top: -30px;
     width: 100px;
-    color: #5E82DF;
+    color: ${(props) => props.theme.colors.secondary};
     font-weight: 500;
     font-size: 1.2em;
 `

@@ -28,7 +28,7 @@ const FooterItem = styled.div`
   font-family: 'Gemunu Libre', sans-serif;
   font-style: normal;
   letter-spacing: 1px;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (max-width: 768px) {
     font-size: 0.8em;
   }

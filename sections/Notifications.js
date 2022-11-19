@@ -74,7 +74,7 @@ const Col = styled.div`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.gradient};
   padding: 2%;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -117,7 +117,7 @@ const ButtonRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   padding: 2%;
   padding-right: 5%;
 `;
