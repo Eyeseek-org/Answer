@@ -13,7 +13,7 @@ TimeAgo.addDefaultLocale(en)
 
 const Container = styled.div`
     margin-top: 5%;
-    color: white;
+    color: ${(props) => props.theme.colors.font};
 `
 
 const List = styled.div`
@@ -28,7 +28,7 @@ const List = styled.div`
 
 const A = styled.a`
     font-size: 1em;
-    color: white;
+    color: ${(props) => props.theme.colors.font};
 `
 
 const Created = styled.div`
@@ -38,7 +38,7 @@ const Created = styled.div`
 
 const RefCard = styled(motion.div)`
     background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-    border: 1px solid #3C3C3C;
+    border: 1px solid ${(props) => props.theme.colors.gray};
     border-radius: 5px;
     width: 350px;
     padding: 2%;

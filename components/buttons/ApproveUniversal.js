@@ -4,27 +4,8 @@ import styled from 'styled-components'
 import token from '../../abi/token.json'
 import Rainbow from './Rainbow'
 import Lottie from "react-lottie";
-import successAnimation from '../../data/successAnimation.json'
-import smallLoading from '../../data/smallLoading.json'
 import ButtonAlt from './ButtonAlt'
-
-// Animation configs 
-const okAnim = {
-    loop: false,
-    autoplay: true,
-    animationData: successAnimation,
-    rendererSettings: {
-        preserveAspectRatio: 'xMidYMid slice'
-    }
-};
-const loadingAnim = {
-    loop: true,
-    autoplay: true,
-    animationData: smallLoading,
-    rendererSettings: {
-        preserveAspectRatio: 'xMidYMid slice'
-    }
-};
+import {okAnim, loadingAnim} from '../animated/Animations';
 
 const Container = styled.div`
     position: relative;
@@ -46,7 +27,7 @@ const Approve = styled.div`
 const Amount = styled.div`
     font-size: 0.8em;
     position: absolute;
-    color: white;
+    color: ${(props) => props.theme.colors.font};
     right: 0;
     top: -3px;
     font-family: 'Gemunu Libre';

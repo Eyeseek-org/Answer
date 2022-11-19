@@ -60,7 +60,7 @@ const Container = styled.div`
 
   .input_error {
     font-size: 0.7em;
-    color: #ff0000;
+    color: ${(props) => props.theme.colors.red};
     font-family: 'Montserrat';
   }
 `;

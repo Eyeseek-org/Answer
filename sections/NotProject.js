@@ -3,6 +3,7 @@ import Lottie from 'react-lottie';
 import notFoundAnimation from '../data/notFoundAnimation.json';
 import Button from '../components/buttons/Button';
 import Link from 'next/link';
+import { WarnTitle } from '../components/typography/Titles';
 
 const Container = styled.div`
   position: relative;
@@ -10,16 +11,10 @@ const Container = styled.div`
   flex-direction: column;
   padding: 15%;
   padding-top: 10%;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   text-align: center;
 `;
 
-const Title = styled.div`
-  color: white;
-  font-family: 'Neucha';
-  margin-bottom: 10%;
-  font-size: 1.1em;
-`;
 
 const ActionBox = styled.div`
   text-align: center;
@@ -49,7 +44,7 @@ const NotProject = () => {
       <AnimBox>
         <Lottie height={150} width={150} options={animOptions} />
       </AnimBox>
-      <Title>No active project found for this wallet address</Title>
+      <WarnTitle>No active project found for this wallet address</WarnTitle>
       <ActionBox>
         <Link href="/startproject">
           <Button text={'Create new project'} />

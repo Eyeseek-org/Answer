@@ -14,8 +14,9 @@ import {
   Disclaimer,
   DisclaimerAdd,
 } from './StyleWrapper';
-import { MainContainer, NextButton } from '../Category/StyleWrapper';
 import InputContainer from '../../../components/form/InputContainer';
+import {Wrapper} from '../../../components/format/Box'
+import ButtonAlt from '../../../components/buttons/ButtonAlt';
 import Tab from '../../../components/form/Tab';
 import { MainMilestoneContainer, MilestoneContainer } from '../SetGoals/StyleWrapper';
 import Tooltip from '../../../components/Tooltip';
@@ -70,7 +71,7 @@ const SetRewards = ({ setStep }) => {
   return (
     <>
       <SectionTitle title="Offer rewards for your backers" subtitle="Promise traditional crowdfunding benefits" />
-      <MainContainer>
+      <Wrapper>
         {rewardsCounts === 0 && (
           <Disclaimer>
             <Subtitle text={'ERC20 and ERC1155 could be added only after project creation'} />
@@ -205,11 +206,11 @@ const SetRewards = ({ setStep }) => {
             </MainMilestoneContainer>
           ))}
           <ButtonRow>
-            <NextButton onClick={handleBack}>Back</NextButton>
-            <NextButton onClick={handleClick}>Next</NextButton>
+            <ButtonAlt onClick={handleBack} text='Back'/>
+            <ButtonAlt onClick={handleClick} text='Next'/>
           </ButtonRow>
         </RewardContainer>
-      </MainContainer>
+      </Wrapper>
     </>
   );
 };

@@ -31,7 +31,7 @@ export const WarningBox = styled.div`
   border: 1px solid #500000;
   border-radius: 5px;
   padding: 4%;
-  color: #ffffff;
+  color: ${(props) => props.theme.colors.font};
 `;
 
 export const Li = styled.li`
@@ -40,7 +40,7 @@ export const Li = styled.li`
   font-size: 0.8em;
   line-height: 2em;
   letter-spacing: 0.01em;
-  color: #ffffff;
+  color: ${(props) => props.theme.colors.font};
   @media (min-width: 1980px) {
     font-size: 1.1em;
   }
@@ -109,7 +109,7 @@ export const SumTitle = styled.div`
 
 export const SumValue = styled.div`
   font-weight: 500;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   font-size: 0.95em;
   font-family: 'Neucha';
   letter-spacing: 0.3px;
@@ -148,7 +148,7 @@ export const Divider = styled.div`
 
 export const TxStatus = styled.div`
   position: relative;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   border-radius: 5px;
   padding: 5%;
   font-family: 'Courier New';
@@ -169,7 +169,7 @@ export const LogRow = styled.div`
 `;
 
 export const Ref = styled.div`
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   margin-left: 5px;
   text-decoration: underline;
   &:hover {

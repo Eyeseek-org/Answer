@@ -6,6 +6,10 @@ import Address from '../../components/functional/Address';
 import Tooltip from '../Tooltip';
 import { useState } from 'react';
 import NFTDisplay from '../functional/NftDisplay';
+import { RewardTitle } from '../typography/Titles';
+import { ProjectAmount } from '../typography/Amounts';
+import { RewardDesc } from '../typography/Descriptions';
+import { BetweenRow } from '../format/Row';
 
 const Container = styled.div`
   position: relative;
@@ -19,7 +23,7 @@ const Modal = styled(motion.div)`
   margin: 1%;
   padding: 6%;
   width: 300px;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.gradient};
   border: 1px solid #3c3c3c;
   border-radius: 5px;
   cursor: pointer;
@@ -53,35 +57,6 @@ const ActModal = styled(Modal)`
   animation: none;
 `;
 
-const ModalTitle = styled.div`
-  padding-bottom: 2%;
-  border-bottom: 1px dashed #3c3c3c;
-  margin-bottom: 4%;
-  color: #b0f6ff;
-  font-size: 1em;
-  font-family: 'Gemunu Libre';
-  letter-spacing: 0.4px;
-`;
-
-const ModalDesc = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-family: 'Neucha';
-  letter-spacing: 0.4px;
-  font-size: 0.9em;
-  color: white;
-`;
-
-const ModalAmount = styled.div`
-  font-family: 'Neucha';
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
 
 const TypeBox = styled.div`
   position: absolute;
@@ -123,7 +98,7 @@ const RewardCard = ({
     <Container>
       {typeTooltip && (
         <ToolBox>
-          <Tooltip text={`Reward requires backing ${type} ${pledge} `} />
+          <Tooltip text={`Reward requires ${type} $ ${pledge} `} />
         </ToolBox>
       )}
       {selected !== title ? (
@@ -138,17 +113,17 @@ const RewardCard = ({
             setTypeTooltip(false);
           }}
         >
-          <Row>
-            <ModalTitle>{title}</ModalTitle>
-            {nftId === 0 ? <ModalAmount>${pledge}</ModalAmount> : <NftIcon width={30} />}
-          </Row>
-          <ModalDesc>{description}</ModalDesc>
+          <BetweenRow>
+            <RewardTitle>{title}</RewardTitle>
+            {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30} />}
+          </BetweenRow>
+          <RewardDesc>{description}</RewardDesc>
           <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} />
           {tokenName && tokenAddress && (
-            <ModalDesc>
+            <RewardDesc>
               <div>{tokenName}</div>
               <Address address={tokenAddress} />
-            </ModalDesc>
+            </RewardDesc>
           )}
           <NumberBox>
             {' '}
@@ -166,17 +141,17 @@ const RewardCard = ({
             setTypeTooltip(false);
           }}
         >
-          <Row>
+          <BetweenRow>
             <ModalTitle>{title}</ModalTitle>
             {nftId === 0 ? <ModalAmount>${pledge}</ModalAmount> : <NftIcon width={30} />}
-          </Row>
-          <ModalDesc>{description}</ModalDesc>
+          </BetweenRow>
+          <RewardDesc>{description}</RewardDesc>
           <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} />
           {tokenName && tokenAddress && (
-            <ModalDesc>
+            <RewardDesc>
               <div>{tokenName}</div>
               <Address address={tokenAddress} />
-            </ModalDesc>
+            </RewardDesc>
           )}
           <NumberBox>
             {' '}

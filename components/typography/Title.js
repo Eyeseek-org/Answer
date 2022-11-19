@@ -6,7 +6,7 @@ const Box = styled.div`
   font-style: normal;
   font-weight: 400;
   letter-spacing: 1px;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (max-width: 1168px) {
     font-size: 2.3em;
   }

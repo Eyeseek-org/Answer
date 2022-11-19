@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import Image from 'next/image';
 
 const ConnectBtn = styled.button`
-  background-color: #9bffff;
+  background-color: ${(props) => props.theme.colors.primary};
   padding: 7px 12px 7px 12px;
   border-radius: 5px;
   border: none;
   font-size: 1em;
-  color: black;
+  color: ${(props) => props.theme.colors.black};
   font-family: "Gemunu Libre", sans-serif;
   font-style: normal;
   cursor: pointer;
@@ -38,9 +38,6 @@ const Rainbow = () => {
         const ready = mounted && authenticationStatus !== 'loading';
         const auth = async() => {
             await openConnectModal()
-            if (!isAuthenticated){
-                await authenticate()
-            }
         }
 
         const connected =

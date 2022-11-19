@@ -8,7 +8,7 @@ import axios from 'axios';
 import donation from '../abi/donation.json';
 import SectionTitle from '../components/typography/SectionTitle';
 import successAlt from '../data/animations/successAlt.json';
-import { GetFundingAddress } from '../components/functional/GetContractAddress';
+import { GetFundingAddress } from '../helpers/GetContractAddress';
 import { moralisApiConfig } from '../data/moralisApiConfig';
 
 const okAnim = {
@@ -35,7 +35,7 @@ const Input = styled.div`
   margin-top: 8%;
   max-width: 500px;
   gap: 15px;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   padding: 2%;
   border-radius: 15px;
 `;
@@ -49,10 +49,6 @@ const AnimBox = styled.div`
   left: 20%;
 `;
 
-const AnimBox2 = styled.div`
-  position: absolute;
-  bottom: 10%;
-`;
 
 const AnimBox3 = styled.div`
   position: absolute;

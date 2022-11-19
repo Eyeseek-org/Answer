@@ -3,7 +3,7 @@ import { useContractRead, useNetwork } from 'wagmi';
 import styled from 'styled-components';
 import token from '../../abi/token.json';
 import Amount from './Amount';
-import { GetTokenAddress, GetFundingAddress } from './GetContractAddress';
+import { GetFundingAddress } from '../../helpers/GetContractAddress';
 import { ethers } from 'ethers';
 
 const Container = styled.div`
@@ -13,20 +13,21 @@ const Container = styled.div`
   font-family: 'Gemunu Libre';
 `;
 
-const ApprovedComponent = ({ address }) => {
+const ApprovedComponent = ({ address, currencyAddress }) => {
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
-  const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_TOKEN);
   const { chain } = useNetwork();
 
   useEffect(() => {
     setAdd(GetFundingAddress(chain));
-    setTokenAdd(GetTokenAddress(chain));
   }, []);
 
   var fullValue;
 
+  console.log('address', currencyAddress);
+  
+
   const { data } = useContractRead({
-    address: tokenAdd,
+    address: currencyAddress,
     abi: token.abi,
     chainId: chain.id,
     functionName: 'allowance',
@@ -38,11 +39,13 @@ const ApprovedComponent = ({ address }) => {
     fullValue = ethers.utils.formatEther(data);
   }
 
+  console.log(data)
+
   return (
     <Container>
       {data && (
         <>
-          Approved: <Amount value={data} />
+          <Amount value={data} />
         </>
       )}
     </Container>

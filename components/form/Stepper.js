@@ -79,12 +79,6 @@ const StepText = styled.div`
   margin-top: 5%;
 `;
 
-const ImageBox = styled.div`
-  top: -110px;
-  position: absolute;
-  z-index: 100;
-  right: 0;
-`;
 
 const Stepper = ({ handleStep, steps, step }) => {
   const { appState } = useApp();
@@ -128,7 +122,6 @@ const Stepper = ({ handleStep, steps, step }) => {
                 <Step s={index} />
                 <StepText>{st}</StepText>
               </StepContent>
-
               <Line />
             </StepContainer>
           );

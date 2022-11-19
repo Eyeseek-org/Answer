@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { BetweenRow } from '../format/Row';
+import { RewardTitle } from '../typography/Titles';
 
 const Container = styled.div`
   display: flex;
@@ -10,38 +12,17 @@ const Container = styled.div`
   background: rgba(0, 0, 0, 0.4);
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-bottom: 1%;
-`;
-
-const Item = styled.div`
-  width: 50%;
-  font-size: 1em;
-  color: white;
-  font-family: 'Gemunu Libre';
-`;
-
-const Value = styled.div`
-  font-style: italic;
-  font-weight: 500;
-  color: #ffffff;
-  font-family: 'Gemunu Libre';
-`;
-
-const CalcOutcome = ({ conn, multi }) => {
+const CalcOutcome = ({ conn, multi, currency }) => {
   return (
     <Container>
-      <Row>
-        <Item>Microfund multiplier</Item>
-        <Value>{conn} X</Value>
-      </Row>
-      <Row>
-        <Item>Fund receives (in total)</Item>
-        <Value>{multi} USDC</Value>
-      </Row>
+      <BetweenRow>
+        <RewardTitle>Microfund multiplier</RewardTitle>
+        <RewardTitle>{conn} X</RewardTitle>
+      </BetweenRow>
+      <BetweenRow>
+        <RewardTitle>Fund receives (in total)</RewardTitle>
+       {currency &&  <RewardTitle>{multi} {currency}</RewardTitle>}
+      </BetweenRow>
     </Container>
   );
 };

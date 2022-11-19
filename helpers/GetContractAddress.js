@@ -38,6 +38,7 @@ export const GetProjectTokenAddress = (chain) => {
   }
 };
 
+// Unused now
 export const GetTokenAddress = (chain) => {
   if (chain && chain.id === 80001) {
     return process.env.NEXT_PUBLIC_AD_USDC;

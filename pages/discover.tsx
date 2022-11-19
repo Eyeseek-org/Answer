@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import type { NextPage } from 'next';
 
-import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import SectionTitle from '../components/typography/SectionTitle';
-import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import ProjectCard from '../components/cards/ProjectCard';
 import { cats } from '../data/cats';
+import { UniService } from '../services/DapAPIService';
 
 const Container = styled.div`
   margin-top: 5%;
@@ -21,32 +22,22 @@ const ProjectBox = styled.div`
 `;
 
 const BrowsePro: NextPage = () => {
-  const [projects, setProjects] = useState([]);
-
-  const getProjects = async () => {
-    const config = {
-      headers: {
-        'X-Parse-Application-Id': `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-      },
-    };
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project`, config);
-      await setProjects(res.data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const router = useRouter();
+  const query = `/classes/Project`
+  const { data: projects} = useQuery(['projects'], () => UniService.getDataAll(query), {
+    enabled: !!router.isReady,
+  });
 
   const FilteredProjects = ({ projects }) => {
     return (
       <>
         {cats.map((cat) => {
-          const CategoryProjects = projects.filter((p) => p.category.includes(cat));
+          const CategoryProjects = projects?.filter((p) => p.category.includes(cat));
           return (
             <>
               <SectionTitle title={cat} subtitle={`Browse through ${cat} projects`} />
               <ProjectBox>
-                {CategoryProjects.map((project) => (
+                {CategoryProjects && CategoryProjects.map((project) => (
                   <ProjectCard
                     key={project.objectId}
                     title={project.title}
@@ -70,10 +61,6 @@ const BrowsePro: NextPage = () => {
       </>
     );
   };
-
-  useEffect(() => {
-    getProjects();
-  }, []);
 
   return (
     <Container>

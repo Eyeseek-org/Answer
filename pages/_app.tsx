@@ -2,7 +2,7 @@ import Head from 'next/head';
 import '../styles/globals.css';
 
 //Web3 auth
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { Chain, createClient, configureChains, WagmiConfig } from 'wagmi';
 import { AppProvider } from '../sections/utils/appContext';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
@@ -13,10 +13,11 @@ import '@rainbow-me/rainbowkit/styles.css';
 import Header from '../sections/Header/Header';
 import Loading from '../components/Loading';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {darkTheme} from '../themes/theme'
 
 const Container = styled.div`
-  color: white;
-  background: #141414;
+  color: ${(props) => props.theme.colors.font};
+  background: ${(props) => props.theme.colors.body};
   font-family: Inter, sans-serif !important;
 `;
 
@@ -97,6 +98,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
+      <ThemeProvider theme={darkTheme}>
         <Container>
           <WagmiConfig client={client}>
             <MoralisProvider appId={appId} serverUrl={serverUrl}>
@@ -124,6 +126,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             </MoralisProvider>
           </WagmiConfig>
         </Container>
+        </ThemeProvider>
       </Hydrate>
     </QueryClientProvider>
   );

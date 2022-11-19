@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { InfoIcon } from '../icons/Common';
 import Tooltip from '../../components/Tooltip';
 
+// To descope
+
 const InputWrapper = styled.div`
   position: relative;
   display: flex;
@@ -30,7 +32,7 @@ const InputAmount = styled.div`
 `;
 
 const Input = styled.input`
-  background: rgba(107, 255, 255, 0.05);
+  background: ${(props) => props.theme.colors.input};
   border: 1px solid #ffffff;
   border-radius: 10px;
   padding: 1rem;

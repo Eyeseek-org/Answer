@@ -3,16 +3,8 @@ import {useContractRead} from 'wagmi'
 import Subtitle from "../../components/typography/Subtitle"
 import ProgressBar from "../../components/ProgressBar"
 import donation from '../../abi/donation.json';
+import { BodyBox } from "../../components/format/Box";
 
-const Container = styled.div`
-    margin-top: 5%;
-    padding-left: 15%;
-    padding-right: 15%;
-    @media (max-width: 768px) {
-        padding-left: 2%;
-        padding-right: 2%;
-    }
-`
 
 const DescriptionBox = styled.div`
     padding-bottom: 5%;
@@ -25,7 +17,10 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
     let usdcBalance = 'n/a';
     let usdtBalance = 'n/a';
     let daiBalance = 'n/a';
-    let ratio = 'n/a';
+    let ratio = 0;
+    let usdcRatio = 0;
+    let usdtRatio = 0;
+    let daiRatio = 0;
   
     const funds = useContractRead({
       address: add,
@@ -52,16 +47,19 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
   
       // Get fund dai balance
       daiBalance = funds.data.daiBalance.toString();
+
+      usdcRatio = usdcBalance / max * 100
+      usdtRatio = usdtBalance / max * 100
+      daiRatio = daiBalance / max * 100
     }
     
 
-    return <Container>
-        
+    return <BodyBox>
         <Subtitle text='Project milestones'/>
-        <ProgressBar ratio={ratio} bal={bal} max={max}/>
+        <ProgressBar ratio={ratio} bal={bal} max={max} secRatio={usdcRatio} terRatio={usdtRatio} quaRatio={daiRatio}/>
         <DescriptionBox></DescriptionBox>
         {descM}
-    </Container>
+    </BodyBox>
 }
 
 export default ProjectDescription

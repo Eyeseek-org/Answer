@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
-import { useApp } from '../../utils/appContext';
-import { MainContainer, SiteContainer, Container, ButtonContainer, NextButton, DisButton } from './StyleWrapper';
-
+import { useApp } from '../utils/appContext';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Select from 'react-select';
-import SectionTitle from '../../../components/typography/SectionTitle';
-import ProjectTypeSelection from '../ProjectTypeSelection';
-import { categories } from '../../../data/categories';
+import SectionTitle from '../../components/typography/SectionTitle';
+import ProjectTypeSelection from './ProjectTypeSelection';
+import { categories } from '../../data/categories';
+import { Wrapper } from '../../components/format/Box';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { BetweenRow } from '../../components/format/Row';
+import { MainContainer } from '../../components/format/Box';
+import { Container } from './Styles';
 
 const Category = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { category, subcategory } = { ...appState };
+  const router = useRouter();
 
   useEffect(() => {
     setAppState((prev) => ({ ...prev, isNext: subcategory !== undefined }));
@@ -25,10 +30,10 @@ const Category = ({ setStep }) => {
     setStep((prev) => (prev += 1));
     setAppState((prev) => ({ ...prev, isNext: false }));
   };
+  const handleBack = () => { router.push('/'); };
   const handleCategory = (e) => setAppState((prev) => ({ ...prev, category: e.value }));
   const handleSubCategory = (e) => setAppState((prev) => ({ ...prev, subcategory: e.value, isNext: true }));
 
-  // TBD UI fix hover color
   const customStyles = {
     menu: (provided) => ({
       ...provided,
@@ -65,15 +70,14 @@ const Category = ({ setStep }) => {
     }),
   };
 
-  // TBD Type selection will not affect MVP implementation, it's preparation for Streaming features
 
   return (
     <MainContainer>
       <SectionTitle
         title="Categorize your project"
-        subtitle={'These will help backers find your project, and you can change them later if you need to.'}
+        subtitle={'Define the way of funding and the project industry.'}
       />
-      <SiteContainer>
+      <Wrapper>
         <ProjectTypeSelection />
         <Container>
           <Select
@@ -92,13 +96,13 @@ const Category = ({ setStep }) => {
             styles={customStyles}
           />
         </Container>
-        <ButtonContainer>
+        <BetweenRow>
           <Link href="/">
-            <NextButton>Back to homepage</NextButton>
+            <ButtonAlt onClick={handleBack} text='Back to homepage'/>
           </Link>
-          {subcategory ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton disabled>Next</DisButton>}
-        </ButtonContainer>
-      </SiteContainer>
+             <ButtonAlt onClick={handleClick} text='Next'/>
+        </BetweenRow>
+      </Wrapper>
     </MainContainer>
   );
 };

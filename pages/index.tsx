@@ -9,6 +9,7 @@ import Footer from '../sections/Footer';
 import LandingMain from '../sections/Landing/LandingMain';
 import LatestProjects from '../sections/Landing/LatestProjects';
 import Features from '../sections/Landing/Features';
+import Script from 'next/script';
 
 const Container = styled.div`
   position: relative;
@@ -44,8 +45,8 @@ const Home: NextPage = () => {
           <Image src={Eye7} alt="Eye7" width={'350px'} height={'30px'} />
         </EyeSevenBox>
         <Footer />
-        {/* <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-TKH8YE4L07"
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=GTM-WV83C9F"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -53,9 +54,9 @@ const Home: NextPage = () => {
             window.dataLayer = window.dataLayer || [];
             function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-TKH8YE4L07');
+            gtag('config', GTM-WV83C9F');
           `}
-        </Script> */}
+        </Script>
       </Container>
     </>
   );

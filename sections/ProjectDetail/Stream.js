@@ -25,7 +25,7 @@ const Container = styled.div`
 `
 // TBD component to display current stream - Destination, Flow, Amount sent
 const StreamComponent = styled.div`
-  background: rgba(0, 0, 0, 0.25);
+  background: ${(props) => props.theme.colors.transparent};
   display: flex;
   flex-direction: column;
   justify-content: space-between ;
@@ -47,7 +47,7 @@ const ValueRow = styled.div`
   display: flex; 
   flex-direction: row;
   justify-content: space-between;
-  background: rgba(107, 255, 255, 0.05);
+  background: ${(props) => props.theme.colors.invisible};
   border-radius: 15px;
   font-family: 'Roboto';
   font-style: normal;
@@ -58,7 +58,7 @@ const ValueRow = styled.div`
   padding: 1.4%;
   padding-left: 10px;
   padding-right: 10px;
-  color: #B0F6FF;
+  color: ${(props) => props.theme.colors.primary};
 `
 
 const ButtonBox = styled.div`

@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import { useState } from "react";
 import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
@@ -9,6 +8,7 @@ import ProjectDetail from "../ProjectDetail/ProjectDetail"
 import NotAuth from '../NotAuth'
 import NotProject from '../NotProject'
 
+import BodyBox from '../../components/format/Box'
 import Tab from "../../components/form/Tab";
 import RewardList from "../ProjectDetail/RewardList";
 import RewardCreate from "../ProjectDetail/RewardCreate";
@@ -17,10 +17,6 @@ import UpdateCreate from "../ProjectDetail/UpdateCreate";
 import StatsTable from "../../components/tables/StatsTable";
 import SectionTitle from "../../components/typography/SectionTitle";
 
-const TabBox = styled.div`
-  margin-top: 5%;
-  margin-left: 17%;
-`
 
 const MyProjects = () => {
     const {address} = useAccount();
@@ -43,7 +39,7 @@ const MyProjects = () => {
         <div>
           {address ? <div>
             {project && <SectionTitle title={'Active project'} subtitle={project.title} />}
-            <TabBox>  
+            <BodyBox>  
             <Tab 
                 active={active} 
                 o1={'Overview'} 
@@ -57,7 +53,7 @@ const MyProjects = () => {
                 change4={()=>handleMode('Transactions')}
                 change5={()=>handleMode('History')}
               />
-          </TabBox>
+          </BodyBox>
               {project && project.objectId ? <>      {mode === 'Overview' && <ProjectDetail 
                     objectId={project.objectId} 
                     pid={project.pid} 

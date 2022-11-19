@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Rainbow from '../components/buttons/Rainbow';
 import Lottie from 'react-lottie';
 import walletAnimation from '../data/walletAnimation.json';
+import { WarnTitle } from '../components/typography/Titles';
 
 const Container = styled.div`
   position: relative;
@@ -9,15 +10,8 @@ const Container = styled.div`
   flex-direction: column;
   padding: 15%;
   padding-top: 10%;
-  background: black;
+  background: ${(props) => props.theme.colors.black};
   text-align: center;
-`;
-
-const Title = styled.div`
-  color: white;
-  font-family: 'Neucha';
-  margin-bottom: 10%;
-  font-size: 1.1em;
 `;
 
 const AnimBox = styled.div`
@@ -44,7 +38,7 @@ const NotAuth = () => {
       <AnimBox>
         <Lottie height={150} width={150} options={animOptions} />
       </AnimBox>
-      <Title>Connection not found, please reconnect your wallet</Title>
+      <WarnTitle>Connection not found, please reconnect your wallet</WarnTitle>
       <Rainbow />
     </Container>
   );

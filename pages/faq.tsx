@@ -21,7 +21,7 @@ const Row = styled.div`
   margin-top: 7%;
   padding-bottom: 4%;
   gap: 10%;
-  border-bottom: 1px solid #262626;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
   @media (max-width: 868px) {
     flex-wrap: wrap;
   }

@@ -5,11 +5,8 @@ import Image from 'next/image';
 import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from 'wagmi';
 import axios from 'axios';
 import Link from 'next/link';
-import { BigNumber } from 'ethers';
 
 import SectionTitle from '../../../components/typography/SectionTitle';
-import { ButtonRow } from '../SetRewards/StyleWrapper';
-import { MainContainer, NextButton } from '../Category/StyleWrapper';
 import {
   RulesContainer,
   RulesTitle,
@@ -36,42 +33,16 @@ import {
 import FaqCard from '../../../components/cards/FaqCard';
 import { BookIcon } from '../../../components/icons/Common';
 import donation from '../../../abi/donation.json';
-import successAnimation from '../../../data/successAnimation.json';
-import errorAnimation from '../../../data/errorAnimation.json';
-import smallLoading from '../../../data/smallLoading.json';
 import Eye10 from '../../../public/Eye10.png';
 import Rainbow from '../../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../../data/moralisApiConfig';
-import { GetFundingAddress } from '../../../components/functional/GetContractAddress';
+import { GetFundingAddress } from '../../../helpers/GetContractAddress';
 import ErrText from '../../../components/typography/ErrText';
+import { BetweenRow } from '../../../components/format/Row';
+import ButtonAlt from '../../../components/buttons/ButtonAlt';
+import { MainContainer } from '../../../components/format/Box';
+import { okAnim, errAnim, loadingAnim } from '../../../components/animated/Animations';
 
-// Animation configs
-const okAnim = {
-  loop: false,
-  autoplay: true,
-  animationData: successAnimation,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
-
-const errAnim = {
-  loop: false,
-  autoplay: true,
-  animationData: errorAnimation,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
-
-const loadingAnim = {
-  loop: true,
-  autoplay: true,
-  animationData: smallLoading,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
 
 const texts = [
   {
@@ -175,6 +146,7 @@ const Create = ({ setStep }) => {
           chainId: pChain,
           bookmarks: [address], // Add owner to bookmark
           imageUrl: pImageUrl,
+          verified: false,
         },
         moralisApiConfig
       );
@@ -275,25 +247,17 @@ const Create = ({ setStep }) => {
         {!ready ? (
           <>
             {chain && pChain === chain.id ? (
-              <ButtonRow>
-                <NextButton onClick={handleBack}>Back</NextButton>
+              <BetweenRow>
+                <ButtonAlt onClick={handleBack} text='Back'/>
                 {pType === 'Stream' ? (
-                  <NextButton onClick={handleSubmit}>Create project</NextButton>
+                  <ButtonAlt onClick={handleSubmit} text='Create project'/>
                 ) : (
-                  <NextButton disabled={!write} onClick={handleSubmit}>
-                    Create project
-                  </NextButton>
+                  <ButtonAlt disabled={!write} onClick={handleSubmit} text='Create project'/>
                 )}
-              </ButtonRow>
+              </BetweenRow>
             ) : (
-              <NextButton
-                onClick={() => {
-                  switchNetwork(pChain);
-                }}
-              >
-                Wrong network
-              </NextButton>
-            )}
+              <ButtonAlt onClick={() => { switchNetwork(pChain)}} text ='Wrong network' />
+      )}
           </>
         ) : (
           <>
@@ -311,16 +275,8 @@ const Create = ({ setStep }) => {
                     </Link>
                   </LogRow>
                 )}
-                {apiError && (
-                  <AnimBox>
-                    <Lottie height={100} width={100} options={errAnim} />
-                  </AnimBox>
-                )}
-                {!apiError && !success && (
-                  <AnimBox>
-                    <Lottie height={100} width={100} options={loadingAnim} />
-                  </AnimBox>
-                )}
+                {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} /></AnimBox> )}
+                {!apiError && !success && ( <AnimBox> <Lottie height={100} width={100} options={loadingAnim} /></AnimBox> )}
               </TxStatus>
             ) : (
               <TxStatus>
@@ -338,7 +294,7 @@ const Create = ({ setStep }) => {
                     {error && (
                       <>
                         <ErrText text="Transaction failed or rejected" />
-                        <NextButton onClick={handleSubmit}>Retry</NextButton>
+                        <ButtonAlt onClick={handleSubmit} text='Retry'/>
                       </>
                     )}
                   </div>
@@ -352,21 +308,9 @@ const Create = ({ setStep }) => {
                     </Link>
                   </LogRow>
                 )}
-                {ev && success && (
-                  <AnimBox>
-                    <Lottie height={100} width={100} options={okAnim} />
-                  </AnimBox>
-                )}
-                {apiError && (
-                  <AnimBox>
-                    <Lottie height={100} width={100} options={errAnim} />
-                  </AnimBox>
-                )}
-                {!ev && !apiError && !success && (
-                  <AnimBox>
-                    <Lottie height={100} width={100} options={loadingAnim} />
-                  </AnimBox>
-                )}
+                {ev && success && ( <AnimBox> <Lottie height={100} width={100} options={okAnim} /> </AnimBox>)}
+                {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} />  </AnimBox> )}
+                {!ev && !apiError && !success && ( <AnimBox> <Lottie height={100} width={100} options={loadingAnim} /> </AnimBox>)}
               </TxStatus>
             )}
           </>

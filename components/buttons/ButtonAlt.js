@@ -2,13 +2,13 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 const MyButton = styled(motion.button)`
-  background-color: #3c4048;
+  background-color: ${(props) => props.theme.colors.gray};
   border-radius: 5px;
-  background-color: #7bd3d3;
+  background-color: ${(props) => props.theme.colors.primary};
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
-  color: black;
+  color: ${(props) => props.theme.colors.black};
   cursor: pointer;
   display: inline-block;
   font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;

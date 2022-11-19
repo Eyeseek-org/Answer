@@ -38,64 +38,20 @@ const ContentBox = styled.div`
 
 const Texts = {
   title1: 'Multichain experience',
-  description1:
-    'No matter from which chain backers donate, thanks to the Axelar Network, total amount will sum up across all. Currently supported backing from Polygon, BNB Chain, Fantom.',
+  description1: <>You can create and donate to projects on multiple blockchains, currently supported <P>Polygon</P>, <B>BNB Chain</B>, and <F>Fantom</F></>,
   title2: 'Microfunds',
-  description2:
-    'Backers can deploy microfunds instead of classic donations and each time someone after donates, the same amount is charged from all microfunds until they are depleted. With good strategy even $1 donation could have $100 impact.',
+  description2:<>With <B>chain funding</B> capacities of Eyeseek microfunds, each time someone donates, the same amount is charged from all deployed
+  microfunds until they are depleted. With right strategy even <G>$1 donation could have $100 impact</G>.</>,
   title3: 'Cheapest crowdfunding around',
-  description3:
-    'Our infrastructure is powered by blockchain smart contracts, the infrastructure is much more cheaper than traditional crowdfunding companies like Kickstarter, which takes 5% platform fee for successful projects.',
+  description3:<>Our infrastructure is powered by blockchain smart contracts, which is more lightweight than{' '}
+  <R>Kickstarter's maintanenace, which charges 5% platform fee</R> from successful projects to profit.
+  <F> Eyeseek does it 5x cheaper.</F></>,
   title4: 'Money streaming',
-  description4:
-    'Already started project and need long-term support? Create a funding type using our crypto payment streaming, backers can flow resources real-time and turn on/off the streams based on your delivery.',
+  description4: <>Already started project and need long-term support? Use our <G>crypto payment streaming</G>, backers can flow resources real-time and
+  turn on/off the streams based on your delivery.</>,
   title5: 'Rewards',
-};
-
-const CrossDescription = () => {
-  return (
-    <>
-      You can create and donate to projects on multiple blockchains, currently supported <P>Polygon</P>, <B>BNB Chain</B>, and <F>Fantom</F>
-      .
-    </>
-  );
-};
-
-const MicroDescription = () => {
-  return (
-    <>
-      With <B>chain funding</B> capacities of Eyeseek microfunds, each time someone donates, the same amount is charged from all deployed
-      microfunds until they are depleted. With right strategy even <G>$1 donation could have $100 impact</G>.
-    </>
-  );
-};
-
-const FeeDescription = () => {
-  return (
-    <>
-      Our infrastructure is powered by blockchain smart contracts, which is more lightweight than{' '}
-      <R>Kickstarter's maintanenace, which charges 5% platform fee</R> from successful projects to profit.
-      <F> Eyeseek does it 5x cheaper.</F>
-    </>
-  );
-};
-
-const StreamDescription = () => {
-  return (
-    <>
-      Already started project and need long-term support? Use our <G>crypto payment streaming</G>, backers can flow resources real-time and
-      turn on/off the streams based on your delivery.
-    </>
-  );
-};
-
-const RewardDescription = () => {
-  return (
-    <>
-      Reward your backers with unique <F>NFT collections</F> or <F>in-game blockchain items</F>. We support reward distributuon of{' '}
-      <P>ERC1155</P> and <B>ERC20 tokens</B>.
-    </>
-  );
+  description5:<>Reward your backers with unique <F>NFT collections</F> or <F>in-game blockchain items</F>. We support reward distributuon of 
+  <P>ERC1155</P> and <B>ERC20 tokens</B>.</>
 };
 
 const Features = () => {
@@ -121,7 +77,7 @@ const Features = () => {
               icon={<BlockchainIcon width={55} />}
               anim={<CrossAnim width={200} />}
               title={Texts.title1}
-              description={<CrossDescription />}
+              description={Texts.description1}
             />
           )}
 
@@ -139,7 +95,7 @@ const Features = () => {
               icon={<MicrofundIcon width={55} />}
               anim={<LightAnim width={200} />}
               title={Texts.title2}
-              description={<MicroDescription />}
+              description={Texts.description2}
               onClick={() => {
                 setDemoFunding(!demoFunding);
               }}
@@ -158,7 +114,7 @@ const Features = () => {
               icon={<RewardLandingIcon width={55} />}
               anim={<RewardAnim width={180} />}
               title={Texts.title5}
-              description={<RewardDescription />}
+              description={Texts.description5}
             />
           )}
           {demoStream ? (
@@ -172,7 +128,7 @@ const Features = () => {
               icon={<StreamIcon width={55} />}
               anim={<StreamAnim width={200} />}
               title={Texts.title4}
-              description={<StreamDescription />}
+              description={Texts.description4}
             />
           )}
         </Row>
@@ -191,7 +147,7 @@ const Features = () => {
               icon={<PiggyIcon width={55} />}
               anim={<CostAnim width={200} />}
               title={Texts.title3}
-              description={<FeeDescription />}
+              description={Texts.description3}
               onClick={() => {
                 setDemoFee(!demoFee);
               }}

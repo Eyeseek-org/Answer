@@ -7,7 +7,7 @@ const Explainer = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   position: absolute;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   width: 300px;
   height: 104px;
   left: 15%;
@@ -38,7 +38,7 @@ const HeadTitle = styled.div`
   margin-bottom: 4%;
   font-family: 'Neucha';
   font-size: 3em;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (min-width: 1580px) {
     font-size: 4em;
   }
@@ -63,7 +63,7 @@ const HeadDesc = styled.div`
 `;
 
 const ExpTitle = styled.div`
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   font-size: 1.1em;
   &:hover {
     opacity: 0.9;

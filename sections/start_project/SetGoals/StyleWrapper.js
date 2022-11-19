@@ -23,7 +23,7 @@ export const ImageContainer = styled.div`
 
 export const SelectionWrapper = styled.div`
   width: 100%;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.gradient};
   border: 1px solid #3c3c3c;
   border-radius: 5px;
   padding: 15px;
@@ -48,7 +48,7 @@ export const MilestoneTitle = styled.span`
 
 export const MainMilestoneContainer = styled.div`
   position: relative;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.gradient};
   border: 1px solid #3c3c3c;
   border-radius: 5px;
   width: 100%;
@@ -81,7 +81,7 @@ export const StreamAnnouncement = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   letter-spacing: 0.4px;
   font-size: 1.2em;
   margin-top: 2%;

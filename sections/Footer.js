@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { BookIcon } from '../components/icons/Common';
 import { DiscordIcon, EmailIcon, MediumIcon, TwitterIcon } from '../components/icons/Socials';
 
 const Container = styled.div`
@@ -29,7 +28,7 @@ const FooterItem = styled.div`
   font-family: 'Gemunu Libre', sans-serif;
   font-style: normal;
   letter-spacing: 1px;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (max-width: 768px) {
     font-size: 0.8em;
   }

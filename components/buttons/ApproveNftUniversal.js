@@ -1,30 +1,13 @@
 import { useState } from 'react';
-import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent, useContractRead } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi';
 import styled from 'styled-components';
 import multi from '../../abi/multi.json';
 import Rainbow from './Rainbow';
 import Lottie from 'react-lottie';
-import successAnimation from '../../data/successAnimation.json';
-import smallLoading from '../../data/smallLoading.json';
 import ButtonAlt from './ButtonAlt';
+import { Col } from '../format/Row';
+import {okAnim, loadingAnim} from '../animated/Animations';
 
-// Animation configs
-const okAnim = {
-  loop: false,
-  autoplay: true,
-  animationData: successAnimation,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
-const loadingAnim = {
-  loop: true,
-  autoplay: true,
-  animationData: smallLoading,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
 
 const Container = styled.div`
   position: relative;
@@ -37,22 +20,16 @@ const ApprovalBox = styled.div`
   z-index: 50;
 `;
 
-const Approve = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
 const Amount = styled.div`
   font-size: 0.8em;
   position: absolute;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   right: 0;
   top: -3px;
   font-family: 'Gemunu Libre';
 `;
 
-const ApproveNftUniversal = ({ tokenContract, spender, amount, nftId }) => {
+const ApproveNftUniversal = ({ tokenContract, spender, amount }) => {
   const { address } = useAccount();
   const [ev, setEv] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -88,14 +65,10 @@ const ApproveNftUniversal = ({ tokenContract, spender, amount, nftId }) => {
     <Container>
       <ApprovalBox>
         {ev && loading && (
-          <>
-            <Lottie height={30} width={30} options={okAnim} />
-          </>
+          <><Lottie height={30} width={30} options={okAnim} /></>
         )}
         {!ev && loading && (
-          <>
-            <Lottie height={50} width={50} options={loadingAnim} />
-          </>
+          <><Lottie height={50} width={50} options={loadingAnim} /></>
         )}
       </ApprovalBox>
       {!address && <Rainbow />}
@@ -106,10 +79,10 @@ const ApproveNftUniversal = ({ tokenContract, spender, amount, nftId }) => {
               width={'200px'}
               onClick={() => handleApprove()}
               text={
-                <Approve>
+                <Col>
                   <div>Approve</div>
                   <Amount>{amount}</Amount>
-                </Approve>
+                </Col>
               }
             />
           ) : (

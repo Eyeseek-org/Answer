@@ -1,13 +1,49 @@
-import { FormStyle, TellContainer } from './StyleWrapper';
+import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useApp } from '../../utils/appContext';
-import { ButtonContainer, MainContainer, NextButton } from '../Category/StyleWrapper';
-import SectionTitle from '../../../components/typography/SectionTitle';
-import InputContainer from '../../../components/form/InputContainer';
+import { useApp } from '../utils/appContext';
+import SectionTitle from '../../components/typography/SectionTitle';
+import InputContainer from '../../components/form/InputContainer';
 import Moralis from 'moralis-v1';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Image from 'next/image';
+import { MainContainer, Wrapper } from '../../components/format/Box';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { BetweenRow } from '../../components/format/Row';
+
+const FormStyle = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  background: ${(props) => props.theme.colors.gradient};
+  border: 1px solid ${(props) => props.theme.colors.border};
+  border-radius: 5px;
+  padding: 4%;
+  margin-bottom: 5%;
+  input[type='file'] {
+    display: none;
+  }
+
+  .custom-file-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed ${(props) => props.theme.colors.font};
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    height: 300px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .input-span {
+    width: 100%;
+  }
+`;
+
 
 const TellStory = ({ setStep }) => {
   const { appState, setAppState } = useApp();
@@ -106,10 +142,9 @@ const TellStory = ({ setStep }) => {
     }
   };
 
-  return (
-    <MainContainer>
-      <SectionTitle title="Define your story" subtitle={'Describe your project and references'} />
-      <TellContainer>
+  return ( <MainContainer>
+    <SectionTitle title="Define your story" subtitle={'Describe your project and references'} />
+    <Wrapper>
         <FormStyle method="post" action="" enctype="multipart/form-data">
           <label className="custom-file-upload">
             <input className="input-file" type="file" id="file" onChange={handleFileUpload} />
@@ -137,11 +172,11 @@ const TellStory = ({ setStep }) => {
             );
           })}
         </FormStyle>
-        <ButtonContainer>
-          <NextButton onClick={handleBack}>Back</NextButton>
-          <NextButton onClick={formik.submitForm}>Next</NextButton>
-        </ButtonContainer>
-      </TellContainer>
+        <BetweenRow>
+          <ButtonAlt onClick={handleBack} text='Back'/>
+          <ButtonAlt onClick={formik.submitForm} text='Next'/>
+        </BetweenRow>
+    </Wrapper>
     </MainContainer>
   );
 };

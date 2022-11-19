@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import InputContainer from '../../components/form/InputContainer';
-import { NextButton } from '../start_project/Category/StyleWrapper';
+import { NextButton } from '../start_project/Styles';
 import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers';
 import { HTTPS_URL_REGEX } from '../../util/regex';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
@@ -18,7 +18,7 @@ const Description = styled.div`
   margin-bottom: 2%;
   letter-spacing: 0.2px;
   line-height: 1.5em;
-  background: rgba(0, 0, 0, 0.08);
+  background: ${(props) => props.theme.colors.invisible};
   border-top: 1px solid rgba(176, 246, 255, 0.4);
   padding-top: 0.5%;
 `;

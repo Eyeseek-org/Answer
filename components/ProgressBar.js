@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { BetweenRow, RowStart } from "./format/Row"
 
 const ProgressContainer = styled.div`
     height: 10px;
@@ -12,19 +13,23 @@ const ProgressFilter = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 5px;
+    max-width: 100%;
     width: ${props => props.ratio}%;
     border-radius: inherit;
     text-align: right;
-    background: linear-gradient(90.31deg, rgba(0, 224, 255, 0.85) 0.44%, rgba(0, 224, 255, 0) 94.79%);
+    background: rgba(0, 224, 255, 0.95);
     font-family: 'Gemunu Libre';
 `
 
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-family: 'Gemunu Libre';
+const SecondaryFilter = styled(ProgressFilter)`
+    background: ${props => props.color};
+    height: 3px;
+`
+
+const FullFilter = styled(ProgressFilter)`
+    width: 100%;
+    background: rgba(0, 224, 255, 0.85);
 `
 
 const LineButton = styled.button`
@@ -34,15 +39,25 @@ const LineButton = styled.button`
     border: none;
 `
 
-const ProgressBar = ({ratio, bal, max}) => {
+// TBD possibly toolbar
+
+const ProgressBar = ({ratio, bal, max, secRatio, terRatio, quaRatio}) => {
     return <>
         <ProgressContainer>
-            <ProgressFilter ratio={ratio}>
+            {bal < max ? <ProgressFilter ratio={ratio}>
+                {bal !== '0' && <>
                 <div><LineButton/></div>
-                <div>{bal}</div>
-                </ProgressFilter>
+                <div>{bal}</div></>}
+                </ProgressFilter> : <FullFilter/>}
+                <RowStart>
+                    {secRatio && <SecondaryFilter color={'blue'} ratio={secRatio}/>}  
+                    {terRatio && <SecondaryFilter color={'green'} ratio={terRatio}/>}  
+                    {quaRatio && <SecondaryFilter color={'yellow'} ratio={quaRatio}/>}  
+                </RowStart>
         </ProgressContainer>
-        <Row><div>0</div><div>{max}</div></Row>
+        <BetweenRow>
+            <div>0</div>
+            <div>{max} {bal >= max && <>reached</>} </div></BetweenRow>
     </>
 }
 
