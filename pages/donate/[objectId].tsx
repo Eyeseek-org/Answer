@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
 import Image from 'next/image';
@@ -21,13 +21,9 @@ import Tab from '../../components/form/Tab';
 import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
-import { Wrapper } from '../../components/format/Box';
+import { BodyBox, MainContainer, Wrapper } from '../../components/format/Box';
 import {ChainIcon} from '../../helpers/MultichainHelpers'
 
-const Container = styled.div`
-  margin-top: 8%;
-  margin-bottom: 15%;
-`;
 
 const DonateOption = styled.div`
   position: relative;
@@ -143,7 +139,7 @@ const Donate: NextPage = () => {
   const [active, setActive] = useState('No reward');
   // @ts-ignore
   const { appState, setAppState } = useApp();
-  const { rewMAmount, rewDAmount, rewId } = appState;
+  const {  rewId } = appState;
   const [showRewards, setShowRewards] = useState(false);
 
 
@@ -151,6 +147,10 @@ const Donate: NextPage = () => {
   const { data: projectDetail } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
     enabled: !!router.isReady,
   });
+
+  useEffect(() => {
+      setAppState({ ...appState, rewMAmount: 0, rewDAmount: 0 });
+  },[])
 
 
   const handleSwitchNetwork = (id) => {
@@ -294,10 +294,9 @@ const Donate: NextPage = () => {
     setShowRewards(true);
   };
 
-  return (
-    <Container>
-      <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
-      <Wrapper>
+  return <MainContainer>  
+    <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
+      <BodyBox>
         <DonateOption>
           {/* @ts-ignore */}
           {tooltip && <Tooltip text="Donates accepted only on this chain" />}
@@ -310,7 +309,7 @@ const Donate: NextPage = () => {
             </Row>
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
           </DonateOptionTitle>
-            <ChainIcon chain={projectDetail.chainId} />
+            <ChainIcon chain={projectDetail?.chainId} />
         </DonateOption>
         <DonateOption>
           <FaucetBox>
@@ -351,9 +350,6 @@ const Donate: NextPage = () => {
           <>
             <RewardList chain={chain} oid={objectId} />
             <DonateWrapper
-              amountM={rewMAmount}
-              amountD={rewDAmount}
-              rid={rewId}
               pid={projectDetail?.pid}
               bookmarks={projectDetail?.bookmarks}
               currencyAddress={currencyAddress}
@@ -374,9 +370,8 @@ const Donate: NextPage = () => {
             rid={rewId}
           />
         )}
-      </Wrapper>
-    </Container>
-  );
+    </BodyBox>
+  </MainContainer>
 };
 
 export default Donate;

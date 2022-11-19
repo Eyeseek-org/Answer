@@ -31,7 +31,7 @@ const Metrics = styled.div`
   }
 `;
 
-const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }) => {
+const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => {
   const { address } = useAccount();
   const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
   const [success, setSuccess] = useState(false);
@@ -39,7 +39,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }
   const { switchNetwork } = useSwitchNetwork();
   // @ts-ignore
   const { appState } = useApp();
-  const { rewMAmount, rewDAmount } = appState;
+  const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId } = appState;
   const sum = rewMAmount + rewDAmount;
 
   const router = useRouter();
@@ -68,6 +68,9 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }
   const useEv = () => {
     setSuccess(true);
     updateBookmark(bookmarks);
+    if (rewEligible > 0){
+      updateReward();
+    }
   };
 
   useContractEvent({
@@ -93,7 +96,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }
     abi: donation.abi,
     chainId: home,
     functionName: 'contribute',
-    args: [rewMAmount, rewDAmount, pid, curr, rid],
+    args: [rewMAmount, rewDAmount, pid, curr, rewId],
   });
 
   const { write, data } = useContractWrite(config);
@@ -118,6 +121,15 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }
     }
   };
 
+
+  const updateReward = async () => {
+    try{
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1 }, moralisApiConfig);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div>
       {chain && home === chain.id ? (
@@ -132,8 +144,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }
                   <Row>Approved: <ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
                 </Metrics>
               )}
-             {rid === 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
-             {rid > 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
+             {rewId === 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
+             {rewId > 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
             </>
           )}
           <div>
@@ -141,12 +153,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }
               <>
                 {all && all < sum ? (
                   <Button text="Donate" width={'200px'} onClick={() => handleSubmit()} error />
-                ) : (
+                ) : <>
+                    {sum === 0 ? <>Cannot donate 0</> :                 
                   <>
-                    {rid === 0 && <Button onClick={() => handleSubmit()} text="Donate" width={'200px'} /> }
-                    {rid > 0 && <Button onClick={() => handleSubmit()} text="Donate" width={'200px'} /> }
-                  </>
-                )}
+                    {rewId === 0 && <Button onClick={() => handleSubmit()} text="Donate" width={'200px'} /> }
+                    {rewId > 0 && <Button onClick={() => handleSubmit()} text="Donate" width={'200px'} /> }
+                  </> }
+                </> }
               </>
             )}
             {!error && success && (

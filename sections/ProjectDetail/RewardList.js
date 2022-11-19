@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import RewardCard from '../../components/cards/RewardCard';
+import RewardDepletedCard from '../../components/cards/RewardDepletedCard';
 import ErrText from '../../components/typography/ErrText';
 import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
@@ -22,12 +23,12 @@ const RewardList = ({ oid, chain }) => {
   const query = `/classes/Reward?where={"project":"${oid}"}`
   const { data: rewards, isLoading: isRewardsLoading, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
 
-  const handleRewardClick = (sel, rewAmount, type, rid) => {
+  const handleRewardClick = (sel, rewAmount, type, rid, rewEligible, rewObjectId) => {
     setSelected(sel);
     if (type === 'Microfund') {
-      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid }));
-    } else if (type === 'Donation') {
-      setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid }));
+      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId  }));
+    } else if (type === 'Donate') {
+      setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId }));
     }
   };
 
@@ -63,7 +64,8 @@ const RewardList = ({ oid, chain }) => {
           {rewards && rewards.length > 0 ? (
             <>
               {rewards.map((reward) => {
-                return (
+                return <>
+                {reward.eligibleActual > 0 ? 
                   <RewardCard
                     key={reward.objectId}
                     rid={reward.rewardId}
@@ -78,9 +80,22 @@ const RewardList = ({ oid, chain }) => {
                     tokenName={reward.tokenName}
                     selected={selected}
                     chain={chain}
-                    onClick={() => handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId)}
-                  />
-                );
+                    onClick={() => handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId, reward.eligibleActual, reward.objectId)}
+                  /> :  <RewardDepletedCard
+                    key={reward.objectId}
+                    rid={reward.rewardId}
+                    title={reward.title}
+                    pledge={reward.requiredPledge}
+                    description={reward.description}
+                    eligibleActual={reward.eligibleActual}
+                    type={reward.type}
+                    cap={reward.cap}
+                    tokenAddress={reward.tokenAddress}
+                    nftId={reward.nftId}
+                    tokenName={reward.tokenName}
+                    chain={chain}
+                />}
+                </>
               })}
             </>
           ) : (

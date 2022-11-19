@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import {motion} from 'framer-motion'
 
 export const BodyBox = styled.div`
   margin-top: 3%;
@@ -54,3 +55,38 @@ export const MainContainer = styled.div`
     }
   }
 `
+
+export const RewardBox = styled(motion.div)`
+  position: relative;
+  font-family: 'Montserrat';
+  height: 150px;
+  margin: 1%;
+  padding: 6%;
+  width: 200px;
+  background: ${(props) => props.theme.colors.gradient};
+  border: 1px solid ${(props) => props.color};
+  border-radius: 5px;
+  cursor: pointer;
+  animation: fadeIn 0.5s;
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #9bffff;
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @media (min-width: 1750px) {
+    font-size: 1.3em;
+  }
+`;

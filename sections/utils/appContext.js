@@ -20,6 +20,8 @@ export const AppProvider = (props) => {
     rewMAmount: 0,
     rewDAmount: 0,
     rewId: 0,
+    rewEligible: 0,
+    rewObjectId: ''
   });
 
   return (

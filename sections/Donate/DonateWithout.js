@@ -5,9 +5,11 @@ import { useContractRead } from 'wagmi';
 import CalcOutcome from '../../components/functional/CalcOutcome';
 import { DonateSchema } from '../../util/validator';
 import WarningCard from '../../components/cards/WarningCard';
+import { useApp } from '../utils/appContext';
 import InputRow from '../../components/form/InputRow';
 import DonateWrapper from './DonateWrapper';
 import donation from '../../abi/donation.json';
+import { MainContainer } from '../../components/format/Box';
 
 // Donates directly any amount without reward
 
@@ -54,7 +56,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
     abi: donation.abi,
     functionName: 'calcOutcome',
     chainId: home,
-    args: [pid, amountD],
+    args: [pid, rewDAmount],
   });
 
   const connections = useContractRead({
@@ -62,7 +64,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
     abi: donation.abi,
     functionName: 'calcInvolvedMicros',
     chainId: home,
-    args: [pid, amountD],
+    args: [pid, rewDAmount],
   });
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
   });
 
   return (
-    <>
+    <MainContainer>
       <FormWrapper>
         <InputRow
           id="directDonation"
@@ -128,7 +130,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
         home={home}
         rid={rid}
       />
-    </>
+    </MainContainer>
   );
 };
 
