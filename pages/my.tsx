@@ -2,10 +2,10 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import styled from "styled-components";
 import Footer from "../sections/Footer";
-import MyProjects from '../sections/my/MyProjects'
 import MyBookmarks from '../sections/my/MyBookmarks'
 import TabImage from "../components/form/TabImage";
 import { Col } from "../components/format/Row";
+import MyProjects from "../sections/My/MyProjects";
 
 
 const TabBox = styled.div`
