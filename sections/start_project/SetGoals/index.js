@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useApp } from '../../utils/appContext';
 import InputContainer from '../../../components/form/InputContainer';
-import { TellContainer } from '../TellStory/StyleWrapper';
 import {
   ImageContainer,
   MilestoneContainer,
@@ -14,15 +13,16 @@ import {
   BlockchainDesc,
   StreamAnnouncement,
 } from './StyleWrapper';
-import { ButtonContainer, DisButton, MainContainer, NextButton } from '../Category/StyleWrapper';
 import SectionTitle from '../../../components/typography/SectionTitle';
 import { useSwitchNetwork, useNetwork } from 'wagmi';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { blockchains } from '../../../data/blockchains';
-import { Col, Row } from '../../../components/format/Row';
+import { BetweenRow, Col, Row } from '../../../components/format/Row';
 import Lottie from 'react-lottie';
 import octa from '../../../data/animations/octa.json';
+import ButtonAlt from '../../../components/buttons/ButtonAlt';
+import { MainContainer, Wrapper } from '../../../components/format/Box';
 
 const ImgActiveBox = styled.div`
   opacity: 1;
@@ -96,7 +96,7 @@ const RenderMilestones = () => {
   };
 
   if (milestones.length === 0) {
-    return <NextButton onClick={handleAddMilestone}>Add funding goals</NextButton>;
+    return <ButtonAlt onClick={handleAddMilestone} text='Add funding goals'/>;
   }
 
   const handleRemoveMilestone = (index) => {
@@ -133,7 +133,7 @@ const RenderMilestones = () => {
           />
 
           {milestones.length < 5 && index + 1 == milestones.length && (
-            <NextButton onClick={handleAddMilestone}>More milestones (optional)</NextButton>
+            <ButtonAlt onClick={handleAddMilestone} text='More milestones (optional)'/>
           )}
         </MilestoneContainer>
       </MainMilestoneContainer>
@@ -170,8 +170,9 @@ const SetGoals = ({ setStep }) => {
   return (
     <MainContainer>
       <SectionTitle title={'Set funding goals'} subtitle={'Define project allocations'} />
+      <Wrapper>
       {pType !== 'Stream' ? (
-        <TellContainer>
+        <>
           <SelectionWrapper>
             <RenderBlockchain />
           </SelectionWrapper>
@@ -199,31 +200,27 @@ const SetGoals = ({ setStep }) => {
             </MilestoneContainer>
           </MainMilestoneContainer>
           {pm1 < 1000 && <StreamAnnouncement>$1000 is a minimum amount for the funding goal</StreamAnnouncement>}
-          <ButtonContainer>
-            <NextButton onClick={handleBack}>Back</NextButton>
-            {pm1 >= 1000 ? <NextButton onClick={handleClick}>Next</NextButton> : <DisButton>Next</DisButton>}
-          </ButtonContainer>
-        </TellContainer>
+          <BetweenRow>
+            <ButtonAlt onClick={handleBack} text='Back'/>
+            {pm1 >= 1000 ? <ButtonAlt onClick={handleClick} text='Next'/> : null}
+          </BetweenRow>
+        </>
       ) : (
         <StreamAnnouncement>
           <Lottie height={100} width={100} options={octaAnim} />
           <div>MVP stage: Supported only Polygon for money streaming type. Go Next.</div>
-          <ButtonContainer>
-            <NextButton onClick={handleBack}>Back</NextButton>
+          <BetweenRow>
+            <ButtonAlt onClick={handleBack} text='Back'/>
             {chain.id !== 80001 ? (
-              <NextButton
-                onClick={() => {
-                  switchNetwork(80001);
-                }}
-              >
-                Switch to Polygon
-              </NextButton>
+              <ButtonAlt
+                onClick={() => { switchNetwork(80001)}} text ='Switch to Polygon'/>
             ) : (
-              <NextButton onClick={handleClick}>Next</NextButton>
+              <ButtonAlt onClick={handleClick} text='Next'/>
             )}
-          </ButtonContainer>
+          </BetweenRow>
         </StreamAnnouncement>
       )}
+    </Wrapper>
     </MainContainer>
   );
 };

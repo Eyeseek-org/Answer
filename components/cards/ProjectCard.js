@@ -135,8 +135,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
           <IconWrapper onMouseEnter={() => {setChainTooltip(true)}} onMouseLeave={() => {setChainTooltip(false)}}>
             {chainId === 80001 && (<><Image src={polygon} alt={'matic'} width={30} height={30} />{' '}</>)}
             {chainId === 97 && (<><Image src={bnb} alt={'bnb'} width={30} height={30} /> </>)}
-            {chainId === 4002 && (
-              <><Image src={ftm} alt={'ftm'} width={30} height={30} /> </>
+            {chainId === 4002 && (<><Image src={ftm} alt={'ftm'} width={30} height={30} /> </>
             )}
           </IconWrapper>
           {hasFungible && (

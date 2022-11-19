@@ -9,6 +9,7 @@ export const Row = styled.div`
 export const BetweenRow = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
   justify-content: space-between;
 `
 

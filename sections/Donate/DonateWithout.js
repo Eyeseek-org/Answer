@@ -9,6 +9,8 @@ import InputRow from '../../components/form/InputRow';
 import DonateWrapper from './DonateWrapper';
 import donation from '../../abi/donation.json';
 
+// Donates directly any amount without reward
+
 const FormWrapper = styled.div`
   background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
   border: 1px solid #3c3c3c;
@@ -42,11 +44,10 @@ const FormInfo = styled.div`
 `;
 
 const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, home, rid }) => {
-  const [amountM, setAmountM] = useState(0);
-  const [amountD, setAmountD] = useState(0);
-
   const [multi, setMulti] = useState('');
   const [conn, setConn] = useState('');
+  const { appState, setAppState } = useApp();
+  const { rewMAmount, rewDAmount } = appState;
 
   const outcome = useContractRead({
     address: add,
@@ -67,20 +68,22 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
   useEffect(() => {
     setMulti((outcome.data ?? '').toString());
     setConn((connections.data ?? '').toString());
-  }, [amountD]);
+  }, []);
 
   const handleChangeD = (e) => {
-    setAmountD(e.target.value);
+    setAppState(appState => ({ ...appState, rewDAmount: e.target.value }));
+    console.log(rewDAmount);
   };
 
   const handleChangeM = (e) => {
-    setAmountM(e.target.value);
+    setAppState(appState => ({ ...appState, rewMAmount: e.target.value }));
+    console.log(rewMAmount);
   };
 
   const formik = useFormik({
     initialValues: {
-      directDonation: amountD,
-      microfund: amountM,
+      directDonation: rewDAmount,
+      microfund: rewMAmount,
     },
     validationSchema: DonateSchema,
   });
@@ -117,8 +120,6 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
         <li>Funded amount must be approved before sending to the Eyeseek contract</li>
       </FormInfo>
       <DonateWrapper
-        amountM={amountM}
-        amountD={amountD}
         pid={pid}
         bookmarks={bookmarks}
         currencyAddress={currencyAddress}

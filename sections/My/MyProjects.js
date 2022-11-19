@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import { useState } from "react";
 import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
@@ -54,7 +53,7 @@ const MyProjects = () => {
                 change4={()=>handleMode('Transactions')}
                 change5={()=>handleMode('History')}
               />
-          </TabBox>
+          </BodyBox>
               {project && project.objectId ? <>      {mode === 'Overview' && <ProjectDetail 
                     objectId={project.objectId} 
                     pid={project.pid} 

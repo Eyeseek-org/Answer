@@ -31,7 +31,7 @@ const Metrics = styled.div`
   }
 `;
 
-const DonateWrapper = ({ amountM, amountD, pid, bookmarks, currencyAddress, curr, add, home, rid }) => {
+const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home, rid }) => {
   const { address } = useAccount();
   const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
   const [success, setSuccess] = useState(false);
@@ -40,12 +40,10 @@ const DonateWrapper = ({ amountM, amountD, pid, bookmarks, currencyAddress, curr
   // @ts-ignore
   const { appState } = useApp();
   const { rewMAmount, rewDAmount } = appState;
-
-  const sumRew = rewMAmount + rewDAmount;
+  const sum = rewMAmount + rewDAmount;
 
   const router = useRouter();
   const { objectId } = router.query;
-
   const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
 
   useEffect(() => {
@@ -67,7 +65,7 @@ const DonateWrapper = ({ amountM, amountD, pid, bookmarks, currencyAddress, curr
     all = Number(allowance.data.toString());
   }
 
-  const useEv = (event) => {
+  const useEv = () => {
     setSuccess(true);
     updateBookmark(bookmarks);
   };
@@ -95,7 +93,7 @@ const DonateWrapper = ({ amountM, amountD, pid, bookmarks, currencyAddress, curr
     abi: donation.abi,
     chainId: home,
     functionName: 'contribute',
-    args: [amountM, amountD, pid, curr, rid],
+    args: [rewMAmount, rewDAmount, pid, curr, rid],
   });
 
   const { write, data } = useContractWrite(config);
@@ -110,7 +108,6 @@ const DonateWrapper = ({ amountM, amountD, pid, bookmarks, currencyAddress, curr
       setExplorer('https://testnet.ftmscan.com/tx');
     }
   };
-  const sum = parseInt(amountM) + parseInt(amountD);
 
   const updateBookmark = async (bookmarks) => {
     const newBookmarks = [...bookmarks, address];
@@ -136,7 +133,7 @@ const DonateWrapper = ({ amountM, amountD, pid, bookmarks, currencyAddress, curr
                 </Metrics>
               )}
              {rid === 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
-             {rid > 0 && <ApproveUniversal amount={sumRew} tokenContract={currencyAddress} spender={spender} />}
+             {rid > 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
             </>
           )}
           <div>

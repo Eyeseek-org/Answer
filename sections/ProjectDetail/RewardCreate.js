@@ -10,7 +10,7 @@ import Tab from "../../components/form/Tab";
 import Tooltip from "../../components/Tooltip";
 import { InfoIcon } from "../../components/icons/Common";
 import { Row, BetweenRow } from "../../components/format/Row";
-import { NextButton } from "../start_project/Category/StyleWrapper";
+import { NextButton } from "../start_project/Styles";
 import { useRouter } from 'next/router';
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
 import ErrText from "../../components/typography/ErrText";

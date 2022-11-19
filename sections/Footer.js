@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { BookIcon } from '../components/icons/Common';
 import { DiscordIcon, EmailIcon, MediumIcon, TwitterIcon } from '../components/icons/Socials';
 
 const Container = styled.div`

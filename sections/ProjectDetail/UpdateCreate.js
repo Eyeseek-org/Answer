@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import InputContainer from '../../components/form/InputContainer';
-import { NextButton } from '../start_project/Category/StyleWrapper';
+import { NextButton } from '../start_project/Styles';
 import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers';
 import { HTTPS_URL_REGEX } from '../../util/regex';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';

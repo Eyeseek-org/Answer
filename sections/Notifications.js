@@ -1,12 +1,10 @@
 import styled from 'styled-components';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../components/icons/Notifications';
 import { RewardIcon, SuccessIcon } from '../components/icons/Common';
 import ReactTimeAgo from 'react-time-ago';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
-import { moralisApiConfig } from '../data/moralisApiConfig';
 import Image from 'next/image';
 import Eye1 from '../public/Eye1.png';
 import Link from 'next/link';

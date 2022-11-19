@@ -25,6 +25,10 @@ export const AbsoluteLeft = styled.div`
 `
 
 export const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding-top: 5%;
   padding-left: 18%;
   padding-right: 18%;
@@ -34,5 +38,19 @@ export const Wrapper = styled.div`
   @media (min-width: 2000px) {
     padding-left: 25%;
     padding-right: 25%;
+  }
+`
+
+export const MainContainer = styled.div`
+  padding-top: 5%;
+  margin-bottom: 10%;
+  animation: fadeIn 0.7s;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `
