@@ -1,43 +1,25 @@
-import styled from 'styled-components';
 import type { NextPage } from 'next';
-
 import { useQuery } from '@tanstack/react-query';
 import SectionTitle from '../components/typography/SectionTitle';
-import { useRouter } from 'next/router';
 import ProjectCard from '../components/cards/ProjectCard';
 import { cats } from '../data/cats';
 import { UniService } from '../services/DapAPIService';
-
-const Container = styled.div`
-  margin-top: 5%;
-`;
-
-const ProjectBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  padding: 5%;
-  gap: 2%;
-`;
+import { Project } from '../types/project';
+import { Container, ProjectBox } from '../styles/pages/discover';
 
 const BrowsePro: NextPage = () => {
-  const router = useRouter();
-  const query = `/classes/Project`
-  const { data: projects} = useQuery(['projects'], () => UniService.getDataAll(query), {
-    enabled: !!router.isReady,
-  });
+  const { data: projects } = useQuery(['projects'], () => UniService.getDataAll<Project>('/classes/Project'));
 
-  const FilteredProjects = ({ projects }) => {
-    return (
-      <>
-        {cats.map((cat) => {
-          const CategoryProjects = projects?.filter((p) => p.category.includes(cat));
-          return (
-            <>
-              <SectionTitle title={cat} subtitle={`Browse through ${cat} projects`} />
-              <ProjectBox>
-                {CategoryProjects && CategoryProjects.map((project) => (
+  return (
+    <Container>
+      {cats.map((category) => {
+        const categoryProjects = projects?.filter((project) => project.category.includes(category));
+        return (
+          <>
+            <SectionTitle title={category} subtitle={`Browse through ${category} projects`} />
+            <ProjectBox>
+              {categoryProjects &&
+                categoryProjects.map((project) => (
                   <ProjectCard
                     key={project.objectId}
                     title={project.title}
@@ -54,17 +36,10 @@ const BrowsePro: NextPage = () => {
                     pType={project.type}
                   />
                 ))}
-              </ProjectBox>
-            </>
-          );
-        })}
-      </>
-    );
-  };
-
-  return (
-    <Container>
-      <FilteredProjects projects={projects} />
+            </ProjectBox>
+          </>
+        );
+      })}
     </Container>
   );
 };

@@ -19,4 +19,5 @@ export interface Project {
   urlProject: string;
   urlSocials: string;
   verified: boolean;
+  pid: number;
 }
