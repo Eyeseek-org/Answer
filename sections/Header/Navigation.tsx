@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { PAGE } from '../../types/navigation';
-import { LinkATag, NavigationMenuBox, NavItem } from './styles';
+import { NavigationMenuBox, NavItem } from './styles';
 
 const headerNavigationLinks: { title: string; url: PAGE }[] = [
   { title: 'Discover', url: PAGE.DISCOVER },
@@ -24,9 +24,9 @@ export const Navigation = () => {
     <NavigationMenuBox>
       {headerNavigationLinks.map(({ title, url }, index) => {
         return (
-          <NavItem key={index}>
+          <NavItem bold={active === title} key={index}>
             <Link href={url}>
-              <LinkATag bold={active === title}>{title}</LinkATag>
+              <a>{title}</a>
             </Link>
           </NavItem>
         );

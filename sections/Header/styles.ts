@@ -20,29 +20,22 @@ export const NavigationMenuBox = styled.div`
   }
 `;
 
-export const LinkATag = styled.a`
-  font-weight: ${(props: LinkATagProps) => props.bold === true && 'bold'};
-
-  &:hover {
-    opacity: 0.8;
-    cursor: pointer;
-  }
-`;
-
 export const NavItem = styled.div`
   display: flex;
   font-size: 1.6em;
   font-family: 'Gemunu Libre', sans-serif;
   font-style: normal;
+  font-weight: ${(props: LinkATagProps) => props.bold === true && 'bold'};
   align-items: center;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;
-  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.invisible};;
+  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.invisible};
   letter-spacing: 1px;
   transition: 0.3s;
   &:hover {
+    opacity: 0.8;
     cursor: pointer;
     box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.transparent};
   }
