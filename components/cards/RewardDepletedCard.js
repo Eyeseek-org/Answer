@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { MicrofundIcon } from '../../components/icons/Landing';
 import { DonateIcon, NftIcon } from '../../components/icons/Project';
 import Address from '../../components/functional/Address';
-import NFTDisplay from '../functional/NftDisplay';
 import { RewardTitle } from '../typography/Titles';
 import { ProjectAmount } from '../typography/Amounts';
 import { RewardDesc } from '../typography/Descriptions';
@@ -37,7 +36,6 @@ const RewardCard = ({
   tokenName,
   tokenAddress,
   selected,
-  chain,
 }) => {
 
   return (
@@ -51,7 +49,6 @@ const RewardCard = ({
             {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30} />}
           </BetweenRow>
           <RewardDesc>{description}</RewardDesc>
-          {/* <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} /> */}
           {tokenName && tokenAddress && (
             <RewardDesc>
               <div>{tokenName}</div>

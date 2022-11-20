@@ -30,6 +30,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
   padding-top: 5%;
   padding-left: 18%;
   padding-right: 18%;
@@ -59,7 +60,7 @@ export const MainContainer = styled.div`
 export const RewardBox = styled(motion.div)`
   position: relative;
   font-family: 'Montserrat';
-  height: 150px;
+  height: 100px;
   margin: 1%;
   padding: 6%;
   width: 200px;

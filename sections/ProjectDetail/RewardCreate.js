@@ -10,7 +10,6 @@ import Tab from "../../components/form/Tab";
 import Tooltip from "../../components/Tooltip";
 import { InfoIcon } from "../../components/icons/Common";
 import { Row, BetweenRow } from "../../components/format/Row";
-import { NextButton } from "../start_project/Styles";
 import { useRouter } from 'next/router';
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
 import ErrText from "../../components/typography/ErrText";
@@ -24,6 +23,7 @@ import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
 import { G, R } from '../../components/typography/ColoredTexts';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -184,6 +184,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
 
     return <MainContainer>
         <RewardContainer>
+         <Subtitle text='Create Reward' />
             <MainMilestoneContainer>
                 <BetweenRow>
                     <Subtitle text={<>
@@ -294,8 +295,8 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
                     {!success ? 
                         <>
-                            {tokenType === 'Classic' && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>} 
-                            {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}
+                            {tokenType === 'Classic' && <ButtonAlt onClick={()=>{handleSubmit(objectId)}} text='Create reward'/>} 
+                            {apiError && <ButtonAlt onClick={()=>{handleSubmit(objectId)}} text='Error: Check your fields and retry'/>}
                         </> : <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>

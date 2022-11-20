@@ -20,12 +20,19 @@ import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
-import { Row, RowEnd } from '../../components/format/Row';
+import { Row, RowCenter } from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
+import { ChainExplorer } from '../../helpers/MultichainHelpers';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { DonateActiveIcon } from '../../components/icons/Project';
+import { MainContainer } from '../../components/format/Box';
+import Tooltip from '../../components/Tooltip';
+import LogResult from '../LogResult'
 
 
 const Metrics = styled.div`
+  font-family: 'Gemunu Libre';
   @media (max-width: 768px) {
     display: none;
   }
@@ -34,17 +41,19 @@ const Metrics = styled.div`
 const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => {
   const { address } = useAccount();
   const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
+  const [apiError, setApiError] = useState(false)
   const [success, setSuccess] = useState(false);
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
   // @ts-ignore
   const { appState } = useApp();
   const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId } = appState;
-  const sum = rewMAmount + rewDAmount;
-
+  const sum = parseInt(rewMAmount) + parseInt(rewDAmount);
   const router = useRouter();
   const { objectId } = router.query;
   const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [ready,setReady] = useState(false)
+  const [donateTooltip, setDonateTooltip] = useState(false);
 
   useEffect(() => {
     setSpender(GetProjectFundingAddress(home));
@@ -97,18 +106,16 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     chainId: home,
     functionName: 'contribute',
     args: [rewMAmount, rewDAmount, pid, curr, rewId],
+    staleTime: 2_000,
   });
 
   const { write, data } = useContractWrite(config);
 
   const handleSubmit = async () => {
     await write?.();
-    if (home === 80001) {
-      setExplorer('https://mumbai.polygonscan.com/tx/');
-    } else if (home === 97) {
-      setExplorer('https://bscscan.com/tx/');
-    } else if (home === 4002) {
-      setExplorer('https://testnet.ftmscan.com/tx');
+    await ChainExplorer(home);
+    if (!error){
+      await setReady(true)
     }
   };
 
@@ -116,24 +123,27 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     const newBookmarks = [...bookmarks, address];
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { bookmarks: newBookmarks }, moralisApiConfig);
-    } catch (error) {
-      console.log(error);
+      setApiError(false)
+    } catch (er) {
+      setApiError(true)
     }
   };
 
 
   const updateReward = async () => {
+    const [newDonors] = [...newDonors, address];
     try{
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1 }, moralisApiConfig);
-    } catch (error) {
-      console.log(error);
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors }, moralisApiConfig);
+      setApiError(false)
+    } catch (er) {
+      setApiError(true)
     }
   }
 
-  return (
-    <div>
+  return <>
+    <MainContainer>
       {chain && home === chain.id ? (
-        <RowEnd>
+        <RowCenter>
           {success ? (
             <SuccessIcon width={50} />
           ) : (
@@ -141,7 +151,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
               {address && (
                 <Metrics>
                   <Row>Balance: <BalanceComponent address={address} token={currencyAddress} /></Row>
-                  <Row>Approved: <ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
+                  <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
                 </Metrics>
               )}
              {rewId === 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
@@ -152,13 +162,14 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
             {!success && (
               <>
                 {all && all < sum ? (
-                  <Button text="Donate" width={'200px'} onClick={() => handleSubmit()} error />
+                  <Button text={<><DonateActiveIcon width={30}/></>} width={'200px'} onClick={() => handleSubmit()} error />
                 ) : <>
                     {sum === 0 ? <>Cannot donate 0</> :                 
-                  <>
-                    {rewId === 0 && <Button onClick={() => handleSubmit()} text="Donate" width={'200px'} /> }
-                    {rewId > 0 && <Button onClick={() => handleSubmit()} text="Donate" width={'200px'} /> }
-                  </> }
+                  <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
+                    {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
+                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateActiveIcon width={30}/></>} /> }
+                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateActiveIcon width={30}/></>}  /> }
+                  </div> }
                 </> }
               </>
             )}
@@ -169,12 +180,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
             )}
           </div>
           {error ? <ErrText>Insufficient balance or allowance</ErrText> : null}
-        </RowEnd>
+        </RowCenter>
       ) : (
         <Button text="Wrong network" onClick={() => switchNetwork(home)} width={'200px'} />
       )}
-    </div>
-  );
+    </MainContainer>
+        {ready && <LogResult ev={success} error={error} apiError={apiError} success={success} type={'Donation initialized'} />}
+  </>
 };
 
 export default DonateWrapper;

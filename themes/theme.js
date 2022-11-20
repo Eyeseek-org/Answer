@@ -7,6 +7,7 @@ export const darkTheme = {
         body: "#141414",
         black: "#000000",
         gradient: "linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%)",
+        errGradient: "linear-gradient(132.28deg, rgba(168, 8, 8, 0.25)  -21.57%, rgba(168, 8, 8, 0.161) 100%)",
         border: '#4e4e4e',
         transparent: 'rgba(0, 0, 0, 0.3)',
         invisible: 'rgba(0, 0, 0, 0.05)',

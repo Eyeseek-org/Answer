@@ -9,7 +9,11 @@ import { useApp } from '../utils/appContext';
 import InputRow from '../../components/form/InputRow';
 import DonateWrapper from './DonateWrapper';
 import donation from '../../abi/donation.json';
-import { MainContainer } from '../../components/format/Box';
+import { AbsoluteRight, MainContainer } from '../../components/format/Box';
+import Subtitle from '../../components/typography/Subtitle';
+import { DonateIcon } from '../../components/icons/Project';
+import { MicrofundIcon } from '../../components/icons/Landing';
+import { RowCenter } from '../../components/format/Row';
 
 // Donates directly any amount without reward
 
@@ -17,31 +21,15 @@ const FormWrapper = styled.div`
   background: ${(props) => props.theme.colors.gradient};
   border: 1px solid #3c3c3c;
   border-radius: 5px;
-  padding: 10px 20px;
   padding: 2rem 5rem 1rem 5rem;
-  margin-bottom: 3%;
-  margin-top: 3%;
+  margin: 9%;
+  margin-top: 4%;
+  margin-bottom: 4%;
   @media (max-width: 769px) {
     padding: 2rem 1rem 1rem 3rem;
   }
   @media (max-width: 500px) {
     padding: 2rem 1rem 1rem 1rem;
-  }
-`;
-
-const FormInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5%;
-  font-family: 'Roboto';
-  font-size: 0.9em;
-  width: 100%;
-  @media (max-width: 500px) {
-    width: 100%;
-  }
-  @media (min-width: 1580px) {
-    font-size: 1.1em;
   }
 `;
 
@@ -57,6 +45,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
     functionName: 'calcOutcome',
     chainId: home,
     args: [pid, rewDAmount],
+    watch: true
   });
 
   const connections = useContractRead({
@@ -65,21 +54,20 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
     functionName: 'calcInvolvedMicros',
     chainId: home,
     args: [pid, rewDAmount],
+    watch: true
   });
 
   useEffect(() => {
     setMulti((outcome.data ?? '').toString());
     setConn((connections.data ?? '').toString());
-  }, []);
+  }, [rewDAmount]);
 
   const handleChangeD = (e) => {
     setAppState(appState => ({ ...appState, rewDAmount: e.target.value }));
-    console.log(rewDAmount);
   };
 
   const handleChangeM = (e) => {
     setAppState(appState => ({ ...appState, rewMAmount: e.target.value }));
-    console.log(rewMAmount);
   };
 
   const formik = useFormik({
@@ -92,35 +80,38 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
 
   return (
     <MainContainer>
+      <Subtitle text="Choose donation type and pledge any amount" />
       <FormWrapper>
-        <InputRow
+      <RowCenter><InputRow
           id="directDonation"
-          name="Donate"
+          name={<><DonateIcon width={50}/></>}
           min={0}
           placeholder="1000"
           onChange={handleChangeD}
           onBlur={formik.handleBlur}
-          tooltip={'Multiplier represents the number of deployed microfunds by other users'}
+          tooltip={'Donation: Direct pledge to the project. If project is not successful, amount is returned.'}
           currency={currency}
-        />
-        <CalcOutcome multi={multi} conn={conn} currency={currency} />
+        />          
+        <AbsoluteRight><CalcOutcome multi={multi} conn={conn} /></AbsoluteRight>
+      </RowCenter>
+      <RowCenter>
         <InputRow
           id="microfund"
-          name="Create microfund"
+          name={<><MicrofundIcon width={50}/></>}
           min={0}
           placeholder="1000"
           onChange={handleChangeM}
           onBlur={formik.handleBlur}
           tooltip={
-            'Anytime someone donates, the same amount is charged from all active microfunds until it is depleted. Non-depleted amount will be returned to you upon project finish.'
+            'Microfund: Anytime someone donates, the same amount is charged from all active microfunds until it is depleted. Non-depleted amount will be returned to you upon project finish.'
           }
           currency={currency}
         />
+        </RowCenter>
       </FormWrapper>
-      <WarningCard title={'Beware of scammers!'} description={'TBD'} />
-      <FormInfo>
-        <li>Funded amount must be approved before sending to the Eyeseek contract</li>
-      </FormInfo>
+      <WarningCard title={'Beware of scammers!'} description={<>Project founders are not obligated to verify their identities to the Eyeseek. Backing is provided on your own risk, it is
+            recommended to verify project validity on project website and socials. Do not trust projects without any reference to Eyeseeek
+            funding.</>} />
       <DonateWrapper
         pid={pid}
         bookmarks={bookmarks}

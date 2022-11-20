@@ -1,29 +1,30 @@
-import styled from 'styled-components';
-import { BetweenRow } from '../format/Row';
+import Tooltip from '../Tooltip';
 import { RewardTitle } from '../typography/Titles';
+import {useState} from 'react'
+import { InfoIcon } from '../icons/Common';
+import { Col } from '../format/Row';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  text-align: left;
-  border-radius: 15px;
-  padding: 4%;
-  background: rgba(0, 0, 0, 0.4);
-`;
 
-const CalcOutcome = ({ conn, multi, currency }) => {
+const CalcOutcome = ({ conn, multi }) => {
+  const [microTooltip, setMicroTooltip] = useState(false);
+  const [impactTooltip, setImpactTooltip] = useState(false);
   return (
-    <Container>
-      <BetweenRow>
-        <RewardTitle>Microfund multiplier</RewardTitle>
-        <RewardTitle>{conn} X</RewardTitle>
-      </BetweenRow>
-      <BetweenRow>
-        <RewardTitle>Fund receives (in total)</RewardTitle>
-       {currency &&  <RewardTitle>{multi} {currency}</RewardTitle>}
-      </BetweenRow>
-    </Container>
+    <Col>
+      {conn ?
+        <RewardTitle onMouseEnter={()=>{setMicroTooltip(true)}} onMouseLeave={()=>{setMicroTooltip(false)}}>
+          {microTooltip && <Tooltip text={'Number of involved microfunds from other users'} margin={'-70px'}/>}
+          {conn} X 
+          <InfoIcon width={15}/>
+        </RewardTitle>
+       : null}
+      {multi ? 
+        <RewardTitle onMouseEnter={()=>{setImpactTooltip(true)}} onMouseLeave={()=>{setImpactTooltip(false)}}>
+        {impactTooltip && <Tooltip text={'Total impact of this donation'} margin={'-50px'}/>}
+          ${multi}
+          <InfoIcon width={15}/>
+        </RewardTitle>
+      : null}
+    </Col>
   );
 };
 

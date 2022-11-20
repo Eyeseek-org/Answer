@@ -14,6 +14,14 @@ export const BetweenRow = styled.div`
   justify-content: space-between;
 `
 
+export const RowCenter = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 4%;
+  justify-content: center;
+`
+
 export const RowEnd = styled.div`
   position: relative;
   display: flex;
@@ -36,4 +44,5 @@ export const Col = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  padding: 2%;
 `;

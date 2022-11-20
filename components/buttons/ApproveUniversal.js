@@ -27,7 +27,7 @@ const Approve = styled.div`
 const Amount = styled.div`
     font-size: 0.8em;
     position: absolute;
-    color: ${(props) => props.theme.colors.font};
+    color: ${(props) => props.theme.colors.black};
     right: 0;
     top: -3px;
     font-family: 'Gemunu Libre';

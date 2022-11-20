@@ -34,7 +34,6 @@ const RewardCard = ({
   key,
   pledge,
   title,
-  description,
   eligibleActual,
   type,
   cap,
@@ -55,9 +54,9 @@ const RewardCard = ({
         </ToolBox>
       }
         <RewardBox
-            color={selected !== title ? '#3c3c3c' : '#005b00'}
             key={key}
             whileHover={{ scale: 1.05 }}
+            color={selected !== title ? '#3c3c3c' : '#B0F6FF'}
             onClick={onClick}
             onMouseEnter={() => { setTypeTooltip(true)}}
             onMouseLeave={() => { setTypeTooltip(false)}}
@@ -66,7 +65,6 @@ const RewardCard = ({
             <RewardTitle>{title}</RewardTitle>
             {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30} />}
           </BetweenRow>
-          <RewardDesc>{description}</RewardDesc>
           {/* <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} /> */}
           {tokenName && tokenAddress && (
             <RewardDesc>

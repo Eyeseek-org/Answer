@@ -21,7 +21,7 @@ import Tab from '../../components/form/Tab';
 import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
-import { BodyBox, MainContainer, Wrapper } from '../../components/format/Box';
+import { BodyBox, MainContainer } from '../../components/format/Box';
 import {ChainIcon} from '../../helpers/MultichainHelpers'
 
 

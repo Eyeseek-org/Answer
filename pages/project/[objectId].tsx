@@ -92,7 +92,7 @@ const Project: NextPage = () => {
             )}
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 
               <>
-                <RewardList oid={objectId} chain={project.chainId} />
+                <TabBox><RewardList oid={objectId} chain={project.chainId} /></TabBox>
                 {address === project.owner && (
                   <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} />
                 )}
