@@ -22,8 +22,8 @@ export const ProjectTitle = styled.div`
 `
 
 export const RewardTitle = styled.div`
+  position: relative;
   padding-bottom: 2%;
-  border-bottom: 1px dashed ${(props) => props.theme.colors.gray};
   margin-bottom: 4%;
   color: ${(props) => props.theme.colors.primary};
   font-size: 1em;
@@ -35,7 +35,7 @@ export const WarnTitle = styled.div`
   position: relative;
   font-family: 'Neucha';
   font-style: normal;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.7px;
   font-weight: 600;
   font-size: 0.9em;
   color: ${(props) => props.theme.colors.font};

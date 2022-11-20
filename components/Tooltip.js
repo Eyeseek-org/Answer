@@ -9,12 +9,13 @@ const Container = styled.div`
   color: ${(props) => props.theme.colors.font};
   min-width: 200px;
   text-align: center;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
   font-size: 0.8em;
   font-family: 'Neucha';
   border: 1px solid ${(props) => props.theme.colors.border};
   @media (min-width: 1580px) {
-    font-size: 1em;
+    font-size: 1.1em;
+    min-width: 300px;
   }
 `;
 

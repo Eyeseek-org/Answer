@@ -14,3 +14,25 @@ export const ChainIcon = (chain) => {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />;
     }
 }
+
+export const ChainExplorer = (chain) => {
+    if (chain === 80001) {
+        return 'https://mumbai.polygonscan.com/tx/';
+      } else if (chain === 97) {
+        return  'https://bscscan.com/tx/';
+      } else if (chain === 4002) {
+        return 'https://testnet.ftmscan.com/tx';
+      }
+}
+
+export const ChainName = (chain) => {
+    if (chain === 80001) {
+        return 'Polygon Mumbai';
+      } else if (chain === 97) {
+        return  'Binance testnet';
+      } else if (chain === 4002) {
+        return 'Fantom testnet';
+      } else {
+        return 'Polygon';
+      }
+}

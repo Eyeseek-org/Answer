@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import RewardCard from '../../components/cards/RewardCard';
+import RewardDepletedCard from '../../components/cards/RewardDepletedCard';
 import ErrText from '../../components/typography/ErrText';
 import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
+import {RewardAnimatedBox} from '../../components/format/BoxAnimated';
+import Subtitle from '../../components/typography/Subtitle';
 
 
 // Display rewards
@@ -14,20 +17,23 @@ import { Col, Row } from '../../components/format/Row';
 const RewardList = ({ oid, chain }) => {
   const { setAppState } = useApp();
   const [selected, setSelected] = useState('');
+  const [desc, setDesc] = useState('');
+  const [isRewardLoading, setRewardLoading] = useState(false);
 
   // Dummy data
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
 
   // Extract image json.image, display it
   const query = `/classes/Reward?where={"project":"${oid}"}`
-  const { data: rewards, isLoading: isRewardsLoading, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
+  const { data: rewards, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
 
-  const handleRewardClick = (sel, rewAmount, type, rid) => {
+  const handleRewardClick = (sel, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId) => {
+    setDesc(rewDesc)
     setSelected(sel);
     if (type === 'Microfund') {
-      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid }));
-    } else if (type === 'Donation') {
-      setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid }));
+      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId  }));
+    } else if (type === 'Donate') {
+      setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId }));
     }
   };
 
@@ -56,14 +62,23 @@ const RewardList = ({ oid, chain }) => {
     }
   };
 
+  useEffect(() => {
+    setRewardLoading(true)
+    setTimeout(
+      () => setRewardLoading(false), 1000
+    )
+  }, []);
+
   return (
     <>
       <Col>
+        <Subtitle text="List of rewards" />
         <Row>
           {rewards && rewards.length > 0 ? (
             <>
               {rewards.map((reward) => {
-                return (
+                return <>
+                {reward.eligibleActual > 0 ? 
                   <RewardCard
                     key={reward.objectId}
                     rid={reward.rewardId}
@@ -78,16 +93,30 @@ const RewardList = ({ oid, chain }) => {
                     tokenName={reward.tokenName}
                     selected={selected}
                     chain={chain}
-                    onClick={() => handleRewardClick(reward.title, reward.requiredPledge, reward.type, reward.rewardId)}
-                  />
-                );
+                    onClick={() => handleRewardClick(reward.title, reward.description, reward.requiredPledge, reward.type, reward.rewardId, reward.eligibleActual, reward.objectId)}
+                  /> :  <RewardDepletedCard
+                    key={reward.objectId}
+                    rid={reward.rewardId}
+                    title={reward.title}
+                    pledge={reward.requiredPledge}
+                    description={reward.description}
+                    eligibleActual={reward.eligibleActual}
+                    type={reward.type}
+                    cap={reward.cap}
+                    tokenAddress={reward.tokenAddress}
+                    nftId={reward.nftId}
+                    tokenName={reward.tokenName}
+                    chain={chain}
+                />}
+                </>
               })}
             </>
           ) : (
-            <>{!isRewardsLoading ? <NoFound text={'No limited rewards offered'} /> : null}</>
+            <>{!isRewardLoading ? <NoFound text={'No limited rewards offered'} /> : null}</>
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
+        <RewardAnimatedBox text={desc}/>
       </Col>
     </>
   );
