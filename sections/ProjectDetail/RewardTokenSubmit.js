@@ -46,16 +46,9 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     abi: donation.abi,
     chainId: home,
     functionName: 'createReward',
-    args: [pid, cap, total, tokenAddress, 2],
+    args: [pid, cap, total, tokenAddress, 1],
   });
 
-  const {contractWrite} = useContractWrite({
-    mode: 'recklesslyUnprepared',
-    abi: donation.abi,
-    chainId: home,
-    functionName: 'createReward',
-    args: [pid, cap, total, tokenAddress, 2],
-  })
 
   const { write } = useContractWrite(config);
   
@@ -63,20 +56,12 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     <Container>
       <ButtonBox>
         <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} />
-        <>
           <ButtonAlt
             text={'Submit'}
             onClick={() => {
               handleSubmit();
             }}
           />
-          <ButtonAlt
-            text={'Reckless'}
-            onClick={() => {
-              contractWrite?.();
-            }}
-          />
-        </>
       </ButtonBox>
     </Container>
   );

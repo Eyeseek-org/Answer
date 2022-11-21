@@ -73,11 +73,12 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
         abi: donation.abi,
         eventName: 'RewardCreated',
         listener: (event) => listened(event),
-        once: true
+        once: false
       })
 
     const listened = async(event) => {
-        await setRewardId(parseInt(event))
+        const parse = parseInt(event)
+        await setRewardId(parse + 1)
         await handleSaveReward(objectId)
       }
 
@@ -96,6 +97,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     
 
     const handleCreateReward = async (rType) => {
+        console.log(success)
         try {
           await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward`, {
             "title": rewardTitle,
@@ -113,24 +115,26 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
             "rType": rType,
             "rewardId": rewardId
           }, moralisApiConfig)
-          setApiError(false)
+        
+          await setApiError(false)
+          setSuccess(true)
+          console.log(success)
         } catch (error) {
-        setApiError(true)
+            setApiError(true)
         }
       }
     
     const handleSaveReward = async () => {
         if (tokenType === 'ERC20') {
-            await handleCreateReward(2)
+            await handleCreateReward(1)
             await handleRewardNotifications('ERC20')
         } else if (tokenType === 'ERC1155') {
-            await handleCreateReward(1)
+            await handleCreateReward(2)
             await handleRewardNotifications('ERC1155')
         } else if (tokenType === 'Classic') {
-            await handleCreateReward(3)
+            await handleCreateReward(0)
             await handleRewardNotifications('Classic')
         }
-        await setSuccess(true)
     }
 
     const handleChangeTokenType = async(c) => {
@@ -281,18 +285,20 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
                         {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b>$<Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
                     </Summary>
-                {cap > 0 ?  <> {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
+                {cap > 0 ?  <> 
+                    {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
-                    {!success ? 
+
+                    {tokenType === 'Classic' &&
                         <>
-                            {tokenType === 'Classic' && <ButtonAlt onClick={()=>{write?.()}} text='Create reward'/>} 
+                            {!success && !apiError && <ButtonAlt onClick={()=>{write?.()}} text='Create reward'/> } 
+                            {success && !apiError &&    <>     
+                                    <G>Great job!! Now expose yourself and share it {`:)`}</G>
+                                    <Socials title={'I have added some juice rewards for participation in this crowdfunding project, check it out!!!'}/>
+                                    <SuccessDisButton onClick={()=>{setSuccess(false)}} width={'100%'} text="Success: Reward was created (click for new reward)"/>
+                                </>}
                             {apiError && <ButtonAlt onClick={()=>{write?.()}} text='Error: Check your fields and retry'/>}
-                        </> : 
-                        <>  
-                            <G>Great job!! Now expose yourself and share it {`:)`}</G>
-                            <Socials title={'I have added some juice rewards for participation in this crowdfunding project, check it out!!!'}/>
-                            <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>
                         </>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>
