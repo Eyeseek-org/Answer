@@ -4,6 +4,7 @@ import SectionTitle from '../components/typography/SectionTitle';
 import Tab from '../components/form/Tab';
 import { useState } from 'react';
 import TransactionTable from '../components/tables/TransactionTable';
+import ProjectTable from '../components/tables/ProjectTable';
 
 const Container = styled.div`
   display: flex;
@@ -19,17 +20,20 @@ const Container = styled.div`
 // Create couple of common tables
 
 const Stats = () => {
-  const [active, setActive] = useState('Transactions');
+  const [active, setActive] = useState('Projects');
   return <>
-    <SectionTitle title={'Transactions'} subtitle={'Overview'} />
+    <SectionTitle title={'Discover'} subtitle={'Data overview'} />
     <Container>
          <Tab 
             active={active} 
-            o1={'Transactions'} 
+            o1={'Projects'} 
             o2={'Streams'} 
-            change1={() => setActive('Transactions')} 
+            o3={'Transactions'}
+            change1={() => setActive('Projects')} 
             change2={() => setActive('Streams')} 
+            change3={() => setActive('Transactions')} 
           />
+         {active === 'Projects' && <ProjectTable/>}
          {active === 'Streams' && <StreamTable/>}
          {active === 'Transactions' && <TransactionTable/>}
     </Container>

@@ -4,6 +4,7 @@ import { loadingAnim, okAnim, errAnim } from '../components/animated/Animations'
 import {useState, useEffect} from 'react'
 import { ChainExplorer } from '../helpers/MultichainHelpers';
 import { useNetwork } from 'wagmi';
+import { B } from '../components/typography/ColoredTexts';
 
 const LogResult = ({ ev, error, apiError, success, type, data }) => {
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
@@ -37,7 +38,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                   <LogRow>
                     {data && <><InfoTag>Info</InfoTag> 
                     <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer">
-                      Transaction detail in blockchain explorer
+                     <B> Transaction detail in blockchain explorer</B>
                     </a></> }
                   </LogRow>
                   </>}

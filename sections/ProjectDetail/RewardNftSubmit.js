@@ -43,7 +43,7 @@ const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) =
     abi: donation.abi,
     chainId: home,
     functionName: 'createNftReward',
-    args: [pid, cap, tokenAddress, nftId],
+    args: [pid, cap, tokenAddress, nftId, 1],
   });
 
   const { write } = useContractWrite(config);
