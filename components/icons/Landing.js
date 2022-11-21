@@ -1,6 +1,6 @@
-export const BlockchainIcon = ({ width }) => {
+export const BlockchainIcon = ({ width, height }) => {
   return (
-    <svg width={width} height="68" viewBox="0 0 70 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 70 68" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

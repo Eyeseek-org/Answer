@@ -50,9 +50,9 @@ const ProgressBar = ({ratio, bal, max, secRatio, terRatio, quaRatio}) => {
                 <div>{bal}</div></>}
                 </ProgressFilter> : <FullFilter/>}
                 <RowStart>
-                    {secRatio && <SecondaryFilter color={'blue'} ratio={secRatio}/>}  
-                    {terRatio && <SecondaryFilter color={'green'} ratio={terRatio}/>}  
-                    {quaRatio && <SecondaryFilter color={'yellow'} ratio={quaRatio}/>}  
+                    {secRatio && secRatio !== '0' && <SecondaryFilter color={'blue'} ratio={secRatio}/>}  
+                    {terRatio && terRatio !== '0' && <SecondaryFilter color={'green'} ratio={terRatio}/>}  
+                    {quaRatio && quaRatio !== '0' && <SecondaryFilter color={'yellow'} ratio={quaRatio}/>}  
                 </RowStart>
         </ProgressContainer>
         <BetweenRow>

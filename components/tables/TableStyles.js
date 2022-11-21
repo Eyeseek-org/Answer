@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Table = styled.table`
+  position: relative;
   width: 100%;
   border-collapse: collapse;
   border-radius: 10px;
@@ -41,3 +42,13 @@ export const Cell = styled.td`
 export const Loading = () => {
   return <>...Loading</>
 }
+
+export const AddCol = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100px;
+`;
+
+export const HeaderCell = styled.div`
+  cursor: pointer;
+`

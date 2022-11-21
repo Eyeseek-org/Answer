@@ -5,7 +5,6 @@ import donation from '../../abi/donation.json';
 import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import ErrText from '../../components/typography/ErrText';
 
 const Container = styled.div`
   display: flex;
@@ -46,25 +45,37 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     address: add,
     abi: donation.abi,
     chainId: home,
-    functionName: 'createTokenReward',
-    args: [pid, cap, total, tokenAddress],
+    functionName: 'createReward',
+    args: [pid, cap, total, tokenAddress, 2],
   });
 
-  const { write } = useContractWrite(config);
+  const {contractWrite} = useContractWrite({
+    mode: 'recklesslyUnprepared',
+    abi: donation.abi,
+    chainId: home,
+    functionName: 'createReward',
+    args: [pid, cap, total, tokenAddress, 2],
+  })
 
+  const { write } = useContractWrite(config);
+  
   return (
     <Container>
       <ButtonBox>
         <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} />
         <>
-          {' '}
           <ButtonAlt
             text={'Submit'}
             onClick={() => {
               handleSubmit();
             }}
           />
-          {error && <ErrText text={'Missing/Incorrect parameter'} />}
+          <ButtonAlt
+            text={'Reckless'}
+            onClick={() => {
+              contractWrite?.();
+            }}
+          />
         </>
       </ButtonBox>
     </Container>

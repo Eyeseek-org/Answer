@@ -48,7 +48,7 @@ const RenderBlockchain = () => {
   const { switchNetwork } = useSwitchNetwork();
 
   const handleSwitchNetwork = async (chainId) => {
-    await switchNetwork(chainId);
+     switchNetwork?.(chainId);
   };
 
   return (
@@ -62,7 +62,7 @@ const RenderBlockchain = () => {
           const { logo, chainId } = bc;
           return (
             <div key={index}>
-              {chain.id === chainId ? (
+              {chain && chain.id === chainId ? (
                 <ImgActiveBox>
                   <Image src={logo} alt="alt" width={'40'} height={'40'} />
                 </ImgActiveBox>
