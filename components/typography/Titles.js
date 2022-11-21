@@ -23,12 +23,18 @@ export const ProjectTitle = styled.div`
 
 export const RewardTitle = styled.div`
   position: relative;
-  padding-bottom: 2%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 5%;
   margin-bottom: 4%;
   color: ${(props) => props.theme.colors.primary};
   font-size: 1em;
   font-family: 'Gemunu Libre';
   letter-spacing: 0.4px;
+  &:hover{
+    cursor: pointer;
+  }
 `
 
 export const WarnTitle = styled.div`

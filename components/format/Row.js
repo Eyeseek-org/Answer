@@ -8,6 +8,7 @@ export const Row = styled.div`
 `;
 
 export const BetweenRow = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;

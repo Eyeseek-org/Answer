@@ -9,7 +9,7 @@ const utils = ethers.utils;
 const key = process.env.NEXT_PUBLIC_COVALENT;
 
 // GET TOPIC HASHES (Events: Micro Created, Donation)
-const micro_created_sig = 'MicroCreated(address,uint256,uint256,uint256)'; //0x982b08aefe79525577026fc60aa3d85b642f6336a5078e50f2836434719770a5
+const micro_created_sig = 'MicroCreated(address,uint256,uint256,uint256,uint256)'; //0x982b08aefe79525577026fc60aa3d85b642f6336a5078e50f2836434719770a5
 const micro_created_topic = utils.toUtf8Bytes(micro_created_sig);
 const micro_created_hash = utils.keccak256(micro_created_topic);
 
@@ -35,7 +35,7 @@ export const getLogEvents = async (startingBlock: number, chain: number, latest:
     // console.log('link we are using for now:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`)
     const response = await axios.get(
       //Test Link w/ block height hardcoded
-      `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=28946294&ending-block=latest&key=${key}`
+      `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`
       //Dynamic Link
       // `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=latest&key=${key}`
     );
@@ -51,7 +51,7 @@ export const getLogEvents = async (startingBlock: number, chain: number, latest:
           response.data.data.items[i].raw_log_data
         );
         const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
-        const donator_address = decoded_raw_log_data[0]._hex;
+        const backer = decoded_raw_log_data[0]._hex;
         const amount = parseInt(decoded_raw_log_data[1]._hex);
         const fund_id = parseInt(decoded_raw_log_data[2]._hex);
         const currency_id = parseInt(decoded_raw_log_data[3]._hex);
@@ -59,7 +59,8 @@ export const getLogEvents = async (startingBlock: number, chain: number, latest:
         const txn_hash = response.data.data.items[i].tx_hash;
 
         total_txn_log_data.push({
-          donator_address: donator_address,
+          chain: chain,
+          backer: backer,
           amount: amount,
           currency_id: currency_id,
           date: date,
@@ -72,18 +73,19 @@ export const getLogEvents = async (startingBlock: number, chain: number, latest:
       // Parse Data for Micro Created Events
       if (response.data.data.items[i].raw_log_topics[0] === micro_created_hash) {
         const decoded_raw_log_data = utils.defaultAbiCoder.decode(
-          ['uint256', 'uint256', 'uint256', 'uint256'],
+          ['uint256', 'uint256', 'uint256', 'uint256', 'uint256'],
           response.data.data.items[i].raw_log_data
         );
         const date = new Date(response.data.data.items[i].block_signed_at).toDateString();
-        const owner = decoded_raw_log_data[0]._hex;
+        const backer = decoded_raw_log_data[0]._hex;
         const cap = parseInt(decoded_raw_log_data[1]._hex);
         const fund_id = parseInt(decoded_raw_log_data[2]._hex);
         const currency_id = parseInt(decoded_raw_log_data[3]._hex);
         const txn_hash = response.data.data.items[i].tx_hash;
 
         micro_created_log_data.push({
-          owner: owner,
+          chain: chain,
+          backer: backer,
           amount: cap,
           currency_id: currency_id,
           date: date,
@@ -94,7 +96,7 @@ export const getLogEvents = async (startingBlock: number, chain: number, latest:
     }
 
     // console.log('total_txn_log_data:',total_txn_log_data);
-    // console.log('micro_created_log_data:',micro_created_log_data);
+     //console.log('micro_created_log_data:',micro_created_log_data);
 
     return {
       total_txn_log_data,

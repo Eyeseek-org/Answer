@@ -2,8 +2,6 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 const MyButton = styled(motion.button)`
-  background-color: ${(props) => props.theme.colors.gray};
-  border-radius: 5px;
   background-color: ${(props) => props.theme.colors.primary};
   border-radius: 8px;
   border-style: none;

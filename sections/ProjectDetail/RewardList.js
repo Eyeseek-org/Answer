@@ -10,10 +10,15 @@ import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
 import {RewardAnimatedBox} from '../../components/format/BoxAnimated';
 import Subtitle from '../../components/typography/Subtitle';
+import styled from 'styled-components';
+
+const MutipleRewards = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
 
 
-// Display rewards
-// Add reward types and other metadata
 const RewardList = ({ oid, chain }) => {
   const { setAppState } = useApp();
   const [selected, setSelected] = useState('');
@@ -77,7 +82,7 @@ const RewardList = ({ oid, chain }) => {
           {rewards && rewards.length > 0 ? (
             <>
               {rewards.map((reward) => {
-                return <>
+                return <MutipleRewards>
                 {reward.eligibleActual > 0 ? 
                   <RewardCard
                     key={reward.objectId}
@@ -108,7 +113,7 @@ const RewardList = ({ oid, chain }) => {
                     tokenName={reward.tokenName}
                     chain={chain}
                 />}
-                </>
+                </MutipleRewards>
               })}
             </>
           ) : (

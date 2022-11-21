@@ -3,6 +3,7 @@ import {motion} from 'framer-motion'
 
 const Outer = styled(motion.div)`
     box-shadow: 0px 5px 30px rgba(237, 255, 130, 0.25);
+    margin-right: 18%;
 `
 
 const Container = styled.div`

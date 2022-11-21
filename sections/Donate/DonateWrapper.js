@@ -23,7 +23,6 @@ import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { Row, RowCenter } from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
-import { ChainExplorer } from '../../helpers/MultichainHelpers';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { DonateActiveIcon } from '../../components/icons/Project';
 import { MainContainer } from '../../components/format/Box';
@@ -40,7 +39,6 @@ const Metrics = styled.div`
 
 const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => {
   const { address } = useAccount();
-  const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
   const [apiError, setApiError] = useState(false)
   const [success, setSuccess] = useState(false);
   const { chain } = useNetwork();
@@ -106,14 +104,12 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     chainId: home,
     functionName: 'contribute',
     args: [rewMAmount, rewDAmount, pid, curr, rewId],
-    staleTime: 2_000,
   });
 
   const { write, data } = useContractWrite(config);
 
   const handleSubmit = async () => {
     await write?.();
-    await ChainExplorer(home);
     if (!error){
       await setReady(true)
     }
@@ -152,6 +148,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
                 <Metrics>
                   <Row>Balance: <BalanceComponent address={address} token={currencyAddress} /></Row>
                   <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
+                  {error ? <ErrText text={'Insufficient balance or allowance'}/> : null}
                 </Metrics>
               )}
              {rewId === 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
@@ -162,7 +159,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
             {!success && (
               <>
                 {all && all < sum ? (
-                  <Button text={<><DonateActiveIcon width={30}/></>} width={'200px'} onClick={() => handleSubmit()} error />
+                  <Button text={<><DonateActiveIcon width={30}/></>}  onClick={() => handleSubmit()} error />
                 ) : <>
                     {sum === 0 ? <>Cannot donate 0</> :                 
                   <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
@@ -173,19 +170,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
                 </> }
               </>
             )}
-            {!error && success && (
-              <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer">
-                <Button text="Transaction detail" />
-              </a>
-            )}
           </div>
-          {error ? <ErrText>Insufficient balance or allowance</ErrText> : null}
         </RowCenter>
       ) : (
         <Button text="Wrong network" onClick={() => switchNetwork(home)} width={'200px'} />
-      )}
+      )}   
     </MainContainer>
-        {ready && <LogResult ev={success} error={error} apiError={apiError} success={success} type={'Donation initialized'} />}
+        {ready && <LogResult ev={success} error={error} apiError={apiError} success={success} type={'Donation initialized'} data={data}/>}
   </>
 };
 

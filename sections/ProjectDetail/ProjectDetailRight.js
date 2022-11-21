@@ -11,6 +11,9 @@ import Stream from './Stream';
 import usdc from '../../public/icons/usdc.png';
 import usdt from '../../public/icons/usdt.png';
 import dai from '../../public/icons/dai.png';
+import { BetweenRow, Row } from '../../components/format/Row';
+import { G } from '../../components/typography/ColoredTexts';
+import StatRow from './StatRow';
 
 const RightPart = styled.div`
   position: relative;
@@ -28,52 +31,9 @@ const RightPart = styled.div`
     margin-bottom: 5%;
   }
 `;
-const RowBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-top: 1.4%;
-  padding-bottom: 0.5%;
-  @media (min-width: 1580px) {
-    font-size: 1.3em;
-  }
-`;
 
-const RowCol = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const RowTitle = styled.div`
-  font-family: 'Chenla';
-  font-style: normal;
-  font-size: 1.5em;
-  font-weight: 400;
-  color: ${(props) => props.color};
-  @media (min-width: 1580px) {
-    font-size: 1.8em;
-  }
-`;
-
-const RowDesc = styled.div`
-  color: ${(props) => props.theme.colors.font};
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-`;
-
-const FlexRow = styled.div`
-  justify-content: space-between;
-  display: flex;
-  flex-direction: row;
-`;
 const ButtonBox = styled.div`
   margin-top: 4%;
-`;
-
-
-const Bal = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 const SmallBal = styled.div`
@@ -86,6 +46,13 @@ const SmallBal = styled.div`
   flex-direction: row;
   gap: 7px;
 `;
+
+const AbsoluteShareIt = styled.div`
+  position: absolute;
+  font-family: 'Neucha';
+  right: 5px;
+  top: -20px;
+`
 
 const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chainId }) => {
   const router = useRouter();
@@ -161,31 +128,14 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
 
   const Balances = () => {
     return (
-      <Bal>
+      <Row>
         {bal}
         <SmallBal>
-          <div>
-            {usdcBalance} <Image src={usdc} alt="usdc" width={20} height={20} />{' '}
-          </div>
-          <div>
-            {usdtBalance} <Image src={usdt} alt="usdt" width={20} height={20} />{' '}
-          </div>
-          <div>
-            {daiBalance} <Image src={dai} alt="dai" width={20} height={20} />
-          </div>
+          <div>{usdcBalance} <Image src={usdc} alt="usdc" width={20} height={20} /></div>
+          <div>{usdtBalance} <Image src={usdt} alt="usdt" width={20} height={20} /></div>
+          <div>{daiBalance} <Image src={dai} alt="dai" width={20} height={20} /> </div>
         </SmallBal>
-      </Bal>
-    );
-  };
-
-  const Row = ({ title, desc, right, color }) => {
-    return (
-      <RowBox>
-        <RowCol>
-          <RowTitle color={color}>{title}</RowTitle> <RowDesc>{desc}</RowDesc>
-        </RowCol>
-        {right}
-      </RowBox>
+      </Row>
     );
   };
 
@@ -193,18 +143,19 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
     <RightPart>
       {pType !== 'Stream' ? (
         <div>
-          <Row
+          <StatRow
             title={<Balances />}
             desc={`pledged of ${max} goal`}
             color="#00FFA3"
             right={<Bookmark objectId={objectId} bookmarks={bookmarks} />}
           />
-          <Row title={backing} desc={'backers'} color="white" />
-          <Row title={microInvolved} desc={`microfunds active`} color="white" />
-          <FlexRow>
-            <Row title={days} desc={`days to go`} color="white" />
-            <Socials />
-          </FlexRow>
+          <StatRow title={backing} desc={'backers'} color="white" />
+          <StatRow title={microInvolved} desc={`microfunds active`} color="white" />
+          <BetweenRow>
+            <StatRow title={days} desc={`days to go`} color="white" />
+            <AbsoluteShareIt><G>Share it</G></AbsoluteShareIt>
+            <Socials title={'Check out my project on Eyeseek, crowdfunding started and time is ticking!'}/>
+          </BetweenRow>
         </div>
       ) : (
         <Stream recipient={owner} objectId={objectId} />
