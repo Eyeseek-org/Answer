@@ -1,8 +1,20 @@
 import {TxStatus, LogRow, InfoTag, AnimBox, Ok, Err} from '../components/Log'
 import Lottie from 'react-lottie';
 import { loadingAnim, okAnim, errAnim } from '../components/animated/Animations';
+import {useState, useEffect} from 'react'
+import { ChainExplorer } from '../helpers/MultichainHelpers';
+import { useNetwork } from 'wagmi';
 
-const LogResult = ({ ev, error, apiError, success, type }) => {
+const LogResult = ({ ev, error, apiError, success, type, data }) => {
+    const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
+    const {chain} = useNetwork()
+
+    useEffect(() => {
+      if (chain){
+        setExplorer(ChainExplorer(chain.id))
+      }
+    },[])
+
     return <>
        {type !== 'Stream project initialized' ? <TxStatus>
                 Transaction status
@@ -10,20 +22,25 @@ const LogResult = ({ ev, error, apiError, success, type }) => {
                   <InfoTag>Info</InfoTag> {type}
                 </LogRow>
                 <LogRow>
-                  <InfoTag>Info</InfoTag> ...Waiting for blockchain confirmation
+                  <InfoTag>Info</InfoTag> ...Bloockchain confirmation request
                 </LogRow>
                 {!ev && <LogRow>Please stay on page until transactions is confirmed</LogRow>}
                 <LogRow>
-                  <div>
                     <InfoTag>Blockchain: </InfoTag>
-                  </div>
-                  {ev && <Ok>Success - Transaction was processed</Ok>} {apiError && <Err>Failed - Transaction failed to process in DB</Err>}
+                  {ev ? <Ok>Success - Transaction was processed</Ok> : <>Usually processed in 5-10s</>}
+                  {apiError && <Err>Failed - Transaction failed to process in DB</Err>}
                 </LogRow>
-                {ev && (
+                {ev && <>
                   <LogRow>
-                    <InfoTag>Success</InfoTag> Project transaction processed
+                    <InfoTag>Info</InfoTag> Project transaction processed
                   </LogRow>
-                )}
+                  <LogRow>
+                    {data && <><InfoTag>Info</InfoTag> 
+                    <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer">
+                      Transaction detail in blockchain explorer
+                    </a></> }
+                  </LogRow>
+                  </>}
                 {ev && success && ( <AnimBox> <Lottie height={100} width={100} options={okAnim} /> </AnimBox>)}
                 {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} />  </AnimBox> )}
                 {!ev && !apiError && !success && ( <AnimBox> <Lottie height={100} width={100} options={loadingAnim} /> </AnimBox>)}
@@ -36,7 +53,7 @@ const LogResult = ({ ev, error, apiError, success, type }) => {
                 </LogRow>
                 {!apiError && (
                   <LogRow>
-                    <InfoTag>Info</InfoTag> Project was created
+                    <InfoTag>Info</InfoTag> Project was created with type: Stream
                   </LogRow>
                 )}
                 {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} /></AnimBox> )}

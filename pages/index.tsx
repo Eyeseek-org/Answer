@@ -49,14 +49,6 @@ const Home: NextPage = () => {
           src="https://www.googletagmanager.com/gtag/js?id=GTM-WV83C9F"
           strategy="afterInteractive"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){window.dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', GTM-WV83C9F');
-          `}
-        </Script>
       </Container>
     </>
   );

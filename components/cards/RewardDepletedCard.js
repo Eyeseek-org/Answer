@@ -28,7 +28,6 @@ const RewardCard = ({
   key,
   pledge,
   title,
-  description,
   eligibleActual,
   type,
   cap,
@@ -48,7 +47,6 @@ const RewardCard = ({
             <RewardTitle>{title}</RewardTitle>
             {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30} />}
           </BetweenRow>
-          <RewardDesc>{description}</RewardDesc>
           {tokenName && tokenAddress && (
             <RewardDesc>
               <div>{tokenName}</div>

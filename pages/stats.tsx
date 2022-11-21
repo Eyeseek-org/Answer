@@ -1,7 +1,9 @@
 import StreamTable from '../components/tables/StreamTable';
 import styled from 'styled-components';
-import { createColumnHelper } from '@tanstack/react-table';
 import SectionTitle from '../components/typography/SectionTitle';
+import Tab from '../components/form/Tab';
+import { useState } from 'react';
+import TransactionTable from '../components/tables/TransactionTable';
 
 const Container = styled.div`
   display: flex;
@@ -10,45 +12,28 @@ const Container = styled.div`
   margin-left: 15%;
   margin-right: 15%;
   margin-top: 5%;
+  margin-bottom: 10%;
 `;
 
-const streamCol = createColumnHelper<Stream>();
-
-type Stream = {
-  addressBacker: string;
-  owner: string;
-  flowRate: number;
-  isActive: boolean;
-};
-
-const colStream = [
-  streamCol.accessor('addressBacker', {
-    cell: (info) => info.getValue(),
-  }),
-  streamCol.accessor('flowRate', {
-    header: () => 'Flow Rate',
-    cell: (info) => info.renderValue(),
-  }),
-  streamCol.accessor('owner', {
-    header: () => <span>Owner</span>,
-    cell: (props) => <span>{props.getValue().toLowerCase()}</span>,
-  }),
-  streamCol.accessor('isActive', {
-    header: 'Status',
-  }),
-];
 
 // Create couple of common tables
 
-const Stats = ({col}) => {
-  return (
-    <>
-      <SectionTitle title={'Streams'} subtitle={'Overview'} />
-      <Container>
-        <StreamTable col={colStream} />
-      </Container>
+const Stats = () => {
+  const [active, setActive] = useState('Transactions');
+  return <>
+    <SectionTitle title={'Transactions'} subtitle={'Overview'} />
+    <Container>
+         <Tab 
+            active={active} 
+            o1={'Transactions'} 
+            o2={'Streams'} 
+            change1={() => setActive('Transactions')} 
+            change2={() => setActive('Streams')} 
+          />
+         {active === 'Streams' && <StreamTable/>}
+         {active === 'Transactions' && <TransactionTable/>}
+    </Container>
     </>
-  );
 };
 
 export default Stats;

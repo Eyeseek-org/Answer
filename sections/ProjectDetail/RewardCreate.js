@@ -24,6 +24,7 @@ import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
 import { G, R } from '../../components/typography/ColoredTexts';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
+import Socials from '../../components/buttons/Socials';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -184,7 +185,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
 
     return <MainContainer>
         <RewardContainer>
-         <Subtitle text='Create Reward' />
+         <Subtitle text='Create new Reward' />
             <MainMilestoneContainer>
                 <BetweenRow>
                     <Subtitle text={<>
@@ -297,7 +298,12 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         <>
                             {tokenType === 'Classic' && <ButtonAlt onClick={()=>{handleSubmit(objectId)}} text='Create reward'/>} 
                             {apiError && <ButtonAlt onClick={()=>{handleSubmit(objectId)}} text='Error: Check your fields and retry'/>}
-                        </> : <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>}
+                        </> : 
+                        <>  
+                            <G>Great job!! Now expose yourself and share it {`:)`}</G>
+                            <Socials title={'I have added some juice rewards for participation in this crowdfunding project, check it out!!!'}/>
+                            <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>
+                        </>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>
             </MainMilestoneContainer>

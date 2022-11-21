@@ -47,14 +47,13 @@ const RewardCard = ({
   const [typeTooltip, setTypeTooltip] = useState(false);
 
   return (
-    <MainContainer>
+    <MainContainer key={key}>
       {typeTooltip && 
         <ToolBox>
           <Tooltip text={`Reward requires ${type} $ ${pledge} `} />
         </ToolBox>
       }
         <RewardBox
-            key={key}
             whileHover={{ scale: 1.05 }}
             color={selected !== title ? '#3c3c3c' : '#B0F6FF'}
             onClick={onClick}

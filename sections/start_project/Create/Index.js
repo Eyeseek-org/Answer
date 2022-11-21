@@ -5,22 +5,7 @@ import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork
 import axios from 'axios';
 
 import SectionTitle from '../../../components/typography/SectionTitle';
-import {
-  RulesContainer,
-  RulesTitle,
-  WarningBox,
-  Li,
-  Row,
-  ImageBox,
-  Summary,
-  Err,
-  SumTitle,
-  SumValue,
-  SumHalf,
-  SumRow,
-  SumHead,
-  EyeBox,
-} from './StyleWrapper';
+import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StyleWrapper';
 import FaqCard from '../../../components/cards/FaqCard';
 import { BookIcon } from '../../../components/icons/Common';
 import donation from '../../../abi/donation.json';
@@ -33,7 +18,8 @@ import ButtonAlt from '../../../components/buttons/ButtonAlt';
 import { MainContainer } from '../../../components/format/Box';
 import LogResult from '../../LogResult';
 import { ChainName } from '../../../helpers/MultichainHelpers';
-
+import Socials from '../../../components/buttons/Socials';
+import { G } from '../../../components/typography/ColoredTexts';
 
 const texts = [
   {
@@ -112,7 +98,7 @@ const Create = ({ setStep }) => {
     args: [pm1],
   });
 
-  const { write, error } = useContractWrite(config);
+  const { write, error, data } = useContractWrite(config);
 
   const handleContract = async () => {
     write?.();
@@ -237,10 +223,12 @@ const Create = ({ setStep }) => {
             {pType === 'Stream' ? (
                <LogResult apiError={apiError} type={'Stream project initialized'}/>
             ) : (
-              <LogResult ev={ev} err={error} apiError={apiError} success={success} type={'Project creation initiated'}/>
+              <LogResult ev={ev} err={error} apiError={apiError} success={success} type={'Project creation initiated'} data={data}/>
             )}
           </>
         )}
+        {success && <><G>Great job!! Now expose yourself and share it {`:)`}</G><Socials title={'Check out my project on Eyeseek, crowdfunding started and time is ticking!'}/></>}
+        
         {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
       </RulesContainer>
     </MainContainer>

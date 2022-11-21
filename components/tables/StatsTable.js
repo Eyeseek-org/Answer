@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Loading from '../Loading';
 import Address from '../functional/Address';
 import Subtitle from '../typography/Subtitle';
+import {Table, Header, Tr, Cell} from './TableStyles'
 
 import { ExpandIcon } from '../icons/Notifications';
 
@@ -32,32 +33,6 @@ const StatsTable = ({ pid, chain }) => {
       padding-right: 3%;
     }
   `;
-  const Table = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 10px;
-    border: none;
-    text-align: center;
-    background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  `;
-  const Header = styled.th`
-    border: none;
-    padding: 1%;
-    background-color: transparent;
-    font-family: 'Roboto';
-  `;
-  const Row = styled.tr`
-    padding: 1%;
-    border-bottom: 1px solid grey;
-    transition: 0.1s;
-    &:hover {
-      background: rgba(56, 56, 56, 0.4);
-    }
-  `;
-  const Cell = styled.td`
-    padding: 2px;
-    font-family: 'Neucha';
-  `;
 
   const AddressCell = styled(Cell)`
     width: 150px;
@@ -83,7 +58,7 @@ const StatsTable = ({ pid, chain }) => {
     return (
       <Table>
         <thead>
-          <Row>
+          <Tr>
             {Object.keys(data[0]).map((key, index) => {
               if (key != 'fund_id' && key != 'txn_hash') {
                 const formattedKey = key
@@ -98,12 +73,12 @@ const StatsTable = ({ pid, chain }) => {
                 return <Header key={index}> </Header>;
               }
             })}
-          </Row>
+          </Tr>
         </thead>
         <tbody>
           {data.map((row, index) => {
             return (
-              <Row key={index}>
+              <Tr key={index}>
                 {Object.keys(row).map((key, index) => {
                   if (key != 'fund_id') {
                     if (key === 'donator_address' || key === 'owner') {
@@ -136,7 +111,7 @@ const StatsTable = ({ pid, chain }) => {
                     }
                   }
                 })}
-              </Row>
+              </Tr>
             );
           })}
         </tbody>

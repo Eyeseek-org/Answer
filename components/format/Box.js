@@ -88,6 +88,6 @@ export const RewardBox = styled(motion.div)`
     }
   }
   @media (min-width: 1750px) {
-    font-size: 1.3em;
+    font-size: 1.1em;
   }
 `;
