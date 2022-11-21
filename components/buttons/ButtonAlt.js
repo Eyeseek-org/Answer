@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const MyButton = styled(motion.button)`
   background-color: ${(props) => props.theme.colors.primary};
+  position: relative;
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;

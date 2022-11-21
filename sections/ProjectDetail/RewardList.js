@@ -34,7 +34,7 @@ const RewardList = ({ oid, chain }) => {
 
   const handleRewardClick = (sel, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId) => {
     setDesc(rewDesc)
-    setSelected(sel);
+    setSelected(rewObjectId);
     if (type === 'Microfund') {
       setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId  }));
     } else if (type === 'Donate') {
@@ -86,6 +86,7 @@ const RewardList = ({ oid, chain }) => {
                 {reward.eligibleActual > 0 ? 
                   <RewardCard
                     key={reward.objectId}
+                    objectId={reward.objectId}
                     rid={reward.rewardId}
                     title={reward.title}
                     pledge={reward.requiredPledge}
@@ -96,8 +97,10 @@ const RewardList = ({ oid, chain }) => {
                     tokenAddress={reward.tokenAddress}
                     nftId={reward.nftId}
                     tokenName={reward.tokenName}
+                    tokenAmount={reward.tokenAmount}
                     selected={selected}
                     chain={chain}
+                    rType={reward.rType}
                     onClick={() => handleRewardClick(reward.title, reward.description, reward.requiredPledge, reward.type, reward.rewardId, reward.eligibleActual, reward.objectId)}
                   /> :  <RewardDepletedCard
                     key={reward.objectId}
@@ -109,6 +112,8 @@ const RewardList = ({ oid, chain }) => {
                     type={reward.type}
                     cap={reward.cap}
                     tokenAddress={reward.tokenAddress}
+                    tokenAmount={reward.tokenAmount}
+                    rType={reward.rType}
                     nftId={reward.nftId}
                     tokenName={reward.tokenName}
                     chain={chain}

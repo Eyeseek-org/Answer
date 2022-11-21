@@ -44,6 +44,7 @@ export const Wrapper = styled.div`
 `
 
 export const MainContainer = styled.div`
+  position: relative;
   padding-top: 5%;
   margin-bottom: 10%;
   animation: fadeIn 0.7s;
