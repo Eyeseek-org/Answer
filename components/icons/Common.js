@@ -418,3 +418,20 @@ export const UrlSocialsIcon = ({ width, height }) => {
     </svg>
   );
 };
+
+export const UsersIcon = ({width, height}) => {
+  return <svg width={width} height={height} viewBox="0 0 58 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_98_1654)">
+  <path d="M30.0992 27.8743C30.7685 25.6691 33.9193 21.471 38.0548 21.471C41.9956 21.5567 47.1555 26.609 49.4485 40.6065" stroke="white" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M40.7575 19.4481C42.9766 18.6537 44.1245 16.839 44.645 15.2096C44.9066 14.3907 45.027 13.5753 45.0498 12.865C45.0715 12.1861 45.0079 11.4846 44.8103 10.9325C43.7884 8.078 41.1547 7.36019 39.0892 7.37748C38.0368 7.38629 37.0139 7.57427 36.1681 7.82456C35.3652 8.06217 34.5637 8.40271 34.0439 8.81343C31.418 10.8885 31.6053 14.2849 32.9766 16.579C34.3879 18.9401 37.3226 20.6777 40.7575 19.4481Z" stroke="white" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17.2552 15.7326C14.8037 16.6904 13.7 18.8627 13.3335 20.9625C12.9699 23.0455 13.2694 25.2946 13.8276 26.9858C14.4598 28.901 15.9052 30.4273 17.4521 31.4567C18.9915 32.4812 20.8295 33.146 22.4564 33.146C23.7884 33.146 25.7757 32.9896 27.4633 31.9318C29.2796 30.7933 30.4906 28.7806 30.4906 25.6644C30.4906 22.288 28.1366 19.4087 25.5978 17.6366C24.2959 16.7278 22.8484 16.0359 21.4385 15.669C20.0547 15.3089 18.5556 15.2245 17.2552 15.7326Z" stroke="white" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M7.54492 47.2792C9.4204 41.4384 15.2746 33.7994 19.881 33.7994C22.9983 33.7994 27.3515 34.7107 33.8213 46.592" stroke="white" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+  <clipPath id="clip0_98_1654">
+  <rect width="25" height="34.375" fill="white" transform="translate(32.125 18.75)"/>
+  </clipPath>
+  </defs>
+  </svg>
+  
+}

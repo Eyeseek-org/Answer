@@ -3,17 +3,20 @@ import Address from '../functional/Address';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useState, useMemo } from 'react';
-import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell } from './TableStyles';
-import { NonVerifiedIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
+import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover } from './TableStyles';
+import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import Tooltip from '../Tooltip';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { ProjectActiveIcon } from '../icons/Project';
+import RewardTable from './RewardTable';
+import { Row } from '../format/Row';
 
 const ProjectTable = () => {
   const [sorting, setSorting] = useState([]);
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
+  const [projectId, setProjectId] = useState(null)
 
   const columns = [
     {
@@ -73,7 +76,7 @@ const ProjectTable = () => {
     {
       accessorKey: 'chainId',
       cell: (props) => (
-        <ChainIconComponent chain={props.getValue()} />
+        <ChainIconComponent ch={props.getValue()} />
       ),
       header: <HeaderCell>Chain</HeaderCell>,
     },
@@ -89,15 +92,21 @@ const ProjectTable = () => {
     {
         accessorKey: 'objectId',
         cell: (props) => (
-          <>
-          <a link href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><ProjectActiveIcon width={20}/></a>
-          </>
+          <Row>
+           <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><ProjectActiveIcon width={20}/></a>
+           <ImageHover onClick={()=>handleReward(props.getValue())} ><RewardIcon width={20}/></ImageHover>
+          </Row>
         ),
         header: <HeaderCell>Ref</HeaderCell>,
       },
   ]
 
   // Tooltipy + Merge obrázků
+  // On click rerender nefunguje
+
+  const handleReward = (id) => {
+    setProjectId(id)
+  }
 
   const handleTooltip = (text) => {
     setShowTooltip(true);
@@ -113,8 +122,14 @@ const ProjectTable = () => {
     onError: (err) => {
       console.log('err', err);
     },
-    
   });
+
+  const { data: projectRewards } = useQuery(['rewards'], () => UniService.getDataAll(`/classes/Reward?where={"project": "${projectId}"}`), {
+    onError: (err) => {
+      console.log('err', err);
+    },
+  });
+
 
 //   const sortedUniqueValues = useMemo(
 //     () => Array.from(column.getFacetedUniqueValues().keys()).sort(),
@@ -137,37 +152,38 @@ const ProjectTable = () => {
 
   return  <>
  {isLoading ? <>Loading...</> : 
-    <>
-      {data && data.length > 0 && (
-        <Table>
-            {showTooltip && <Tooltip text={tooltipText} />}
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <HeadRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <Header {...{ onClick: header.column.getToggleSortingHandler() }} colSpan={header.colSpan} key={header.id}>
-                   <div> {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</div>
-                    {{
-                      asc: <><ArrowDown width={10}/></>,
-                      desc: <><ArrowUp width={10}/> </>,
-                    }[header.column.getIsSorted()] ?? null}
-                  </Header>
-                ))}
-              </HeadRow>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <Tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <Cell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Cell>
-                ))}
-              </Tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </>}
+      <>
+        {data && data.length > 0 && (
+          <Table>
+              {showTooltip && <Tooltip text={tooltipText} />}
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <HeadRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <Header {...{ onClick: header.column.getToggleSortingHandler() }} colSpan={header.colSpan} key={header.id}>
+                    <div> {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</div>
+                      {{
+                        asc: <><ArrowDown width={10}/></>,
+                        desc: <><ArrowUp width={10}/> </>,
+                      }[header.column.getIsSorted()] ?? null}
+                    </Header>
+                  ))}
+                </HeadRow>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <Tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <Cell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Cell>
+                  ))}
+                </Tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </>}
+     {projectRewards &&  <RewardTable data={projectRewards} />}
     </>
 };
 

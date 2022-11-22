@@ -38,11 +38,11 @@ const mumbai: Chain = {
 
 const fantomTest: Chain = {
   id: 4_002,
-  name: 'Fantom Testnet',
+  name: 'Fantom testnet',
   network: 'fantom',
   nativeCurrency: {
     decimals: 18,
-    name: 'FTM',
+    name: 'Fantom',
     symbol: 'FTM',
   },
   rpcUrls: {
@@ -53,11 +53,11 @@ const fantomTest: Chain = {
 
 const bnbTest: Chain = {
   id: 97,
-  name: 'BNB Testnet',
+  name: 'BNB testnet',
   network: 'binance',
   nativeCurrency: {
     decimals: 18,
-    name: 'BNB',
+    name: 'Binanace Coin',
     symbol: 'BNB',
   },
   rpcUrls: {
@@ -66,8 +66,23 @@ const bnbTest: Chain = {
   testnet: true,
 };
 
+const optimismTest: Chain = {
+  id: 420,
+  name: 'Optimism testnet',
+  network: 'optimism',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+  },
+  rpcUrls: {
+    default: 'https://goerli.optimism.io',
+  },
+  testnet: true,
+};
+
 const { provider, webSocketProvider, chains } = configureChains(
-  [mumbai, fantomTest, bnbTest],
+  [mumbai, fantomTest, bnbTest, optimismTest],
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY }), publicProvider()]
 );
 

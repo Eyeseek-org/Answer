@@ -18,7 +18,6 @@ import ButtonAlt from '../../../components/buttons/ButtonAlt';
 import { MainContainer } from '../../../components/format/Box';
 import LogResult from '../../LogResult';
 import { ChainName } from '../../../helpers/MultichainHelpers';
-import Socials from '../../../components/buttons/Socials';
 import { G } from '../../../components/typography/ColoredTexts';
 
 const texts = [
@@ -43,7 +42,6 @@ const Create = ({ setStep }) => {
   const [apiError, setApiError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [oid, setOid] = useState(null);
-  const [pState, setPState] = useState(0);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
@@ -104,7 +102,7 @@ const Create = ({ setStep }) => {
     write?.();
   };
 
-  const handleMoralis = async () => {
+  const handleMoralis = async (st) => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_DAPP}/classes/Project`,
@@ -119,7 +117,7 @@ const Create = ({ setStep }) => {
           descM: pm1Desc,
           type: pType,
           owner: address,
-          state: pState,
+          state: st,
           chainId: pChain,
           bookmarks: [address], // Add owner to bookmark
           imageUrl: pImageUrl,
@@ -129,6 +127,9 @@ const Create = ({ setStep }) => {
       );
       setOid(res.data.objectId);
       setApiError(false);
+      if (pType === 'Stream'){
+        setSuccess(true)
+      }
     } catch (err) {
       console.log(err);
       setApiError(true);
@@ -136,18 +137,14 @@ const Create = ({ setStep }) => {
   };
 
   const handleSubmit = async () => {
-    if (!apiError) {
+      setReady(true);
       if (pType !== 'Stream') {
+        await handleMoralis(0);
         await handleContract();
       } else if (pType === 'Stream') {
-        await setPState(1);
+        await handleMoralis(1);
       }
-      await setReady(true);
-      await handleMoralis();
-    } else {
-      console.error('Moralis server error');
-    }
-  };
+  }
 
   useContractEvent({
     address: add,
@@ -227,7 +224,9 @@ const Create = ({ setStep }) => {
             )}
           </>
         )}
-        {success && <><G>Great job!! Now expose yourself and share it {`:)`}</G><Socials title={'Check out my project on Eyeseek, crowdfunding started and time is ticking!'}/></>}
+         {success && <a href={`/project/${oid}`} rel="noopener noreferrer" target="_blank">
+           You can find your project <G> here {`:)`}</G>
+          </a>}
         
         {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
       </RulesContainer>

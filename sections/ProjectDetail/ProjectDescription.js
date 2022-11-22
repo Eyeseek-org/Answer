@@ -57,8 +57,8 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
     return <BodyBox>
         <Subtitle text='Project milestones'/>
         <ProgressBar ratio={ratio} bal={bal} max={max} secRatio={usdcRatio} terRatio={usdtRatio} quaRatio={daiRatio}/>
-        <DescriptionBox></DescriptionBox>
-        {descM}
+        <DescriptionBox>      {descM}</DescriptionBox>
+  
     </BodyBox>
 }
 

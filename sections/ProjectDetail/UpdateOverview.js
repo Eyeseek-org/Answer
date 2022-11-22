@@ -72,7 +72,8 @@ const UpdateOverview = ({objectId}) => {
     
 
     return <Container>
-        <Timeline milestones={updates}/>
+         
+        {updates && updates.length > 0 &&  <Timeline milestones={updates}/>}
         <List>
             {updates && updates.length > 0 ?
                 updates.map((update)=> 

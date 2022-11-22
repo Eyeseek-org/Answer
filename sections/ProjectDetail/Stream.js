@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { useAccount, useProvider, useSigner } from 'wagmi'
+import { useNetwork, useAccount, useProvider, useSigner } from 'wagmi'
 import { abi } from '../../abi/supertoken.js'
 import { useQuery } from "@tanstack/react-query";
 import { UniService } from "../../services/DapAPIService";
@@ -11,11 +11,11 @@ import { moralisApiConfig } from '../../data/moralisApiConfig'
 import Address from "../../components/functional/Address"
 import ButtonAlt from "../../components/buttons/ButtonAlt";
 import Subtitle from "../../components/typography/Subtitle";
+import {Reference} from '../../components/typography/Descriptions'
 import ApproveUniversal from "../../components/buttons/ApproveUniversal";
 import StreamCounter from "../../components/functional/StreamCounter";
-import BalanceComponent from "../../components/functional/BalanceComponent.js";
-import Allowance from "../../components/functional/Allowance.js";
-import { ethers } from "ethers";
+import StreamBalances from './StreamBalances';
+import { BetweenRow } from "../../components/format/Row.js";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -61,14 +61,6 @@ const ValueRow = styled.div`
   color: ${(props) => props.theme.colors.primary};
 `
 
-const ButtonBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 4%;
-  gap: 2%;
-  width: 100%;
-`
 // TBD component to create a stream 
 // With new Superfluid stream, it's needed to call axios as well
 
@@ -110,34 +102,8 @@ const A = styled.a`
   }
 `
 
-const SuperRef = styled.div`
-  margin-top: 3%;
-  padding-bottom: 2%;
-  color: #B0F6FF;
-  font-family: 'Neucha';
-  text-decoration: underline;
-  opacity: 0.7;
-  transition: 0.2s;
-  &:hover{
-    opacity: 1;
-  }
-`
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.9em;
-  padding-bottom: 1%;
-`
-
-const BalancesBox = styled.div`
-  padding: 5%;
-`
-
-
-const Stream = ({ objectId, recipient }) => {
+const Stream = ({ objectId, recipient, chainId }) => {
   const { address } = useAccount();
   const [apiError, setApiError] = useState(false)
   const [flowRate, setFlowRate] = useState(0);
@@ -147,9 +113,17 @@ const Stream = ({ objectId, recipient }) => {
   const [deposit, setDeposit] = useState(0)
   const [superfluidError, setSuperfluidError] = useState(false)
   const [newStream, setNewStream] = useState(false)
+  const [myStream, setMyStream] = useState(false)
   const [displayRate, setDisplayRate] = useState(50)
+  const [superTokenAddress, setSuperTokenAddress] = useState('0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f')
+  const {chain} = useNetwork()
 
-  const [wrappedAmount, setWrappedAmount] = useState(1000)
+  /// CFAv1Forwarder
+  const superContract = "0xcfA132E353cB4E398080B9700609bb008eceB125" // Same address fro both Polygon and Optimism
+
+
+  // Multiple currencies
+
 
   const query = `/classes/Stream?where={"projectId":"${objectId}", "isActive": true }`
   const { data: streamData } = useQuery(['streams'], () => UniService.getDataAll(query),{
@@ -163,13 +137,16 @@ const Stream = ({ objectId, recipient }) => {
         for (let i = 0; i < streamData.length; i++) {
           if (streamData[i].flowRate) {
             /// Error here - For each array item add number to the displayRate total
-            setDisplayRate(displayRate + streamData[i].flowRate)
-            console.log(displayRate)
+            setDisplayRate(parseInt(displayRate) + parseInt(streamData[i].flowRate))
           }
         }
       }
     }
   });
+
+  useEffect(() => {
+    getFlowData()
+  }, [])
 
 
   // Maybe rather call on backend - Aggregate automations 
@@ -178,10 +155,11 @@ const Stream = ({ objectId, recipient }) => {
     // Key service to retrieve current deposit 
     const sf = await Framework.create({
       provider: provider,
-      chainId: 80001
+      chainId: chainId
     })
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
+    await setSuperTokenAddress(DAIx)
     /// TBD need to repair to get actual balance 
     /// TBD find simple way how to find address
     /// TBD pass correct values to the form and send to Superfluid & Moralis 
@@ -189,11 +167,11 @@ const Stream = ({ objectId, recipient }) => {
       const flow = await sf.cfaV1.getFlow({
         superToken: DAIx,
         sender: address,
-        receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        receiver: recipient,
         providerOrSigner: provider
       })
       if (flow.flowRate !== '0') {
-        setStreamFound(true)
+        setMyStream(true)
         setDeposit(flow.deposit)
         setFlowRate(flow.flowRate)
       }
@@ -204,14 +182,13 @@ const Stream = ({ objectId, recipient }) => {
   }
 
 
-
   /// TBD - Update Moralis DB together with the streams on chain
   const addStreamState = async (oid) => {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
         'projectId': oid,
         'flowRate': flowRate,
-        'owner': "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        'owner': address,
         'isActive': true,
         'addressBacker': address,
       }, moralisApiConfig)
@@ -223,6 +200,7 @@ const Stream = ({ objectId, recipient }) => {
   }
 
   const deleteStreamState = async (oid) => {
+    // Only owner of the stream should be able to delete it
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
         'projectId': { oid },
@@ -235,89 +213,18 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-  const wrap = async(amt) => {
-    const sf = await Framework.create({
-      provider: provider,
-      chainId: 80001
-    })
-  
-  
-    const DAIx = await sf.loadSuperToken(
-      "0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"
-    );
-
-  
-    try {
-      console.log(`upgrading $${amt} DAI to DAIx`);
-      const amtToUpgrade = ethers.utils.parseEther(amt.toString());
-      const upgradeOperation = DAIx.upgrade({
-        amount: amtToUpgrade.toString()
-      });
-      const upgradeTxn = await upgradeOperation.exec(signer);
-      await upgradeTxn.wait().then(function (tx) {
-        console.log(
-          `
-          Congrats - you've just upgraded DAI to DAIx!
-        `
-        );
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-
-  async function unwrap(amt) {
-    const sf = await Framework.create({
-      provider: provider,
-      chainId: 80001
-    })
-
-  
-    const DAIx = await sf.loadSuperToken(
-      "0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"
-    );
-  
-  
-    try {
-      console.log(`Downgrading $${amt} fDAIx...`);
-      const amtToDowngrade = ethers.utils.parseEther(amt.toString());
-      const downgradeOperation = DAIx.downgrade({
-        amount: amtToDowngrade.toString()
-      });
-      const downgradeTxn = await downgradeOperation.exec(signer);
-      await downgradeTxn.wait().then(function (tx) {
-        console.log(
-          `
-          Congrats - you've just downgraded DAIx to DAI!
-          You can see this tx at https://goerli.etherscan.io/tx/${tx.transactionHash}
-          Network: Goerli
-          NOTE: you downgraded the dai of 0xDCB45e4f6762C3D7C61a00e96Fb94ADb7Cf27721.
-          You can use this code to allow your users to do it in your project.
-          Or you can downgrade tokens at app.superfluid.finance/dashboard.
-        `
-        );
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-
   async function startStream() {
     const sf = await Framework.create({
       provider: provider,
-      chainId: 80001
+      chainId: chainId
     })
-
-
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
     const amount = flowRate.toString();
     try {
       const createFlowOperation = sf.cfaV1.createFlow({
         sender: address,
-        receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        receiver: recipient,
         flowRate: amount,
         superToken: DAIx
       });
@@ -333,29 +240,27 @@ const Stream = ({ objectId, recipient }) => {
       );
       console.error(error);
       setApiError(true)
-      console.log(address, recipient, amount, DAIx)
     }
   }
 
   async function stopStream() {
     const sf = await Framework.create({
       provider: provider,
-      chainId: 80001
+      chainId: chainId
     })
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
     try {
       const deleteFlowOperation = sf.cfaV1.deleteFlow({
         sender: address,
-        receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        receiver: recipient,
         superToken: DAIx
       });
-
       console.log("Deleting your stream...");
-
       await deleteFlowOperation.exec(signer);
       await deleteStreamState(objectId)
       setStreamFound(false)
+      setMyStream(false)
 
     } catch (error) {
       console.error(error);
@@ -374,7 +279,7 @@ const Stream = ({ objectId, recipient }) => {
           <ValueRow>
             <RowItem>Recipient</RowItem>
             <RowItem>
-              <ActiveValue><Address address={'0xcfA132E353cB4E398080B9700609bb008eceB125'} /></ActiveValue>
+              <ActiveValue><Address address={recipient} /></ActiveValue>
             </RowItem>
             <RowRightItem>Address</RowRightItem>
           </ValueRow>
@@ -387,10 +292,10 @@ const Stream = ({ objectId, recipient }) => {
             <RowRightItem>dai/mo</RowRightItem>
           </ValueRow>
 
-       <ButtonBox>
-            <ApproveUniversal tokenContract={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} spender={'0xcfA132E353cB4E398080B9700609bb008eceB125'} amount={flowRate} />
+         <BetweenRow>
+            <ApproveUniversal tokenContract={superTokenAddress} spender={superContract} amount={flowRate} />
             {address && <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} />}
-            </ButtonBox>
+            </BetweenRow>
           {apiError && <ErrorBox>Insufficient funds, no approval, or owner = backer</ErrorBox>}
 
         </> : <>
@@ -411,36 +316,33 @@ const Stream = ({ objectId, recipient }) => {
               </RowItem>
               <RowRightItem>Value</RowRightItem>
             </ValueRow>
-            <ButtonBox>
-                <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  />
-            </ButtonBox>
+            <BetweenRow>
+          {myStream ?    <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  /> : <>
+            {address && recipient !== address && <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />} 
+            {chain && chain.id !== chainId && <ErrorBox>Wrong network</ErrorBox>}
+          </>}
+            </BetweenRow>
           </> : <> 
           <Title><Subtitle text={'No active stream found'} /></Title>
-              <ButtonBox>
+              <BetweenRow>
                {address && recipient !== address ? <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  /> : <></>}
-              </ButtonBox>
+              </BetweenRow>
               </>
           }
         </>}
-        <ButtonBox>
+        <BetweenRow>
                <a href='https://app.superfluid.finance' rel="noopener noreferrer" target="_blank">  
-                <SuperRef>Manage your streams in Superfluid App</SuperRef>
+                <Reference>Manage your streams in Superfluid App</Reference>
                </a>
-            </ButtonBox>
+            </BetweenRow>
         </StreamComponent>
-   {newStream &&    <BalancesBox>
-            <Row><div>Wrapped balance</div> <BalanceComponent token={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} address={address}/></Row>
-            <Row><div>Native balance</div> <BalanceComponent token={'0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7'} address={address}/></Row>
-            <Row><div>Approved amount</div> <Allowance address={address} spender={"0xcfA132E353cB4E398080B9700609bb008eceB125"} apprToken={"0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"} tokenSymbol={'fDAIx'} /></Row>
-          <ButtonBox>
-              <Input type='number' placeholder='un/wrap amount' onChange={(e) => { setWrappedAmount(e.target.value) }} />
-               <ButtonAlt width={100} text='Wrap' onClick={()=>{wrap(wrappedAmount)}}/>
-               <ButtonAlt width={100} text='Unwrap' onClick={()=>{unwrap(wrappedAmount)}}/>
-            </ButtonBox>
-            <a href='https://app.superfluid.finance/wrap?upgrade' rel="noopener noreferrer" target="_blank">  
-                <SuperRef>Alternatively Wrap/Unwrap stablecoin on Superfluid</SuperRef>
-               </a>
-         </BalancesBox>}
+    {newStream &&  <StreamBalances 
+                        address={address} 
+                        provider={provider} 
+                        signer={signer} 
+                        token={superTokenAddress} 
+                        superContract={superContract} 
+                        chainId={chainId}/>}
     </Container>
   </>
 }

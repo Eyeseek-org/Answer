@@ -13,6 +13,8 @@ export const BetweenRow = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+  margin-top: 1%;
+  margin-bottom: 1%;
 `
 
 export const RowCenter = styled.div`

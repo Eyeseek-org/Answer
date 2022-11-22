@@ -172,12 +172,12 @@ const StatsTable = ({ pid, chain }) => {
         </Sub>
         {loading && <Loading />}
         {!loading && filteredTransactionLogs.length > 0 && mapDataToTable(filteredTransactionLogs)}
-        {!loading && filteredTransactionLogs.length === 0 && <p>No transactions have been made in last 999 blocks</p>}
+        {!loading && filteredTransactionLogs.length === 0 && <p>No transactions found in recent history</p>}
         <Sub>
           <Subtitle text="Deployed Microfunds" />
         </Sub>
         {!loading && filteredMicroCreatedLogs.length > 0 && mapDataToTable(filteredMicroCreatedLogs)}
-        {!loading && filteredMicroCreatedLogs.length === 0 && <p>No microfunds created in last 999 blocks</p>}
+        {!loading && filteredMicroCreatedLogs.length === 0 && <p>No transactions found in recent history</p>}
       </Container>
     </>
   );

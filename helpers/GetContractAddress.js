@@ -7,7 +7,10 @@ export const GetFundingAddress = (chain) => {
     return process.env.NEXT_PUBLIC_AD_DONATOR_BNB;
   } else if (chain && chain.id === 4002) {
     return process.env.NEXT_PUBLIC_AD_DONATOR_FTM;
-  } else {
+  } else if (chain && chain.id === 420) {
+    return process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM;
+  }
+   else {
     return process.env.NEXT_PUBLIC_AD_DONATOR;
   }
 };
@@ -21,11 +24,14 @@ export const GetProjectFundingAddress = (chain) => {
     return process.env.NEXT_PUBLIC_AD_DONATOR_BNB;
   } else if (chain === 4002) {
     return process.env.NEXT_PUBLIC_AD_DONATOR_FTM;
+  } else if (chain === 420) {
+    return process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM;
   } else {
     return process.env.NEXT_PUBLIC_AD_DONATOR;
   }
 };
 
+// Not used anywhere now, will be needed for donate form later
 export const GetProjectTokenAddress = (chain) => {
   if (chain === 80001) {
     return process.env.NEXT_PUBLIC_AD_USDC;
@@ -33,12 +39,13 @@ export const GetProjectTokenAddress = (chain) => {
     return process.env.NEXT_PUBLIC_AD_USDC_BNB;
   } else if (chain === 4002) {
     return process.env.NEXT_PUBLIC_AD_USDC_FTM;
+  } else if (chain === 420) {
+    return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
   } else {
     return process.env.NEXT_PUBLIC_AD_USDC;
   }
 };
 
-// Unused now
 export const GetTokenAddress = (chain) => {
   if (chain && chain.id === 80001) {
     return process.env.NEXT_PUBLIC_AD_USDC;
@@ -46,6 +53,8 @@ export const GetTokenAddress = (chain) => {
     return process.env.NEXT_PUBLIC_AD_USDC_BNB;
   } else if (chain && chain.id === 4002) {
     return process.env.NEXT_PUBLIC_AD_USDC_FTM;
+  } else if (chain && chain.id === 420) {
+    return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
   } else {
     return process.env.NEXT_PUBLIC_AD_USDC;
   }

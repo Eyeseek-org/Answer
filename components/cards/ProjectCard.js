@@ -21,6 +21,7 @@ import {ImageBoxSm} from '../format/Images'
 import { ProjectTitle } from '../typography/Titles';
 import { ProjectDesc } from '../typography/Descriptions';
 import { AbsoluteLeft, AbsoluteRight } from '../format/Box';
+import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
 
 const A = styled(Link)`
   &:hover {
@@ -108,11 +109,9 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         {chainTooltip && (
           <Tooltip
             text={
-              <>
-                Project chain:
-                {chainId === 80001 && <> Polygon Mumbai</>}
-                {chainId === 97 && <> BNB Chain testnet</>}
-                {chainId === 4002 && <> Fantom testnet</>}
+              <>     
+              Project chain:
+              <ChainName chain={chainId}/>
               </>
             }
           />
@@ -133,10 +132,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
             </IconWrapper>
           )}
           <IconWrapper onMouseEnter={() => {setChainTooltip(true)}} onMouseLeave={() => {setChainTooltip(false)}}>
-            {chainId === 80001 && (<><Image src={polygon} alt={'matic'} width={30} height={30} />{' '}</>)}
-            {chainId === 97 && (<><Image src={bnb} alt={'bnb'} width={30} height={30} /> </>)}
-            {chainId === 4002 && (<><Image src={ftm} alt={'ftm'} width={30} height={30} /> </>
-            )}
+            <ChainIconComponent ch={chainId} />
           </IconWrapper>
           {hasFungible && (
             <IconWrapper onMouseEnter={() => { setErc20Tooltip(true) }} onMouseLeave={() => { setErc20Tooltip(false)}}>

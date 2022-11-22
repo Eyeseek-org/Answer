@@ -4,7 +4,7 @@ import { loadingAnim, okAnim, errAnim } from '../components/animated/Animations'
 import {useState, useEffect} from 'react'
 import { ChainExplorer } from '../helpers/MultichainHelpers';
 import { useNetwork } from 'wagmi';
-import { B } from '../components/typography/ColoredTexts';
+import { B, G } from '../components/typography/ColoredTexts';
 
 const LogResult = ({ ev, error, apiError, success, type, data }) => {
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
@@ -54,11 +54,10 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 </LogRow>
                 {!apiError && (
                   <LogRow>
-                    <InfoTag>Info</InfoTag> Project was created with type: Stream
+                    <InfoTag>Info</InfoTag> <G>Project was created with type: Stream</G>
                   </LogRow>
                 )}
                 {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} /></AnimBox> )}
-                {!apiError && !success && ( <AnimBox> <Lottie height={100} width={100} options={loadingAnim} /></AnimBox> )}
           </TxStatus>
       }
     </>

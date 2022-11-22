@@ -16,6 +16,10 @@ const Container = styled.div`
   margin-bottom: 10%;
 `;
 
+const TabWrapper = styled.div`
+  margin-bottom: 5%;
+`
+
 
 // Create couple of common tables
 
@@ -24,6 +28,7 @@ const Stats = () => {
   return <>
     <SectionTitle title={'Discover'} subtitle={'Data overview'} />
     <Container>
+      <TabWrapper>
          <Tab 
             active={active} 
             o1={'Projects'} 
@@ -33,6 +38,7 @@ const Stats = () => {
             change2={() => setActive('Streams')} 
             change3={() => setActive('Transactions')} 
           />
+        </TabWrapper>
          {active === 'Projects' && <ProjectTable/>}
          {active === 'Streams' && <StreamTable/>}
          {active === 'Transactions' && <TransactionTable/>}
