@@ -6,7 +6,7 @@ export const groupStreamWithProject = (streams: Stream[], projectsDetail: Projec
   const newStreams: GroupedStream[] = [];
   streams.forEach((stream) => {
     projectsDetail.forEach((project) => {
-      if (stream.project === project.objectId) {
+      if (stream && project && stream.projectId === project.objectId) {
         newStreams.push({
           ...stream,
           chainId: project.chainId,

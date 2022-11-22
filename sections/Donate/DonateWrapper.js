@@ -24,7 +24,7 @@ import { Row, RowCenter } from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import { DonateActiveIcon } from '../../components/icons/Project';
+import { DonateFormIcon } from '../../components/icons/Project';
 import { MainContainer } from '../../components/format/Box';
 import Tooltip from '../../components/Tooltip';
 import LogResult from '../LogResult'
@@ -159,13 +159,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
             {!success && (
               <>
                 {all && all < sum ? (
-                  <Button text={<><DonateActiveIcon width={30}/></>}  onClick={() => handleSubmit()} error />
+                  <Button text={<><DonateFormIcon width={30}/></>}  onClick={() => handleSubmit()} error />
                 ) : <>
                     {sum === 0 ? <>Cannot donate 0</> :                 
                   <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
                     {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
-                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateActiveIcon width={30}/></>} /> }
-                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateActiveIcon width={30}/></>}  /> }
+                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>} /> }
+                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>}  /> }
                   </div> }
                 </> }
               </>

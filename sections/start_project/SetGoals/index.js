@@ -208,12 +208,12 @@ const SetGoals = ({ setStep }) => {
       ) : (
         <StreamAnnouncement>
           <Lottie height={100} width={100} options={octaAnim} />
-          <div>MVP stage: Supported only Polygon for money streaming type. Go Next.</div>
+          <div>Funding goals are not needed to set for project streaming. You can continue</div>
           <BetweenRow>
             <ButtonAlt onClick={handleBack} text='Back'/>
-            {chain.id !== 80001 ? (
+            {chain.id !== pChain ? (
               <ButtonAlt
-                onClick={() => { switchNetwork(80001)}} text ='Switch to Polygon'/>
+                onClick={() => { switchNetwork(pChain)}} text ='Switch to Polygon'/>
             ) : (
               <ButtonAlt onClick={handleClick} text='Next'/>
             )}

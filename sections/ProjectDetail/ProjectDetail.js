@@ -30,7 +30,6 @@ const DetailBox = styled.div`
   border: 1px solid #2f2f2f;
   padding: 3%;
   padding-left: 5%;
-  margin-top: 5%;
   margin-left: 15%;
   margin-right: 15%;
   @media (max-width: 768px) {

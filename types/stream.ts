@@ -5,6 +5,6 @@ export interface Stream {
   isActive: boolean;
   objectId: string;
   owner: string;
-  project: string;
+  projectId: string;
   updatedAt: Date;
 }

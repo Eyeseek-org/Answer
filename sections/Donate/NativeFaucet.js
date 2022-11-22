@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import polygon from '../../public/icons/donate/polygon.png';
 import ftm from '../../public/icons/donate/ftm.png';
 import bnb from '../../public/icons/donate/bnb.png';
+import optimism from '../../public/icons/optimism.png';
 import Button from '../../components/buttons/Button';
 
 const ImageBox = styled(motion.div)`
@@ -26,15 +27,16 @@ const NativeFaucet = () => {
   useEffect(() => {
     if (chain && chain.id === 80001) {
       setFaucet('matic');
-      setLink('https://faucet.matic.network/');
+      setLink('https://faucet.matic.network');
     } else if (chain && chain.id === 97) {
       setFaucet('bnb');
       setLink('https://testnet.binance.org/faucet-smart');
     } else if (chain && chain.id === 4002) {
       setFaucet('ftm');
-      setLink('https://faucet.ftm.tools/');
-    } else {
-      setFaucet('');
+      setLink('https://faucet.ftm.tools');
+    } else if (chain && chain.id === 420) {
+      setFaucet('optimisim');
+      setLink('https://optimismfaucet.xyz')
     }
   }, []);
 
@@ -55,6 +57,7 @@ const NativeFaucet = () => {
                   {faucet === 'matic' && <Image src={polygon} alt={faucet} width={30} height={30} />}
                   {faucet === 'bnb' && <Image src={bnb} alt={faucet} width={30} height={30} />}
                   {faucet === 'ftm' && <Image src={ftm} alt={faucet} width={30} height={30} />}
+                  {faucet === 'optimism' && <Image src={optimism} alt={faucet} width={30} height={30} />}
                 </ImageBox>
               </>
             }

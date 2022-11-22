@@ -158,7 +158,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
           </BetweenRow>
         </div>
       ) : (
-        <Stream recipient={owner} objectId={objectId} />
+        <Stream recipient={owner} objectId={objectId} chainId={chainId} />
       )}
       <ButtonBox>
         {pType === 'Standard' && <ButtonAlt width={'100%'} text="Fund it!" onClick={() => router.push(`/donate/${objectId}`)} />}

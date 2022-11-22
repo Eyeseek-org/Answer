@@ -39,25 +39,29 @@ const LineButton = styled.button`
     border: none;
 `
 
-// TBD possibly toolbar
+const Balance = styled.div`
+    margin-top: -10px;
+`
 
 const ProgressBar = ({ratio, bal, max, secRatio, terRatio, quaRatio}) => {
+
     return <>
         <ProgressContainer>
             {bal < max ? <ProgressFilter ratio={ratio}>
                 {bal !== '0' && <>
                 <div><LineButton/></div>
-                <div>{bal}</div></>}
+                <Balance>{bal}</Balance></>}
                 </ProgressFilter> : <FullFilter/>}
                 <RowStart>
-                    {secRatio && secRatio !== '0' && <SecondaryFilter color={'blue'} ratio={secRatio}/>}  
-                    {terRatio && terRatio !== '0' && <SecondaryFilter color={'green'} ratio={terRatio}/>}  
-                    {quaRatio && quaRatio !== '0' && <SecondaryFilter color={'yellow'} ratio={quaRatio}/>}  
+                    {secRatio && <SecondaryFilter color={'blue'} ratio={secRatio}/>}  
+                    {/* {terRatio && <SecondaryFilter color={'green'} ratio={terRatio}/>}  
+                    {quaRatio && <SecondaryFilter color={'yellow'} ratio={quaRatio}/>}   */}
                 </RowStart>
         </ProgressContainer>
         <BetweenRow>
             <div>0</div>
-            <div>{max} {bal >= max && <>reached</>} </div></BetweenRow>
+            <div>{max} {bal >= max && <>reached</>} </div>
+        </BetweenRow>
     </>
 }
 

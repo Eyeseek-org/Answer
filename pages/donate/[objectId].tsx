@@ -202,6 +202,8 @@ const Donate: NextPage = () => {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB);
       } else if (projectDetail.chainId === 4002) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM);
+      } else if (projectDetail.chainId === 420) {
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM);
       }
       setCurrency('USDC');
       setCurr(1);
@@ -212,6 +214,8 @@ const Donate: NextPage = () => {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB);
       } else if (projectDetail.chainId === 4002) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM);
+      } else if (projectDetail.chainId === 420) {
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM);
       }
       setCurrency('USDT');
       setCurr(2);
@@ -222,6 +226,8 @@ const Donate: NextPage = () => {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB);
       } else if (projectDetail.chainId === 4002) {
         setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM);
+      } else if (projectDetail.chainId === 420) {
+        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_OPTIMISM);
       }
       setCurrency('DAI');
       setCurr(3);

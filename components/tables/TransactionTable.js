@@ -135,12 +135,12 @@ const TransactionTable = () => {
         </Sub>
         {loading && <Loading />}
         {!loading && transactionLogs.length > 0 && mapDataToTable(transactionLogs)}
-        {!loading && transactionLogs.length === 0 && <p>No transactions have been made in last 999 blocks</p>}
+        {!loading && transactionLogs.length === 0 && <p>No transactions found in recent history</p>}
         <Sub>
           <Subtitle text="Deployed Microfunds" />
         </Sub>
         {!loading && microCreatedLogs.length > 0 && mapDataToTable(microCreatedLogs)}
-        {!loading && microCreatedLogs.length === 0 && <p>No microfunds created in last 999 blocks</p>}
+        {!loading && microCreatedLogs.length === 0 && <p>No transactions found in recent history</p>}
     </>
   );
 };

@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getGroupedRowModel } from '@tanstack/react-table';
 import Address from '../functional/Address';
 import { useQuery } from '@tanstack/react-query';
@@ -7,36 +6,44 @@ import { useState } from 'react';
 import { Stream } from '../../types/stream';
 import { Project } from '../../types/project';
 import { groupStreamWithProject } from '../../util/stream-table';
-import {Table, Header, Tr, Cell, HeadRow } from './TableStyles';
-
-const AddCol = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 150px;
-`;
+import {Table, Header, Tr, Cell, HeadRow, AddCol } from './TableStyles';
+import { ChainIconComponent } from '../../helpers/MultichainHelpers';
+import { ProjectActiveIcon } from '../icons/Project';
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
 const columns: ColumnDef<GroupedStream, string>[] = [
+
+  //flexRender((row) => row.title),
   {
     header: 'Project',
     columns: [
+      {
+        accessorKey: 'chainId',
+        cell: (props) => (
+          <ChainIconComponent ch={props.getValue()} />
+        ),
+        header: 'Chain',
+      },
       {
         accessorKey: 'title',
         header: 'Title',
       },
       {
-        accessorKey: 'chainId',
-        header: 'Chain ID',
-      },
-      {
         accessorKey: 'subcategory',
         header: 'Category',
+      },
+      {
+        accessorKey: 'projectId',
+        cell: (props) => (
+          <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><ProjectActiveIcon width={20}/></a>
+        ),
+        header: 'Detail',
       },
     ],
   },
   {
-    header: ' ',
+    header: 'Streams',
     columns: [
       {
         accessorKey: 'addressBacker',
@@ -54,16 +61,16 @@ const columns: ColumnDef<GroupedStream, string>[] = [
             <Address address={props.getValue().toLowerCase()} />
           </AddCol>
         ),
-        header: 'Owner',
+        header: 'Creator',
       },
       {
         accessorKey: 'flowRate',
         cell: (props) => (
-          <AddCol>
-            <Address address={props.getValue().toLowerCase()} />
-          </AddCol>
+          <>
+            {props.getValue()}
+          </>
         ),
-        header: 'FlowRate',
+        header: 'Rate /mo',
       },
     ],
   },
@@ -86,7 +93,7 @@ const StreamTable = () => {
       console.log('err', err);
     },
     onSuccess: async (streams) => {
-      const uniqueProjectIds = [...new Set(streams.map((stream) => stream.project))];
+      const uniqueProjectIds = [...new Set(streams.map((stream) => stream.projectId))];
       const projectsDetail = await DapAPIService.getBatchProjectsById(uniqueProjectIds);
       const groupedData = groupStreamWithProject(streams, projectsDetail);
 
@@ -109,7 +116,7 @@ const StreamTable = () => {
 
   return (
     <>
-      {data && data.length > 0 && (
+      {activeStreams && activeStreams.length > 0 && (
         <Table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (

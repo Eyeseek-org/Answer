@@ -2,6 +2,7 @@ import Image from 'next/image'
 import polygon from '../public/icons/polygon.png';
 import fantom from '../public/icons/fantom.png';
 import binance from '../public/icons/binance.png';
+import optimism from '../public/icons/optimism.png';
 import {useState, useEffect} from 'react';
 import { ExpandIcon } from '../components/icons/Notifications';
 
@@ -30,6 +31,8 @@ export const ChainIcon = (chain) => {
         return <Image src={binance} alt={'bnb'} width={30} height={30} />
     } else if (chain === 4002) {
         return <Image src={fantom} alt={'ftm'} width={30} height={30} />
+    } else if (chain === 420) {
+      return <Image src={optimism} alt={'optimism'} width={30} height={30} />
     } else {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />;
     }
@@ -42,7 +45,9 @@ export const ChainExplorer = (chain) => {
         return  'https://bscscan.com/tx/';
       } else if (chain === 4002) {
         return 'https://testnet.ftmscan.com/tx';
-      }
+      } else if (chain === 420) {
+        return 'https://optimistic.etherscan.io/tx/';
+      } 
 }
 
 export const ChainName = (chain) => {
@@ -52,6 +57,8 @@ export const ChainName = (chain) => {
         return  'Binance testnet';
       } else if (chain === 4002) {
         return 'Fantom testnet';
+      } else if (chain === 420) {
+        return 'Optimism testnet';
       } else {
         return 'Polygon';
       }

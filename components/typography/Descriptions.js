@@ -43,3 +43,16 @@ export const WarnDesc = styled.div`
   color: ${(props) => props.theme.colors.font};
   margin-left: 2%;
 `
+
+export const Reference = styled.div`
+  margin-top: 3%;
+  padding-bottom: 2%;
+  color: #B0F6FF;
+  font-family: 'Neucha';
+  text-decoration: underline;
+  opacity: 0.7;
+  transition: 0.2s;
+  &:hover{
+    opacity: 1;
+  }
+`

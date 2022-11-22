@@ -117,7 +117,7 @@ const Distribute: NextPage = () => {
   useContractEvent({
     address: add,
     abi: donation.abi,
-    chainId: 80001,
+    chainId: chainId,
     eventName: 'DistributionAccomplished',
     listener: (event) => handleListener(event),
     once: true,

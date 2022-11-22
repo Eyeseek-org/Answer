@@ -49,6 +49,10 @@ export const AddCol = styled.div`
   width: 100px;
 `;
 
+export const ImageHover = styled.div`
+  cursor: pointer;
+`
+
 export const HeaderCell = styled.div`
   cursor: pointer;
 `
