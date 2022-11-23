@@ -7,10 +7,10 @@ import Eye7 from '../public/Eye7.png';
 import Footer from '../sections/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
-import { BoardGameIcon, MobileGameIcon, RoboticsIcon, WearablesIcon } from '../components/icons/Categories';
+import { AiIcon, BoardGameIcon, DaoIcon, DefiIcon, HwIcon, IllustrationIcon, IoTIcon, LiteratureIcon, MobileGameIcon, MusicIcon, NftApeIcon, PerformanceIcon, RoboticsIcon, VideoGameIcon, VideoIcon, WearablesIcon } from '../components/icons/Categories';
 import FaqCard from '../components/cards/FaqCard';
 import Subtitle from '../components/typography/Subtitle';
-import Tooltip from '../components/Tooltip';
+import {motion} from 'framer-motion';
 
 const Container = styled.div``;
 
@@ -80,12 +80,23 @@ const CatIcons = styled.div`
   margin-top: 5%;
   display: flex;
   flex-direction: row;
-  gap: 2%;
+  flex-wrap: wrap;
+  max-width: 90%;
+  gap: 1%;
 `
 
-const TooltipBox = styled.div`
+const CatDesc = styled(motion.div)`
   position: absolute;
+  font-family: 'Gemunu Libre';
+  letter-spacing: 0.3;
+  left: 50%;
+  background: ${(props) => props.theme.colors.gradient};
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 5px;
 `
+
 
 export interface IFAQ {
   question: string;
@@ -148,20 +159,64 @@ const FAQS: IFAQ[] = [
 
 const ICats: ICats[] = [
   {
-    text: 'Wearables',
+    text: 'Wearables - Invent new gadgets and accessories',
     icon: <WearablesIcon width={50} height={50} />,
   },
   {
-    text: 'Robotics',
+    text: 'Robotics - Help new generation of machines take over the world',
     icon: <RoboticsIcon width={50} height={50} />,
   },
   {
-    text: 'Mobile Games',
+    text: 'AI - Feed data sets across the science labs and universities',
+    icon: <AiIcon width={50} height={50} />,
+  },
+  {
+    text: 'IoT - Use sensors to collect data and push automation to the next level',
+    icon: <IoTIcon width={50} height={50} />,
+  },
+  {
+    text: 'Mobile app - Implement a benefitial app or an addictive game',
     icon: <MobileGameIcon width={50} height={50} />,
   },
   {
-    text: 'Board games',
+    text: 'Board games - Design strategic masterpiece or a fun party game',
     icon: <BoardGameIcon width={50} height={50} />
+  },
+  {
+    text: 'Video games - Build an indie game or a AAA blockbuster',
+    icon: <VideoGameIcon width={50} height={50} />
+  },
+  {
+    text: 'Hardware - Assemble powerful devices for green crypto mining',
+    icon: <HwIcon width={50} height={50} />
+  },
+  {
+    text: 'Movies - Become a director or produce a video with deep emotional impact',
+    icon: <VideoIcon width={50} height={50} />
+  },
+  {
+    text: 'Illustration - Draw anything you imagine and above',
+    icon: <IllustrationIcon width={50} height={50} />
+  },
+  {
+    text: 'Literature - Write a book of poems, autobiography, or a novel',
+    icon: <LiteratureIcon width={50} height={50} />
+  },
+  {
+    text: 'Music - Support of all kinds of music production, or musical events',
+    icon: <MusicIcon width={50} height={50} />
+  },
+  {
+    text: 'Defi - Lending, borrowing, all sorts of crypto trading',
+    icon: <DefiIcon width={50} height={50} />
+  },
+  {
+    text: 'NFT - Explore new ways how to leverage NFTs non-fungibility',
+    icon: <NftApeIcon width={50} height={50} />
+  },
+  {
+    text: 'DAO - Establish a decentralized autonomous organization',
+    icon: <DaoIcon width={50} height={50} />
   }
 ]
 
@@ -191,8 +246,16 @@ const Faq: NextPage = () => {
           })}
         
         <CatBox>
-          {catTooltip !== '' && <TooltipBox><Tooltip text={catTooltip} margin={'45px'}/></TooltipBox>}
-          <Subtitle text='Categories'/>
+          {catTooltip !== '' &&   
+            <CatDesc
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.4,
+                scale: [0, 1, 0.5, 1],
+              }}>
+            {catTooltip}</CatDesc> }
+         <Subtitle text='Categories'/>
           <CatIcons>
             {ICats.map(({text, icon}, index) => {
               return <CatIcon text={text} icon={icon} key={index}/>

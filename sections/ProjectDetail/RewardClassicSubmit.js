@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useContractWrite } from 'wagmi';
 import donation from '../../abi/donation.json';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { RowEnd } from '../../components/format/Row';
@@ -17,17 +17,16 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
     await write?.();
   };
 
-  const { config } = usePrepareContractWrite({
+
+  const {write} = useContractWrite({
+    mode: 'recklesslyUnprepared',
     address: add,
     abi: donation.abi,
     chainId: home,
     functionName: 'createReward',
     args: [pid, cap, 1, "0x0000000000000000000000000000000000000000", 0],
-  });
+  })
 
-
-  const { write } = useContractWrite(config);
-  
   return (
     <Container>
       <RowEnd>

@@ -3,6 +3,5 @@ export enum PAGE {
   DISCOVER = '/discover',
   STARTPROJECT = '/startproject',
   FAQ = '/faq',
-  MY = '/my',
-  STATS = '/stats',
+  MY = '/my'
 }

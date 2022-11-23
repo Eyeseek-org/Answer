@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useContractWrite, usePrepareContractWrite, useContractEvent } from 'wagmi';
+import { useContractWrite, useContractEvent } from 'wagmi';
 import donation from '../../abi/donation.json';
 import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
@@ -40,17 +40,16 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     once: true,
   });
 
-  // Total, Reward AMount
-  const { config, error } = usePrepareContractWrite({
+  const {write} = useContractWrite({
+    mode: 'recklesslyUnprepared',
     address: add,
     abi: donation.abi,
     chainId: home,
     functionName: 'createReward',
     args: [pid, cap, total, tokenAddress, 1],
-  });
+  })
 
 
-  const { write } = useContractWrite(config);
   
   return (
     <Container>

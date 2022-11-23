@@ -42,13 +42,15 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         await setEv(true)
         await setLoading(false)
     }
+
+    const ethAmount = amount * 1000000000000000000 ;
+
     const { config } = usePrepareContractWrite({
         address: tokenContract,
         abi: token.abi,
         functionName: 'approve',
-        args: [spender, amount],
+        args: [spender, ethAmount],
     })
-
 
     useContractEvent({
         address: tokenContract,
@@ -58,9 +60,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         once: true
       })
     
-
     const { write } = useContractWrite(config)
-
 
     const handleApprove = async () => {
         await write?.()

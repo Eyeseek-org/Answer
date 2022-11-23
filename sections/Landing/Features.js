@@ -19,6 +19,7 @@ import chaindonation from '../../public/chaindonation.gif';
 import fee from '../../public/fee.gif';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { P, B, F, G, R } from '../../components/typography/ColoredTexts';
+import Carousel from 'nuka-carousel/lib/carousel';
 
 const Container = styled.div`
   position: relative;
@@ -65,6 +66,7 @@ const Features = () => {
     <Container>
       <SectionTitle title="Key concepts" subtitle="How is Eyeseek different" />
       <ContentBox>
+        <Carousel animation='zoom' autoplay autoplayInterval={15000} enableKeyboardControls>
         <Row>
           {demoMicro ? (
             <FeatureCard
@@ -154,6 +156,7 @@ const Features = () => {
             />
           )}
         </Row>
+        </Carousel>
       </ContentBox>
     </Container>
   );
