@@ -36,7 +36,7 @@ const ApprovedComponent = ({ address, currencyAddress }) => {
       {showTooltip && <Tooltip text='Funded amount must be approved before spending'/>}
       {data && (
         <div onMouseEnter={()=>{setShowTooltip(true)}} onMouseLeave={()=>{setShowTooltip(false)}}>
-          <Amount value={data} />
+          <Amount value={fullValue} />
           <InfoIcon width={15}/>
         </div>
       )}

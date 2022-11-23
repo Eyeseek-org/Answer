@@ -22,8 +22,8 @@ const Inactive = styled.div`
     font-family: 'Montserrat';
     padding: 2%;
     cursor: pointer;
-    border-radius: 15px;
     background: ${(props) => props.theme.colors.invisible};
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
     transition: 0.2s;
     box-shadow: 0px 0px 0px 0px ${(props) => props.theme.colors.font};
     &:hover{
@@ -36,6 +36,7 @@ const Inactive = styled.div`
 
 const Active = styled(Inactive)`
     color: ${(props) => props.theme.colors.primary};
+    border-bottom: 1px solid ${(props) => props.theme.colors.primary};
 `
 
 

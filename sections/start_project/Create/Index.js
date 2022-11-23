@@ -86,14 +86,15 @@ const Create = ({ setStep }) => {
     await setEv(true);
   };
 
-  // const fullValue = (pm1 * (10 ** 18));
+  const Eth = Number(1000 * 10 ** 18);
+  // Proč to do piči nefunguje
 
   const { config, isError } = usePrepareContractWrite({
     address: add,
     abi: donation.abi,
     functionName: 'createFund',
     chainId: pChain,
-    args: [pm1],
+    args: [pm1]
   });
 
   const { write, error, data } = useContractWrite(config);
@@ -101,6 +102,8 @@ const Create = ({ setStep }) => {
   const handleContract = async () => {
     write?.();
   };
+
+  
 
   const handleMoralis = async (st) => {
     try {

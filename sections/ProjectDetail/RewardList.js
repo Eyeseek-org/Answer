@@ -32,13 +32,13 @@ const RewardList = ({ oid, chain }) => {
   const query = `/classes/Reward?where={"project":"${oid}"}`
   const { data: rewards, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
 
-  const handleRewardClick = (sel, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId) => {
+  const handleRewardClick = (sel, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors) => {
     setDesc(rewDesc)
     setSelected(rewObjectId);
     if (type === 'Microfund') {
-      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId  }));
+      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors  }));
     } else if (type === 'Donate') {
-      setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId }));
+      setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors }));
     }
   };
 
@@ -101,7 +101,7 @@ const RewardList = ({ oid, chain }) => {
                     selected={selected}
                     chain={chain}
                     rType={reward.rType}
-                    onClick={() => handleRewardClick(reward.title, reward.description, reward.requiredPledge, reward.type, reward.rewardId, reward.eligibleActual, reward.objectId)}
+                    onClick={() => handleRewardClick(reward.title, reward.description, reward.requiredPledge, reward.type, reward.rewardId, reward.eligibleActual, reward.objectId, reward.donors)}
                   /> :  <RewardDepletedCard
                     key={reward.objectId}
                     rid={reward.rewardId}

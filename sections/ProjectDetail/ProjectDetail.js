@@ -162,7 +162,6 @@ const ProjectDetail = ({
   const useEv = async (e) => {
     await cancelMoralis(objectId);
     await handleCancelNotifications();
-    console.log(e);
   };
 
   useContractEvent({
@@ -170,7 +169,7 @@ const ProjectDetail = ({
     abi: donation.abi,
     chainId: chainId,
     eventName: 'Cancelled',
-    listener: () => useEv(e),
+    listener: (e) => useEv(e),
     once: true,
   });
 

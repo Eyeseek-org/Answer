@@ -11,6 +11,7 @@ import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { BetweenRow } from '../../components/format/Row';
 import { MainContainer } from '../../components/format/Box';
 import { Container } from './Styles';
+import { BigNumber } from 'ethers';
 
 const Category = ({ setStep }) => {
   const { appState, setAppState } = useApp();
@@ -69,7 +70,6 @@ const Category = ({ setStep }) => {
       fontSize: '0.9em',
     }),
   };
-
 
   return (
     <MainContainer>

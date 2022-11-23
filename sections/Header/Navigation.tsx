@@ -9,7 +9,6 @@ const headerNavigationLinks: { title: string; url: PAGE }[] = [
   { title: 'Start a project', url: PAGE.STARTPROJECT },
   { title: 'FAQ', url: PAGE.FAQ },
   { title: 'My', url: PAGE.MY },
-  { title: 'Stats', url: PAGE.STATS },
 ];
 
 export const Navigation = () => {

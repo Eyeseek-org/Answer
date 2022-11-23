@@ -24,7 +24,7 @@ import { Row, RowCenter } from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import { DonateFormIcon } from '../../components/icons/Project';
+import { DonateErrIcon, DonateFormIcon } from '../../components/icons/Project';
 import { MainContainer } from '../../components/format/Box';
 import Tooltip from '../../components/Tooltip';
 import LogResult from '../LogResult'
@@ -45,7 +45,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const { switchNetwork } = useSwitchNetwork();
   // @ts-ignore
   const { appState } = useApp();
-  const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId } = appState;
+  const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId, rewDonors } = appState;
   const sum = parseInt(rewMAmount) + parseInt(rewDAmount);
   const router = useRouter();
   const { objectId } = router.query;
@@ -72,11 +72,11 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     all = Number(allowance.data.toString());
   }
 
-  const useEv = () => {
-    setSuccess(true);
-    updateBookmark(bookmarks);
+  const useEv = async() => {
+    await setSuccess(true);
+    await updateBookmark(bookmarks);
     if (rewEligible > 0){
-      updateReward();
+      await updateReward();
     }
   };
 
@@ -98,15 +98,19 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     once: true,
   });
 
-  const { config, error } = usePrepareContractWrite({
+  const ethDonate = rewDAmount * 1000000000000000000 ;
+  const ethMicro = rewMAmount * 1000000000000000000 ;
+
+
+  const {write, data, error} = useContractWrite({
+    mode: 'recklesslyUnprepared',
     address: add,
     abi: donation.abi,
     chainId: home,
     functionName: 'contribute',
-    args: [rewMAmount, rewDAmount, pid, curr, rewId],
-  });
+    args: [ethMicro, ethDonate, pid, curr, rewId],
+  })
 
-  const { write, data } = useContractWrite(config);
 
   const handleSubmit = async () => {
     await write?.();
@@ -126,10 +130,10 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   };
 
 
-  const updateReward = async () => {
-    const [newDonors] = [...newDonors, address];
+  const updateReward = async (rewDonors) => {
+    const newDonors = [...rewDonors, address];
     try{
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors }, moralisApiConfig);
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors}, moralisApiConfig);
       setApiError(false)
     } catch (er) {
       setApiError(true)
@@ -159,7 +163,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
             {!success && (
               <>
                 {all && all < sum ? (
-                  <Button text={<><DonateFormIcon width={30}/></>}  onClick={() => handleSubmit()} error />
+                  <ButtonAlt text={<><DonateErrIcon width={30}/></>}  onClick={() => handleSubmit()} />
                 ) : <>
                     {sum === 0 ? <>Cannot donate 0</> :                 
                   <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>

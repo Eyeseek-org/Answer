@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { MainContainer, Wrapper } from '../../components/format/Box';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { BetweenRow } from '../../components/format/Row';
+import {story_form} from '../../data/forms/createForm'
 
 const FormStyle = styled.form`
   display: flex;
@@ -46,8 +47,7 @@ const FormStyle = styled.form`
 
 
 const TellStory = ({ setStep }) => {
-  const { appState, setAppState } = useApp();
-  const { pTitle, pDesc, pWeb, pSocial } = { ...appState };
+  const { setAppState } = useApp();
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -88,40 +88,7 @@ const TellStory = ({ setStep }) => {
     },
   });
 
-  const story_form = [
-    {
-      title: 'Title',
-      name: 'title',
-      p: pTitle,
-      description: 'Project title will help to find your project easily',
-      text_field: false,
-      maxLength: 60,
-    },
-    {
-      title: 'Description',
-      name: 'description',
-      p: pDesc,
-      description: 'Describe your project value in few sentences',
-      text_field: true,
-      maxLength: 235,
-    },
-    {
-      title: 'Website',
-      name: 'website',
-      p: pWeb,
-      description: 'Provide website with your project detail',
-      text_field: false,
-      maxLength: 120,
-    },
-    {
-      title: 'Socials',
-      name: 'socials',
-      p: pSocial,
-      description: 'Link to your primary socials. (Twitter, Instagram, Facebook, etc.)',
-      text_field: false,
-      maxLength: 100,
-    },
-  ];
+ 
 
   const handleClick = () => {
     setStep((prev) => (prev += 1));

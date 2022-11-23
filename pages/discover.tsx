@@ -1,47 +1,48 @@
-import type { NextPage } from 'next';
-import { useQuery } from '@tanstack/react-query';
+import StreamTable from '../components/tables/StreamTable';
+import styled from 'styled-components';
 import SectionTitle from '../components/typography/SectionTitle';
-import ProjectCard from '../components/cards/ProjectCard';
-import { cats } from '../data/cats';
-import { UniService } from '../services/DapAPIService';
-import { Project } from '../types/project';
-import { Container, ProjectBox } from '../styles/pages/discover';
+import Tab from '../components/form/Tab';
+import { useState } from 'react';
+import TransactionTable from '../components/tables/TransactionTable';
+import ProjectTable from '../components/tables/ProjectTable';
 
-const BrowsePro: NextPage = () => {
-  const { data: projects } = useQuery(['projects'], () => UniService.getDataAll<Project>('/classes/Project'));
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 5%;
+  margin-bottom: 10%;
+`;
 
-  return (
+const TabWrapper = styled.div`
+  margin-bottom: 5%;
+`
+
+// Create couple of common tables
+
+const Discover = () => {
+  const [active, setActive] = useState('Projects');
+  return <>
+    <SectionTitle title={'Discover'} subtitle={'Data overview'} />
     <Container>
-      {cats.map((category) => {
-        const categoryProjects = projects?.filter((project) => project.category.includes(category));
-        return (
-          <>
-            <SectionTitle title={category} subtitle={`Browse through ${category} projects`} />
-            <ProjectBox>
-              {categoryProjects &&
-                categoryProjects.map((project) => (
-                  <ProjectCard
-                    key={project.objectId}
-                    title={project.title}
-                    description={project.description}
-                    category={project.category}
-                    subcategory={project.subcategory}
-                    hasFungible={project.hasFungible}
-                    hasNft={project.hasNft}
-                    link={`/project/${project.objectId}`}
-                    state={project.state}
-                    chainId={project.chainId}
-                    pid={project.pid}
-                    imageUrl={project.imageUrl}
-                    pType={project.type}
-                  />
-                ))}
-            </ProjectBox>
-          </>
-        );
-      })}
+      <TabWrapper>
+         <Tab 
+            active={active} 
+            o1={'Projects'} 
+            o2={'Streams'} 
+            o3={'Transactions'}
+            change1={() => setActive('Projects')} 
+            change2={() => setActive('Streams')} 
+            change3={() => setActive('Transactions')} 
+          />
+        </TabWrapper>
+         {active === 'Projects' && <ProjectTable/>}
+         {active === 'Streams' && <StreamTable/>}
+         {active === 'Transactions' && <TransactionTable/>}
     </Container>
-  );
+    </>
 };
 
-export default BrowsePro;
+export default Discover;

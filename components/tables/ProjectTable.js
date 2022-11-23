@@ -151,7 +151,7 @@ const ProjectTable = () => {
   });
 
   return  <>
- {isLoading ? <>Loading...</> : 
+ {isLoading ? <>Loading, server was sleeping...</> : 
       <>
         {data && data.length > 0 && (
           <Table>

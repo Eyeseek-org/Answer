@@ -4,7 +4,7 @@ export const AppContext = createContext({});
 export const AppProvider = (props) => {
   const [appState, setAppState] = useState({
     milestones: [],
-    pTitle: 'Default project title',
+    pTitle: 'Project title',
     pDesc: '',
     pWeb: 'https://www.d3vlibrary.com',
     pSocial: 'https://twitter.com/d3v_library',
@@ -21,7 +21,8 @@ export const AppProvider = (props) => {
     rewDAmount: 0,
     rewId: 0,
     rewEligible: 0,
-    rewObjectId: ''
+    rewObjectId: '',
+    rewDonors: []
   });
 
   return (

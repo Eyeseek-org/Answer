@@ -112,6 +112,7 @@ const LandingMain = ({ width, height }) => {
   const [gColor, setGColor] = useState('#F0F0F0');
   const [covColor, setCovColor] = useState('#343434');
   const [axColor, setAxColor] = useState('#343434');
+  const [optColor, setOptColor] = useState('#F0F0F0')
   const [url, setUrl] = useState();
 
   const showMoralis = () => {
@@ -125,6 +126,7 @@ const LandingMain = ({ width, height }) => {
     setGColor('#F0F0F0');
     setCovColor('#343434');
     setAxColor('#343434');
+    setOptColor('#F0F0F0')
   };
 
   const showPolygon = () => {
@@ -138,6 +140,7 @@ const LandingMain = ({ width, height }) => {
     setGColor('#F0F0F0');
     setCovColor('#343434');
     setAxColor('#343434');
+    setOptColor('#F0F0F0')
   };
 
   const showBinance = () => {
@@ -151,6 +154,7 @@ const LandingMain = ({ width, height }) => {
     setGColor('#F0F0F0');
     setCovColor('#343434');
     setAxColor('#343434');
+    setOptColor('#F0F0F0')
   };
 
   const showFantom = () => {
@@ -164,6 +168,7 @@ const LandingMain = ({ width, height }) => {
     setGColor('#F0F0F0');
     setCovColor('#343434');
     setAxColor('#343434');
+    setOptColor('#F0F0F0')
   };
 
   const showGoogle = () => {
@@ -177,6 +182,7 @@ const LandingMain = ({ width, height }) => {
     setGColor('#FBBC05');
     setCovColor('#343434');
     setAxColor('#343434');
+    setOptColor('#F0F0F0')
   };
 
   const showCov = () => {
@@ -190,6 +196,7 @@ const LandingMain = ({ width, height }) => {
     setGColor('#F0F0F0');
     setCovColor('#ff4c8b');
     setAxColor('#343434');
+    setOptColor('#F0F0F0')
   };
 
   const showAxelar = () => {
@@ -203,6 +210,21 @@ const LandingMain = ({ width, height }) => {
     setGColor('#F0F0F0');
     setCovColor('#343434');
     setAxColor('white');
+    setOptColor('#F0F0F0')
+  };
+
+  const showOptimism = () => {
+    setUrl('https://axelar.network/');
+    setExpTitle('Axelar');
+    setExpDesc(d.axelar);
+    setMorColor('#F0F0F0');
+    setFanColor('#F0F0F0');
+    setBnbColor('#F0F0F0');
+    setPolColor('#F0F0F0');
+    setGColor('#F0F0F0');
+    setCovColor('#343434');
+    setAxColor('#343434');
+    setOptColor('#ff0420')
   };
 
   return (
@@ -329,6 +351,9 @@ const LandingMain = ({ width, height }) => {
           fill="inherit"
         />
       </svg>
+      <path d="M693.5 429C703.717 429 712 420.717 712 410.5C712 400.283 703.717 392 693.5 392C683.283 392 675 400.283 675 410.5C675 420.717 683.283 429 693.5 429Z" fill="#FF0420"/>
+<path d="M688.108 415.417C687.006 415.417 686.104 415.158 685.4 414.639C684.706 414.112 684.359 413.362 684.359 412.39C684.359 412.186 684.382 411.936 684.428 411.64C684.549 410.974 684.72 410.173 684.942 409.238C685.572 406.692 687.196 405.42 689.816 405.42C690.529 405.42 691.167 405.54 691.732 405.781C692.297 406.012 692.741 406.364 693.065 406.836C693.389 407.299 693.551 407.854 693.551 408.502C693.551 408.697 693.528 408.942 693.481 409.238C693.343 410.062 693.176 410.863 692.982 411.64C692.658 412.908 692.098 413.857 691.301 414.487C690.505 415.107 689.441 415.417 688.108 415.417ZM688.302 413.418C688.821 413.418 689.26 413.265 689.621 412.959C689.992 412.654 690.256 412.186 690.413 411.557C690.626 410.687 690.788 409.928 690.899 409.28C690.936 409.085 690.954 408.886 690.954 408.683C690.954 407.84 690.515 407.419 689.635 407.419C689.117 407.419 688.673 407.572 688.302 407.877C687.941 408.183 687.682 408.65 687.525 409.28C687.358 409.9 687.191 410.659 687.025 411.557C686.988 411.742 686.969 411.936 686.969 412.14C686.969 412.992 687.414 413.418 688.302 413.418Z" fill="white"/>
+<path d="M694.188 415.278C694.087 415.278 694.008 415.246 693.952 415.181C693.906 415.107 693.892 415.024 693.911 414.931L695.827 405.906C695.845 405.804 695.896 405.72 695.98 405.656C696.063 405.591 696.151 405.558 696.243 405.558H699.937C700.964 405.558 701.788 405.771 702.408 406.197C703.038 406.623 703.353 407.239 703.353 408.044C703.353 408.275 703.325 408.516 703.269 408.766C703.038 409.83 702.571 410.617 701.867 411.126C701.173 411.636 700.219 411.89 699.007 411.89H697.132L696.493 414.931C696.475 415.033 696.424 415.116 696.341 415.181C696.257 415.246 696.169 415.278 696.077 415.278H694.188ZM699.104 409.974C699.493 409.974 699.83 409.867 700.117 409.655C700.414 409.442 700.608 409.136 700.701 408.738C700.728 408.581 700.742 408.442 700.742 408.322C700.742 408.053 700.664 407.85 700.506 407.711C700.349 407.563 700.08 407.489 699.701 407.489H698.035L697.507 409.974H699.104Z" fill="white"/>
     </Container>
   );
 };
