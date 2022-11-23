@@ -105,7 +105,7 @@ const Distribute: NextPage = () => {
     abi: donation.abi,
     chainId: chainId,
     functionName: 'distribute',
-    args: [identifier, '0x2107B0F3bB0ccc1CcCA94d641c0E2AB61D5b8F3E'],
+    args: [identifier],
   });
 
   const { write } = useContractWrite(config);

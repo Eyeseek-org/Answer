@@ -5,6 +5,7 @@ import {useState, useEffect} from 'react'
 import { ChainExplorer } from '../helpers/MultichainHelpers';
 import { useNetwork } from 'wagmi';
 import { B, G } from '../components/typography/ColoredTexts';
+import ButtonAlt from '../components/buttons/ButtonAlt';
 
 const LogResult = ({ ev, error, apiError, success, type, data }) => {
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
@@ -41,6 +42,9 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                      <B> Transaction detail in blockchain explorer</B>
                     </a></> }
                   </LogRow>
+                  <LogRow>
+                    <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/>
+                  </LogRow>
                   </>}
                 {ev && success && ( <AnimBox> <Lottie height={100} width={100} options={okAnim} /> </AnimBox>)}
                 {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} />  </AnimBox> )}
@@ -52,11 +56,14 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 <LogRow>
                   <InfoTag>Info</InfoTag> Project was initiated
                 </LogRow>
-                {!apiError && (
+                {!apiError && <>
                   <LogRow>
                     <InfoTag>Info</InfoTag> <G>Project was created with type: Stream</G>
                   </LogRow>
-                )}
+                  <LogRow>
+                    <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/>
+                  </LogRow>
+                </>}
                 {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} /></AnimBox> )}
           </TxStatus>
       }

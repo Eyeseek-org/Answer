@@ -45,7 +45,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const { switchNetwork } = useSwitchNetwork();
   // @ts-ignore
   const { appState } = useApp();
-  const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId } = appState;
+  const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId, rewDonors } = appState;
   const sum = parseInt(rewMAmount) + parseInt(rewDAmount);
   const router = useRouter();
   const { objectId } = router.query;
@@ -72,11 +72,11 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     all = Number(allowance.data.toString());
   }
 
-  const useEv = () => {
-    setSuccess(true);
-    updateBookmark(bookmarks);
+  const useEv = async() => {
+    await setSuccess(true);
+    await updateBookmark(bookmarks);
     if (rewEligible > 0){
-      updateReward();
+      await updateReward();
     }
   };
 
@@ -126,10 +126,10 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   };
 
 
-  const updateReward = async () => {
-    const [newDonors] = [...newDonors, address];
+  const updateReward = async (rewDonors) => {
+    const newDonors = [...rewDonors, address];
     try{
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors }, moralisApiConfig);
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors}, moralisApiConfig);
       setApiError(false)
     } catch (er) {
       setApiError(true)

@@ -5,6 +5,7 @@ import '../styles/globals.css';
 import styled, { ThemeProvider } from 'styled-components';
 import { Chain, createClient, configureChains, WagmiConfig } from 'wagmi';
 import { AppProvider } from '../sections/utils/appContext';
+import {RewardProvider } from '../sections/utils/rewardContext';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
@@ -132,10 +133,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <meta name="theme-color" content="#317EFB" />
                   </Head>
                   <AppProvider>
+                    <RewardProvider>
                     <Header />
                     <Loading>
                       <Component {...pageProps} />
                     </Loading>
+                    </RewardProvider>
                   </AppProvider>
                 </RainbowKitProvider>
             </MoralisProvider>

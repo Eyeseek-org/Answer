@@ -4,13 +4,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import InputContainer from '../../components/form/InputContainer';
-import { NextButton } from '../start_project/Styles';
 import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers';
 import { HTTPS_URL_REGEX } from '../../util/regex';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import { useMutation } from '@tanstack/react-query';
 import { DapAPIService } from '../../services/DapAPIService';
 import Subtitle from '../../components/typography/Subtitle';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
 
 const Description = styled.div`
   font-size: 1em;
@@ -59,24 +59,22 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     }
   };
 
+
+
   // TBD pass correctly formik into the input, right now validations are off
   const formik = useFormik({
     initialValues: {
       url: '',
+      title: ''
     },
     validateOnChange: false,
     validateOnBlur: true,
     validationSchema: Yup.object({
+      url: Yup.string().required('URL is required field').matches(HTTPS_URL_REGEX, 'References are accepted with HTTPS prefix only'),
       title: Yup.string().required('Title is required field'),
-      description: Yup.string().required('Description is required field'),
-      website: Yup.string().required('Website is required field').matches(HTTPS_URL_REGEX, 'Refernces are accepted with HTTPS prefix only'),
-      socials: Yup.string()
-        .required('Socials is required field!')
-        .matches(HTTPS_URL_REGEX, 'Refernces are accepted with HTTPS prefix only'),
     }),
     onSubmit: (values) => {
-      setAppState((prev) => ({ ...prev, pTitle: values.title, pDesc: values.description, pWeb: values.website, pSocial: values.socials }));
-      handleClick();
+      handleUpdate(objectOd);
     },
   });
 
@@ -91,36 +89,45 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
               socials where your progress is described in more detail
             </Description>
             <InputContainer
-              label={'Update title'}
-              placeholder={'Alpha available!'}
-              description={'Describe your update in two or three words'}
-              onChange={(e) => setUpdateTitle(e.target.value)}
-              type={'text'}
-            />
+                key={'title'}
+                name={'title'}
+                label={'Update title'}
+                value={updateTitle}
+                placeholder={'Alpha available!'}
+                description={'Describe your update in two or three words'}
+                onChange={(e) => setUpdateTitle(e.target.value)}
+                type={'text'}
+                maxLength={30}
+                isError={formik.errors[updateTitle] != null}
+                errorText={formik.errors[updateTitle]}
+              />
             <InputContainer
+              key={'url'}
+              name={'url'}
+              value={url}
               label={'URL'}
               placeholder={'https://updates.kickstarter.com/kickstarters-four-day-work-week/'}
               description={'URL to the project update'}
               onChange={(e) => setUrl(e.target.value)}
               type={'text'}
+              maxLength={120}
+              isError={formik.errors[url] != null}
+              errorText={formik.errors[url]}
             />
             {!isSuccess && !isError && url && (
-              <NextButton
+              <ButtonAlt
                 onClick={() => {
                   handleUpdate(objectId);
                 }}
-              >
-                Send notification
-              </NextButton>
+                text={' Send notification'}
+              />
             )}
             {isError && (
-              <NextButton
+              <ButtonAlt
                 onClick={() => {
                   handleUpdate(objectId);
-                }}
-              >
-                Technical error: Please try again later
-              </NextButton>
+                }} text ='Technical error: Please try again later'
+              />
             )}
             {isSuccess && <SuccessDisButton width={'100%'} text="Success! Watchers were notified"></SuccessDisButton>}
           </MilestoneContainer>
