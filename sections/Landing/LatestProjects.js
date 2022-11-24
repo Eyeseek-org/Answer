@@ -141,7 +141,7 @@ const LatestProjects = ({ my }) => {
           </div>
         ))}
       </Categories>
-      <Carousel animation='zoom' autoplay autoplayInterval={15000} enableKeyboardControls>
+      <Carousel animation='zoom' enableKeyboardControls>
         <ProjectBox>
           {filteredFirst.map((project, index) => {
             return (

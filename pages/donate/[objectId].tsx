@@ -23,6 +23,7 @@ import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
 import {ChainIcon} from '../../helpers/MultichainHelpers'
+import ErrText from '../../components/typography/ErrText';
 
 
 const DonateOption = styled.div`
@@ -144,9 +145,13 @@ const Donate: NextPage = () => {
 
 
   const query = `/classes/Project?where={"objectId":"${objectId}"}`
-  const { data: projectDetail } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
+  const { data: projectDetail, error } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
     enabled: !!router.isReady,
+    onError: (error) => {
+      setApiError(true);
+    }
   });
+
 
   useEffect(() => {
       setAppState({ ...appState, rewMAmount: 0, rewDAmount: 0 });
@@ -302,6 +307,7 @@ const Donate: NextPage = () => {
 
   return <MainContainer>  
     <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
+    {!apiError ?
       <BodyBox>
         <DonateOption>
           {/* @ts-ignore */}
@@ -376,7 +382,7 @@ const Donate: NextPage = () => {
             rid={rewId}
           />
         )}
-    </BodyBox>
+    </BodyBox> : <ErrText text='Service is temporarily unavailable'/>}
   </MainContainer>
 };
 

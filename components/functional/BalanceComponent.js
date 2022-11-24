@@ -16,7 +16,7 @@ const BalanceComponent = ({ token, address }) => {
   useEffect(() => {
     if (chain) {
       setCh(chain.id);
-    }
+    }  
   }, []);
 
   const { data } = useBalance({
@@ -25,12 +25,11 @@ const BalanceComponent = ({ token, address }) => {
     chainId: ch,
   });
 
-  ///TBD multiply with decimals
 
   return (
     <Container>
       <>
-        <Amount value={data?.formatted} /> {data?.symbol}
+        <Amount value={(Number(data?.formatted) / 1000000)} /> {data?.symbol}
       </>
     </Container>
   );

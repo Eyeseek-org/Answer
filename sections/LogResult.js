@@ -4,7 +4,7 @@ import { loadingAnim, okAnim, errAnim } from '../components/animated/Animations'
 import {useState, useEffect} from 'react'
 import { ChainExplorer } from '../helpers/MultichainHelpers';
 import { useNetwork } from 'wagmi';
-import { B, G } from '../components/typography/ColoredTexts';
+import { B, G, R } from '../components/typography/ColoredTexts';
 import ButtonAlt from '../components/buttons/ButtonAlt';
 
 const LogResult = ({ ev, error, apiError, success, type, data }) => {
@@ -32,6 +32,9 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                   {ev ? <Ok>Success - Transaction was processed</Ok> : <>Usually processed in 5-10s</>}
                   {apiError && <Err>Failed - Transaction failed to process in DB</Err>}
                 </LogRow>
+                {error && <LogRow>
+                    <InfoTag><R>Error</R></InfoTag><>Tx was rejected or failed, try again later or contact the team </>
+                </LogRow>}
                 {ev && <>
                   <LogRow>
                     <InfoTag>Info</InfoTag> Project transaction processed
@@ -47,8 +50,8 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                   </LogRow>
                   </>}
                 {ev && success && ( <AnimBox> <Lottie height={100} width={100} options={okAnim} /> </AnimBox>)}
-                {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} />  </AnimBox> )}
-                {!ev && !apiError && !success && ( <AnimBox> <Lottie height={100} width={100} options={loadingAnim} /> </AnimBox>)}
+                {apiError || error && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} />  </AnimBox> )}
+                {!ev && !error && !success && ( <AnimBox> <Lottie height={100} width={100} options={loadingAnim} /> </AnimBox>)}
         </TxStatus>
     :
         <TxStatus>

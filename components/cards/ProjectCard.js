@@ -91,14 +91,14 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
   });
 
   if (funds.data) {
-    bal = funds.data.balance.toString();
+    bal = Number(funds.data.balance.toString()) / 1000000;
     const d = funds.data.deadline.toString();
     const test = new Date(d * 1000);
     const today = new Date();
     const diffInTime = test.getTime() - today.getTime();
     const diffInDays = diffInTime / (1000 * 3600 * 24);
     days = Math.trunc(diffInDays);
-    max = funds.data.level1.toString();
+    max = Number(funds.data.level1.toString()) / 1000000;
   }
 
   // Condition for ERC20 & NFT from the profile
