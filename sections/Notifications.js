@@ -83,7 +83,7 @@ const ButtonRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  background: ${(props) => props.theme.colors.black};
+  background: 'black';
   padding: 2%;
   padding-right: 5%;
 `;

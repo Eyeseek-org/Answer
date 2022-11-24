@@ -2,7 +2,7 @@
 // Adds possibility to wrap/unwrap tokens
 import { ethers } from "ethers";
 import { useState} from 'react'
-import styled from 'styled-components'
+import styled, {useTheme} from 'styled-components';
 import { Framework } from "@superfluid-finance/sdk-core";
 
 import BalanceComponent from "../../components/functional/BalanceComponent.js";
@@ -59,6 +59,7 @@ const StreamBalances = ({address, provider, signer, token, superContract}) => {
     const [showTooltip, setShowTooltip] = useState(false)
     const [tooltipText, setTooltipText] = useState('')
     const [wrappedAmount, setWrappedAmount] = useState(1000)
+    const theme = useTheme()
 
     const native = "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7"
 
@@ -133,15 +134,15 @@ const StreamBalances = ({address, provider, signer, token, superContract}) => {
     return  <BalancesBox>
        {showTooltip && <Tooltip text={tooltipText}/>}
         <Row>
-            <div onMouseEnter={()=>{handleTooltip(Texts.wrappedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Wrapped balance <InfoIcon width={15}/> </div> 
+            <div onMouseEnter={()=>{handleTooltip(Texts.wrappedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Wrapped balance <InfoIcon color={theme.colors.icon} width={15}/> </div> 
             <BalanceComponent token={token} address={address}/>
         </Row>
         <Row>
-            <div onMouseEnter={()=>{handleTooltip(Texts.nativeTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Native balance <InfoIcon width={15}/></div> 
+            <div onMouseEnter={()=>{handleTooltip(Texts.nativeTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Native balance <InfoIcon color={theme.colors.icon} width={15}/></div> 
             <BalanceComponent token={native} address={address}/>
         </Row>
         <Row>
-            <div onMouseEnter={()=>{handleTooltip(Texts.approvedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Approved amount <InfoIcon width={15}/></div> 
+            <div onMouseEnter={()=>{handleTooltip(Texts.approvedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Approved amount <InfoIcon color={theme.colors.icon} width={15}/></div> 
             <Allowance address={address} spender={superContract} apprToken={token} tokenSymbol={'fDAIx'} />
         </Row>
         <ActionRow>

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
@@ -110,118 +110,120 @@ export interface ICats {
   icon: JSX.Element;
 }
 
-const FAQS: IFAQ[] = [
-  {
-    question: 'Why Eyeseek Funding?',
-    answer: 'Benefits over other crowdfunding platforms',
-    points: [
-      'Platform fee costs only 1% per successfully funded project',
-      'Developer & Startup friendly environment, we are on the same page',
-      'No personal data needed. Wallet address is your primary identity',
-      'Extends crowdfunding features never seen before',
-    ],
-    image: <BookIcon width={150} />,
-  },
-  {
-    question: 'What do I need as a project owner?',
-    answer: 'Rules to follow to be eligible of Eyeseek funding',
-    points: [
-      'Owner has to inform regularly backers with project updates',
-      'Projects must create something to share with others',
-      'Projects and backer statistics must be honest and clearly presented',
-      "Projects can't involve prohibited items",
-    ],
-    image: <DeniedIcon width={150} />,
-  },
-  {
-    question: 'Why blockchain?',
-    answer: 'Possibilities granted by blockchain technology',
-    points: [
-      'Introduction of the game theory into crowdfunding thanks to the microfunds',
-      'Accept cryptocurrency payments from multiple blockchains at once',
-      'Real-time money streaming from backers to project owners',
-      'Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit',
-    ],
-    image: <KeyIcon width={70} />,
-  },
-  {
-    question: 'How does it work?',
-    answer: 'Creators can set up project in 5 simple steps',
-    points: [
-      'Possibility to offer limited amount of rewards, tokens and NFTs',
-      'Backers discover projects based on their interests and donate',
-      'Larger backers can play a game and deploy microfunds instead of donating',
-      'Microfunds incentivize smaller backers to join the ride with larger impact',
-    ],
-    image: <WorkIcon width={100} height={150} />,
-  },
-];
-
-const ICats: ICats[] = [
-  {
-    text: 'Wearables - Invent new gadgets and accessories',
-    icon: <WearablesIcon width={50} height={50} />,
-  },
-  {
-    text: 'Robotics - Help new generation of machines take over the world',
-    icon: <RoboticsIcon width={50} height={50} />,
-  },
-  {
-    text: 'AI - Feed data sets across the science labs and universities',
-    icon: <AiIcon width={50} height={50} />,
-  },
-  {
-    text: 'IoT - Use sensors to collect data and push automation to the next level',
-    icon: <IoTIcon width={50} height={50} />,
-  },
-  {
-    text: 'Mobile app - Implement a benefitial app or an addictive game',
-    icon: <MobileGameIcon width={50} height={50} />,
-  },
-  {
-    text: 'Board games - Design strategic masterpiece or a fun party game',
-    icon: <BoardGameIcon width={50} height={50} />
-  },
-  {
-    text: 'Video games - Build an indie game or a AAA blockbuster',
-    icon: <VideoGameIcon width={50} height={50} />
-  },
-  {
-    text: 'Hardware - Assemble powerful devices for green crypto mining',
-    icon: <HwIcon width={50} height={50} />
-  },
-  {
-    text: 'Movies - Become a director or produce a video with deep emotional impact',
-    icon: <VideoIcon width={50} height={50} />
-  },
-  {
-    text: 'Illustration - Draw anything you imagine and above',
-    icon: <IllustrationIcon width={50} height={50} />
-  },
-  {
-    text: 'Literature - Write a book of poems, autobiography, or a novel',
-    icon: <LiteratureIcon width={50} height={50} />
-  },
-  {
-    text: 'Music - Support of all kinds of music production, or musical events',
-    icon: <MusicIcon width={50} height={50} />
-  },
-  {
-    text: 'Defi - Lending, borrowing, all sorts of crypto trading',
-    icon: <DefiIcon width={50} height={50} />
-  },
-  {
-    text: 'NFT - Explore new ways how to leverage NFTs non-fungibility',
-    icon: <NftApeIcon width={50} height={50} />
-  },
-  {
-    text: 'DAO - Establish a decentralized autonomous organization',
-    icon: <DaoIcon width={50} height={50} />
-  }
-]
 
 const Faq: NextPage = () => {
   const [catTooltip, setCatTooltip] = React.useState('');
+  const theme = useTheme();
+
+  const FAQS: IFAQ[] = [
+    {
+      question: 'Why Eyeseek Funding?',
+      answer: 'Benefits over other crowdfunding platforms',
+      points: [
+        'Platform fee costs only 1% per successfully funded project',
+        'Developer & Startup friendly environment, we are on the same page',
+        'No personal data needed. Wallet address is your primary identity',
+        'Extends crowdfunding features never seen before',
+      ],
+      image: <BookIcon width={150} color={theme.colors.icon} />,
+    },
+    {
+      question: 'What do I need as a project owner?',
+      answer: 'Rules to follow to be eligible of Eyeseek funding',
+      points: [
+        'Owner has to inform regularly backers with project updates',
+        'Projects must create something to share with others',
+        'Projects and backer statistics must be honest and clearly presented',
+        "Projects can't involve prohibited items",
+      ],
+      image: <DeniedIcon width={150}  color={theme.colors.icon} />,
+    },
+    {
+      question: 'Why blockchain?',
+      answer: 'Possibilities granted by blockchain technology',
+      points: [
+        'Introduction of the game theory into crowdfunding thanks to the microfunds',
+        'Accept cryptocurrency payments from multiple blockchains at once',
+        'Real-time money streaming from backers to project owners',
+        'Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit',
+      ],
+      image: <KeyIcon width={70}  color={theme.colors.icon} />,
+    },
+    {
+      question: 'How does it work?',
+      answer: 'Creators can set up project in 5 simple steps',
+      points: [
+        'Possibility to offer limited amount of rewards, tokens and NFTs',
+        'Backers discover projects based on their interests and donate',
+        'Larger backers can play a game and deploy microfunds instead of donating',
+        'Microfunds incentivize smaller backers to join the ride with larger impact',
+      ],
+      image: <WorkIcon width={100} height={150}  color={theme.colors.icon}  />,
+    },
+  ];
+  
+  const ICats: ICats[] = [
+    {
+      text: 'Wearables - Invent new gadgets and accessories',
+      icon: <WearablesIcon width={50} height={50}  />,
+    },
+    {
+      text: 'Robotics - Help new generation of machines take over the world',
+      icon: <RoboticsIcon width={50} height={50} />,
+    },
+    {
+      text: 'AI - Feed data sets across the science labs and universities',
+      icon: <AiIcon width={50} height={50} />,
+    },
+    {
+      text: 'IoT - Use sensors to collect data and push automation to the next level',
+      icon: <IoTIcon width={50} height={50} />,
+    },
+    {
+      text: 'Mobile app - Implement a benefitial app or an addictive game',
+      icon: <MobileGameIcon width={50} height={50} />,
+    },
+    {
+      text: 'Board games - Design strategic masterpiece or a fun party game',
+      icon: <BoardGameIcon width={50} height={50} />
+    },
+    {
+      text: 'Video games - Build an indie game or a AAA blockbuster',
+      icon: <VideoGameIcon width={50} height={50} />
+    },
+    {
+      text: 'Hardware - Assemble powerful devices for green crypto mining',
+      icon: <HwIcon width={50} height={50} />
+    },
+    {
+      text: 'Movies - Become a director or produce a video with deep emotional impact',
+      icon: <VideoIcon width={50} height={50} />
+    },
+    {
+      text: 'Illustration - Draw anything you imagine and above',
+      icon: <IllustrationIcon width={50} height={50} />
+    },
+    {
+      text: 'Literature - Write a book of poems, autobiography, or a novel',
+      icon: <LiteratureIcon width={50} height={50} />
+    },
+    {
+      text: 'Music - Support of all kinds of music production, or musical events',
+      icon: <MusicIcon width={50} height={50} />
+    },
+    {
+      text: 'Defi - Lending, borrowing, all sorts of crypto trading',
+      icon: <DefiIcon width={50} height={50} />
+    },
+    {
+      text: 'NFT - Explore new ways how to leverage NFTs non-fungibility',
+      icon: <NftApeIcon width={50} height={50} />
+    },
+    {
+      text: 'DAO - Establish a decentralized autonomous organization',
+      icon: <DaoIcon width={50} height={50} />
+    }
+  ]
 
   const CatIcon = ({text, icon}) => {
     return <div onMouseEnter={()=>setCatTooltip(text)} onMouseLeave={()=>setCatTooltip('')} >{icon}</div>

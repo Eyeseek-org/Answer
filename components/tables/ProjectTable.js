@@ -11,12 +11,15 @@ import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { ProjectActiveIcon } from '../icons/Project';
 import RewardTable from './RewardTable';
 import { Row } from '../format/Row';
+import {useTheme} from 'styled-components';
+
 
 const ProjectTable = () => {
   const [sorting, setSorting] = useState([]);
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
   const [projectId, setProjectId] = useState(null)
+  const theme = useTheme()
 
   const columns = [
     {
@@ -62,14 +65,14 @@ const ProjectTable = () => {
     {
       accessorKey: 'urlProject',
       cell: (props) => (
-        <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon width={20}/></a>
+        <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon color={theme.colors.icon} width={20}/></a>
       ),
       header: <HeaderCell>Web</HeaderCell>,
     },
     {
       accessorKey: 'urlSocials',
       cell: (props) => (
-          <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon width={20}/></a>
+          <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon colors={theme.colors.icon} width={20}/></a>
         ),
         header: <HeaderCell>Socials</HeaderCell>,
     },
@@ -84,7 +87,7 @@ const ProjectTable = () => {
       accessorKey: 'verified',
       cell: (props) => (
         <>
-        {props.getValue() ? <VerifiedIcon width={20}/> : <NonVerifiedIcon width={20}/>}
+        {props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={20}/> : <NonVerifiedIcon width={20}/>}
         </>
       ),
       header: <HeaderCell>Verified</HeaderCell>,
@@ -94,7 +97,7 @@ const ProjectTable = () => {
         cell: (props) => (
           <Row>
            <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><ProjectActiveIcon width={20}/></a>
-           <ImageHover onClick={()=>handleReward(props.getValue())} ><RewardIcon width={20}/></ImageHover>
+           <ImageHover onClick={()=>handleReward(props.getValue())} ><RewardIcon color={theme.colors.icon} width={20}/></ImageHover>
           </Row>
         ),
         header: <HeaderCell>Ref</HeaderCell>,

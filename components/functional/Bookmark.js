@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { BookmarkIcon, BookmarkFilledIcon } from '../icons/Common';
@@ -15,6 +15,7 @@ const Bkmrk = styled.div`
 const Bookmark = ({ objectId, bookmarks }) => {
   const [marked, setMarked] = useState(false);
   const { address, isDisconnected } = useAccount();
+  const theme = useTheme();
 
   const updateBookmark = async (oid, newBookmarks) => {
     const config = {
@@ -62,7 +63,7 @@ const Bookmark = ({ objectId, bookmarks }) => {
             handleBookmark();
           }}
         >
-          {!marked ? <BookmarkIcon width={20} /> : <BookmarkFilledIcon width={20} />}
+          {!marked ? <BookmarkIcon color={theme.colors.icon} width={20} /> : <BookmarkFilledIcon width={20} />}
         </Bkmrk>
       )}
     </>

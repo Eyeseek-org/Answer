@@ -24,6 +24,7 @@ import { InfoIcon } from '../../../components/icons/Common';
 import { Row } from '../../../components/format/Row';
 import { AddIcon, RemoveIcon } from '../../../components/icons/Project';
 import Subtitle from '../../../components/typography/Subtitle';
+import {useTheme} from 'styled-components';
 
 const SetRewards = ({ setStep }) => {
   const { appState, setAppState } = useApp();
@@ -33,6 +34,7 @@ const SetRewards = ({ setStep }) => {
   const [rewards, setRewards] = useState([]);
   const [rewardsCounts, setRewardsCount] = useState(0);
   const [donationTooltip, setDonationTooltip] = useState(false);
+  const theme = useTheme()
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -169,7 +171,7 @@ const SetRewards = ({ setStep }) => {
                       <Row>
                         Required microfund cap pledge
                         <IconBox onMouseEnter={() => setMicroTooltip(true)} onMouseLeave={() => setMicroTooltip(false)}>
-                          <InfoIcon width={15} />
+                          <InfoIcon width={15} color={theme.colors.icon} />
                         </IconBox>
                       </Row>
                     }

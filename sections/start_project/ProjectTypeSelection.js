@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import FaqCard from '../../components/cards/FaqCard';
 import Lottie from 'react-lottie';
 import { useApp } from '../utils/appContext';
@@ -130,10 +130,12 @@ const projects = [
 
 // TODO: refactor - remove styles from states
 const ProjectTypeSelection = () => {
+  const theme = useTheme();
   const [standColor, setStandColor] = useState(
     'radial-gradient(111.37% 111.37% at 50% 50%, rgba(0, 119, 12, 0.06) 0%, rgba(5, 0, 233, 0) 97.7%)'
   );
-  const [standTitleColor, setStandTitleColor] = useState('#00ff89');
+  const secondary = theme.colors.secondary;
+  const [standTitleColor, setStandTitleColor] = useState(secondary);
   const [streamColor, setStreamColor] = useState('none');
   const [streamTitleColor, setStreamTitleColor] = useState('none');
   const { appState, setAppState } = useApp();
@@ -141,7 +143,7 @@ const ProjectTypeSelection = () => {
   const handleStandType = (type) => {
     setAppState({ ...appState, pType: type });
     setStandColor('radial-gradient(111.37% 111.37% at 50% 50%, rgba(0, 119, 12, 0.06) 0%, rgba(5, 0, 233, 0) 97.7%)');
-    setStandTitleColor('#00ff89');
+    setStandTitleColor(secondary);
     setStreamColor('none');
     setStreamTitleColor('none');
   };

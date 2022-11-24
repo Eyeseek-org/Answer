@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useApp } from '../../sections/utils/appContext';
 import SectionTitle from '../../components/typography/SectionTitle';
 import DonateWithout from '../../sections/Donate/DonateWithout';
@@ -129,7 +129,7 @@ const Donate: NextPage = () => {
   const [apiError, setApiError] = useState(false);
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-
+  const { theme } = useTheme();
   const [tooltip, setTooltip] = useState(false);
 
   const [usdcFaucet, setUsdcFaucet] = useState(testChains.polygonUsdcFaucet);
@@ -318,7 +318,7 @@ const Donate: NextPage = () => {
             <Row>
               Blockchain
               <InfoBox onMouseEnter={() => {setTooltip(true);}} onMouseLeave={() => {setTooltip(false); }}>
-                <InfoIcon width={15} />
+                <InfoIcon color={theme.colors.icon} width={15} />
               </InfoBox>
             </Row>
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}

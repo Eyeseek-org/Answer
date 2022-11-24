@@ -6,11 +6,13 @@ import { GetFundingAddress } from '../../helpers/GetContractAddress';
 import { ethers } from 'ethers';
 import Tooltip from '../Tooltip';
 import { InfoIcon } from '../icons/Common';
+import {useTheme} from 'styled-components';
 
 const ApprovedComponent = ({ address, currencyAddress }) => {
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
   const [showTooltip, setShowTooltip] = useState(false);
   const { chain } = useNetwork();
+  const theme = useTheme()
 
   const dec = 6
 
@@ -40,7 +42,7 @@ const ApprovedComponent = ({ address, currencyAddress }) => {
       {data && (
         <div onMouseEnter={()=>{setShowTooltip(true)}} onMouseLeave={()=>{setShowTooltip(false)}}>
           <Amount value={fullValue} />
-          <InfoIcon width={15}/>
+          <InfoIcon width={15} color={theme.colors.icon}/>
         </div>
       )}
     </>

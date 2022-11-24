@@ -36,7 +36,7 @@ const DisabledCircle = styled(Circle)`
 `;
 
 const YesCircle = styled(Circle)`
-  background: #b0f6ff;
+  background: ${(props) => props.theme.colors.primary};
   &:hover {
     cursor: pointer;
     opacity: 0.8;

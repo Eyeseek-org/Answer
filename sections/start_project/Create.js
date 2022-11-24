@@ -3,7 +3,7 @@ import { useApp } from '../utils/appContext';
 import Image from 'next/image';
 import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from 'wagmi';
 import axios from 'axios';
-
+import {useTheme} from 'styled-components';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './Create/StyleWrapper';
 import FaqCard from '../../components/cards/FaqCard';
@@ -45,6 +45,7 @@ const Create = ({ setStep }) => {
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
   const [add, setAdd] = useState();
+  const theme = useTheme()
 
   const handleBack = () => {
     setStep((prev) => (prev -= 1));
@@ -176,7 +177,7 @@ const Create = ({ setStep }) => {
           <Li>If your project is sucessfully funded, Eyeseek will collect 1% fee from the funding total.</Li>
           <Row>
             <ImageBox>
-              <BookIcon width={150} />
+              <BookIcon width={150} color={theme.colors.icon} />
             </ImageBox>
             <FaqCard answer={texts[0].title} points={texts[0].points} />
           </Row>

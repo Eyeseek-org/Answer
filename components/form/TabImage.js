@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-import { Row } from '../format/Row'
+import styled, {useTheme} from 'styled-components';
 import { BookmarkFilledIcon, BookmarkIcon } from '../icons/Common'
 import { StreamIcon } from '../icons/Landing'
 import { DonateActiveIcon, DonateIcon, ProjectActiveIcon, ProjectIcon,  Erc20ActiveIcon, Erc20Icon, NftActiveIcon, NftIcon, RewardActiveIcon } from '../icons/Project'
@@ -40,10 +39,22 @@ const Inactive = styled.div`
         font-size: 1.1em;
     }
 `
+
+export const ColBetween = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2%;
+  height: 80px;
+`;
+
 const IconBox = styled.div`
 `
 
 const ActBox = styled(IconBox)`
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
     border-radius: 90px;
     box-shadow: 0px 2px 10px 0px ${(props) => props.theme.colors.font};
 `
@@ -57,6 +68,7 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
 
     const [showTooltip, setShowTooltip] = useState(false)
     const [tooltipText, setTooltipText] = useState('')
+    const theme = useTheme()
 
     const handleTooltip = (text) => {
         setShowTooltip(true)
@@ -67,10 +79,10 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? 
             <Active>
-                {text === 'Projects' && <Row><ProjectActiveIcon width={50} /><div>{text}</div></Row>} 
-                {text === 'Donates' && <Row><DonateActiveIcon width={50} /><div>{text}</div></Row>}
-                {text === 'Bookmarks' && <Row><BookmarkFilledIcon width={50} /><div>{text}</div></Row>}
-                {text === 'Streams' && <Row><StreamIcon width={50} /><div>{text}</div></Row>}
+                {text === 'Projects' && <ColBetween><ProjectActiveIcon width={50} /><div>{text}</div></ColBetween>} 
+                {text === 'Donates' && <ColBetween><DonateActiveIcon width={50} /><div>{text}</div></ColBetween>}
+                {text === 'Bookmarks' && <ColBetween><BookmarkFilledIcon width={50} color={theme.colors.icon}/><div>{text}</div></ColBetween>}
+                {text === 'Streams' && <ColBetween><StreamIcon width={50} /><div>{text}</div></ColBetween>}
                 {text === 'Classic' && <ActBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <RewardActiveIcon width={60} height={60} /></ActBox>} 
                 {text === 'ERC20' && <ActBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
@@ -79,10 +91,10 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <NftActiveIcon width={60} height={60} /></ActBox>}
             </Active> : 
             <Inactive onClick={onClick}>
-                {text === 'Projects' && <Row><ProjectIcon width={50}/><div>{text}</div></Row>} 
-                {text === 'Donates' && <Row><DonateIcon width={50} /><div>{text}</div></Row>}
-                {text === 'Bookmarks' && <Row><BookmarkIcon width={50} /><div>{text}</div></Row>}
-                {text === 'Streams' && <Row><StreamIcon width={50}  /><div>{text}</div></Row>}
+                {text === 'Projects' && <ColBetween><ProjectIcon width={50}/><div>{text}</div></ColBetween>} 
+                {text === 'Donates' && <ColBetween><DonateIcon width={50} /><div>{text}</div></ColBetween>}
+                {text === 'Bookmarks' && <ColBetween><BookmarkIcon width={50} color={theme.colors.icon} /><div>{text}</div></ColBetween>}
+                {text === 'Streams' && <ColBetween><StreamIcon width={50}  /><div>{text}</div></ColBetween>}
                 {text === 'Classic' && <IconBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <RewardIcon width={60} height={60}  /></IconBox>} 
                 {text === 'ERC20' && <IconBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { CopyIcon, SuccessIcon } from '../icons/Common';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -36,6 +36,7 @@ const IconBox = styled(motion.div)`
 
 const Address = ({ address }) => {
   const [copied, setCopied] = useState(false);
+  const theme = useTheme();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(address);
@@ -57,7 +58,7 @@ const Address = ({ address }) => {
         {addressFirs6CharLast4Char}
         {!copied ? (
           <IconBox>
-            <CopyIcon width={10} />
+            <CopyIcon width={10} color={theme.color.icon} />
           </IconBox>
         ) : (
           <IconBox

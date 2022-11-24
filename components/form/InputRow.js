@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useState } from 'react';
 import { InfoIcon } from '../icons/Common';
 import Tooltip from '../../components/Tooltip';
 
-// To descope
+
 
 const InputWrapper = styled.div`
   position: relative;
@@ -78,6 +78,7 @@ const InfoBox = styled.div`
 
 const InputRow = ({ id, name, min, placeholder, onChange, onBlur, tooltip, currency }) => {
   const [isTooltip, setIsTooltip] = useState();
+  const theme = useTheme();
 
   return (
     <InputWrapper>
@@ -94,7 +95,7 @@ const InputRow = ({ id, name, min, placeholder, onChange, onBlur, tooltip, curre
           }}
         >
           {' '}
-          <InfoIcon width={15} />
+          <InfoIcon width={15} color={theme.colors.icon} />
         </InfoBox>
       </DonationRow>
       <InputInnerWrapper>

@@ -121,10 +121,6 @@ const Stream = ({ objectId, recipient, chainId }) => {
   /// CFAv1Forwarder
   const superContract = "0xcfA132E353cB4E398080B9700609bb008eceB125" // Same address fro both Polygon and Optimism
 
-
-  // Multiple currencies
-
-
   const query = `/classes/Stream?where={"projectId":"${objectId}", "isActive": true }`
   const { data: streamData } = useQuery(['streams'], () => UniService.getDataAll(query),{
     onError: () => {
