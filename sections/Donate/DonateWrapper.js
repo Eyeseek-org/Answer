@@ -1,20 +1,11 @@
 import styled from 'styled-components';
-import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useAccount,
-  useContractEvent,
-  useNetwork,
-  useSwitchNetwork,
-  useContractRead,
-} from 'wagmi';
+import { useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork, useContractRead} from 'wagmi';
 import { useState, useEffect } from 'react';
 import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent';
 import ApprovedComponent from '../../components/functional/ApprovedComponent';
 import Button from '../../components/buttons/Button';
-import { SuccessIcon } from '../../components/icons/Common';
 import donation from '../../abi/donation.json';
 import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
@@ -46,7 +37,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   // @ts-ignore
   const { appState } = useApp();
   const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId, rewDonors } = appState;
-  const sum = parseInt(rewMAmount) + parseInt(rewDAmount);
+  const sumWei  = (parseInt(rewMAmount) + parseInt(rewDAmount))
+  const sum = (parseInt(rewMAmount) + parseInt(rewDAmount)) * 1000000;
   const router = useRouter();
   const { objectId } = router.query;
   const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
@@ -69,7 +61,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   });
 
   if (allowance.data) {
-    all = Number(allowance.data.toString());
+    all = Number(allowance.data.toString()) / 1000000;
   }
 
   const useEv = async() => {
@@ -98,25 +90,22 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     once: true,
   });
 
-  const ethDonate = rewDAmount * 1000000000000000000 ;
-  const ethMicro = rewMAmount * 1000000000000000000 ;
-
-
+  const sixDonate = rewDAmount * 1000000; 
+  const sixMicro = rewMAmount * 1000000; 
+ 
   const {write, data, error} = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: add,
     abi: donation.abi,
     chainId: home,
     functionName: 'contribute',
-    args: [ethMicro, ethDonate, pid, curr, rewId],
+    args: [sixMicro, sixDonate, pid, curr, rewId],
   })
-
 
   const handleSubmit = async () => {
     await write?.();
-    if (!error){
-      await setReady(true)
-    }
+    // Think about new event in contract - Something started
+    await  setReady(true)
   };
 
   const updateBookmark = async (bookmarks) => {
@@ -144,28 +133,26 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     <MainContainer>
       {chain && home === chain.id ? (
         <RowCenter>
-          {success ? (
-            <SuccessIcon width={50} />
-          ) : (
+          {success ? null : (
             <>
               {address && (
                 <Metrics>
-                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress} /></Row>
+                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress}  /></Row>
                   <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
-                  {error ? <ErrText text={'Insufficient balance or allowance'}/> : null}
+                  {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
                 </Metrics>
               )}
-             {rewId === 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
-             {rewId > 0 && <ApproveUniversal amount={sum} tokenContract={currencyAddress} spender={spender} />}
+             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6} />}
+             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6}/>}
             </>
           )}
           <div>
             {!success && (
               <>
-                {all && all < sum ? (
+                {all && all < sumWei ? (
                   <ButtonAlt text={<><DonateErrIcon width={30}/></>}  onClick={() => handleSubmit()} />
                 ) : <>
-                    {sum === 0 ? <>Cannot donate 0</> :                 
+                    {sum === 0 ? null :                 
                   <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
                     {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
                     {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>} /> }

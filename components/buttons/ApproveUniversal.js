@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi'
 import styled from 'styled-components'
 import token from '../../abi/token.json'
@@ -33,23 +33,30 @@ const Amount = styled.div`
     font-family: 'Gemunu Libre';
 `
 
-const ApproveUniversal = ({tokenContract, spender, amount}) => {
+const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [d, setD] = useState(1000000)
+
+    const appAmount = amount * d
 
     const listened = async() => {
         await setEv(true)
         await setLoading(false)
     }
 
-    const ethAmount = amount * 1000000000000000000 ;
+    useEffect (() => {
+        if (dec === 6){
+            setD(1000000)
+        }
+    },[])
 
     const { config } = usePrepareContractWrite({
         address: tokenContract,
         abi: token.abi,
         functionName: 'approve',
-        args: [spender, ethAmount],
+        args: [spender, appAmount],
     })
 
     useContractEvent({
@@ -66,6 +73,8 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         await write?.()
         setLoading(true)
     }
+
+
 
     return <Container>
         <ApprovalBox>

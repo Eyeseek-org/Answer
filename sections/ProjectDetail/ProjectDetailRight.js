@@ -77,7 +77,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
 
   if (funds.data) {
     // Get fund balance
-    bal = funds.data.balance.toString();
+    bal = Number(funds.data.balance.toString()) / 1000000;
 
     // Get fund deadline
     const d = funds.data.deadline.toString();
@@ -88,16 +88,17 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
     days = Math.trunc(diffInDays);
 
     // Get fund cap
-    max = funds.data.level1.toString();
+
+    max = Number(funds.data.level1.toString()) / 1000000;
 
     // Get fund usdc balance
-    usdcBalance = funds.data.usdcBalance.toString();
+    usdcBalance = Number(funds.data.usdcBalance.toString()) / 1000000;
 
     // Get fund usdt balance
-    usdtBalance = funds.data.usdtBalance.toString();
+    usdtBalance = Number(funds.data.usdtBalance.toString()) / 1000000;
 
     // Get fund dai balance
-    daiBalance = funds.data.daiBalance.toString();
+    daiBalance = Number(funds.data.daiBalance.toString()) / 1000000;
   }
 
   const backers = useContractRead({

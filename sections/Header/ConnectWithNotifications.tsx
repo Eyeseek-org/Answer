@@ -42,7 +42,7 @@ export const ConnectWithNotifications = () => {
           </IconFrame>
         )}
       </ConnectWalletBox>
-      {notificationsOpen && <Notifications notis={notifications.slice(0, 20)} />}
+      {notificationsOpen && notifications && <Notifications notis={notifications.slice(0, 20)} />}
     </>
   );
 };

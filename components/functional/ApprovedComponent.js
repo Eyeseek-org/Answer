@@ -12,8 +12,11 @@ const ApprovedComponent = ({ address, currencyAddress }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { chain } = useNetwork();
 
+  const dec = 6
+
   useEffect(() => {
     setAdd(GetFundingAddress(chain));
+    console.log(add)
   }, []);
 
   var fullValue;
@@ -27,8 +30,8 @@ const ApprovedComponent = ({ address, currencyAddress }) => {
     watch: true,
   });
 
-  if (data) {
-    fullValue = ethers.utils.formatEther(data);
+  if (data && dec === 6) {
+    fullValue = data / 1000000;
   }
 
   return (
