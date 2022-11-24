@@ -42,10 +42,10 @@ export const RowStart = styled.div`
   justify-content: flex-start;
 `
 
-
 export const Col = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
   padding: 2%;
 `;
+

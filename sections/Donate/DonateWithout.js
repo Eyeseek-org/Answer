@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useContractRead } from 'wagmi';
 import CalcOutcome from '../../components/functional/CalcOutcome';
 import { DonateSchema } from '../../util/validator';
-import WarningCard from '../../components/cards/WarningCard';
 import { useApp } from '../utils/appContext';
 import InputRow from '../../components/form/InputRow';
 import DonateWrapper from './DonateWrapper';
@@ -109,9 +108,6 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
         />
         </RowCenter>
       </FormWrapper>
-      <WarningCard title={'Beware of scammers!'} description={<>Project founders are not obligated to verify their identities to the Eyeseek. Backing is provided on your own risk, it is
-            recommended to verify project validity on project website and socials. Do not trust projects without any reference to Eyeseeek
-            funding.</>} />
       <DonateWrapper
         pid={pid}
         bookmarks={bookmarks}

@@ -5,7 +5,7 @@ import {FeatureDescription} from '../typography/Descriptions';
 
 const Card = styled(motion.div)`
   position: relative;
-  background: ${(props) => props.theme.colors.transparent};
+  background: ${(props) => props.theme.colors.projectCard};
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 15px;
   padding-left: 2em;

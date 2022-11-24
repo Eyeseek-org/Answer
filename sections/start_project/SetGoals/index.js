@@ -145,10 +145,13 @@ const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { pm1, pType } = { ...appState };
   const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
+
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    if (chain){
+      setAppState((prev) => ({ ...prev, pChain: chain.id }));
+    }
   }, []);
 
   const handleClick = async () => {
@@ -211,12 +214,7 @@ const SetGoals = ({ setStep }) => {
           <div>Funding goals are not needed to set for project streaming. You can continue</div>
           <BetweenRow>
             <ButtonAlt onClick={handleBack} text='Back'/>
-            {chain.id !== pChain ? (
-              <ButtonAlt
-                onClick={() => { switchNetwork(pChain)}} text ='Switch to Polygon'/>
-            ) : (
-              <ButtonAlt onClick={handleClick} text='Next'/>
-            )}
+            <ButtonAlt onClick={handleClick} text='Next'/>
           </BetweenRow>
         </StreamAnnouncement>
       )}

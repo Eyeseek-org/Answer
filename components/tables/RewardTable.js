@@ -4,13 +4,13 @@ import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover } from 
 import { NonVerifiedIcon, UsersIcon, VerifiedIcon } from '../icons/Common';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import RewardModal from '../../sections/RewardModal'
+import {useTheme} from 'styled-components';
 
 const RewardTable = ({data}) => {
   const [sorting, setSorting] = useState([]);
   const [showRewardList, setShowRewardList] = useState(false);
   const [rewardList, setRewardList] = useState()
-
-    console.log(data)
+  const theme = useTheme()
   const handleRewardList = (id) => {
     setRewardList(id)
     setShowRewardList(true)
@@ -52,7 +52,7 @@ const RewardTable = ({data}) => {
       accessorKey: 'active',
       cell: (props) => (
         <>
-        {props.getValue() ? <VerifiedIcon width={20}/> : <NonVerifiedIcon width={20}/>}
+        {props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={20}/> : <NonVerifiedIcon width={20}/>}
         </>
       ),
       header: <HeaderCell>Active</HeaderCell>,
@@ -61,7 +61,7 @@ const RewardTable = ({data}) => {
         accessorKey: 'rewardId',
         cell: (props) => (
           <ImageHover onClick={()=>{handleRewardList(props.getValue())}}>
-            <UsersIcon width={20}/>
+            <UsersIcon color={theme.colors.icon} width={20}/>
           </ImageHover>
         ),
         header: <HeaderCell>Backers</HeaderCell>,

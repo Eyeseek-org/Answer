@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi';
@@ -19,7 +19,6 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import { AbsoluteLeft, MainContainer } from '../../components/format/Box';
 import {ProjectDesc} from '../../components/typography/Descriptions'
 import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
-
 
 const DetailBox = styled.div`
   position: relative;
@@ -142,6 +141,7 @@ const ProjectDetail = ({
   const [urlSocialsTooltip, setUrlSocialsTooltip] = useState(false);
   const [canceled, setCanceled] = useState(false);
   const [apiError, setApiError] = useState(false);
+  const theme = useTheme();
 
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
 
@@ -229,7 +229,7 @@ const ProjectDetail = ({
           <ProjectType>
             {verified ? (
               <IconWrapper onMouseEnter={() => { setVerifiedTooltip(true)}} onMouseLeave={() => {setVerifiedTooltip(false)}}>
-                <VerifiedIcon width={30} height={30} />
+                <VerifiedIcon color={theme.colors.icon} width={30} height={30} />
               </IconWrapper>
             ) : (
               <IconWrapper onMouseEnter={() => { setNonVerifiedTooltip(true)}} onMouseLeave={() => {setNonVerifiedTooltip(false) }}>
@@ -238,11 +238,11 @@ const ProjectDetail = ({
             )}
             {pType === 'Stream' ? (
               <IconWrapper onMouseEnter={() => {setStreamTypeTooltip(true)}} onMouseLeave={() => {setStreamTypeTooltip(false) }}>
-                <StreamIcon width={30} />
+                <StreamIcon color={theme.colors.icon} width={30} />
               </IconWrapper>
             ) : (
               <IconWrapper onMouseEnter={() => {setStandardTypeTooltip(true)}} onMouseLeave={() => {setStandardTypeTooltip(false) }}>
-                <BlockchainIcon width={30} />
+                <BlockchainIcon color={theme.colors.icon} width={30} />
               </IconWrapper>
             )}
               <IconWrapper onMouseEnter={() => {setChainTooltip(true)}} onMouseLeave={() => {setChainTooltip(false) }} >
@@ -262,16 +262,16 @@ const ProjectDetail = ({
               {urlSocialsTooltip && <Tooltip margin={'-35px'} text="External link to project primary socials" />}
               <IconWrapper onMouseEnter={() => {setUrlWebTooltip(true)}} onMouseLeave={() => {setUrlWebTooltip(false)}}>
                 <a href={urlSocial} target="_blank" rel="noreferrer">
-                  <UrlSocialsIcon width={30} />{' '}
+                  <UrlSocialsIcon color={theme.colors.icon} width={30} />{' '}
                 </a>
               </IconWrapper>
               <a href={urlProject} target="_blank" rel="noreferrer">
                 <IconWrapper onMouseEnter={() => {setUrlSocialsTooltip(true)}} onMouseLeave={() => {setUrlSocialsTooltip(false) }}>
-                  <UrlIcon width={30} />
+                  <UrlIcon color={theme.colors.icon} width={30} />
                 </IconWrapper>
               </a>
               <IconWrapper onClick={() => {cancel() }}  onMouseEnter={() => {setCancelTooltip(true)}} onMouseLeave={() => {setCancelTooltip(false)}} >
-                <CancelIcon width={30} />
+                <CancelIcon color={theme.colors.icon} width={30} />
               </IconWrapper>
             </ActionPanel>
           )}

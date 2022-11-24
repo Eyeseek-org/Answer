@@ -35,15 +35,16 @@ export const Ref = styled.div`
 `;
 
 export const InfoTag = styled.div`
-  background: #0d0d0d;
+  background: ${(props) => props.theme.colors.gray};
   padding: 2px;
   border-radius: 5px;
   margin-right: 3%;
 `;
 
 export const Ok = styled.div`
-  color: #00f600;
+  color: ${(props) => props.theme.colors.darkGreen};
   text-align: left;
+  font-weight: bold;
 `;
 
 export const Err = styled.div`

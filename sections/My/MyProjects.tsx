@@ -48,6 +48,8 @@ const MyProjects = () => {
                 chainId={project.chainId}
                 bookmarks={project.bookmarks}
                 verified={project.verified}
+                urlSocial={project.urlSocial}
+                urlProject={project.urlProject}
                 pType={project.type}
                 owner={project.owner}
               />
@@ -93,7 +95,7 @@ const MyProjects = () => {
         <>
           {project && (
             <div>
-              <SectionTitle title={'Active project'} subtitle={project.title} />
+              <SectionTitle title={'My active project'} subtitle={project.title} />
               <Tab tabs={tabsContent} />
             </div>
           )}

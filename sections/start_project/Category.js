@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useApp } from '../utils/appContext';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import {useTheme} from 'styled-components'
 import Select from 'react-select';
 import SectionTitle from '../../components/typography/SectionTitle';
 import ProjectTypeSelection from './ProjectTypeSelection';
@@ -16,48 +17,48 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import ErrText from '../../components/typography/ErrText';
 
 
-
-const customStyles = {
-  menu: (provided) => ({
-    ...provided,
-    background: '#141414',
-    border: '1px solid #FFFFFF',
-    borderRadius: '15px',
-  }),
-  control: (provided) => ({
-    ...provided,
-    padding: '1%',
-    background: 'rgba(107, 255, 255, 0.05)',
-    border: '1px solid #FFFFFF',
-    borderRadius: '15px',
-    '&:hover': {
-      background: 'rgba(107, 255, 255, 0.05)',
-      cursor: 'pointer',
-    },
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    padding: '1%',
-    fontSize: '0.9em',
-    color: '#B0F6FF',
-    background: state.isSelected ? 'rgba(107, 255, 255, 0.2)' : 'transparent',
-    '&:hover': {
-      background: 'rgba(107, 255, 255, 0.05)',
-      cursor: 'pointer',
-    },
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: '#B0F6FF',
-    fontSize: '0.9em',
-  }),
-};
-
 const Category = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { category, subcategory } = { ...appState };
   const [apiError, setApiError] = useState(false)
   const router = useRouter();
+  const theme = useTheme()
+
+  const customStyles = {
+    menu: (provided) => ({
+      ...provided,
+      background: '#141414',
+      border: `1px solid ${theme.colors.white}`,
+      borderRadius: '15px',
+    }),
+    control: (provided) => ({
+      ...provided,
+      padding: '1%',
+      background: 'rgba(107, 255, 255, 0.05)',
+      border: `1px solid ${theme.colors.white}`,
+      borderRadius: '15px',
+      '&:hover': {
+        background: 'rgba(107, 255, 255, 0.05)',
+        cursor: 'pointer',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      padding: '1%',
+      fontSize: '0.9em',
+      color: '#B0F6FF',
+      background: state.isSelected ? 'rgba(107, 255, 255, 0.2)' : 'transparent',
+      '&:hover': {
+        background: 'rgba(107, 255, 255, 0.05)',
+        cursor: 'pointer',
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: `${theme.colors.primary}`,
+      fontSize: '0.9em',
+    }),
+  };
 
   useEffect(() => {
     setAppState((prev) => ({ ...prev, isNext: subcategory !== undefined }));

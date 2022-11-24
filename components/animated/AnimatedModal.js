@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
+
+
 export const AnimatedModal = styled(motion.div)`
 position: fixed;
 display: flex;

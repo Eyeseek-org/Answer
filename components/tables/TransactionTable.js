@@ -1,27 +1,35 @@
 import styled from 'styled-components';
 import { getLatestBlockHeight, getLogEvents} from '../../pages/api/covalent';
 import { useEffect, useState } from 'react';
+import Image from 'next/image'
 import Address from '../functional/Address';
 import Subtitle from '../typography/Subtitle';
 import {Table, Header, Tr, Cell, Loading} from './TableStyles'
 import { ChainIconComponent, ExplorerReference } from '../../helpers/MultichainHelpers';
+import { RewardDesc } from '../typography/Descriptions';
+import optimism from '../../public/icons/optimism.png'
+
+const AddressCell = styled(Cell)`
+  width: 100px;
+@media (max-width: 768px) {
+  width: 50px;
+}
+`;
+
+const Sub = styled.div`
+  display: flex;
+  margin: 3%;
+`;
+
+const NoOptimism = styled.div`
+  margin-top: 20%;
+`
 
 const TransactionTable = () => {
   const [loading, setLoading] = useState(true);
   const [microCreatedLogs, setMicroCreatedLogs] = useState([]);
   const [transactionLogs, setTransactionLogs] = useState([]);
 
-  const AddressCell = styled(Cell)`
-    width: 100px;
-    @media (max-width: 768px) {
-      width: 50px;
-    }
-  `;
-
-  const Sub = styled.div`
-    display: flex;
-    margin: 3%;
-  `;
 
   //create function that maps data into a table using keys as headers
   const mapDataToTable = (data) => {
@@ -135,12 +143,15 @@ const TransactionTable = () => {
         </Sub>
         {loading && <Loading />}
         {!loading && transactionLogs.length > 0 && mapDataToTable(transactionLogs)}
-        {!loading && transactionLogs.length === 0 && <p>No transactions found in recent history</p>}
+        {!loading && transactionLogs.length === 0 && <RewardDesc>No transactions found in recent history</RewardDesc>}
         <Sub>
           <Subtitle text="Deployed Microfunds" />
         </Sub>
         {!loading && microCreatedLogs.length > 0 && mapDataToTable(microCreatedLogs)}
-        {!loading && microCreatedLogs.length === 0 && <p>No transactions found in recent history</p>}
+        {!loading && microCreatedLogs.length === 0 && <RewardDesc>No transactions found in recent history</RewardDesc>}
+      <NoOptimism>
+        <Image src={optimism} alt='optimism' width={20} height={20} /><RewardDesc>Optimism transactions not supported by Covalent API</RewardDesc>
+      </NoOptimism>
     </>
   );
 };

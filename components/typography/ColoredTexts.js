@@ -5,7 +5,7 @@ export const P = styled.span`
 `;
 
 export const B = styled.span`
-  color: #ffc107;
+  color: ${(props) => props.theme.colors.binance};
 `;
 
 export const F = styled.span`
@@ -13,7 +13,7 @@ export const F = styled.span`
 `;
 
 export const G = styled.span`
-  color: #00fc83;
+  color: ${(props) => props.theme.colors.darkGreen};
 `;
 
 export const R = styled.span`

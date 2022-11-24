@@ -10,9 +10,6 @@ import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-import polygon from '../../public/icons/donate/polygon.png';
-import bnb from '../../public/icons/donate/bnb.png';
-import ftm from '../../public/icons/donate/ftm.png';
 import Tooltip from '../Tooltip';
 import { Erc20Icon, NftIcon } from '../../components/icons/Project';
 import {ProjectAmount} from '../../components/typography/Amounts';
@@ -30,7 +27,7 @@ const A = styled(Link)`
 `;
 
 const Container = styled(motion.div)`
-  background: ${(props) => props.theme.colors.transparent};
+  background: ${(props) => props.theme.colors.projectCard};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -41,7 +38,7 @@ const Container = styled(motion.div)`
   padding: 2%;
   margin-top: 3%;
   border: 1px solid rgba(163, 163, 163, 0.3);
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.4));
   border-radius: 5px;
   &:hover {
     cursor: pointer;

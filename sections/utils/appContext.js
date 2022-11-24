@@ -11,6 +11,7 @@ export const AppProvider = (props) => {
     pType: 'Standard', // Stream vs Standard
     pImageUrl: '',
     pChain: 80001,
+    pYt: '',
     pm1: 0,
     pm1Desc: 'Some description',
     category: 'Games',

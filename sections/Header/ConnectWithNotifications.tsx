@@ -21,6 +21,7 @@ export const ConnectWithNotifications = () => {
     return notifications ? notifications.filter((item) => item.isRead === false) : [];
   }, [notifications]);
 
+
   return (
     <>
       <ConnectWalletBox>
@@ -42,6 +43,7 @@ export const ConnectWithNotifications = () => {
           </IconFrame>
         )}
       </ConnectWalletBox>
+     
       {notificationsOpen && notifications && <Notifications notis={notifications.slice(0, 20)} />}
     </>
   );

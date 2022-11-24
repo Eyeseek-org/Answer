@@ -32,13 +32,6 @@ export const TabRow = styled.div`
   }
 `;
 
-export const TooltipBox = styled.div`
-  position: absolute;
-  right: 0;
-  width: 100%;
-  margin-top: 3%;
-`;
-
 export const IconBox = styled.div`
   margin-left: 2px;
   &:hover {

@@ -1,9 +1,8 @@
 import Head from 'next/head';
 import '../styles/globals.css';
-
-//Web3 auth
+import {useState} from 'react'
 import styled, { ThemeProvider } from 'styled-components';
-import { Chain, createClient, configureChains, WagmiConfig } from 'wagmi';
+import { createClient, configureChains, WagmiConfig } from 'wagmi';
 import { AppProvider } from '../sections/utils/appContext';
 import {RewardProvider } from '../sections/utils/rewardContext';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
@@ -14,7 +13,16 @@ import '@rainbow-me/rainbowkit/styles.css';
 import Header from '../sections/Header/Header';
 import Loading from '../components/Loading';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {darkTheme} from '../themes/theme'
+import {darkTheme, lightTheme} from '../themes/theme'
+import { AbsoluteRight } from '../components/format/Box';
+import {mumbai,fantomTest, bnbTest, optimismTest} from '../data/configChain'
+
+const ThemeButton = styled.button`
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+`
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.font};
@@ -22,65 +30,6 @@ const Container = styled.div`
   font-family: Inter, sans-serif !important;
 `;
 
-const mumbai: Chain = {
-  id: 80_001,
-  name: 'Mumbai',
-  network: 'mumbai',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'MATIC',
-    symbol: 'MATIC',
-  },
-  rpcUrls: {
-    default: 'https://rpc-mumbai.maticvigil.com',
-  },
-  testnet: true,
-};
-
-const fantomTest: Chain = {
-  id: 4_002,
-  name: 'Fantom testnet',
-  network: 'fantom',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'Fantom',
-    symbol: 'FTM',
-  },
-  rpcUrls: {
-    default: 'https://rpc.testnet.fantom.network',
-  },
-  testnet: true,
-};
-
-const bnbTest: Chain = {
-  id: 97,
-  name: 'BNB testnet',
-  network: 'binance',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'Binanace Coin',
-    symbol: 'BNB',
-  },
-  rpcUrls: {
-    default: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-  },
-  testnet: true,
-};
-
-const optimismTest: Chain = {
-  id: 420,
-  name: 'Optimism testnet',
-  network: 'optimism',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'Wrapped Ether',
-    symbol: 'WETH',
-  },
-  rpcUrls: {
-    default: 'https://goerli.optimism.io',
-  },
-  testnet: true,
-};
 
 const { provider, webSocketProvider, chains } = configureChains(
   [mumbai, fantomTest, bnbTest, optimismTest],
@@ -88,7 +37,7 @@ const { provider, webSocketProvider, chains } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
+  appName: 'Eyeseekfunding',
   chains,
 });
 
@@ -107,14 +56,26 @@ type AppProps = {
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const [theme, setTheme] = useState('dark');
+  const [th, setTh] = useState(darkTheme);
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
   //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
 
+  const toggleTheme = () => {
+    if (theme === 'dark') {
+      setTh(lightTheme)
+      setTheme('light')
+    } else if (theme === 'light'){
+      setTh(darkTheme)
+      setTheme('dark')
+    }
+  } 
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={th}>
         <Container>
           <WagmiConfig client={client}>
             <MoralisProvider appId={appId} serverUrl={serverUrl}>
@@ -135,6 +96,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                   <AppProvider>
                     <RewardProvider>
                     <Header />
+                    <AbsoluteRight>
+                      <ThemeButton onClick={()=>{toggleTheme()}}> 👀</ThemeButton>
+                    </AbsoluteRight>
                     <Loading>
                       <Component {...pageProps} />
                     </Loading>

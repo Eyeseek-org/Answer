@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useApp } from '../../sections/utils/appContext';
 import SectionTitle from '../../components/typography/SectionTitle';
 import DonateWithout from '../../sections/Donate/DonateWithout';
 import { Row } from '../../components/format/Row';
 import { InfoIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
+import Warning from '../../components/animated/Warning';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { blockchains } from '../../data/blockchains';
 import { currencies } from '../../data/currencies';
@@ -128,7 +129,7 @@ const Donate: NextPage = () => {
   const [apiError, setApiError] = useState(false);
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-
+  const { theme } = useTheme();
   const [tooltip, setTooltip] = useState(false);
 
   const [usdcFaucet, setUsdcFaucet] = useState(testChains.polygonUsdcFaucet);
@@ -309,6 +310,7 @@ const Donate: NextPage = () => {
     <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
     {!apiError ?
       <BodyBox>
+        <Warning text='ahoj'/>
         <DonateOption>
           {/* @ts-ignore */}
           {tooltip && <Tooltip text="Donates accepted only on this chain" />}
@@ -316,7 +318,7 @@ const Donate: NextPage = () => {
             <Row>
               Blockchain
               <InfoBox onMouseEnter={() => {setTooltip(true);}} onMouseLeave={() => {setTooltip(false); }}>
-                <InfoIcon width={15} />
+                <InfoIcon color={theme.colors.icon} width={15} />
               </InfoBox>
             </Row>
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}

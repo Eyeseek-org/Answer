@@ -54,7 +54,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
   return (
     <Container>
       <ButtonBox>
-        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} />
+        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={1} />
           <ButtonAlt
             text={'Submit'}
             onClick={() => {

@@ -7,6 +7,9 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import InputContainer from '../../components/form/InputContainer';
 import { UniService } from '../../services/DapAPIService';
 import {useAccount} from 'wagmi'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import {veri_form} from '../../data/forms/veriForm'
 
 const Container = styled.div`
   padding-left: 18%;
@@ -23,9 +26,27 @@ const Container = styled.div`
 
 const Verification = ({ objectId, owner }) => {
   const [apiError, setApiError] = useState(false);
-  const [url, setUrl] = useState('');
+
   const [success, setSuccess] = useState(false);
   const {address} = useAccount()
+
+  const HTTPS_URL_REGEX = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+
+  const formik = useFormik({
+    initialValues: {
+      url: '',
+    },
+    validateOnChange: false,
+    validateOnBlur: true,
+    validationSchema: Yup.object({
+      url: Yup.string()
+        .required('Website is required field')
+        .matches(HTTPS_URL_REGEX, 'References are accepted with HTTPS prefix only'),
+    }),
+    onSubmit: (values) => {
+      sendVeriRequest(objectId, values.url)
+    },
+  });
 
   const sendVeriRequest = async (objectId, url) => {
     try {
@@ -66,17 +87,20 @@ const Verification = ({ objectId, owner }) => {
         <li>Post from official website</li>
       </div>
       <InputContainer
-        label={'URL to verify'}
-        placeholder={'https://www.eyeseek.org/'}
-        onChange={(e) => setUrl(e.target.value)}
-        description={'Link to blogpost, socials announcement'}
+        key={veri_form[0].name}
+        name={veri_form[0].name}
+        label={veri_form[0].label}
+        placeholder={veri_form[0].p}
+        onChange={formik.handleChange}
+        description={veri_form[0].description}
         type={'text'}
-        maxLength={150}
+        maxLength={veri_form[0].maxLength}
+        isError={formik.errors[name] != null}
+        errorText={formik.errors[name]}
       />
       <div>{!success ? <ButtonAlt text="Send verification request" onClick={()=>{sendVeriRequest(objectId, url)}} /> : <div>Verification request sent</div>}</div>
       </>}
-      {veri && address === owner && <div>Project successfully verified</div>}
-      {veri ? <div>Project was manually verified by the Eyeseek team</div> : <>Project is not verified by the Eyeseek team</>}
+      {veri ? <div>Project was sent to verification by the Eyeseek team</div> : <>Project is not verified by the Eyeseek team</>}
     </Container>
   );
 };

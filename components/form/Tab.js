@@ -1,8 +1,4 @@
 import styled from 'styled-components'
-import { RewardIcon } from '../icons/Common'
-import { Erc20ActiveIcon, Erc20Icon, NftActiveIcon, NftIcon, RewardActiveIcon } from '../icons/Project'
-import Tooltip from '../Tooltip'
-import {useState} from 'react'
 
 const Container = styled.div`
   display: flex;
@@ -40,49 +36,23 @@ const Active = styled(Inactive)`
 `
 
 
-const IconBox = styled.div`
-    margin-left: 10px;
-`
-
-const ActBox = styled(IconBox)`
-    border-radius: 90px;
-    box-shadow: 0px 2px 10px 0px ${(props) => props.theme.colors.font};
-`
-
 const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, change5 }) => {
 
-    const [showTooltip, setShowTooltip] = useState(false)
-    const [tooltipText, setTooltipText] = useState('')
-
-    const handleTooltip = (text) => {
-        setShowTooltip(true)
-        setTooltipText(text)
-    }
 
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? 
             <Active>
-                {text === 'Classic' && <ActBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <RewardActiveIcon width={60} height={60} /></ActBox>} 
-                {text === 'ERC20' && <ActBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <Erc20ActiveIcon width={60} height={60}  /></ActBox>}
-                {text === 'ERC1155' && <ActBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <NftActiveIcon width={60} height={60} /></ActBox>}
+
                 {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
             </Active> : 
             <Inactive onClick={onClick}>
-                {text === 'Classic' && <IconBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <RewardIcon width={60} height={60}  /></IconBox>} 
-                {text === 'ERC20' && <IconBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <Erc20Icon width={60} height={60} /></IconBox>}
-                {text === 'ERC1155' && <IconBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <NftIcon width={60}  height={60} /></IconBox>}
+
                 {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
             </Inactive>
         }</>
     }
     return <Container>
-        {showTooltip && <Tooltip text={tooltipText} margin={'-50px'}/>}
+
         <Item act={o1} text={o1} onClick={change1} />
         <Item act={o2} text={o2} onClick={change2} />
 

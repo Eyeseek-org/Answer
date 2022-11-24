@@ -55,6 +55,7 @@ const TellStory = ({ setStep }) => {
   }, []);
 
   const HTTPS_URL_REGEX = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+  const YT_REGEX = /((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+/;
 
   const formik = useFormik({
     initialValues: {
@@ -62,6 +63,7 @@ const TellStory = ({ setStep }) => {
       description: '',
       website: '',
       socials: '',
+      youtube: ''
     },
     validateOnChange: false,
     validateOnBlur: true,
@@ -74,6 +76,7 @@ const TellStory = ({ setStep }) => {
       socials: Yup.string()
         .required('Socials is required field!')
         .matches(HTTPS_URL_REGEX, 'References are accepted with HTTPS prefix only'),
+      youtube: Yup.string().matches(YT_REGEX, 'Youtube link is not valid'),
     }),
     onSubmit: (values) => {
       setAppState((prev) => ({
@@ -82,6 +85,7 @@ const TellStory = ({ setStep }) => {
         pDesc: values.description,
         pWeb: values.website,
         pSocial: values.socials,
+        pYt: values.youtube,
         stepLock: 2,
       }));
       handleClick();
