@@ -14,6 +14,7 @@ import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
+import { RewardDesc } from '../../components/typography/Descriptions';
 
 const Container = styled.div`
   margin-top: 5%;
@@ -95,7 +96,7 @@ const Project: NextPage = () => {
                 {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title} />}
               </>
             )}
-            {mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId} />}
+            {project && mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId} />}
           </>
         ) : (
           <>{projectError && <>Project failed to fetch</>}</>
