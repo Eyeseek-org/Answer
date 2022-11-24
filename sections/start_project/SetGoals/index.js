@@ -147,8 +147,12 @@ const SetGoals = ({ setStep }) => {
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
 
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    if (chain){
+      setAppState((prev) => ({ ...prev, pChain: chain.id }));
+    }
   }, []);
 
   const handleClick = async () => {

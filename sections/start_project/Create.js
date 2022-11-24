@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useApp } from '../../utils/appContext';
+import { useApp } from '../utils/appContext';
 import Image from 'next/image';
 import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork, useAccount, useSwitchNetwork } from 'wagmi';
 import axios from 'axios';
 
-import SectionTitle from '../../../components/typography/SectionTitle';
-import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StyleWrapper';
-import FaqCard from '../../../components/cards/FaqCard';
-import { BookIcon } from '../../../components/icons/Common';
-import donation from '../../../abi/donation.json';
-import Eye10 from '../../../public/Eye10.png';
-import Rainbow from '../../../components/buttons/Rainbow';
-import { moralisApiConfig } from '../../../data/moralisApiConfig';
-import { GetFundingAddress } from '../../../helpers/GetContractAddress';
-import { BetweenRow, Col } from '../../../components/format/Row';
-import ButtonAlt from '../../../components/buttons/ButtonAlt';
-import { MainContainer } from '../../../components/format/Box';
-import LogResult from '../../LogResult';
-import { ChainName } from '../../../helpers/MultichainHelpers';
-import { G } from '../../../components/typography/ColoredTexts';
+import SectionTitle from '../../components/typography/SectionTitle';
+import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './Create/StyleWrapper';
+import FaqCard from '../../components/cards/FaqCard';
+import { BookIcon } from '../../components/icons/Common';
+import donation from '../../abi/donation.json';
+import Eye10 from '../../public/Eye10.png';
+import Rainbow from '../../components/buttons/Rainbow';
+import { moralisApiConfig } from '../../data/moralisApiConfig';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
+import { BetweenRow, Col } from '../../components/format/Row';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { MainContainer } from '../../components/format/Box';
+import LogResult from '../LogResult';
+import { ChainName } from '../../helpers/MultichainHelpers';
+import { G } from '../../components/typography/ColoredTexts';
 
 const texts = [
   {
@@ -36,24 +36,31 @@ const Create = ({ setStep }) => {
   const { appState } = useApp();
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const [chainName, setChainName] = useState('')
-  const { pTitle, pDesc, category, subcategory, pm1, pType, pImageUrl, pChain, pSocial, pWeb, pm1Desc } = appState;
+  const [chainName, setChainName] = useState()
+  const { pTitle, pDesc, category, subcategory, pm1, pType, pImageUrl, pChain, pSocial, pWeb, pm1Desc, pYt } = appState;
   const [ev, setEv] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [oid, setOid] = useState(null);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
-  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [add, setAdd] = useState();
 
   const handleBack = () => {
     setStep((prev) => (prev -= 1));
   };
 
+
   useEffect(() => {
-    setAdd(GetFundingAddress(pChain));
-    setChainName(ChainName(pChain))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    if (!add){
+      setAdd(GetProjectFundingAddress(pChain))
+    }
+  
+    if (!chainName){
+      setChainName(ChainName(pChain))
+    }
+  
   }, []);
 
   // Update project with PID retrieved from blockchain
@@ -113,6 +120,7 @@ const Create = ({ setStep }) => {
           subcategory: subcategory,
           urlProject: pSocial,
           urlSocials: pWeb,
+          youtube: pYt,
           goal: Number(pm1),
           descM: pm1Desc,
           type: pType,

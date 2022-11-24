@@ -2,7 +2,10 @@ import styled from 'styled-components'
 import { Row } from '../format/Row'
 import { BookmarkFilledIcon, BookmarkIcon } from '../icons/Common'
 import { StreamIcon } from '../icons/Landing'
-import { DonateActiveIcon, DonateIcon, ProjectActiveIcon, ProjectIcon } from '../icons/Project'
+import { DonateActiveIcon, DonateIcon, ProjectActiveIcon, ProjectIcon,  Erc20ActiveIcon, Erc20Icon, NftActiveIcon, NftIcon, RewardActiveIcon } from '../icons/Project'
+import { RewardIcon } from '../icons/Common'
+import Tooltip from '../Tooltip'
+import {useState} from 'react'
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +24,7 @@ const Menu = styled.div`
     padding: 1%;
     padding-left: 3%;
     padding-right: 8%;
-    gap: 10%;
+    gap: 5%;
 `
 
 const Inactive = styled.div`
@@ -37,6 +40,13 @@ const Inactive = styled.div`
         font-size: 1.1em;
     }
 `
+const IconBox = styled.div`
+`
+
+const ActBox = styled(IconBox)`
+    border-radius: 90px;
+    box-shadow: 0px 2px 10px 0px ${(props) => props.theme.colors.font};
+`
 
 const Active = styled(Inactive)`
     color: #b0f6ff;
@@ -45,7 +55,14 @@ const Active = styled(Inactive)`
 
 const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, change5 }) => {
 
-    // Doplnit hover - odebrat výplň
+    const [showTooltip, setShowTooltip] = useState(false)
+    const [tooltipText, setTooltipText] = useState('')
+
+    const handleTooltip = (text) => {
+        setShowTooltip(true)
+        setTooltipText(text)
+    }
+
 
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? 
@@ -54,16 +71,29 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                 {text === 'Donates' && <Row><DonateActiveIcon width={50} /><div>{text}</div></Row>}
                 {text === 'Bookmarks' && <Row><BookmarkFilledIcon width={50} /><div>{text}</div></Row>}
                 {text === 'Streams' && <Row><StreamIcon width={50} /><div>{text}</div></Row>}
+                {text === 'Classic' && <ActBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
+                    <RewardActiveIcon width={60} height={60} /></ActBox>} 
+                {text === 'ERC20' && <ActBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
+                    <Erc20ActiveIcon width={60} height={60}  /></ActBox>}
+                {text === 'ERC1155' && <ActBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
+                    <NftActiveIcon width={60} height={60} /></ActBox>}
             </Active> : 
             <Inactive onClick={onClick}>
                 {text === 'Projects' && <Row><ProjectIcon width={50}/><div>{text}</div></Row>} 
                 {text === 'Donates' && <Row><DonateIcon width={50} /><div>{text}</div></Row>}
                 {text === 'Bookmarks' && <Row><BookmarkIcon width={50} /><div>{text}</div></Row>}
                 {text === 'Streams' && <Row><StreamIcon width={50}  /><div>{text}</div></Row>}
+                {text === 'Classic' && <IconBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
+                    <RewardIcon width={60} height={60}  /></IconBox>} 
+                {text === 'ERC20' && <IconBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
+                    <Erc20Icon width={60} height={60} /></IconBox>}
+                {text === 'ERC1155' && <IconBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
+                    <NftIcon width={60}  height={60} /></IconBox>}
             </Inactive>
         }</>
     }
     return <Container>
+     {showTooltip && <Tooltip text={tooltipText} margin={'-50px'}/>}
     <Menu>
         <Item act={o1} text={o1} onClick={change1} />
         <Item act={o2} text={o2} onClick={change2} />

@@ -65,7 +65,7 @@ const RewardFormToken = ({dType}) => {
         placeholder={'1000000'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, tokenAmount: e.value }))}
         description={<>        
-            Amount of tokens eligible for reward for each backer</>}
+            Amount of tokens eligible for reward for each backer (wei units)</>}
         type={'number'}
                     />
     <InputContainer

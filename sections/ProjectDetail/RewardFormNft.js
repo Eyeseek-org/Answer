@@ -2,6 +2,7 @@ import { useReward } from '../utils/rewardContext';
 import {useState} from 'react'
 import InputContainer from "../../components/form/InputContainer";
 import { Row } from "../../components/format/Row";
+import { R } from '../../components/typography/ColoredTexts';
 
 const RewardFormNft = ({dType}) => {
     const { setRewardState } = useReward();

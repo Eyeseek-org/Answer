@@ -31,4 +31,12 @@ export const story_form = [
       text_field: false,
       maxLength: 100,
     },
+    {
+      title: 'Youtube',
+      name: 'youtube',
+      p: 'https://www.youtube.com/watch?v=mt5jCk51yk8',
+      description: 'If you have an intro video, provide a link (optional)',
+      text_field: false,
+      maxLength: 100,
+    },
   ];

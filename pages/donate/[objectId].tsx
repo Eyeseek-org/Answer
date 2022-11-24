@@ -9,6 +9,7 @@ import DonateWithout from '../../sections/Donate/DonateWithout';
 import { Row } from '../../components/format/Row';
 import { InfoIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
+import Warning from '../../components/animated/Warning';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { blockchains } from '../../data/blockchains';
 import { currencies } from '../../data/currencies';
@@ -309,6 +310,7 @@ const Donate: NextPage = () => {
     <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
     {!apiError ?
       <BodyBox>
+        <Warning text='ahoj'/>
         <DonateOption>
           {/* @ts-ignore */}
           {tooltip && <Tooltip text="Donates accepted only on this chain" />}

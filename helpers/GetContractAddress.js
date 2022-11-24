@@ -18,6 +18,7 @@ export const GetFundingAddress = (chain) => {
 // This function expects external chain as an input
 // Typically chain of already created project
 export const GetProjectFundingAddress = (chain) => {
+  console.log(chain)
   if (chain === 80001) {
     return process.env.NEXT_PUBLIC_AD_DONATOR;
   } else if (chain === 97) {

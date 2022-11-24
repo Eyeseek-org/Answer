@@ -3,10 +3,9 @@ import axios from 'axios'
 import styled from 'styled-components';
 import {useContractEvent} from 'wagmi'
 import { useReward } from '../utils/rewardContext';
-import { TabRow, TooltipBox, IconBox } from "../start_project/SetRewards/StyleWrapper";
+import { RewardDesc, TabRow } from "../start_project/SetRewards/StyleWrapper";
 import donation from "../../abi/donation.json"
 import Tab from "../../components/form/Tab";
-import Tooltip from "../../components/Tooltip";
 import { BetweenRow } from "../../components/format/Row";
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
 import ErrText from "../../components/typography/ErrText";
@@ -24,6 +23,7 @@ import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
 import { G } from '../../components/typography/ColoredTexts';
 import Socials from '../../components/buttons/Socials';
+import TabImage from '../../components/form/TabImage';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -37,17 +37,18 @@ const Summary = styled.div`
     }
 `
 
+const DescBox = styled.div`
+    display: flex;
+    margin-left: 10%;
+`
+
 const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     const pType = "Standard" // Until stream is implemented
     const [dType, setdType] = useState('Microfund')
     const [tokenType, setTokenType] = useState('Classic')
-    const [tokenTooltip, setTokenTooltip] = useState(false)
-    const [microTooltip, setMicroTooltip] = useState(false)
-    const [nftTooltip, setNftTooltip] = useState(false)
-    const [donationTooltip, setDonationTooltip] = useState(false)
     const [success, setSuccess] = useState(false)
 
-    const { rewardState } = useReward();
+    const { rewardState, setRewardState } = useReward();
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId } = rewardState;
     const [rewardId, setRewardId] = useState(0)
  
@@ -149,23 +150,22 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                         {tokenType === 'ERC20' && <>Fungible token reward</>}
                         {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
                     </>}/>
-                    <TabRow><Tab active={tokenType} o1={'Classic'} o2={'ERC20'} o3={'ERC1155'} 
+                    <TabRow><TabImage active={tokenType} o1={'Classic'} o2={'ERC20'} o3={'ERC1155'} 
                         change1={() => { handleChangeTokenType('Classic') }} 
                         change2={() => {handleChangeTokenType('ERC20')}}  
                         change3={() => {handleChangeTokenType('ERC1155')}} />
                     </TabRow>
                 </BetweenRow>
                 <MilestoneContainer>
-                    <TabRow> {pType === 'Standard' && <Tab active={dType} o1={'Microfund'} o2={'Donate'} change1={() => { setdType('Microfund') }} change2={() => { setdType('Donate') }} />}
-                        <TooltipBox>
-                            {microTooltip && <Tooltip text={'Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.'} />}
-                            {donationTooltip && <Tooltip text={'Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.'} />}
-                            {nftTooltip && <Tooltip text={'TBD Nft tooltip'}/>}
-                            {tokenTooltip &&  <Tooltip text={'Tooltip TBD'} />}
-                        </TooltipBox>
+                    <TabRow> 
+                        {pType === 'Standard' && <Tab active={dType} o1={'Microfund'} o2={'Donate'} change1={() => { setdType('Microfund') }} change2={() => { setdType('Donate') }} />}
+                        <DescBox>
+                            {dType === 'Microfund' && <RewardDesc>Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.</RewardDesc>}
+                            {dType === 'Donate' && <RewardDesc>Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.</RewardDesc>}
+                        </DescBox>
                     </TabRow>
                         {tokenType === 'ERC20' && <RewardFormToken dType={dType}/>}
-                        {tokenType === 'ERC1155' && <RewardFormNFT dType={dType}/>}
+                        {tokenType === 'ERC1155' && <RewardFormNft dType={dType}/>}
                         {tokenType === 'Classic' &&  <RewardFormClassic dType={dType}/>}
                     <Summary>
                         {dType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
