@@ -42,11 +42,9 @@ const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, c
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? 
             <Active>
-
                 {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
             </Active> : 
             <Inactive onClick={onClick}>
-
                 {text !== 'ERC20' && text !== 'ERC1155' && text !== 'Classic' && <>{text}</> }
             </Inactive>
         }</>

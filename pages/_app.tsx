@@ -7,7 +7,7 @@ import { AppProvider } from '../sections/utils/appContext';
 import {RewardProvider } from '../sections/utils/rewardContext';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, RainbowKitProvider, Theme } from '@rainbow-me/rainbowkit';
 import { MoralisProvider } from 'react-moralis';
 import '@rainbow-me/rainbowkit/styles.css';
 import Header from '../sections/Header/Header';
@@ -56,21 +56,77 @@ type AppProps = {
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [theme, setTheme] = useState('dark');
+  const [dTheme, setDTheme] = useState('dark');
   const [th, setTh] = useState(darkTheme);
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
   //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
 
   const toggleTheme = () => {
-    if (theme === 'dark') {
+    if (dTheme === 'dark') {
       setTh(lightTheme)
-      setTheme('light')
-    } else if (theme === 'light'){
+      setDTheme('light')
+    } else if (dTheme === 'light'){
       setTh(darkTheme)
-      setTheme('dark')
+      setDTheme('dark')
     }
   } 
+    const rainbowTheme: Theme = {
+      blurs: {
+        modalOverlay: 'red',
+      },
+      colors: {
+        accentColor: th.colors.primary,
+        accentColorForeground: th.colors.black,
+        actionButtonBorder: th.colors.font,
+        actionButtonBorderMobile: th.colors.font,
+        actionButtonSecondaryBackground: th.colors.body,
+        closeButton: th.colors.font,
+        closeButtonBackground: 'inherit',
+        connectButtonBackground: th.colors.primary,
+        connectButtonBackgroundError: th.colors.errGradient,
+        connectButtonInnerBackground: th.colors.primary,
+        connectButtonText: th.colors.font,
+        connectButtonTextError: th.colors.red,
+        connectionIndicator: th.colors.darkGreen,
+        downloadBottomCardBackground: th.colors.body,
+        downloadTopCardBackground: th.colors.body,
+        error: th.colors.red,
+        generalBorder: th.colors.border,
+        generalBorderDim: th.colors.transparent,
+        menuItemBackground: th.colors.transparent,
+        modalBackdrop: th.colors.transparent,
+        modalBackground: th.colors.body,
+        modalBorder: th.colors.border,
+        modalText: th.colors.font,
+        modalTextDim: th.colors.transparent,
+        modalTextSecondary: th.colors.primary,
+        profileAction: th.colors.font,
+        profileActionHover: th.colors.gray,
+        profileForeground: th.colors.body,
+        selectedOptionBorder: th.colors.border,
+        standby: th.colors.red,
+      },
+      fonts: {
+        body:  th.colors.font,
+      },
+      radii: {
+        actionButton: th.colors.primary,
+        connectButton: th.colors.primary,
+        menuButton: th.colors.primary,
+        modal: th.colors.body,
+        modalMobile: th.colors.body,
+      },
+      shadows: {
+        connectButton: th.colors.projectCard,
+        dialog: th.colors.body,
+        profileDetailsAction: th.colors.primary,
+        selectedOption: th.colors.primary,
+        selectedWallet: th.colors.primary,
+        walletLogo: '...',
+      },
+    };
+
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -79,7 +135,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <Container>
           <WagmiConfig client={client}>
             <MoralisProvider appId={appId} serverUrl={serverUrl}>
-                <RainbowKitProvider chains={chains}>
+                <RainbowKitProvider chains={chains} theme={rainbowTheme}>
                   <Head>
                     <meta charSet="utf-8" />
                     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
