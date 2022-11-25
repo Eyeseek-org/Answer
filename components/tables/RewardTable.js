@@ -7,15 +7,15 @@ import RewardModal from '../../sections/RewardModal'
 import {useTheme} from 'styled-components';
 import { RewardDesc } from '../typography/Descriptions';
 
-const RewardTable = ({data}) => {
+const RewardTable = ({data, donors}) => {
   const [sorting, setSorting] = useState([]);
   const [showRewardList, setShowRewardList] = useState(false);
-  const [rewardList, setRewardList] = useState()
   const theme = useTheme()
-  const handleRewardList = (id) => {
-    setRewardList(id)
+  const handleRewardList = () => {
     setShowRewardList(true)
   }
+
+  console.log(donors)
 
   const columns = [
     {
@@ -119,7 +119,8 @@ const RewardTable = ({data}) => {
           </tbody>
         </Table> : <RewardDesc>No rewards found for this project</RewardDesc>
       }
-      {showRewardList && rewardList && <RewardModal rewardId={rewardList} showMe={showRewardList} />}
+      {showRewardList && data && <RewardModal showMe={showRewardList} donors={donors} />}
+      {showRewardList && <>First condition</>}
     </>
 };
 

@@ -52,7 +52,7 @@ const Line = styled.div`
   margin-top: 20px;
   margin-left: 10px;
   margin-right: 10px;
-  background: #c8c8c8;
+  background: ${(props) => props.theme.colors.lightGray};
   @media (max-width: 968px) {
     width: 20px;
     margin: 0;

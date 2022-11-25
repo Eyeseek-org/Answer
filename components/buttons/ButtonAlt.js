@@ -12,7 +12,7 @@ const MyButton = styled(motion.button)`
   display: inline-block;
   font-family: 'Gemunu Libre', sans-serif;
   letter-spacing: 0.5px;
-  font-size: 14px;
+  font-size: 1.1em;
   font-weight: 500;
   height: 40px;
   line-height: 20px;
@@ -36,7 +36,7 @@ const MyButton = styled(motion.button)`
     margin: 0;
   }
   @media (min-width: 1580px) {
-    font-size: 1em;
+    font-size: 1.4em;
   }
 `;
 

@@ -28,7 +28,7 @@ export const RewardTitle = styled.div`
   justify-content: space-between;
   padding-bottom: 5%;
   margin-bottom: 4%;
-  color: ${(props) => props.theme.colors.terciary};
+  color: ${(props) => props.theme.colors.primary};
   font-size: 1em;
   font-family: 'Gemunu Libre';
   letter-spacing: 0.4px;

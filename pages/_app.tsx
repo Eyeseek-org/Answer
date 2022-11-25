@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import '../styles/globals.css';
 import {useState} from 'react'
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider  } from 'styled-components';
 import { createClient, configureChains, WagmiConfig } from 'wagmi';
 import { AppProvider } from '../sections/utils/appContext';
 import {RewardProvider } from '../sections/utils/rewardContext';
@@ -53,6 +53,7 @@ type AppProps = {
   pageProps: any;
 };
 
+
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -61,6 +62,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
   //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
+
+  // https://stackoverflow.com/questions/66483948/react-typescript-property-body-does-not-exist-type-defaulttheme
 
   const toggleTheme = () => {
     if (dTheme === 'dark') {

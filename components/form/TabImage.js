@@ -60,7 +60,7 @@ const ActBox = styled(IconBox)`
 `
 
 const Active = styled(Inactive)`
-    color: #b0f6ff;
+    color: ${(props) => props.theme.colors.primary};
 `
 
 

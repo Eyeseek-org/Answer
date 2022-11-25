@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { RewardDesc } from "../../components/typography/Descriptions";
 import { G } from "../../components/typography/ColoredTexts";
 import { Framework } from "@superfluid-finance/sdk-core";
+import { MainContainer } from "../../components/format/Box";
 
 const Container = styled.div`
     display: flex;
@@ -56,7 +57,8 @@ const MyStreams = () => {
     // Verify the stream - pair backer and addressBacker 
 
 
-    return <Container>
+    return <MainContainer>
+      <Container>
         <RewardDesc>Streaming is an experimental feature, we use for now Superfluid contracts to keep flow secured</RewardDesc>
         <Divider/>
         {streamData ? 
@@ -67,6 +69,7 @@ const MyStreams = () => {
         <Divider/>
         <RewardDesc>Right now you can donate only via 1 stream in parallel. We'll do more if users would favor this feature.</RewardDesc>
     </Container>
+    </MainContainer>
 }
 
 export default MyStreams

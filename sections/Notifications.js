@@ -11,12 +11,14 @@ import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DapAPIService } from '../services/DapAPIService';
 import {AnimatedModal} from '../components/animated/AnimatedModal';
+import { RewardActiveIcon } from '../components/icons/Project';
 
 TimeAgo.addDefaultLocale(en);
 
 const NotiBox = styled.div`
   margin-top: 60px;
   position: relative;
+  z-index: 80;
 `;
 
 const NotiItem = styled.div`
@@ -40,7 +42,7 @@ const Col = styled.div`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  background: ${(props) => props.theme.colors.gradient};
+  background: ${(props) => props.theme.colors.background};
   padding: 2%;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -89,6 +91,7 @@ const ButtonRow = styled.div`
 `;
 
 const Buttons = styled.div`
+  z-index: 100;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -178,10 +181,10 @@ const Notifications = ({ notis }) => {
                 <Link href={`/project/${noti.project}`}>
                   <Row>
                     <IconWrapper>
-                      {noti.type === 'projectCanceled' && <CanceledIcon width={20} height={20} />}
-                      {noti.type === 'projectUpdate' && <NewsIcon width={20} height={20} />}
-                      {noti.type === 'projectFunded' && <SuccessIcon width={20} height={20} />}
-                      {noti.type === 'rewardAdded' && <RewardIcon width={20} height={20} />}
+                      {noti.type === 'projectCanceled' && <CanceledIcon width={30} height={30} />}
+                      {noti.type === 'projectUpdate' && <NewsIcon width={30} height={30} />}
+                      {noti.type === 'projectFunded' && <SuccessIcon width={30} height={30} />}
+                      {noti.type === 'rewardAdded' && <RewardActiveIcon width={30} height={30} />}
                     </IconWrapper>
                     <Col>
                       <Desc expand={expand}>{noti.description}</Desc>

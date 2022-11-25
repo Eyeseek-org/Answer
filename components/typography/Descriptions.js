@@ -21,6 +21,9 @@ export const ProjectDesc = styled.div`
   font-size: 17px;
   color: ${(props) => props.theme.colors.font};
   margin-top: 5%;
+  @media (min-width: 1580px) {
+    font-size: 21px;
+  }
 `
 
 export const RewardDesc = styled.div`
@@ -31,6 +34,9 @@ export const RewardDesc = styled.div`
   letter-spacing: 0.4px;
   font-size: 0.9em;
   color: ${(props) => props.theme.colors.font};
+  @media (min-width: 1580px) {
+    font-size: 1.2em;
+  }
 `
 
 export const WarnDesc = styled.div`
@@ -42,6 +48,9 @@ export const WarnDesc = styled.div`
   letter-spacing: 0.02em;
   color: ${(props) => props.theme.colors.font};
   margin-left: 2%;
+  @media (min-width: 1580px) {
+    font-size: 1.2em;
+  }
 `
 
 export const Reference = styled.div`
@@ -54,5 +63,8 @@ export const Reference = styled.div`
   transition: 0.2s;
   &:hover{
     opacity: 1;
+  }
+  @media (min-width: 1580px) {
+    font-size: 1.2em;
   }
 `

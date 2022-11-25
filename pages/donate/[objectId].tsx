@@ -136,7 +136,7 @@ const Donate: NextPage = () => {
 
   const [usdcFaucet, setUsdcFaucet] = useState(testChains.polygonUsdcFaucet);
   const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet);
-  const [currencyAddress, setCurrencyAddress] = useState<string>();
+  const [currencyAddress, setCurrencyAddress] = useState<string>('USDC');
   const [curr, setCurr] = useState(1);
   const [add, setAdd] = useState<string>();
 
@@ -162,6 +162,7 @@ const Donate: NextPage = () => {
 
   useEffect(() => {
       setAppState({ ...appState, rewMAmount: 0, rewDAmount: 0 });
+      handleSwitchCurrency('USDC')
   },[])
 
   const handleSwitchNetwork = (id: number) => {
@@ -296,7 +297,7 @@ const Donate: NextPage = () => {
           </DonateOptionTitle>
            <Row>
             <div> <ChainIcon chain={projectDetail?.chainId} /></div>
-              {chain?.id !== projectDetail?.chain && <ButtonErr text="Wrong network" onClick={() => switchNetwork(projectDetail?.chain)} width={'150px'} />}
+              {chain?.id !== projectDetail?.chainId && <ButtonErr text="Wrong network" onClick={() => switchNetwork(projectDetail?.chain)} width={'150px'} />}
             </Row>
         </DonateOption>
         <DonateOption>

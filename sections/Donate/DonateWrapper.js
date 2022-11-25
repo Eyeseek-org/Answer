@@ -66,7 +66,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     await setSuccess(true);
     await updateBookmark(bookmarks);
     if (rewEligible > 0){
-      await updateReward();
+      await updateReward(rewDonors);
     }
   };
 
@@ -117,8 +117,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   };
 
 
-  const updateReward = async (rewDonors) => {
-    const newDonors = [...rewDonors, address];
+  const updateReward = async (donors) => {
+    const newDonors = [...donors, {address: address, status: 0}];
     try{
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors}, moralisApiConfig);
       setApiError(false)

@@ -19,7 +19,8 @@ import { RewardDesc } from '../typography/Descriptions';
 const ProjectTable = () => {
   const [sorting, setSorting] = useState([]);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [projectId, setProjectId] = useState(null)
+  const [projectId, setProjectId] = useState()
+  const [donors, setDonors] = useState()
   const theme = useTheme()
 
   const columns = [
@@ -112,19 +113,12 @@ const ProjectTable = () => {
   // Tooltipy + Merge obrázků
   // On click rerender nefunguje
 
-  const handleReward = (id) => {
+  const handleReward = async(id) => {
+    // TBD musim kliknout dvakrát 
     setProjectId(id)
+    refetch()
   }
 
-  const handleTooltip = (text) => {
-    setShowTooltip(true);
-    setTooltipText(text);
-  }
-
-  const handleClose = () => {
-    setShowTooltip(false);
-    setTooltipText('');
-  }
 
   const { data, isLoading } = useQuery(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
     onError: (err) => {
@@ -132,10 +126,14 @@ const ProjectTable = () => {
     },
   });
 
-  const { data: projectRewards } = useQuery(['rewards'], () => UniService.getDataAll(`/classes/Reward?where={"project": "${projectId}"}`), {
+  const { data: projectRewards, refetch  } = useQuery(['rewards'], () => UniService.getDataSingle(`/classes/Reward?where={"project": "${projectId}"}`), {
     onError: (err) => {
       console.log('err', err);
     },
+    onSuccess: (data) => {
+      // Tady je někde chyba
+      setDonors(data.donors)
+    }
   });
 
 
@@ -194,7 +192,7 @@ const ProjectTable = () => {
           </Table>
         )}
       </>}
-     {projectRewards &&  <RewardTable data={projectRewards} />}
+     {projectRewards && donors &&  <RewardTable data={projectRewards} donors={donors} />}
     </>
 };
 

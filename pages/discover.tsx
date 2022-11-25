@@ -28,6 +28,7 @@ const Discover = () => {
     <SectionTitle title={'Discover'} subtitle={'Data overview'} />
     <Container>
       <TabWrapper>
+        {/* @ts-ignore */}
          <Tab 
             active={active} 
             o1={'Projects'} 

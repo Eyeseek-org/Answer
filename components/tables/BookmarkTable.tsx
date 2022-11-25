@@ -7,8 +7,7 @@ import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { RewardDesc } from '../typography/Descriptions';
 import { useAccount } from 'wagmi';
-
-
+import { MainContainer } from '../format/Box';
 
 const BookmarkTable = () => {
   const [sorting, setSorting] = useState([]);
@@ -56,7 +55,7 @@ const BookmarkTable = () => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  return  <>
+  return  <MainContainer>
  {isLoading ? <RewardDesc>Loading, server was sleeping...</RewardDesc> : 
       <>
         {data && data.length > 0 && (
@@ -89,7 +88,7 @@ const BookmarkTable = () => {
           </Table>
         )}
       </>}
-    </>
+    </MainContainer>
 };
 
 export default BookmarkTable;

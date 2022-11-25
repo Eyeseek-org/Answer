@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { DiscordIcon, EmailIcon, MediumIcon, TwitterIcon } from '../components/icons/Socials';
+import { DiscordIcon, EmailIcon, MediumIcon } from '../components/icons/Socials';
 
 const Container = styled.div`
+  background: ${(props) => props.theme.colors.background};
   display: flex;
   flex-direction: row;
   justify-content: center;
