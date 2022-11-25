@@ -8,20 +8,28 @@ import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../ic
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import Tooltip from '../Tooltip';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
-import { ProjectActiveIcon } from '../icons/Project';
+import { DetailIcon, WebIcon } from '../icons/Project';
 import RewardTable from './RewardTable';
 import { Row } from '../format/Row';
 import {useTheme} from 'styled-components';
+import {SubcatPick} from '../functional/CatPicks'
+import { RewardDesc } from '../typography/Descriptions';
 
 
 const ProjectTable = () => {
   const [sorting, setSorting] = useState([]);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipText, setTooltipText] = useState('');
   const [projectId, setProjectId] = useState(null)
   const theme = useTheme()
 
   const columns = [
+    {
+      accessorKey: 'chainId',
+      cell: (props) => (
+        <ChainIconComponent ch={props.getValue()} />
+      ),
+      header: <HeaderCell>Chain</HeaderCell>,
+    },
     {
       accessorKey: 'title',
       header: 'Project',
@@ -39,7 +47,7 @@ const ProjectTable = () => {
         accessorKey: 'goal',
         cell: (props) => (
           <>
-           {props.getValue()}
+           ${props.getValue()}
           </>
         ),
         header: <HeaderCell>Goal</HeaderCell>,
@@ -48,7 +56,7 @@ const ProjectTable = () => {
       accessorKey: 'category',
       cell: (props) => (
         <>
-         {props.getValue()}
+                {props.getValue()}
         </>
       ),
       header: <HeaderCell>Category</HeaderCell>,
@@ -57,15 +65,19 @@ const ProjectTable = () => {
       accessorKey: 'subcategory',
       cell: (props) => (
         <>
-         {props.getValue()}
+         <SubcatPick subcat={props.getValue()}/>  
         </>
       ),
-      header: <HeaderCell>Subcategory</HeaderCell>,
+      header: <HeaderCell>Area</HeaderCell>,
     },
     {
       accessorKey: 'urlProject',
       cell: (props) => (
-        <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon color={theme.colors.icon} width={20}/></a>
+        <>
+        <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" >
+          <WebIcon color={theme.colors.icon} width={30}/>
+          </a>
+        </>
       ),
       header: <HeaderCell>Web</HeaderCell>,
     },
@@ -77,17 +89,10 @@ const ProjectTable = () => {
         header: <HeaderCell>Socials</HeaderCell>,
     },
     {
-      accessorKey: 'chainId',
-      cell: (props) => (
-        <ChainIconComponent ch={props.getValue()} />
-      ),
-      header: <HeaderCell>Chain</HeaderCell>,
-    },
-    {
       accessorKey: 'verified',
       cell: (props) => (
         <>
-        {props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={20}/> : <NonVerifiedIcon width={20}/>}
+         {props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={30}/> : <NonVerifiedIcon width={30}/>}
         </>
       ),
       header: <HeaderCell>Verified</HeaderCell>,
@@ -96,11 +101,11 @@ const ProjectTable = () => {
         accessorKey: 'objectId',
         cell: (props) => (
           <Row>
-           <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><ProjectActiveIcon width={20}/></a>
+           <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}/></a>
            <ImageHover onClick={()=>handleReward(props.getValue())} ><RewardIcon color={theme.colors.icon} width={20}/></ImageHover>
           </Row>
         ),
-        header: <HeaderCell>Ref</HeaderCell>,
+        header: <HeaderCell>Actions</HeaderCell>,
       },
   ]
 
@@ -154,7 +159,7 @@ const ProjectTable = () => {
   });
 
   return  <>
- {isLoading ? <>Loading, server was sleeping...</> : 
+ {isLoading ? <RewardDesc>Loading, server was sleeping...</RewardDesc> : 
       <>
         {data && data.length > 0 && (
           <Table>
@@ -182,6 +187,9 @@ const ProjectTable = () => {
                   ))}
                 </Tr>
               ))}
+              <Tr>
+                <Cell></Cell>
+              </Tr>
             </tbody>
           </Table>
         )}

@@ -12,9 +12,9 @@ export class UniService {
     return response.data.results[0];
   }
 
-  static async postData(query: string, data: any) {
-    const response = await DapAxiosInstance.post(query, data);
-    return response.data;
+  static async postData(data: any) {
+    const response = await DapAxiosInstance.post(data);
+    return response;
   }
 
   static async getParseAll(query: string) {

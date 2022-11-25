@@ -10,6 +10,7 @@ import { Row } from '../../components/format/Row';
 import { InfoIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
 import Warning from '../../components/animated/Warning';
+import ButtonErr from '../../components/buttons/ButtonErr';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { blockchains } from '../../data/blockchains';
 import { currencies } from '../../data/currencies';
@@ -23,7 +24,7 @@ import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
-import {ChainIcon} from '../../helpers/MultichainHelpers'
+import {ChainIcon, CurrAddress} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
@@ -135,9 +136,9 @@ const Donate: NextPage = () => {
 
   const [usdcFaucet, setUsdcFaucet] = useState(testChains.polygonUsdcFaucet);
   const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet);
-  const [currencyAddress, setCurrencyAddress] = useState();
+  const [currencyAddress, setCurrencyAddress] = useState<string>();
   const [curr, setCurr] = useState(1);
-  const [add, setAdd] = useState();
+  const [add, setAdd] = useState<string>();
 
   const [active, setActive] = useState('No reward');
   // @ts-ignore
@@ -150,6 +151,7 @@ const Donate: NextPage = () => {
   const { data: projectDetail, error } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
     enabled: !!router.isReady,
     onSuccess: (data) => {
+       // @ts-ignore
       setAdd(GetProjectFundingAddress(data.chainId));
     },
     onError: (error) => {
@@ -162,85 +164,57 @@ const Donate: NextPage = () => {
       setAppState({ ...appState, rewMAmount: 0, rewDAmount: 0 });
   },[])
 
-
-  const handleSwitchNetwork = (id) => {
+  const handleSwitchNetwork = (id: number) => {
     switchNetwork(id);
-    if (id === 80001) {
-      setUsdcFaucet(testChains.polygonUsdcFaucet);
-      setUsdtFaucet(testChains.polygonUsdtFaucet);
-      setAdd(process.env.NEXT_PUBLIC_AD_DONATOR);
-      if (currency === 'USDC') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC);
-      } else if (currency === 'USDT') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT);
-      } else if (currency === 'DAI') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI);
-      }
-    } else if (id === 97) {
-      setUsdcFaucet(testChains.bnbUsdcFaucet);
-      setUsdtFaucet(testChains.bnbUsdtFaucet);
-      setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_BSC);
-      if (currency === 'USDC') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB);
-      } else if (currency === 'USDT') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB);
-      } else if (currency === 'DAI') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB);
-      }
-    } else if (id === 4002) {
-      setUsdcFaucet(testChains.fantomUsdcFaucet);
-      setUsdtFaucet(testChains.fantomUsdtFaucet);
-      setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_FTM);
-      if (currency === 'USDC') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM);
-      } else if (currency === 'USDT') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM);
-      } else if (currency === 'DAI') {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM);
-      }
-    } else {
-      setUsdcFaucet('');
-      setUsdtFaucet('');
+    switch (id) {
+      case 80001:
+        setUsdcFaucet(testChains.polygonUsdcFaucet);
+        setUsdtFaucet(testChains.polygonUsdtFaucet);
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR);
+        setCurrencyAddress(CurrAddress(currency, id));
+        break;
+      case 97:
+        setUsdcFaucet(testChains.bnbUsdcFaucet);
+        setUsdtFaucet(testChains.bnbUsdtFaucet);
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_BSC);
+        setCurrencyAddress(CurrAddress(currency, id));
+        break;
+      case 4002:
+        setUsdcFaucet(testChains.fantomUsdcFaucet);
+        setUsdtFaucet(testChains.fantomUsdtFaucet);
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_FTM);
+        setCurrencyAddress(CurrAddress(currency, id));
+        break;
+      case 420:
+        setUsdcFaucet(testChains.optimismUsdcFaucet);
+        setUsdtFaucet(testChains.optimismUsdtFaucet);
+        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM);
+        setCurrencyAddress(CurrAddress(currency, id));
+        break;
+      default:
+        setUsdcFaucet('');
+        setUsdtFaucet('');
+        break;
     }
   };
 
   const handleSwitchCurrency = (c: string) => {
-    if (c === 'USDC') {
-      if (projectDetail.chainId === 80001) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC);
-      } else if (projectDetail.chainId === 97) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_BNB);
-      } else if (projectDetail.chainId === 4002) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_FTM);
-      } else if (projectDetail.chainId === 420) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM);
-      }
-      setCurrency('USDC');
-      setCurr(1);
-    } else if (c === 'USDT') {
-      if (projectDetail.chainId === 80001) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT);
-      } else if (projectDetail.chainId === 97) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_BNB);
-      } else if (projectDetail.chainId === 4002) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_FTM);
-      } else if (projectDetail.chainId === 420) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM);
-      }
-      setCurrency('USDT');
-      setCurr(2);
-    } else if (c === 'DAI') {
-      if (projectDetail.chainId === 80001) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI);
-      } else if (projectDetail.chainId === 97) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_BNB);
-      } else if (projectDetail.chainId === 4002) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_FTM);
-      } else if (projectDetail.chainId === 420) {
-        setCurrencyAddress(process.env.NEXT_PUBLIC_AD_DAI_OPTIMISM);
-      }
-      setCurrency('DAI');
-      setCurr(3);
+    switch (c) {
+      case 'USDC':
+        setCurrency('USDC');
+        setCurr(1);
+        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
+        break;
+      case 'USDT':
+        setCurrency('USDT');
+        setCurr(2);
+        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
+        break;
+      case 'DAI':
+        setCurrency('DAI');
+        setCurr(3);
+        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
+        break;
     }
   };
 
@@ -272,22 +246,15 @@ const Donate: NextPage = () => {
   };
 
   const RenderCurrency = () => {
-    return (
-      <>
+    return <>
         {currencies.map((c, index) => {
           const { logo, title } = c;
           return (
             <Option key={index}>
               {title === currency ? (
-                <ImgActiveBox>
-                  <Image src={logo} alt={title} width={'40'} height={'40'} />
-                </ImgActiveBox>
+                <ImgActiveBox> <Image src={logo} alt={title} width={'40'} height={'40'} /> </ImgActiveBox>
               ) : (
-                <ImgBox
-                  onClick={() => {
-                    handleSwitchCurrency(title);
-                  }}
-                >
+                <ImgBox onClick={() => {handleSwitchCurrency(title)}}>
                   <Image src={logo} alt="alt" width={'40'} height={'40'} />
                 </ImgBox>
               )}
@@ -295,7 +262,6 @@ const Donate: NextPage = () => {
           );
         })}
       </>
-    );
   };
 
   const handleNoReward = async () => {
@@ -322,12 +288,16 @@ const Donate: NextPage = () => {
             <Row>
               Blockchain
               <InfoBox onMouseEnter={() => {setTooltip(true);}} onMouseLeave={() => {setTooltip(false); }}>
+              {/* @ts-ignore */}
                 <InfoIcon color={theme.colors.icon} width={15} />
               </InfoBox>
             </Row>
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
           </DonateOptionTitle>
-            <ChainIcon chain={projectDetail?.chainId} />
+           <Row>
+            <div> <ChainIcon chain={projectDetail?.chainId} /></div>
+              {chain?.id !== projectDetail?.chain && <ButtonErr text="Wrong network" onClick={() => switchNetwork(projectDetail?.chain)} width={'150px'} />}
+            </Row>
         </DonateOption>
         <DonateOption>
           <FaucetBox>

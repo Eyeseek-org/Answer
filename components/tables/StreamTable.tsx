@@ -8,13 +8,12 @@ import { Project } from '../../types/project';
 import { groupStreamWithProject } from '../../util/stream-table';
 import {Table, Header, Tr, Cell, HeadRow, AddCol } from './TableStyles';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
-import { ProjectActiveIcon } from '../icons/Project';
+import { DetailIcon } from '../icons/Project';
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
 const columns: ColumnDef<GroupedStream, string>[] = [
 
-  //flexRender((row) => row.title),
   {
     header: 'Project',
     columns: [
@@ -36,7 +35,8 @@ const columns: ColumnDef<GroupedStream, string>[] = [
       {
         accessorKey: 'projectId',
         cell: (props) => (
-          <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><ProjectActiveIcon width={20}/></a>
+          // @ts-ignore
+          <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}/></a>
         ),
         header: 'Detail',
       },

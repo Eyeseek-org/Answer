@@ -3,7 +3,6 @@ import donation from '../../abi/donation.json';
 import { useContractRead } from 'wagmi';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import Socials from '../../components/buttons/Socials';
 import Bookmark from '../../components/functional/Bookmark';
@@ -54,7 +53,7 @@ const AbsoluteShareIt = styled.div`
   top: -20px;
 `
 
-const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chainId }) => {
+const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId, add }) => {
   const router = useRouter();
 
   let bal = 'n/a';
@@ -74,6 +73,8 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, add, chain
     args: [pid],
     watch: false,
   });
+
+
 
   if (funds.data) {
     // Get fund balance

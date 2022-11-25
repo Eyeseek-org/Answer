@@ -201,6 +201,7 @@ const SetGoals = ({ setStep }) => {
                 type={'textArea'}
               />
             </MilestoneContainer>
+            {RenderMilestones}
           </MainMilestoneContainer>
           {pm1 < 1000 && <StreamAnnouncement>$1000 is a minimum amount for the funding goal</StreamAnnouncement>}
           <BetweenRow>

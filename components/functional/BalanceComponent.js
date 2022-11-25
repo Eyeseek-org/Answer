@@ -5,11 +5,13 @@ import Amount from './Amount';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: row;
+  gap: 2%;
   font-size: 0.9em;
   font-weight: 400;
   font-family: 'Gemunu Libre';
 `;
-const BalanceComponent = ({ token, address }) => {
+const BalanceComponent = ({ token, address, dec }) => {
   const [ch, setCh] = useState(80001);
   const { chain } = useNetwork();
 
@@ -28,9 +30,9 @@ const BalanceComponent = ({ token, address }) => {
 
   return (
     <Container>
-      <>
-        <Amount value={(Number(data?.formatted) / 1000000)} /> {data?.symbol}
-      </>
+       <div> {!dec ? <Amount value={(Number(data?.formatted) / 1000000)} /> 
+        : <Amount value={(Number(data?.formatted))} /> }</div>
+       <div> {data?.symbol}</div>
     </Container>
   );
 };

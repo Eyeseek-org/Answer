@@ -17,6 +17,11 @@ export const AbsoluteRight = styled.div`
   top: 0;
 `
 
+export const Absolute = styled.div`
+  position: absolute;
+  top: 0;
+`
+
 export const AbsoluteRightDown = styled.div`
   position: absolute;
   right: 5px;
