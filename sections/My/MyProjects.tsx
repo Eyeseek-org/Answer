@@ -15,6 +15,7 @@ import UpdateCreate from '../ProjectDetail/UpdateCreate';
 import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { Tab, TabsContent } from '../../components/tab/Tab';
+import { MainContainer } from '../../components/format/Box';
 
 const MyProjects = () => {
   const { address } = useAccount();
@@ -90,7 +91,7 @@ const MyProjects = () => {
   );
 
   return (
-    <div>
+    <MainContainer>
       {address ? (
         <>
           {project && (
@@ -103,7 +104,7 @@ const MyProjects = () => {
       ) : (
         <NotAuth />
       )}
-    </div>
+    </MainContainer>
   );
 };
 

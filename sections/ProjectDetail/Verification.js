@@ -10,6 +10,7 @@ import {useAccount} from 'wagmi'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {veri_form} from '../../data/forms/veriForm'
+import { RewardDesc } from '../../components/typography/Descriptions';
 
 const Container = styled.div`
   padding-left: 18%;
@@ -79,7 +80,7 @@ const Verification = ({ objectId, owner }) => {
   return (
     <Container>
     {!veri && address === owner && <>
-      <div>Verification status could be granted only for projects manually verified by the Eyeseek team.</div>
+      <RewardDesc>Verification status could be granted only for projects manually verified by the Eyeseek team.</RewardDesc>
       <div>
         Send us a proof where we can verify your project is connected with Eyeseek funding, for example
         <li>Blogpost</li>
@@ -100,7 +101,7 @@ const Verification = ({ objectId, owner }) => {
       />
       <div>{!success ? <ButtonAlt text="Send verification request" onClick={()=>{sendVeriRequest(objectId, url)}} /> : <div>Verification request sent</div>}</div>
       </>}
-      {veri ? <div>Project was sent to verification by the Eyeseek team</div> : <>Project is not verified by the Eyeseek team</>}
+      {veri ? <RewardDesc>Project was sent to verification by the Eyeseek team</RewardDesc> : <RewardDesc>Project is not verified by the Eyeseek team</RewardDesc>}
     </Container>
   );
 };

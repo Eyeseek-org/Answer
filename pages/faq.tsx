@@ -113,6 +113,7 @@ export interface ICats {
 
 const Faq: NextPage = () => {
   const [catTooltip, setCatTooltip] = React.useState('');
+  // https://stackoverflow.com/questions/66483948/react-typescript-property-body-does-not-exist-type-defaulttheme
   const theme = useTheme();
 
   const FAQS: IFAQ[] = [

@@ -6,7 +6,7 @@ const ProgressContainer = styled.div`
     width: 100%;
     background: transparent;
     border-radius: 15px;
-    border: 1px solid  rgba(0, 224, 255, 0.15);
+    border: 1px solid ${({theme}) => theme.colors.progressBorder};
 `
 
 const ProgressFilter = styled.div`

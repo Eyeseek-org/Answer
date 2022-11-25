@@ -113,6 +113,7 @@ export const HeaderBox = styled.div`
   align-items: center;
   color: ${(props) => props.theme.colors.primary};
   padding: 2%;
+  z-index: 100;
   @media (max-width: 768px) {
     justify-content: center;
   }

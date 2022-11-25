@@ -58,6 +58,7 @@ export const MainContainer = styled.div`
   position: relative;
   padding-top: 5%;
   margin-bottom: 10%;
+  width: 100%;
   animation: fadeIn 0.7s;
   z-index: 1;
   @keyframes fadeIn {

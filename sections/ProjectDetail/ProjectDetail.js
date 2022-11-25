@@ -27,7 +27,7 @@ const DetailBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: ${(props) => props.theme.colors.transparent};
+  background: ${(props) => props.theme.colors.transparentCard};
   border: 1px solid #2f2f2f;
   padding: 3%;
   padding-left: 5%;
