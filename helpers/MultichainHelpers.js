@@ -25,6 +25,7 @@ export const ExplorerReference = ({ch, tx}) => {
 }
 
 export const ChainIcon = (chain) => {
+ // TBD proč Optimism ikonka nefunguje
     if (chain === 80001) {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />
     } else if (chain === 97) {
@@ -33,10 +34,54 @@ export const ChainIcon = (chain) => {
         return <Image src={fantom} alt={'ftm'} width={30} height={30} />
     } else if (chain === 420) {
       return <Image src={optimism} alt={'optimism'} width={30} height={30} />
-    } else {
+    } else if (chain === undefined){
+      return <></>
+    }
+    else {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />;
     }
 }
+
+export const CurrAddress = (curr, chain) => {
+  switch(chain) {
+    case 80001:
+    if (curr === 'USDC') {
+      return process.env.NEXT_PUBLIC_AD_USDC;
+    } else if (curr === 'USDT') {
+      return process.env.NEXT_PUBLIC_AD_USDT;
+    } else if (curr === 'DAI') {
+      return process.env.NEXT_PUBLIC_AD_DAI;
+    }
+    break;
+    case 97:
+      if (curr === 'USDC') {
+        return process.env.NEXT_PUBLIC_AD_USDC_BNB;
+      } else if (curr === 'USDT') {
+        return process.env.NEXT_PUBLIC_AD_USDT_BNB;
+      } else if (curr === 'DAI') {
+        return process.env.NEXT_PUBLIC_AD_DAI_BNB;
+      }
+      break;
+    case 4002:
+        if (curr === 'USDC') {
+          return process.env.NEXT_PUBLIC_AD_USDC_FTM;
+        } else if (curr === 'USDT') {
+          return process.env.NEXT_PUBLIC_AD_USDT_FTM;
+        } else if (curr === 'DAI') {
+          return process.env.NEXT_PUBLIC_AD_DAI_FTM;
+        }
+      break;
+    case 420:
+        if (curr === 'USDC') {
+          return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
+        } else if (curr === 'USDT') {
+          return process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM;
+        } else if (curr === 'DAI') {
+          return process.env.NEXT_PUBLIC_AD_DAI_OPTIMISM;
+        }
+    break;
+  }
+ }
 
 export const ChainExplorer = (chain) => {
     if (chain === 80001) {

@@ -57,6 +57,12 @@ const TellStory = ({ setStep }) => {
   const HTTPS_URL_REGEX = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
   const YT_REGEX = /((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+/;
 
+  // Extract id from youtube url
+  function YouTubeGetID(url){
+    url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+    return undefined !== url[2]?url[2].split(/[^0-9a-z_\-]/i)[0]:url[0];
+  }
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -85,7 +91,7 @@ const TellStory = ({ setStep }) => {
         pDesc: values.description,
         pWeb: values.website,
         pSocial: values.socials,
-        pYt: values.youtube,
+        pYt: YouTubeGetID(values.youtube),
         stepLock: 2,
       }));
       handleClick();

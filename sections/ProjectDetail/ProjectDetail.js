@@ -19,6 +19,8 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import { AbsoluteLeft, MainContainer } from '../../components/format/Box';
 import {ProjectDesc} from '../../components/typography/Descriptions'
 import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 
 const DetailBox = styled.div`
   position: relative;
@@ -78,7 +80,7 @@ const ActionPanel = styled.div`
   flex-direction: row;
   position: absolute;
   right: 0;
-  top: -70px;
+  top: 10px;
   right: 4%;
 `;
 
@@ -129,6 +131,7 @@ const ProjectDetail = ({
   urlSocial,
   urlProject,
   descM,
+  youtube
 }) => {
   const { address } = useAccount();
   const [cancelTooltip, setCancelTooltip] = useState(false);
@@ -143,11 +146,12 @@ const ProjectDetail = ({
   const [apiError, setApiError] = useState(false);
   const theme = useTheme();
 
-  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [add, setAdd] = useState();
 
   useEffect(() => {
     setAdd(GetProjectFundingAddress(chainId));
   }, []);
+
 
   const { config } = usePrepareContractWrite({
     address: add,
@@ -255,28 +259,30 @@ const ProjectDetail = ({
               <CanceledTypo width={400} />
             </CanceledBox>
           )}
-          {address === owner && (
             <ActionPanel>
               {cancelTooltip && <Tooltip margin={'-35px'} text="Cancel project" />}
               {urlWebTooltip && <Tooltip margin={'-35px'} text="External link to project website" />}
               {urlSocialsTooltip && <Tooltip margin={'-35px'} text="External link to project primary socials" />}
-              <IconWrapper onMouseEnter={() => {setUrlWebTooltip(true)}} onMouseLeave={() => {setUrlWebTooltip(false)}}>
+          {urlSocial &&  <IconWrapper onMouseEnter={() => {setUrlWebTooltip(true)}} onMouseLeave={() => {setUrlWebTooltip(false)}}>
                 <a href={urlSocial} target="_blank" rel="noreferrer">
                   <UrlSocialsIcon color={theme.colors.icon} width={30} />{' '}
                 </a>
-              </IconWrapper>
-              <a href={urlProject} target="_blank" rel="noreferrer">
-                <IconWrapper onMouseEnter={() => {setUrlSocialsTooltip(true)}} onMouseLeave={() => {setUrlSocialsTooltip(false) }}>
+              </IconWrapper>}
+           {urlProject &&  <IconWrapper onMouseEnter={() => {setUrlSocialsTooltip(true)}} onMouseLeave={() => {setUrlSocialsTooltip(false) }}>
+                <a href={urlProject} target="_blank" rel="noreferrer">
                   <UrlIcon color={theme.colors.icon} width={30} />
-                </IconWrapper>
-              </a>
-              <IconWrapper onClick={() => {cancel() }}  onMouseEnter={() => {setCancelTooltip(true)}} onMouseLeave={() => {setCancelTooltip(false)}} >
+                  </a>
+                </IconWrapper>}
+          {address === owner && <IconWrapper onClick={() => {cancel() }}  onMouseEnter={() => {setCancelTooltip(true)}} onMouseLeave={() => {setCancelTooltip(false)}} >
                 <CancelIcon color={theme.colors.icon} width={30} />
-              </IconWrapper>
+              </IconWrapper>}
             </ActionPanel>
-          )}
-          <LeftPart>
-            {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'320px'} height={'260px'} />}
+         <LeftPart>
+            {youtube ? 
+              <LiteYouTubeEmbed id={youtube} title={title}/> : 
+              <>
+                  {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'320px'} height={'260px'} />}
+                </>}
             <Categories>
               {category && (
                 <>

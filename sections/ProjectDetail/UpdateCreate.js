@@ -59,8 +59,6 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     }
   };
 
-
-
   // TBD pass correctly formik into the input, right now validations are off
   const formik = useFormik({
     initialValues: {

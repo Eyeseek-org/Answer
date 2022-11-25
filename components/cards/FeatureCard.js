@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import {FeatureTitle} from '../typography/Titles';
 import {FeatureDescription} from '../typography/Descriptions';
+import { YouTubeIcon } from '../icons/Socials';
 
 const Card = styled(motion.div)`
   position: relative;
@@ -16,7 +17,6 @@ const Card = styled(motion.div)`
   margin: 2em;
   transition: 0.2s;
   &:hover {
-    opacity: 0.8;
     background: rgba(5, 0, 0, 0.4);
     cursor: pointer;
   }
@@ -25,6 +25,11 @@ const Card = styled(motion.div)`
   }
 `;
 
+export const YTBox = styled(motion.div)`
+  position: absolute;
+  right: 7px;
+  bottom: 5px;
+`
 
 const RightAnimation = styled(motion.div)`
   position: absolute;
@@ -42,6 +47,7 @@ const FeatureCard = ({ title, description, icon, onClick, anim }) => {
       </RightAnimation>
       <FeatureTitle>{title}</FeatureTitle>
       <FeatureDescription>{description}</FeatureDescription>
+      <YTBox  whileHover={{ opacity: 1, scale: 1.7 }} transition={{ duration: 0.2 }}><YouTubeIcon width={20}/></YTBox>
     </Card>
   );
 };

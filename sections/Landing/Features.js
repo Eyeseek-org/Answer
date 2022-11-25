@@ -14,12 +14,13 @@ import {
 import styled from 'styled-components';
 import { useState } from 'react';
 import Image from 'next/image';
-import cross from '../../public/cross.gif';
 import chaindonation from '../../public/chaindonation.gif';
 import fee from '../../public/fee.gif';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { P, B, F, G, R } from '../../components/typography/ColoredTexts';
 import Carousel from 'nuka-carousel/lib/carousel';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 
 const Container = styled.div`
   position: relative;
@@ -64,20 +65,25 @@ const Features = () => {
 
   return (
     <Container>
+
       <SectionTitle title="Key concepts" subtitle="How is Eyeseek different" />
       <ContentBox>
-        <Carousel animation='zoom' autoplay autoplayInterval={15000} enableKeyboardControls>
+        <Carousel animation='zoom' enableKeyboardControls>
         <Row>
           {demoMicro ? (
             <FeatureCard
               icon={<BlockchainIcon width={55} />}
               title={Texts.title1}
-              description={<Image unoptimized={true} src={cross} width={500} height={300} />}
+              description={<LiteYouTubeEmbed 
+                id="Y2KwMnhJzaM"
+                title="Ho ho hoooo"
+            />}
             />
           ) : (
             <FeatureCard
               icon={<BlockchainIcon width={55} />}
               anim={<CrossAnim width={200} />}
+              onClick={() => setDemoMicro(!demoMicro)}
               title={Texts.title1}
               description={Texts.description1}
             />

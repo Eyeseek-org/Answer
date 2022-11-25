@@ -18,7 +18,8 @@ export const darkTheme = {
         darkGreen: '#00fc83',
         binance: '#ffc107',
         projectCard: 'rgba(0, 0, 0, 0.3)',
-        icon: 'white'
+        icon: 'white',
+        redPastel: '#8d0000'
     }
   };
 
@@ -42,6 +43,7 @@ export const lightTheme = {
         darkGreen: '#008B0E',
         binance: '#8B6D00',
         projectCard: 'rgba(242, 255, 254, 0.9)',
-        icon: '#283B41'
+        icon: '#283B41',
+        redPastel: '#ff9393'
     }
   };

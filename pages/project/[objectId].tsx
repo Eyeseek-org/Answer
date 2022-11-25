@@ -14,7 +14,6 @@ import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
-import { RewardDesc } from '../../components/typography/Descriptions';
 
 const Container = styled.div`
   margin-top: 5%;
@@ -54,10 +53,13 @@ const Project: NextPage = () => {
     <>
       {project ? <SectionTitle title={'Project detail'} subtitle={project.title} /> : null}
       <TabBox>
-      <Tab 
+     {project && project.type !== 'Stream' ?  <Tab 
           active={active} o1={'Overview'} o2={'Updates'} o3={'Rewards'} o4={'Transactions'} o5={'Verification'}
           change1={() => handleMode('Overview')} change2={() => handleMode('Updates')} change3={() => handleMode('Rewards')} change4={() => handleMode('Transactions')} change5={() => handleMode('Verification')}
-        />
+        /> : <Tab 
+        active={active} o1={'Overview'} o2={'Updates'} o3={'Verification'}
+        change1={() => handleMode('Overview')} change2={() => handleMode('Updates')} change3={() => handleMode('Verification')} 
+      /> }
       </TabBox>
       <Container>
         {project ? (
@@ -80,6 +82,7 @@ const Project: NextPage = () => {
                 pType={project.type}
                 urlSocial={project.urlSocial}
                 urlProject={project.urlProject}
+                youtube={project.youtube}
               />
             )}
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 

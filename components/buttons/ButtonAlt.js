@@ -10,7 +10,8 @@ const MyButton = styled(motion.button)`
   color: ${(props) => props.theme.colors.black};
   cursor: pointer;
   display: inline-block;
-  font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Gemunu Libre', sans-serif;
+  letter-spacing: 0.5px;
   font-size: 14px;
   font-weight: 500;
   height: 40px;

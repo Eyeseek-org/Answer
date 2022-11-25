@@ -46,7 +46,7 @@ export const Loading = () => {
 export const AddCol = styled.div`
   display: flex;
   justify-content: center;
-  width: 100px;
+
 `;
 
 export const ImageHover = styled.div`

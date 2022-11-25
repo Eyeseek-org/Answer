@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { useNetwork, useAccount, useProvider, useSigner } from 'wagmi'
+import { useNetwork, useAccount, useProvider, useSigner, useSwitchNetwork } from 'wagmi'
 import { abi } from '../../abi/supertoken.js'
 import { useQuery } from "@tanstack/react-query";
 import { UniService } from "../../services/DapAPIService";
 import styled from 'styled-components'
 import axios from 'axios'
 import { moralisApiConfig } from '../../data/moralisApiConfig'
-
 import Address from "../../components/functional/Address"
 import ButtonAlt from "../../components/buttons/ButtonAlt";
 import Subtitle from "../../components/typography/Subtitle";
-import {Reference} from '../../components/typography/Descriptions'
+import {Reference, RewardDesc} from '../../components/typography/Descriptions'
 import ApproveUniversal from "../../components/buttons/ApproveUniversal";
 import StreamCounter from "../../components/functional/StreamCounter";
 import StreamBalances from './StreamBalances';
 import { BetweenRow } from "../../components/format/Row.js";
+import ButtonErr from "../../components/buttons/ButtonErr.js";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -60,7 +60,6 @@ const ValueRow = styled.div`
   padding-right: 10px;
   color: ${(props) => props.theme.colors.primary};
 `
-
 // TBD component to create a stream 
 // With new Superfluid stream, it's needed to call axios as well
 
@@ -69,8 +68,7 @@ const Input = styled.input`
   border: none;
   box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.2);
   width: 150px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
 `
 
 const ActiveValue = styled.div`
@@ -79,6 +77,7 @@ const ActiveValue = styled.div`
 `
 
 const RowItem = styled.div`
+  font-family: 'Gemunu Libre';
   width: 33%;
 `
 
@@ -114,9 +113,10 @@ const Stream = ({ objectId, recipient, chainId }) => {
   const [superfluidError, setSuperfluidError] = useState(false)
   const [newStream, setNewStream] = useState(false)
   const [myStream, setMyStream] = useState(false)
-  const [displayRate, setDisplayRate] = useState(50)
+  const [displayRate, setDisplayRate] = useState(0)
   const [superTokenAddress, setSuperTokenAddress] = useState('0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f')
   const {chain} = useNetwork()
+  const { switchNetwork } = useSwitchNetwork();
 
   /// CFAv1Forwarder
   const superContract = "0xcfA132E353cB4E398080B9700609bb008eceB125" // Same address fro both Polygon and Optimism
@@ -126,6 +126,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
     onError: () => {
       setApiError(true)
     },
+    // TBD on render does not work well
     onSuccess: () => {
       setApiError(false)
       if (streamData && streamData.length > 0) {
@@ -143,7 +144,6 @@ const Stream = ({ objectId, recipient, chainId }) => {
   useEffect(() => {
     getFlowData()
   }, [])
-
 
   // Maybe rather call on backend - Aggregate automations 
 
@@ -177,15 +177,15 @@ const Stream = ({ objectId, recipient, chainId }) => {
     }
   }
 
-
   /// TBD - Update Moralis DB together with the streams on chain
   const addStreamState = async (oid) => {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
         'projectId': oid,
         'flowRate': flowRate,
-        'owner': address,
+        'owner': recipient,
         'isActive': true,
+        'chainId': chainId,
         'addressBacker': address,
       }, moralisApiConfig)
       setApiError(false)
@@ -257,6 +257,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
       await deleteStreamState(objectId)
       setStreamFound(false)
       setMyStream(false)
+      setFlowRate(0)
 
     } catch (error) {
       console.error(error);
@@ -268,10 +269,9 @@ const Stream = ({ objectId, recipient, chainId }) => {
       <StreamComponent>
         {newStream ? <>
           <Title><Subtitle text={'New stream'} /></Title>
-          <ErrorBox>
-       Highly experimental feature - accepts only
-        <A href='https://docs.superfluid.finance/superfluid/developers/super-tokens/super-token-faucet' rel="noopener noreferrer" target="_blank">Super token</A> 
-        </ErrorBox>
+          <RewardDesc>
+            Experimental feature - accepts only wrapped DAIx (fDAIx) as a deposit.
+        </RewardDesc>
           <ValueRow>
             <RowItem>Recipient</RowItem>
             <RowItem>
@@ -292,7 +292,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
             <ApproveUniversal tokenContract={superTokenAddress} spender={superContract} amount={flowRate} />
             {address && <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} />}
             </BetweenRow>
-          {apiError && <ErrorBox>Insufficient funds, no approval, or owner = backer</ErrorBox>}
+          {apiError && <ErrorBox>Insufficient funds or allowance</ErrorBox>}
 
         </> : <>
           {streamFound ? <>
@@ -308,14 +308,15 @@ const Stream = ({ objectId, recipient, chainId }) => {
             <ValueRow>
               <RowItem>Deposited</RowItem>
               <RowItem>
-                <ActiveValue><StreamCounter startValue={deposit} endValue={displayRate} /></ActiveValue>
+                <ActiveValue><StreamCounter startValue={0} endValue={displayRate} /></ActiveValue>
               </RowItem>
               <RowRightItem>Value</RowRightItem>
             </ValueRow>
             <BetweenRow>
           {myStream ?    <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  /> : <>
             {address && recipient !== address && <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />} 
-            {chain && chain.id !== chainId && <ErrorBox>Wrong network</ErrorBox>}
+            {address && recipient === address && <RewardDesc>Cannot setup stream to yourself</RewardDesc>}
+            {chain && chain.id !== chainId && <ButtonErr text='Wrong network' onClick={() => switchNetwork(chain)} width={'250px'}/>}
           </>}
             </BetweenRow>
           </> : <> 

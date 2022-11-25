@@ -5,6 +5,7 @@ import { NonVerifiedIcon, UsersIcon, VerifiedIcon } from '../icons/Common';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import RewardModal from '../../sections/RewardModal'
 import {useTheme} from 'styled-components';
+import { RewardDesc } from '../typography/Descriptions';
 
 const RewardTable = ({data}) => {
   const [sorting, setSorting] = useState([]);
@@ -116,7 +117,7 @@ const RewardTable = ({data}) => {
               </Tr>
             ))}
           </tbody>
-        </Table> : <>No rewards</>
+        </Table> : <RewardDesc>No rewards found for this project</RewardDesc>
       }
       {showRewardList && rewardList && <RewardModal rewardId={rewardList} showMe={showRewardList} />}
     </>

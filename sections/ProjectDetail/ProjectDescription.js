@@ -7,7 +7,9 @@ import { BodyBox } from "../../components/format/Box";
 
 
 const DescriptionBox = styled.div`
-    padding-bottom: 5%;
+    padding-bottom: 3%;
+    padding-top: 7%;
+    font-family: 'Gemunu Libre';
 `
 
 const ProjectDescription = ({descM, pid, add, chainId}) => {

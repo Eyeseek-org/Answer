@@ -5,7 +5,6 @@ import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent';
 import ApprovedComponent from '../../components/functional/ApprovedComponent';
-import Button from '../../components/buttons/Button';
 import donation from '../../abi/donation.json';
 import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
@@ -33,7 +32,6 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const [apiError, setApiError] = useState(false)
   const [success, setSuccess] = useState(false);
   const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
   // @ts-ignore
   const { appState } = useApp();
   const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId, rewDonors } = appState;
@@ -163,9 +161,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
             )}
           </div>
         </RowCenter>
-      ) : (
-        <Button text="Wrong network" onClick={() => switchNetwork(home)} width={'200px'} />
-      )}   
+      ) : null}   
     </MainContainer>
         {ready && <LogResult ev={success} error={error} apiError={apiError} success={success} type={'Donation initialized'} data={data}/>}
   </>
