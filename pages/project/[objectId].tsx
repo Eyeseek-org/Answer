@@ -80,6 +80,7 @@ const Project: NextPage = () => {
                 pType={project.type}
                 urlSocial={project.urlSocial}
                 urlProject={project.urlProject}
+                youtube={project.youtube}
               />
             )}
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 

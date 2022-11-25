@@ -58,7 +58,7 @@ const Address = ({ address }) => {
         {addressFirs6CharLast4Char}
         {!copied ? (
           <IconBox>
-            <CopyIcon width={10} color={theme.color.icon} />
+            <CopyIcon width={10} color={theme.colors.icon} />
           </IconBox>
         ) : (
           <IconBox

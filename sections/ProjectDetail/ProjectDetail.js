@@ -19,6 +19,8 @@ import { moralisApiConfig } from '../../data/moralisApiConfig';
 import { AbsoluteLeft, MainContainer } from '../../components/format/Box';
 import {ProjectDesc} from '../../components/typography/Descriptions'
 import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 
 const DetailBox = styled.div`
   position: relative;
@@ -129,6 +131,7 @@ const ProjectDetail = ({
   urlSocial,
   urlProject,
   descM,
+  youtube
 }) => {
   const { address } = useAccount();
   const [cancelTooltip, setCancelTooltip] = useState(false);
@@ -275,8 +278,12 @@ const ProjectDetail = ({
               </IconWrapper>
             </ActionPanel>
           )}
-          <LeftPart>
-            {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'320px'} height={'260px'} />}
+         <LeftPart>
+            {youtube ? 
+              <LiteYouTubeEmbed id={youtube} title={title}/> : 
+              <>
+                  {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'320px'} height={'260px'} />}
+                </>}
             <Categories>
               {category && (
                 <>

@@ -25,6 +25,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
 import {ChainIcon} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
 
 const DonateOption = styled.div`
@@ -129,14 +130,14 @@ const Donate: NextPage = () => {
   const [apiError, setApiError] = useState(false);
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-  const { theme } = useTheme();
+  const theme  = useTheme();
   const [tooltip, setTooltip] = useState(false);
 
   const [usdcFaucet, setUsdcFaucet] = useState(testChains.polygonUsdcFaucet);
   const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet);
-  const [currencyAddress, setCurrencyAddress] = useState(process.env.NEXT_PUBLIC_AD_USDC);
+  const [currencyAddress, setCurrencyAddress] = useState();
   const [curr, setCurr] = useState(1);
-  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [add, setAdd] = useState();
 
   const [active, setActive] = useState('No reward');
   // @ts-ignore
@@ -148,6 +149,9 @@ const Donate: NextPage = () => {
   const query = `/classes/Project?where={"objectId":"${objectId}"}`
   const { data: projectDetail, error } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
     enabled: !!router.isReady,
+    onSuccess: (data) => {
+      setAdd(GetProjectFundingAddress(data.chainId));
+    },
     onError: (error) => {
       setApiError(true);
     }

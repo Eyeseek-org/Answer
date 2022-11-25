@@ -25,6 +25,7 @@ export const ExplorerReference = ({ch, tx}) => {
 }
 
 export const ChainIcon = (chain) => {
+ // TBD proč Optimism ikonka nefunguje
     if (chain === 80001) {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />
     } else if (chain === 97) {
@@ -33,7 +34,10 @@ export const ChainIcon = (chain) => {
         return <Image src={fantom} alt={'ftm'} width={30} height={30} />
     } else if (chain === 420) {
       return <Image src={optimism} alt={'optimism'} width={30} height={30} />
-    } else {
+    } else if (chain === undefined){
+      return <>U</>
+    }
+    else {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />;
     }
 }
