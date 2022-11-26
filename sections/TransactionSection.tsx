@@ -6,7 +6,7 @@ import Subtitle from '../components/typography/Subtitle';
 import { Table, Header, Tr, Cell, Loading } from '../components/tables/TableStyles';
 import { ChainIconComponent, ExplorerReference } from '../helpers/MultichainHelpers';
 import { useReactTable } from '@tanstack/react-table';
-import TransactionTable from '../components/tables/TransactionTable';
+import TransactionTable from '../components/tables/DonationTable';
 
 const AddressCell = styled(Cell)`
   width: 100px;

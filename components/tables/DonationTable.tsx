@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Table, Header, Tr, Cell, HeadRow, PaginationContainer } from './TableStyles';
+import { Table, Header, Tr, Cell, HeadRow, PaginationContainer, ImageHover, AddCol, HeaderCell, MyInput } from './TableStyles';
 import { ChainIconComponent, ExplorerReference } from '../../helpers/MultichainHelpers';
 import {
   Column,
@@ -12,9 +12,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
-  Row,
   useReactTable,
 } from '@tanstack/react-table';
+import { ArrowDown, ArrowUp, FilterIcon } from '../icons/TableIcons';
+import { RowCenter } from '../format/Row';
+import Address from '../functional/Address';
 
 interface ITransactionTable {
   data: any;
@@ -71,16 +73,16 @@ const FilterInput = ({ column }: { column: Column<TransactionTableProps> }) => {
       ))}
     </select>
   ) : (
-    <input value={columnFilterValue ?? ''} onChange={(e) => column.setFilterValue(e.target.value)} />
+    <MyInput value={columnFilterValue ?? ''} onChange={(e) => column.setFilterValue(e.target.value)} />
   );
 };
 
 const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   const [sorting, setSorting] = useState([]);
-
+  const [backerFilter, setBackerFilter] = useState<boolean>(false)
   const columns: ColumnDef<TransactionTableProps, string>[] = [
     {
-      header: 'Chain',
+      header: <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13}/></ImageHover></RowCenter>,
       accessorKey: 'chain',
       enableSorting: false,
       cell: (props) => {
@@ -92,18 +94,28 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       },
     },
     {
-      header: 'Backer',
+      header: <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13}/></ImageHover></RowCenter>,
       accessorKey: 'backer',
+      cell: (props) => (
+        <AddCol>
+          <Address address={props.getValue()} />
+        </AddCol>
+      ),
       enableSorting: false,
     },
     {
-      header: 'Amount',
+      header: <HeaderCell onClick={()=>{setBackerFilter(!backerFilter)}} >Amount {backerFilter ? <ArrowDown width={13}/> : <ArrowUp width={13}/>}</HeaderCell>,
       accessorKey: 'amount',
+      cell: (props) => (
+        <>
+         ${props.getValue() / 1000000}
+        </>
+      ),
       enableSorting: true,
       enableColumnFilter: false,
     },
     {
-      header: 'Currency Id',
+      header: <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13}/></ImageHover></RowCenter>,
       enableColumnFilter: true,
       accessorKey: 'currency_id',
       meta: {
@@ -118,8 +130,13 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       accessorKey: 'date',
     },
     {
-      header: 'Drained',
+      header: <HeaderCell onClick={()=>{setBackerFilter(!backerFilter)}} >Drained {backerFilter ? <ArrowDown width={13}/> : <ArrowUp width={13}/>}</HeaderCell>,
       enableColumnFilter: false,
+      cell: (props) => (
+        <>
+         ${props.getValue() / 1000000}
+        </>
+      ),
       accessorKey: 'drained',
     },
     {
@@ -164,13 +181,13 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
                 <Header {...{ onClick: header.column.getToggleSortingHandler() }} colSpan={header.colSpan} key={header.id}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   {{
-                    asc: ' 🔼',
-                    desc: ' 🔽',
+                        asc: <></>,
+                        desc: <></>,
                   }[header.column.getIsSorted() as string] ?? null}
                   {header.column.getCanFilter() ? (
-                    <div>
-                      <FilterInput column={header.column} />
-                    </div>
+                    <>
+                      {backerFilter && <FilterInput column={header.column} />}
+                    </>
                   ) : null}
                 </Header>
               ))}

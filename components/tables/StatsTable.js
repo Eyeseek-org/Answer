@@ -3,10 +3,7 @@ import { getLatestBlockHeight, getLogEvents } from '../../pages/api/covalent';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import Loading from '../Loading';
-import Address from '../functional/Address';
 import Subtitle from '../typography/Subtitle';
-import {Table, Header, Tr, Cell} from './TableStyles'
-import { ExpandIcon } from '../icons/Notifications';
 import { RewardDesc } from '../typography/Descriptions';
 import optimism from '../../public/icons/optimism.png'
 
@@ -25,12 +22,6 @@ const Container = styled.div`
   }
 `;
 
-const AddressCell = styled(Cell)`
-  width: 150px;
-  @media (max-width: 768px) {
-    width: 50px;
-  }
-`;
 
 const Sub = styled.div`
   display: flex;
@@ -55,72 +46,6 @@ const StatsTable = ({ pid, chain }) => {
   const [filteredTransactionLogs, setFilteredTransactionLogs] = useState([]);
   //Explorer State for Txn Display
   const [explorer, setExplorer] = useState('');
-
-  //create function that maps data into a table using keys as headers
-  const mapDataToTable = (data) => {
-    return (
-      <Table>
-        <thead>
-          <Tr>
-            {Object.keys(data[0]).map((key, index) => {
-              if (key != 'fund_id' && key != 'txn_hash') {
-                const formattedKey = key
-                  .split('_')
-                  .map((word) => {
-                    return word.charAt(0).toUpperCase() + word.slice(1);
-                  })
-                  .join(' ');
-                return <Header key={index}>{formattedKey}</Header>;
-              }
-              if (key === 'txn_hash') {
-                return <Header key={index}> </Header>;
-              }
-            })}
-          </Tr>
-        </thead>
-        <tbody>
-          {data.map((row, index) => {
-            return (
-              <Tr key={index}>
-                {Object.keys(row).map((key, index) => {
-                  if (key != 'fund_id') {
-                    if (key === 'donator_address' || key === 'owner') {
-                      return (
-                        <AddressCell key={index}>
-                          <Address address={row[key]} />
-                        </AddressCell>
-                      );
-                    }
-                    if (key === 'currency_id') {
-                      return (
-                        <Cell key={index}>
-                          {row[key] == 1 && 'USDC'}
-                          {row[key] == 2 && 'USDT'}
-                          {row[key] == 3 && 'DAI'}
-                        </Cell>
-                      );
-                    }
-                    //if it's the tx hash, make it a link
-                    if (key === 'txn_hash') {
-                      return (
-                        <Cell key={index}>
-                          <a href={`${explorer}${row[key]}`} target="_blank" rel="noreferrer">
-                            <ExpandIcon width={20} height={20} />
-                          </a>
-                        </Cell>
-                      );
-                    } else {
-                      return <Cell key={index}>{row[key]}</Cell>;
-                    }
-                  }
-                })}
-              </Tr>
-            );
-          })}
-        </tbody>
-      </Table>
-    );
-  };
 
   useEffect(() => {
     if (chain !== 420 ) {
@@ -176,12 +101,12 @@ const StatsTable = ({ pid, chain }) => {
           <Subtitle text="Donations" />
         </Sub>
         {loading && <Loading />}
-        {!loading && filteredTransactionLogs.length > 0 && mapDataToTable(filteredTransactionLogs)}
+        {!loading && filteredTransactionLogs.length > 0 && <TransactionTable data={filteredTransactionLogs}/>}
         {!loading && filteredTransactionLogs.length === 0 && <p>No transactions found in recent history</p>}
         <Sub>
           <Subtitle text="Deployed Microfunds" />
         </Sub>
-        {!loading && filteredMicroCreatedLogs.length > 0 && mapDataToTable(filteredMicroCreatedLogs)}
+        {!loading && filteredMicroCreatedLogs.length > 0 &&  <MicrofundsTable data={filteredTransactionLogs}/>}
         {!loading && filteredMicroCreatedLogs.length === 0 && <p>No transactions found in recent history</p>}
       </Container>}
       <NoOptimism>

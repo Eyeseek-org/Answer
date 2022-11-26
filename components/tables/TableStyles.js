@@ -46,7 +46,7 @@ export const Loading = () => {
 export const AddCol = styled.div`
   display: flex;
   justify-content: center;
-
+  min-width: 150px;
 `;
 
 export const ImageHover = styled.div`
@@ -63,3 +63,17 @@ export const PaginationContainer = styled.div`
   align-items: center;
   gap: 1rem;
 `;
+
+
+export const MyInput = styled.input`
+  background: {props => props.theme.colors.transparent};
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 10px;
+  font-family: 'Gemunu Libre';
+  width: 100%;
+  @media (min-width: 1568px) {
+    font-size: 15px;
+  }
+`

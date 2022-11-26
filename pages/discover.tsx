@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SectionTitle from '../components/typography/SectionTitle';
 import Tab from '../components/form/Tab';
 import { useState } from 'react';
-import TransactionTable from '../components/tables/TransactionTable';
+import Transactions from '../components/tables/Transactions';
 import ProjectTable from '../components/tables/ProjectTable';
 
 const Container = styled.div`
@@ -41,7 +41,7 @@ const Discover = () => {
         </TabWrapper>
          {active === 'Projects' && <ProjectTable/>}
          {active === 'Streams' && <StreamTable/>}
-         {active === 'Transactions' && <TransactionTable/>}
+         {active === 'Transactions' && <Transactions/>}
     </Container>
     </>
 };
