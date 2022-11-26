@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Table = styled.table`
   position: relative;
@@ -40,8 +40,8 @@ export const Cell = styled.td`
 `;
 
 export const Loading = () => {
-  return <>...Loading</>
-}
+  return <>...Loading</>;
+};
 
 export const AddCol = styled.div`
   display: flex;
@@ -55,4 +55,11 @@ export const ImageHover = styled.div`
 
 export const HeaderCell = styled.div`
   cursor: pointer;
-`
+`;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
