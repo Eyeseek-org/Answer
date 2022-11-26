@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useState, useMemo } from 'react';
 import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover } from './TableStyles';
-import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
+import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon, WarningIcons } from '../icons/Common';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import Tooltip from '../Tooltip';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
@@ -75,9 +75,9 @@ const ProjectTable = () => {
       accessorKey: 'urlProject',
       cell: (props) => (
         <>
-        <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" >
+        {props.getValue() ? <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" >
           <WebIcon color={theme.colors.icon} width={30}/>
-          </a>
+          </a> : <WarningIcons widt={30} />}
         </>
       ),
       header: <HeaderCell>Web</HeaderCell>,
@@ -85,7 +85,8 @@ const ProjectTable = () => {
     {
       accessorKey: 'urlSocials',
       cell: (props) => (
-          <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon colors={theme.colors.icon} width={20}/></a>
+        <>         
+         <a link href={props.getValue()} rel="noopener noreferrer" target="_blank" ><UrlSocialsIcon colors={theme.colors.icon} width={20}/></a></>
         ),
         header: <HeaderCell>Socials</HeaderCell>,
     },

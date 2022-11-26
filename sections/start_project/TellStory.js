@@ -3,14 +3,13 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../utils/appContext';
 import SectionTitle from '../../components/typography/SectionTitle';
 import InputContainer from '../../components/form/InputContainer';
-import Moralis from 'moralis-v1';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Image from 'next/image';
 import { MainContainer, Wrapper } from '../../components/format/Box';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { BetweenRow } from '../../components/format/Row';
 import {story_form} from '../../data/forms/createForm'
+import { RewardDesc } from '../../components/typography/Descriptions';
 
 const FormStyle = styled.form`
   display: flex;
@@ -108,29 +107,29 @@ const TellStory = ({ setStep }) => {
     setStep((prev) => (prev -= 1));
   };
 
-  const handleFileUpload = async (event) => {
-    const newImage = event.target.files[0];
-    // Save image to IPFS & retrieve its url
-    const moralisFileInstance = new Moralis.File(newImage.name, newImage);
-    const moralisIPFSImage = await moralisFileInstance.saveIPFS({ useMasterKey: true });
-    if (moralisIPFSImage) {
-      setAppState((prev) => ({ ...prev, pImageUrl: moralisIPFSImage._url }));
-      setImage(moralisIPFSImage._url);
-    }
-  };
+  // const handleFileUpload = async (event) => {
+  //   const newImage = event.target.files[0];
+  //   const moralisFileInstance = new Moralis.File(newImage.name, newImage);
+  //   const moralisIPFSImage = await moralisFileInstance.saveIPFS({ useMasterKey: true });
+  //   if (moralisIPFSImage) {
+  //     setAppState((prev) => ({ ...prev, pImageUrl: moralisIPFSImage._url }));
+  //     setImage(moralisIPFSImage._url);
+  //   }
+  // };
 
   return ( <MainContainer>
     <SectionTitle title="Define your story" subtitle={'Describe your project and references'} />
     <Wrapper>
+    <RewardDesc>Project detail cannot be changed after creation. Please make sure all information is correct.</RewardDesc>
         <FormStyle method="post" action="" enctype="multipart/form-data">
-          <label className="custom-file-upload">
+          {/* <label className="custom-file-upload">
             <input className="input-file" type="file" id="file" onChange={handleFileUpload} />
             {image ? (
               <Image src={image} width={'400px'} height={'300px'} alt="Project image" />
             ) : (
               <span className="input-span">Upload project image</span>
             )}
-          </label>
+          </label> */}
           {story_form.map((sf) => {
             const { title, name, description, text_field, p, maxLength } = sf;
             return (

@@ -19,10 +19,13 @@ import { ProjectTitle } from '../typography/Titles';
 import { ProjectDesc } from '../typography/Descriptions';
 import { AbsoluteLeft, AbsoluteRight } from '../format/Box';
 import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 
 const A = styled(Link)`
   &:hover {
     text-decoration: none;
+    opacity: 0.8;
   }
 `;
 
@@ -40,9 +43,6 @@ const Container = styled(motion.div)`
   border: 1px solid rgba(163, 163, 163, 0.3);
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.4));
   border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
   @media (max-width: 768px) {
     width: 100%;
     padding: 5%;
@@ -61,7 +61,7 @@ const IconWrapper = styled.button`
 `;
 
 
-const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chainId, hasFungible, hasNft }) => {
+const ProjectCard = ({ title, description, category, subcategory, link, pid, imageUrl, pType, state, chainId, hasFungible, hasNft, youtube }) => {
   const [add, setAdd] = useState();
   const [chainTooltip, setChainTooltip] = useState(false);
   const [streamTypeTooltip, setStreamTypeTooltip] = useState(false);
@@ -101,7 +101,6 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
   // Condition for ERC20 & NFT from the profile
 
   return (
-    <A href={link}>
       <Container whileHover={{ scale: 1.05 }}>
         {chainTooltip && (
           <Tooltip
@@ -141,7 +140,8 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
             </IconWrapper>
           )}
         </AbsoluteLeft>
-        <ImageBoxSm> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'220px'} height={'200px'} />}</ImageBoxSm>
+        {!youtube ?   <ImageBoxSm> {!imageUrl ? <ImgSkeleton /> : <Image src={imageUrl} alt={title} width={'220px'} height={'200px'} />}</ImageBoxSm> :
+           <LiteYouTubeEmbed id={youtube} title={'youtube'}/>}
         <BetweenRow>
           <Row>
               {category && (
@@ -166,7 +166,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
           </ProjectAmount>
         </BetweenRow>
         <BetweenRow>
-          <ProjectTitle>{title}</ProjectTitle>
+        <ProjectTitle> <A href={link}>{title}</A></ProjectTitle>
           <ProjectDesc>
             {state === 0 && <>Initiated</>}
             {state === 1 && <>Active</>}
@@ -177,7 +177,6 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         </BetweenRow>
         <ProjectDesc>{description}</ProjectDesc>
       </Container>
-    </A>
   );
 };
 

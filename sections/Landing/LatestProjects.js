@@ -159,6 +159,7 @@ const LatestProjects = ({ my }) => {
                 link={`/project/${project.objectId}`}
                 pType={project.type}
                 pid={project.pid}
+                youtube={project.youtube}
               />
             );
           })}
@@ -180,6 +181,7 @@ const LatestProjects = ({ my }) => {
                 link={`/project/${project.objectId}`}
                 pType={project.type}
                 pid={project.pid}
+                youtube={project.youtube}
               />
             );
           })}
@@ -201,6 +203,7 @@ const LatestProjects = ({ my }) => {
                 link={`/project/${project.objectId}`}
                 pType={project.type}
                 pid={project.pid}
+                youtube={project.youtube}
               />
             );
           })}
