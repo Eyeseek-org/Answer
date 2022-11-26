@@ -31,10 +31,7 @@ const BookmarkTable = () => {
     }
   ]
 
-  // Tady nějaká conditiona - Horší varianta je projet všechny projekty || $address is inside $data.results[i].bookmarks
-  // Lepší varianta je zachytit to na úrovni query || https://docs.parseplatform.org/js/guide/#queries
-  // Obě varianty jsou nad moje síly
-  const { data, isLoading } = useQuery(['bookmarked-projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
+  const { data, isLoading } = useQuery(['bookmarked-projects'], () => UniService.getDataAll(`/classes/Project?where={"state": 1, "bookmarks": "${address}"}`), {
     onError: (err) => {
       console.log('err', err);
     },
