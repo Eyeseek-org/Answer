@@ -33,6 +33,7 @@ export const RewardDesc = styled.div`
   font-family: 'Neucha';
   letter-spacing: 0.4px;
   font-size: 0.9em;
+  margin-bottom: 2px;
   color: ${(props) => props.theme.colors.font};
   @media (min-width: 1580px) {
     font-size: 1.2em;

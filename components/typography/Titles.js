@@ -15,10 +15,20 @@ export const FeatureTitle = styled.div`
 export const ProjectTitle = styled.div`
   font-family: 'Gemunu Libre';
   font-style: normal;
+  border-radius: 15px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid ${(props) => props.theme.colors.border};
+  background: ${(props) => props.theme.colors.transparentCard};
   font-weight: 700;
   font-size: 1.5em;
   color: ${(props) => props.theme.colors.primary};
   margin-top: 5%;
+  transition: 0.2s;
+  &:hover {
+    background: ${(props) => props.theme.colors.gray};
+  }
 `
 
 export const RewardTitle = styled.div`

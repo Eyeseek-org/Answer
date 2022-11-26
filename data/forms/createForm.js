@@ -35,7 +35,7 @@ export const story_form = [
       title: 'Youtube',
       name: 'youtube',
       p: 'https://www.youtube.com/watch?v=mt5jCk51yk8',
-      description: 'If you have an intro video, provide a link (optional)',
+      description: 'If you have an intro video, provide a link (optional but recommended)',
       text_field: false,
       maxLength: 100,
     },

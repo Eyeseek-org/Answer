@@ -1,7 +1,12 @@
+import Image from 'next/image';
 import { useState } from 'react';
 import styled, {useTheme} from 'styled-components';
+import Eyeballs from '../../components/animated/Eyeballs'
+import eyemain from '../../public/eyemain.png';
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: relative;
+`;
 const Explainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,6 +97,19 @@ const Testnet = styled.div`
   font-size: 0.8em;
   color: #9d0b0b;
 `;
+
+const ImageBox = styled.div`
+  position: relative;
+  box-sizing: static;
+  width: 200px;
+  height: 300px;
+`
+
+const AbsoluteAnim = styled.div`
+  position: absolute;
+  top: 85px;
+  left: 110px;
+`
 
 const d = {
   google: 'Top cloud technology provider',
@@ -247,6 +265,7 @@ const LandingMain = ({ width, height }) => {
         <HeadTitle>Eyeseek Funding</HeadTitle>
         <HeadSub>Next generation of crowdfunding</HeadSub>
         <HeadDesc>by web3</HeadDesc>
+         <ImageBox><Image src={eyemain} alt='eyeseek' fill/> <AbsoluteAnim><Eyeballs/></AbsoluteAnim></ImageBox>
       </TitleBox>
 
       <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">
