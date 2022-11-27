@@ -35,7 +35,7 @@ const Container = styled(motion.div)`
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
-  max-height: 450px;
+  max-height: 750px;
   width: 32%;
   max-width: 500px;
   padding: 2%;
