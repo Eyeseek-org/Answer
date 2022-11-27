@@ -18,7 +18,7 @@ export const ConnectWithNotifications = () => {
   );
 
   const undreadNotifications = useMemo(() => {
-    return notifications ? notifications.filter((item) => item.isRead === false) : [];
+    return notifications ? notifications.filter((item: any) => item.isRead === false) : [];
   }, [notifications]);
 
 

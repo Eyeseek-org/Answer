@@ -25,14 +25,17 @@ const Stats = () => {
     <SectionTitle title={'Discover'} subtitle={'Data overview'} />
     <Container>
          <Tab
-            active={active} 
-            o1={'Projects'} 
-            o2={'Streams'} 
-            o3={'Transactions'}
-            change1={() => setActive('Projects')} 
-            change2={() => setActive('Streams')} 
-            change3={() => setActive('Transactions')} 
-          />
+             active={active}
+             o1={'Projects'}
+             o2={'Streams'}
+             o3={'Transactions'}
+             o4={undefined}
+             o5={undefined}
+             change1={() => setActive('Projects')}
+             change2={() => setActive('Streams')}
+             change3={() => setActive('Transactions')}
+             change4={undefined}
+             change5={undefined}          />
          {active === 'Projects' && <ProjectTable/>}
          {active === 'Streams' && <StreamTable/>}
          {active === 'Transactions' && <TransactionSection/>}

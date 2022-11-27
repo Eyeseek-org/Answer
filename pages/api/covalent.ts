@@ -28,7 +28,7 @@ export const getLatestBlockHeight = async (chain: number) => {
 };
 
 // GET LOG EVENTS FOR A CONTRACT
-export const getLogEvents = async (startingBlock: number, chain: number, latest: number) => {
+export const getLogEvents = async (startingBlock: number, chain: number, latest: number): Promise<any> => {
   const eye_seek_contract_address = GetProjectFundingAddress(chain);
   try {
     // console.log('covalent link with params:', `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`)

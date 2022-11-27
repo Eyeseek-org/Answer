@@ -1,11 +1,8 @@
 import styled from 'styled-components';
-import { getLatestBlockHeight, getLogEvents } from '../pages/api/covalent';
-import { useEffect, useState } from 'react';
-import Address from '../components/functional/Address';
+import {getLatestBlockHeight, getLogEvents} from '../pages/api/covalent';
+import {useEffect, useState} from 'react';
 import Subtitle from '../components/typography/Subtitle';
-import { Table, Header, Tr, Cell, Loading } from '../components/tables/TableStyles';
-import { ChainIconComponent, ExplorerReference } from '../helpers/MultichainHelpers';
-import { useReactTable } from '@tanstack/react-table';
+import {Cell, Loading} from '../components/tables/TableStyles';
 import TransactionTable from '../components/tables/DonationTable';
 
 const AddressCell = styled(Cell)`
