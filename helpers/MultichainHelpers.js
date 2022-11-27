@@ -38,7 +38,7 @@ export const ChainIcon = (chain) => {
       return <></>
     }
     else {
-        return <Image src={polygon} alt={'matic'} width={30} height={30} />;
+        return <></>;
     }
 }
 

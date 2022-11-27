@@ -37,15 +37,16 @@ const Create = ({ setStep }) => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const [chainName, setChainName] = useState()
-  const { pTitle, pDesc, category, subcategory, pm1, pType, pImageUrl, pChain, pSocial, pWeb, pm1Desc, pYt } = appState;
+  const { pTitle, pDesc, category, subcategory, pm1, pType, pChain, pSocial, pWeb, pm1Desc, pYt } = appState;
   const [ev, setEv] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [oid, setOid] = useState(null);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
-  const [add, setAdd] = useState();
+  const [add, setAdd] = useState("");
   const theme = useTheme()
+
 
   const handleBack = () => {
     setStep((prev) => (prev -= 1));
@@ -54,8 +55,9 @@ const Create = ({ setStep }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    if (!add){
-      setAdd(GetProjectFundingAddress(pChain))
+    const res = GetProjectFundingAddress(pChain);
+    if (res){
+      setAdd(res)
     }
   
     if (!chainName){
@@ -129,7 +131,6 @@ const Create = ({ setStep }) => {
           state: st,
           chainId: pChain,
           bookmarks: [address], // Add owner to bookmark
-          imageUrl: pImageUrl,
           verified: false,
         },
         moralisApiConfig
@@ -190,9 +191,9 @@ const Create = ({ setStep }) => {
                 <Col><SumTitle>Funding type</SumTitle> <SumValue>{pType}</SumValue></Col>
                 <Col><SumTitle>Title</SumTitle><SumValue>{pTitle}</SumValue></Col>
                 <Col><SumTitle>Category</SumTitle><SumValue> {category}-{subcategory}</SumValue></Col>
-                <Col><SumTitle>Destination chain</SumTitle><SumValue>{chainName}</SumValue></Col>
+             {chainName && <Col><SumTitle>Destination chain</SumTitle><SumValue>{chainName}</SumValue></Col>}
                 <Col><SumTitle>Funding goal</SumTitle><SumValue>${pm1}</SumValue></Col>
-                <Col><SumTitle>Owner</SumTitle><SumValue> {address}</SumValue></Col>
+               <Col><SumTitle>Owner</SumTitle><SumValue> {address}</SumValue></Col>
               </SumHalf>
               <EyeBox>
                 <Image src={Eye10} alt="Eye" width={'200px'} height={'150px'} />{' '}

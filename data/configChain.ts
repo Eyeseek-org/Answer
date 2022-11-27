@@ -40,7 +40,7 @@ export const mumbai: Chain = {
       symbol: 'BNB',
     },
     rpcUrls: {
-      default: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+      default: 'https://bsctestapi.terminet.io/rpc',
     },
     testnet: true,
   };

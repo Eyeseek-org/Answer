@@ -101,7 +101,7 @@ const StatsTable = ({ pid, chain }) => {
           <Subtitle text="Donations" />
         </Sub>
         {loading && <Loading />}
-        {!loading && filteredTransactionLogs.length > 0 && <TransactionTable data={filteredTransactionLogs}/>}
+        {!loading && filteredTransactionLogs.length > 0 && <DonationTable data={filteredTransactionLogs}/>}
         {!loading && filteredTransactionLogs.length === 0 && <p>No transactions found in recent history</p>}
         <Sub>
           <Subtitle text="Deployed Microfunds" />

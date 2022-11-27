@@ -24,7 +24,7 @@ import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
-import {ChainIcon, CurrAddress} from '../../helpers/MultichainHelpers'
+import {ChainIcon, ChainIconComponent, CurrAddress} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
@@ -296,8 +296,8 @@ const Donate: NextPage = () => {
             {/* <DonateOptionSub>Select your source of donation</DonateOptionSub> */}
           </DonateOptionTitle>
            <Row>
-            <div> <ChainIcon chain={projectDetail?.chainId} /></div>
-              {chain?.id !== projectDetail?.chainId && <ButtonErr text="Wrong network" onClick={() => switchNetwork(projectDetail?.chain)} width={'150px'} />}
+              {projectDetail && <div> <ChainIconComponent ch={projectDetail.chainId} /></div>}
+              {chain?.id !== projectDetail?.chainId && <ButtonErr text="Wrong network" onClick={() => switchNetwork(projectDetail?.chainId)} width={'150px'} />}
             </Row>
         </DonateOption>
         <DonateOption>

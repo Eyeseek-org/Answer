@@ -4,6 +4,7 @@ import { RowCenter } from '../format/Row';
 import {RoboticsIcon, WearablesIcon, CatOtherIcon, MobileGameIcon, BoardGameIcon, VideoGameIcon, HwIcon,
   IllustrationIcon, PerformanceIcon, MusicIcon, DefiIcon, DaoIcon, NftApeIcon
 } from '../icons/Categories'
+import { BookIcon, BookmarkIcon } from '../icons/Common';
 import { ImageHover } from '../tables/TableStyles';
 import Tooltip from '../Tooltip';
 
@@ -47,6 +48,8 @@ export const SubcatPick = ({subcat}) => {
         } else if (subcat === 'Illustrations'){
           setSubcatIcon( <IllustrationIcon width={30} />)
         } else if (subcat === 'Performance'){
+          setSubcatIcon( <PerformanceIcon width={30} />)
+        } else if (subcat === 'Publications'){
           setSubcatIcon( <PerformanceIcon width={30} />)
         } else if (subcat === 'Music'){
           setSubcatIcon( <MusicIcon width={30} />)

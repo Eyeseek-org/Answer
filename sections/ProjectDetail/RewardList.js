@@ -24,6 +24,7 @@ const RewardList = ({ oid, chain }) => {
   const [selected, setSelected] = useState('');
   const [desc, setDesc] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
+  const [showDesc, setShowDesc] = useState(false);
 
   // Dummy data
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
@@ -34,6 +35,7 @@ const RewardList = ({ oid, chain }) => {
 
   const handleRewardClick = (sel, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors) => {
     setDesc(rewDesc)
+    setShowDesc(!showDesc)
     setSelected(rewObjectId);
     if (type === 'Microfund') {
       setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors  }));
@@ -126,7 +128,7 @@ const RewardList = ({ oid, chain }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-        <RewardAnimatedBox text={desc}/>
+         {showDesc &&  <RewardAnimatedBox text={desc}/>}
       </Col>
     </>
   );

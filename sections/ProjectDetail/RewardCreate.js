@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components';
-import {useContractEvent} from 'wagmi'
+import {useAccount, useContractEvent} from 'wagmi'
 import { useReward } from '../utils/rewardContext';
 import { RewardDesc, TabRow } from "../start_project/SetRewards/StyleWrapper";
 import donation from "../../abi/donation.json"
@@ -47,6 +47,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const [dType, setdType] = useState('Microfund')
     const [tokenType, setTokenType] = useState('Classic')
     const [success, setSuccess] = useState(false)
+    const {address} = useAccount()
 
     const { rewardState, setRewardState } = useReward();
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId } = rewardState;

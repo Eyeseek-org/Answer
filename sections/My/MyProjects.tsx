@@ -15,7 +15,7 @@ import UpdateCreate from '../ProjectDetail/UpdateCreate';
 import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { Tab, TabsContent } from '../../components/tab/Tab';
-import { MainContainer } from '../../components/format/Box';
+import { MainContainer, Wrapper } from '../../components/format/Box';
 
 const MyProjects = () => {
   const { address } = useAccount();
@@ -66,7 +66,7 @@ const MyProjects = () => {
         label: 'Rewards',
         component: (
           <>
-            <RewardList oid={project?.objectId} chain={project?.chainId} />
+            <Wrapper><RewardList oid={project?.objectId} chain={project?.chainId} /></Wrapper>
             <RewardCreate
                 objectId={project?.objectId}
                 bookmarks={project?.rewards}
