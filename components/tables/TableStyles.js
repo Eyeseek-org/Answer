@@ -51,10 +51,14 @@ export const AddCol = styled.div`
 
 export const ImageHover = styled.div`
   cursor: pointer;
-`
+`;
 
 export const HeaderCell = styled.div`
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 `;
 
 export const PaginationContainer = styled.div`
@@ -63,7 +67,6 @@ export const PaginationContainer = styled.div`
   align-items: center;
   gap: 1rem;
 `;
-
 
 export const MyInput = styled.input`
   background: {props => props.theme.colors.transparent};
@@ -76,4 +79,4 @@ export const MyInput = styled.input`
   @media (min-width: 1568px) {
     font-size: 15px;
   }
-`
+`;

@@ -17,6 +17,9 @@ import {
 import { ArrowDown, ArrowUp, FilterIcon } from '../icons/TableIcons';
 import { RowCenter } from '../format/Row';
 import Address from '../functional/Address';
+import { TablePagination } from './TablePagination';
+import { filterInputs } from '../../util/constants';
+import { ArrElement } from '../../types/common';
 
 interface ITransactionTable {
   data: any;
@@ -33,10 +36,6 @@ interface TransactionTableProps {
   txn_hash: string;
 }
 
-type ArrElement<ArrType> = ArrType extends readonly (infer ElementType)[] ? ElementType : never;
-
-const filterInputs = ['select'] as const;
-
 declare module '@tanstack/table-core' {
   interface ColumnMeta<TData extends unknown, TValue> {
     filter: ArrElement<typeof filterInputs>;
@@ -51,7 +50,7 @@ const currenciesIdMapping = {
 
 const PAGE_SIZE = 5;
 
-const FilterInput = ({ column }: { column: Column<TransactionTableProps> }) => {
+export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
   const columnFilterValue = column.getFilterValue() as string | number;
 
   const isSelectInput = column.columnDef.meta?.filter === 'select';
@@ -68,8 +67,11 @@ const FilterInput = ({ column }: { column: Column<TransactionTableProps> }) => {
 
   return isSelectInput ? (
     <select onChange={(e) => column.setFilterValue(e.target.value)}>
+      <option value="" selected>
+        All
+      </option>
       {uniqueValues.map((value) => (
-        <option>{value}</option>
+        <option value={value}>{value}</option>
       ))}
     </select>
   ) : (
@@ -79,10 +81,22 @@ const FilterInput = ({ column }: { column: Column<TransactionTableProps> }) => {
 
 const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   const [sorting, setSorting] = useState([]);
-  const [backerFilter, setBackerFilter] = useState<boolean>(false)
+  const [backerFilter, setBackerFilter] = useState<boolean>(false);
+
   const columns: ColumnDef<TransactionTableProps, string>[] = [
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
+      header: (
+        <RowCenter
+          onClick={() => {
+            setBackerFilter(!backerFilter);
+          }}
+        >
+          Chain{' '}
+          <ImageHover>
+            <FilterIcon width={13} />
+          </ImageHover>
+        </RowCenter>
+      ),
       accessorKey: 'chain',
       enableSorting: false,
       cell: (props) => {
@@ -94,7 +108,18 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       },
     },
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
+      header: (
+        <RowCenter
+          onClick={() => {
+            setBackerFilter(!backerFilter);
+          }}
+        >
+          Backer{' '}
+          <ImageHover>
+            <FilterIcon width={13} />
+          </ImageHover>
+        </RowCenter>
+      ),
       accessorKey: 'backer',
       cell: (props) => (
         <AddCol>
@@ -104,18 +129,33 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       enableSorting: false,
     },
     {
-      header: () => <HeaderCell onClick={()=>{setBackerFilter(!backerFilter)}} >Amount {backerFilter ? <ArrowDown width={13} height={13}/> : <ArrowUp width={13} height={13}/>}</HeaderCell>,
-      accessorKey: 'amount',
-      cell: (props) => (
-        <>
-         ${Number(props.getValue()) / 1000000}
-        </>
+      header: (
+        <HeaderCell
+          onClick={() => {
+            setBackerFilter(!backerFilter);
+          }}
+        >
+          Amount {backerFilter ? <ArrowDown width={13} /> : <ArrowUp width={13} />}
+        </HeaderCell>
       ),
+      accessorKey: 'amount',
+      cell: (props) => <>${props.getValue() / 1000000}</>,
       enableSorting: true,
       enableColumnFilter: false,
     },
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
+      header: (
+        <RowCenter
+          onClick={() => {
+            setBackerFilter(!backerFilter);
+          }}
+        >
+          Token{' '}
+          <ImageHover>
+            <FilterIcon width={13} />
+          </ImageHover>
+        </RowCenter>
+      ),
       enableColumnFilter: true,
       accessorKey: 'currency_id',
       meta: {
@@ -130,13 +170,17 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       accessorKey: 'date',
     },
     {
-      header: () => <HeaderCell onClick={()=>{setBackerFilter(!backerFilter)}} >Drained {backerFilter ? <ArrowDown width={13} height={13}/> : <ArrowUp width={13} height={13}/>}</HeaderCell>,
-      enableColumnFilter: false,
-      cell: (props) => (
-        <>
-         ${Number(props.getValue()) / 1000000}
-        </>
+      header: (
+        <HeaderCell
+          onClick={() => {
+            setBackerFilter(!backerFilter);
+          }}
+        >
+          Drained {backerFilter ? <ArrowDown width={13} /> : <ArrowUp width={13} />}
+        </HeaderCell>
       ),
+      enableColumnFilter: false,
+      cell: (props) => <>{props.getValue() / 1000000}</>,
       accessorKey: 'drained',
     },
     {
@@ -181,13 +225,11 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
                 <Header {...{ onClick: header.column.getToggleSortingHandler() }} colSpan={header.colSpan} key={header.id}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   {{
-                        asc: <></>,
-                        desc: <></>,
+                    asc: <></>,
+                    desc: <></>,
                   }[header.column.getIsSorted() as string] ?? null}
                   {header.column.getCanFilter() ? (
-                    <>
-                      {backerFilter && <FilterInput column={header.column} />}
-                    </>
+                    <>{backerFilter && <FilterInput<TransactionTableProps> column={header.column} />}</>
                   ) : null}
                 </Header>
               ))}
@@ -204,21 +246,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
           ))}
         </tbody>
       </Table>
-      {/* Pagination */}
-      <PaginationContainer>
-        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-          {'<'}
-        </button>
-        <div>
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-          </strong>
-        </div>
-        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-          {'>'}
-        </button>
-      </PaginationContainer>
+      <TablePagination table={table} />
     </>
   );
 };
