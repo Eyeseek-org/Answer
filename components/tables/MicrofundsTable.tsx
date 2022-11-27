@@ -82,7 +82,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   const [backerFilter, setBackerFilter] = useState<boolean>(false)
   const columns: ColumnDef<TransactionTableProps, string>[] = [
     {
-      header: <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
       accessorKey: 'chain',
       enableSorting: false,
       cell: (props) => {
@@ -94,7 +94,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       },
     },
     {
-      header: <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
       accessorKey: 'backer',
       cell: (props) => (
         <AddCol>
@@ -104,18 +104,18 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       enableSorting: false,
     },
     {
-      header: <HeaderCell onClick={()=>{setBackerFilter(!backerFilter)}} >Amount {backerFilter ? <ArrowDown width={13}/> : <ArrowUp width={13}/>}</HeaderCell>,
+      header: () => <HeaderCell onClick={()=>{setBackerFilter(!backerFilter)}} >Amount {backerFilter ? <ArrowDown width={13} height={13}/> : <ArrowUp width={13} height={13}/>}</HeaderCell>,
       accessorKey: 'amount',
       cell: (props) => (
         <>
-         ${props.getValue() / 1000000}
+         ${Number(props.getValue()) / 1000000}
         </>
       ),
       enableSorting: true,
       enableColumnFilter: false,
     },
     {
-      header: <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
       enableColumnFilter: true,
       accessorKey: 'currency_id',
       meta: {
