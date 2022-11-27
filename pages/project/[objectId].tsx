@@ -89,7 +89,7 @@ const Project: NextPage = () => {
               <>
                 <TabBox><RewardList oid={objectId} chain={project.chainId} /></TabBox>
                 {address === project.owner && (
-                  <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} />
+                  <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} owner={project.owner} />
                 )}
               </> : null
             }

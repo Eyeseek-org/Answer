@@ -24,13 +24,13 @@ export const Tr = styled.tr`
   border-bottom: 1px solid grey;
   transition: 0.1s;
   &:hover {
-    background: rgba(56, 56, 56, 0.4);
+    background: ${(props) => props.theme.colors.transparentCard};
   }
 `;
 
 export const HeadRow = styled(Tr)`
   &:hover {
-    background: transparent;
+    background: ${(props) => props.theme.colors.transparentCard};
   }
 `;
 export const Cell = styled.td`

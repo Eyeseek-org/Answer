@@ -7,12 +7,11 @@ import Eye7 from '../public/Eye7.png';
 import Footer from '../sections/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
-import { AiIcon, BoardGameIcon, DaoIcon, DefiIcon, HwIcon, IllustrationIcon, IoTIcon, LiteratureIcon, MobileGameIcon, MusicIcon, NftApeIcon, PerformanceIcon, RoboticsIcon, VideoGameIcon, VideoIcon, WearablesIcon } from '../components/icons/Categories';
+import { AiIcon, BoardGameIcon, DaoIcon, DefiIcon, HwIcon, IllustrationIcon, IoTIcon, LiteratureIcon, MobileGameIcon, MusicIcon, NftApeIcon, RoboticsIcon, VideoGameIcon, VideoIcon, WearablesIcon } from '../components/icons/Categories';
 import FaqCard from '../components/cards/FaqCard';
 import Subtitle from '../components/typography/Subtitle';
 import {motion} from 'framer-motion';
-
-const Container = styled.div``;
+import { YouTubeIcon } from '../components/icons/Socials';
 
 const Row = styled.div`
   display: flex;
@@ -97,6 +96,10 @@ const CatDesc = styled(motion.div)`
   border-radius: 5px;
 `
 
+const YtLink = styled.span`
+  text-decoration: underline;
+  margin-right: 5%;
+`
 
 export interface IFAQ {
   question: string;
@@ -151,7 +154,8 @@ const Faq: NextPage = () => {
       image: <KeyIcon width={70}  color={theme.colors.icon} />,
     },
     {
-      question: 'How does it work?',
+      //@ts-ignore
+      question: <><a href='https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg' rel="noopener noreferrer" target="_blank"><YtLink>How does it work?</YtLink><YouTubeIcon width={25}/></a></>,
       answer: 'Creators can set up project in 5 simple steps',
       points: [
         'Possibility to offer limited amount of rewards, tokens and NFTs',
@@ -232,7 +236,6 @@ const Faq: NextPage = () => {
 
   return (
     <>
-      <Container>
         <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
         <FaqContainer>
           {FAQS.map(({ answer, image: Image, points, question }, index) => {
@@ -267,7 +270,6 @@ const Faq: NextPage = () => {
         </CatBox>
         </FaqContainer>
  
-      </Container>
       <EyeSevenBox>
         <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
       </EyeSevenBox>

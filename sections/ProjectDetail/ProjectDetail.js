@@ -273,9 +273,9 @@ const ProjectDetail = ({
                   <UrlIcon color={theme.colors.icon} width={30} />
                   </a>
                 </IconWrapper>}
-          {address === owner && <IconWrapper onClick={() => {cancel() }}  onMouseEnter={() => {setCancelTooltip(true)}} onMouseLeave={() => {setCancelTooltip(false)}} >
+          {/* {address === owner && <IconWrapper onClick={() => {cancel() }}  onMouseEnter={() => {setCancelTooltip(true)}} onMouseLeave={() => {setCancelTooltip(false)}} >
                 <CancelIcon color={theme.colors.icon} width={30} />
-              </IconWrapper>}
+              </IconWrapper>} */}
             </ActionPanel>
          <LeftPart>
             {youtube ? 

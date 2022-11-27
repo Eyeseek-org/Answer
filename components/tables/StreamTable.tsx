@@ -6,9 +6,11 @@ import { useState } from 'react';
 import { Stream } from '../../types/stream';
 import { Project } from '../../types/project';
 import { groupStreamWithProject } from '../../util/stream-table';
-import {Table, Header, Tr, Cell, HeadRow, AddCol } from './TableStyles';
+import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell } from './TableStyles';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon } from '../icons/Project';
+import { SubcatPick } from '../functional/CatPicks';
+import SuperBalance from '../functional/SuperBalance';
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
@@ -30,7 +32,13 @@ const columns: ColumnDef<GroupedStream, string>[] = [
       },
       {
         accessorKey: 'subcategory',
-        header: 'Category',
+        cell: (props) => (
+          <>
+           <SubcatPick subcat={props.getValue()}/>  
+          </>
+        ),
+         // @ts-ignore
+        header: <HeaderCell>Area</HeaderCell>,
       },
       {
         accessorKey: 'projectId',
@@ -39,6 +47,13 @@ const columns: ColumnDef<GroupedStream, string>[] = [
           <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}/></a>
         ),
         header: 'Detail',
+      },
+      {
+        accessorKey: 'chainId',
+        cell: (props) => (
+          <SuperBalance chain={props.getValue()} address={'0xa0a39c5823A51184043655711C8157ef4826447a'} />
+        ),
+        header: 'wBalance',
       },
     ],
   },

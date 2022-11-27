@@ -42,7 +42,7 @@ const DescBox = styled.div`
     margin-left: 10%;
 `
 
-const RewardCreate = ({objectId, bookmarks, home, pid}) => {
+const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const pType = "Standard" // Until stream is implemented
     const [dType, setdType] = useState('Microfund')
     const [tokenType, setTokenType] = useState('Classic')
@@ -146,7 +146,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
             {!success && !apiError && <>
                 <BetweenRow>
                     <Subtitle text={<>
-                        {tokenType === 'Classic' && <>Classic crowdfunding reward</>}
+                        {tokenType === 'Classic' && address === owner ? <>Classic crowdfunding reward</> : <>Unable to create this reward type</>}
                         {tokenType === 'ERC20' && <>Fungible token reward</>}
                         {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
                     </>}/>
@@ -166,7 +166,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                     </TabRow>
                         {tokenType === 'ERC20' && <RewardFormToken dType={dType}/>}
                         {tokenType === 'ERC1155' && <RewardFormNft dType={dType}/>}
-                        {tokenType === 'Classic' &&  <RewardFormClassic dType={dType}/>}
+                        {tokenType === 'Classic' && address === owner && <RewardFormClassic dType={dType}/>}
                     <Summary>
                         {dType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
                         {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
@@ -175,7 +175,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
                 {cap > 0 ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
-                    {tokenType === 'Classic' && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} />}
+                    {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} />}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>
