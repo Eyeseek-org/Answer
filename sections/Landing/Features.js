@@ -17,7 +17,7 @@ import Image from 'next/image';
 import chaindonation from '../../public/chaindonation.gif';
 import fee from '../../public/fee.gif';
 import SectionTitle from '../../components/typography/SectionTitle';
-import { P, B, F, G, R } from '../../components/typography/ColoredTexts';
+import { P, B, F, G, R, O } from '../../components/typography/ColoredTexts';
 import Carousel from 'nuka-carousel/lib/carousel';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
@@ -40,7 +40,7 @@ const ContentBox = styled.div`
 
 const Texts = {
   title1: 'Multichain experience',
-  description1: <>You can create and donate to projects on multiple blockchains, currently supported <P>Polygon</P>, <B>BNB Chain</B>, and <F>Fantom</F></>,
+  description1: <>You can create and donate to projects on multiple blockchains, currently supported <P>Polygon</P>, <B>BNB Chain</B>, <F>Fantom</F>, and <O>Optimism</O></>,
   title2: 'Microfunds',
   description2:<>With <B>chain funding</B> capacities of Eyeseek microfunds, each time someone donates, the same amount is charged from all deployed
   microfunds until they are depleted. With right strategy even <G>$1 donation could have $100 impact</G>.</>,
