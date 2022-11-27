@@ -38,21 +38,23 @@ const MyProjects = () => {
           <>
             {project?.objectId ? (
               <ProjectDetail
-                objectId={project.objectId}
-                pid={project.pid}
-                description={project.description}
-                title={project.title}
-                category={project.category}
-                subcategory={project.subcategory}
-                imageUrl={project.imageUrl}
-                state={project.state}
-                chainId={project.chainId}
-                bookmarks={project.bookmarks}
-                verified={project.verified}
-                urlSocial={project.urlSocial}
-                urlProject={project.urlProject}
-                pType={project.type}
-                owner={project.owner}
+                  objectId={project.objectId}
+                  pid={project.pid}
+                  description={project.description}
+                  title={project.title}
+                  category={project.category}
+                  subcategory={project.subcategory}
+                  imageUrl={project.imageUrl}
+                  state={project.state}
+                  chainId={project.chainId}
+                  bookmarks={project.bookmarks}
+                  verified={project.verified}
+                  urlSocial={project.urlSocial}
+                  urlProject={project.urlProject}
+                  pType={project.type}
+                  owner={project.owner}
+                  descM={project.descM}
+                  youtube={project.youtube}
               />
             ) : (
               <NotProject />
@@ -65,7 +67,13 @@ const MyProjects = () => {
         component: (
           <>
             <RewardList oid={project?.objectId} chain={project?.chainId} />
-            <RewardCreate objectId={project?.objectId} bookmarks={project?.rewards} home={project?.chain} pid={project?.pid} />
+            <RewardCreate
+                objectId={project?.objectId}
+                bookmarks={project?.rewards}
+                home={project?.chain}
+                pid={project?.pid}
+                owner={project?.owner}
+            />
           </>
         ),
       },

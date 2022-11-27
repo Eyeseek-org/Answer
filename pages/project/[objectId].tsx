@@ -53,13 +53,26 @@ const Project: NextPage = () => {
     <>
       {project ? <SectionTitle title={'Project detail'} subtitle={project.title} /> : null}
       <TabBox>
-     {project && project.type !== 'Stream' ?  <Tab 
-          active={active} o1={'Overview'} o2={'Updates'} o3={'Rewards'} o4={'Transactions'} o5={'Verification'}
-          change1={() => handleMode('Overview')} change2={() => handleMode('Updates')} change3={() => handleMode('Rewards')} change4={() => handleMode('Transactions')} change5={() => handleMode('Verification')}
-        /> : <Tab 
-        active={active} o1={'Overview'} o2={'Updates'} o3={'Verification'}
-        change1={() => handleMode('Overview')} change2={() => handleMode('Updates')} change3={() => handleMode('Verification')} 
-      /> }
+     {project && project.type !== 'Stream'
+         ? <Tab
+             active={active} o1={'Overview'} o2={'Updates'} o3={'Rewards'} o4={'Transactions'} o5={'Verification'}
+             change1={() => handleMode('Overview')} change2={() => handleMode('Updates')} change3={() => handleMode('Rewards')} change4={() => handleMode('Transactions')} change5={() => handleMode('Verification')}
+         />
+         :
+         <Tab
+             active={active}
+             o1={'Overview'}
+             o2={'Updates'}
+             o3={'Verification'}
+             o4={undefined}
+             o5={undefined}
+             change1={() => handleMode('Overview')}
+             change2={() => handleMode('Updates')}
+             change3={() => handleMode('Verification')}
+             change4={undefined}
+             change5={undefined}
+         />
+     }
       </TabBox>
       <Container>
         {project ? (
