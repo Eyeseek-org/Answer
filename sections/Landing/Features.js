@@ -93,10 +93,9 @@ const Features = () => {
             <FeatureCard
               icon={<MicrofundIcon width={55} />}
               title={Texts.title2}
-              description={<Image unoptimized={true} src={chaindonation} width={500} height={300} />}
-              onClick={() => {
-                setDemoFunding(!demoFunding);
-              }}
+              description={<LiteYouTubeEmbed 
+                id="SFRd49ifn2A"
+                title="Microfunds"/>}
             />
           ) : (
             <FeatureCard
