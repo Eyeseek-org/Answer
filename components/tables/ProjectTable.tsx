@@ -32,6 +32,8 @@ import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
+import BalanceProjectSmall from '../functional/BalanceProjectSmall';
+
 
 const PAGE_SIZE = 5;
 
@@ -77,9 +79,6 @@ const ProjectTable = () => {
 
   const columns = useMemo<ColumnDef<Project, string>[]>(
     () => [
-      {
-        header: 'Details',
-        columns: [
           {
             accessorKey: 'chainId',
             cell: (props) => <ChainIconComponent ch={props.getValue()} />,
@@ -109,8 +108,8 @@ const ProjectTable = () => {
             enableSorting: false,
           },
           {
-            accessorKey: 'goal',
-            cell: (props) => <>${props.getValue()}</>,
+            accessorKey: 'pid',
+            cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={'??'}/>,
             header: 'Goal',
             meta: {
               filter: 'select',
@@ -118,11 +117,20 @@ const ProjectTable = () => {
             enableSorting: false,
             filterFn: filterChains,
           },
+                // {
+      //   accessorFn: row => `${row.pid} ${row.chainId}`,
+      //   id: 'contact',
+      //   header: 'Goal',
+      //   cell: (row) => <>${row.column.accessorFn()}</>,
+      // },
           {
             accessorKey: 'category',
             cell: (props) => <>{props.getValue()}</>,
             header: 'Category',
             enableSorting: false,
+            meta: {
+              filter: 'select',
+            },
           },
           {
             accessorKey: 'subcategory',
@@ -133,49 +141,42 @@ const ProjectTable = () => {
             },
             enableSorting: false,
           },
-        ],
+      {
+        accessorKey: 'urlProject',
+        cell: (props) => (
+          <>
+            {props.getValue() ? (
+              <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
+                <WebIcon color={theme.colors.icon} width={30} />
+              </a>
+            ) : (
+              <WarningIcons height={50} width={30} />
+            )}
+          </>
+        ),
+        header: 'Web',
+        enableColumnFilter: false,
+        enableSorting: false,
       },
       {
-        header: 'Reference',
-        columns: [
-          {
-            accessorKey: 'urlProject',
-            cell: (props) => (
-              <>
-                {props.getValue() ? (
-                  <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
-                    <WebIcon color={theme.colors.icon} width={30} />
-                  </a>
-                ) : (
-                  <WarningIcons width={30} />
-                )}
-              </>
-            ),
-            header: 'Web',
-            enableColumnFilter: false,
-            enableSorting: false,
-          },
-          {
-            accessorKey: 'urlSocials',
-            cell: (props) => (
-              <>
-                <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
-                  <UrlSocialsIcon colors={theme.colors.icon} width={20} />
-                </a>
-              </>
-            ),
-            header: 'Socials',
-            enableColumnFilter: false,
-            enableSorting: false,
-          },
-        ],
+        accessorKey: 'urlSocials',
+        cell: (props) => (
+          <>
+            <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
+              <UrlSocialsIcon color={theme.colors.icon} height={20} width={20} />
+            </a> 
+          </>
+        ),
+        header: 'Socials',
+        enableColumnFilter: false,
+        enableSorting: false,
       },
       {
         accessorKey: 'verified',
         cell: (props) => <>{props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={30} />}</>,
         header: 'Verified',
+        enableSorting: true,
         enableColumnFilter: false,
-        enableSorting: false,
       },
       {
         accessorKey: 'objectId',
@@ -186,7 +187,6 @@ const ProjectTable = () => {
             </a>
             <ImageHover
               onClick={() => {
-                console.log('objectId value', props.getValue());
                 handleReward(props.getValue());
               }}
             >
@@ -201,23 +201,20 @@ const ProjectTable = () => {
     ],
     []
   );
-  // Tooltipy + Merge obrázků
-  // On click rerender nefunguje
 
-  const handleReward = (id: string) => {
-    // TBD musim kliknout dvakrát
-    setProjectId(id);
+  const handleReward = async(id: string) => {
+        //Query projectRewards with project id from the column as parameter
   };
 
-  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
+  const { data, isLoading} = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
     onError: (err) => {
       console.log('err', err);
-    },
+    }
   });
 
-  const { data: projectRewards } = useQuery(
+  const { data: projectRewards, refetch } = useQuery(
     ['rewards'],
-    () => UniService.getDataSingle(`/classes/Reward?where={"project":"${projectId}"}`),
+    (id) => UniService.getDataSingle(`/classes/Reward?where={"project":"${id}"}`),
     {
       onError: (err) => {
         console.log('err', err);

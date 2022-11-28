@@ -3,7 +3,6 @@ import { useContractRead, useNetwork } from 'wagmi';
 import token from '../../abi/token.json';
 import Amount from './Amount';
 import { GetFundingAddress } from '../../helpers/GetContractAddress';
-import { ethers } from 'ethers';
 import Tooltip from '../Tooltip';
 import { InfoIcon } from '../icons/Common';
 import {useTheme} from 'styled-components';

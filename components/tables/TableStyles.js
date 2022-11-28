@@ -49,8 +49,11 @@ export const AddCol = styled.div`
   min-width: 150px;
 `;
 
-export const ImageHover = styled.div`
+export const ImageHover = styled.button`
   cursor: pointer;
+  background: inherit;
+  border: none;
+  outline: none;
 `;
 
 export const HeaderCell = styled.div`
@@ -80,3 +83,4 @@ export const MyInput = styled.input`
     font-size: 15px;
   }
 `;
+
