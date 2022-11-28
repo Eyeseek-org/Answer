@@ -34,7 +34,6 @@ import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
 
-
 const PAGE_SIZE = 5;
 
 declare module '@tanstack/table-core' {
@@ -79,68 +78,68 @@ const ProjectTable = () => {
 
   const columns = useMemo<ColumnDef<Project, string>[]>(
     () => [
-          {
-            accessorKey: 'chainId',
-            cell: (props) => <ChainIconComponent ch={props.getValue()} />,
-            header: 'Chain',
-            enableSorting: false,
-            meta: {
-              filter: 'select',
-            },
-            enableColumnFilter: true,
-            filterFn: filterChains,
-          },
-          {
-            accessorKey: 'title',
-            header: 'Project',
-            enableColumnFilter: true,
-            enableSorting: false,
-          },
-          {
-            accessorKey: 'owner',
-            cell: (props) => (
-              <AddCol>
-                <Address address={props.getValue()} />
-              </AddCol>
-            ),
-            header: 'Owner',
-            enableColumnFilter: true,
-            enableSorting: false,
-          },
-          {
-            accessorKey: 'pid',
-            cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={'??'}/>,
-            header: 'Goal',
-            meta: {
-              filter: 'select',
-            },
-            enableSorting: false,
-            filterFn: filterChains,
-          },
-                // {
+      {
+        accessorKey: 'chainId',
+        cell: (props) => <ChainIconComponent ch={props.getValue()} />,
+        header: 'Chain',
+        enableSorting: false,
+        meta: {
+          filter: 'select',
+        },
+        enableColumnFilter: true,
+        filterFn: filterChains,
+      },
+      {
+        accessorKey: 'title',
+        header: 'Project',
+        enableColumnFilter: true,
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'owner',
+        cell: (props) => (
+          <AddCol>
+            <Address address={props.getValue()} />
+          </AddCol>
+        ),
+        header: 'Owner',
+        enableColumnFilter: true,
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'pid',
+        cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={'??'} />,
+        header: 'Goal',
+        meta: {
+          filter: 'select',
+        },
+        enableSorting: false,
+        filterFn: filterChains,
+      },
+      // {
       //   accessorFn: row => `${row.pid} ${row.chainId}`,
       //   id: 'contact',
       //   header: 'Goal',
       //   cell: (row) => <>${row.column.accessorFn()}</>,
       // },
-          {
-            accessorKey: 'category',
-            cell: (props) => <>{props.getValue()}</>,
-            header: 'Category',
-            enableSorting: false,
-            meta: {
-              filter: 'select',
-            },
-          },
-          {
-            accessorKey: 'subcategory',
-            cell: (props) => <SubcatPick subcat={props.getValue()} />,
-            header: 'Area',
-            meta: {
-              filter: 'select',
-            },
-            enableSorting: false,
-          },
+      {
+        accessorKey: 'category',
+        cell: (props) => <>{props.getValue()}</>,
+        header: 'Category',
+        enableSorting: false,
+        meta: {
+          filter: 'select',
+        },
+      },
+      {
+        accessorKey: 'subcategory',
+        cell: (props) => <SubcatPick subcat={props.getValue()} />,
+        header: 'Area',
+        meta: {
+          filter: 'select',
+        },
+        enableSorting: false,
+      },
       {
         accessorKey: 'urlProject',
         cell: (props) => (
@@ -164,7 +163,7 @@ const ProjectTable = () => {
           <>
             <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
               <UrlSocialsIcon color={theme.colors.icon} height={30} width={30} />
-            </a> 
+            </a>
           </>
         ),
         header: 'Socials',
@@ -202,19 +201,15 @@ const ProjectTable = () => {
     []
   );
 
-  const handleReward = async(id: string) => {
-        //Query projectRewards with project id from the column as parameter
-  };
-
-  const { data, isLoading} = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
+  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
     onError: (err) => {
       console.log('err', err);
-    }
+    },
   });
 
-  const { data: projectRewards, refetch } = useQuery(
-    ['rewards'],
-    (id) => UniService.getDataSingle(`/classes/Reward?where={"project":"${id}"}`),
+  const { data: projectRewards } = useQuery(
+    ['rewards', projectId],
+    () => UniService.getDataSingle(`/classes/Reward?where={"project":"${projectId}"}`),
     {
       onError: (err) => {
         console.log('err', err);
@@ -222,6 +217,10 @@ const ProjectTable = () => {
       enabled: !!projectId,
     }
   );
+
+  const handleReward = (id: string) => {
+    setProjectId(id);
+  };
 
   const table = useReactTable({
     data,
