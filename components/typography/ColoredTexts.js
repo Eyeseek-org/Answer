@@ -19,3 +19,7 @@ export const G = styled.span`
 export const R = styled.span`
   color: #ff0000;
 `;
+
+export const O = styled.span`
+  color: #EC1515;
+`
