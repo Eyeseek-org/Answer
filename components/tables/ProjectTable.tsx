@@ -163,7 +163,7 @@ const ProjectTable = () => {
         cell: (props) => (
           <>
             <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
-              <UrlSocialsIcon color={theme.colors.icon} height={20} width={20} />
+              <UrlSocialsIcon color={theme.colors.icon} height={30} width={30} />
             </a> 
           </>
         ),

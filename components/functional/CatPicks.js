@@ -28,37 +28,37 @@ export const SubcatPick = ({subcat}) => {
     const setSubcategory = (subcat) => {
          setTooltipText(subcat)
         if (subcat === 'Gadgets') {
-            setSubcatIcon(<GadgetsIcon width={30} />)
+            setSubcatIcon(<GadgetsIcon width={40} />)
         } else if (subcat === 'Robots') {
-          setSubcatIcon( <RoboticsIcon width={30} />)
+          setSubcatIcon( <RoboticsIcon width={40} />)
         } else if (subcat === 'Wearables') {
-          setSubcatIcon( <WearablesIcon width={30} />)
+          setSubcatIcon( <WearablesIcon width={40} />)
         } else if (subcat === 'Other') {
-          setSubcatIcon( <CatOtherIcon width={30} />)
+          setSubcatIcon( <CatOtherIcon width={40} />)
         } else if (subcat === 'Mobile') {
-          setSubcatIcon( <MobileGameIcon width={30} />)
+          setSubcatIcon( <MobileGameIcon width={40} />)
         } else if (subcat === 'Board') {
-          setSubcatIcon( <BoardGameIcon width={30} />)
+          setSubcatIcon( <BoardGameIcon width={40} />)
         } else if (subcat === 'Video') {
-          setSubcatIcon( <VideoGameIcon width={30} />)
+          setSubcatIcon( <VideoGameIcon width={40} />)
         } else if (subcat === 'Hardware') {
-          setSubcatIcon( <HwIcon width={30} />)
+          setSubcatIcon( <HwIcon width={40} />)
         } else if (subcat === 'Video') {
-          setSubcatIcon( <VideoIcon width={30} />)
+          setSubcatIcon( <VideoIcon width={40} />)
         } else if (subcat === 'Illustrations'){
-          setSubcatIcon( <IllustrationIcon width={30} />)
+          setSubcatIcon( <IllustrationIcon width={40} />)
         } else if (subcat === 'Performance'){
-          setSubcatIcon( <PerformanceIcon width={30} />)
+          setSubcatIcon( <PerformanceIcon width={40} />)
         } else if (subcat === 'Publications'){
-          setSubcatIcon( <PerformanceIcon width={30} />)
+          setSubcatIcon( <PerformanceIcon width={40} />)
         } else if (subcat === 'Music'){
-          setSubcatIcon( <MusicIcon width={30} />)
+          setSubcatIcon( <MusicIcon width={40} />)
         } else if (subcat === 'Defi') {
-          setSubcatIcon( <DefiIcon width={30} />)
+          setSubcatIcon( <DefiIcon width={40} />)
         } else if (subcat === 'DAO') {
-          setSubcatIcon( <DaoIcon width={30} />)
+          setSubcatIcon( <DaoIcon width={40} />)
         } else if (subcat === 'NFT') {
-          setSubcatIcon( <NftApeIcon width={30} />)
+          setSubcatIcon( <NftApeIcon width={40} />)
         } else {
           setSubcatIcon(<>{subcat}</>)
         }
