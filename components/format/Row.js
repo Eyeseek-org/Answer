@@ -50,3 +50,8 @@ export const Col = styled.div`
   padding: 2%;
 `;
 
+export const ColRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+`

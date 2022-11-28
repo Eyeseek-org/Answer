@@ -5,12 +5,7 @@ import donation from '../../abi/donation.json';
 import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-`;
+import { ColRight } from '../../components/format/Row';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -52,7 +47,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
 
   
   return (
-    <Container>
+    <ColRight>
       <ButtonBox>
         <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={1} />
           <ButtonAlt
@@ -62,7 +57,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
             }}
           />
       </ButtonBox>
-    </Container>
+    </ColRight>
   );
 };
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork, useContractRead} from 'wagmi';
+import { useContractWrite, useAccount, useContractEvent, useNetwork, useContractRead} from 'wagmi';
 import { useState, useEffect } from 'react';
 import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';

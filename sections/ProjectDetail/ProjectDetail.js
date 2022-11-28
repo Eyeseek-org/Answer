@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styled, {useTheme} from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useContractWrite, useContractEvent, usePrepareContractWrite, useAccount } from 'wagmi';
+import { useContractWrite, useContractEvent, usePrepareContractWrite } from 'wagmi';
 
 import Tag from '../../components/typography/Tag';
 import ErrText from '../../components/typography/ErrText';
@@ -21,80 +21,7 @@ import {ProjectDesc} from '../../components/typography/Descriptions'
 import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
-
-const DetailBox = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background: ${(props) => props.theme.colors.transparentCard};
-  border: 1px solid #2f2f2f;
-  padding: 3%;
-  padding-left: 5%;
-  margin-left: 15%;
-  margin-right: 15%;
-  @media (max-width: 768px) {
-    flex-wrap: wrap;
-    margin: 1%;
-    padding: 1%;
-    padding-left: 3%;
-    padding-right: 3%;
-  }
-  @media (min-width: 2100px) {
-    margin-left: 25%;
-    margin-right: 25%;
-  }
-`;
-
-const ProjectType = styled.div`
-  position: absolute;
-  left: -20px;
-  font-family: 'Neucha';
-  top: 0;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Categories = styled.div`
-  margin-top: 2px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-
-const LeftPart = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-bottom: 5%;
-    margin-top: 5%;
-  }
-`;
-
-const ActionPanel = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  right: 0;
-  top: 10px;
-  right: 4%;
-`;
-
-const IconWrapper = styled.button`
-  position: relative;
-  background: inherit;
-  border: none;
-  padding-left: 10px;
-  margin-left: 10px;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.9;
-  }
-`;
+import {IconWrapper, Inactive, DetailBox, ProjectType, Categories, LeftPart, ActionPanel} from '../../components/cards/CardStyles'
 
 const CanceledBox = styled.div`
   position: absolute;
@@ -106,13 +33,7 @@ const CanceledBox = styled.div`
   }
 `;
 
-const Inactive = styled.div`
-  position: absolute;
-  display: flex;
-  font-size: 2em;
-  font-family: 'Neucha';
-  color: #d90000;
-`;
+
 
 const ProjectDetail = ({
   objectId,
@@ -133,7 +54,6 @@ const ProjectDetail = ({
   descM,
   youtube
 }) => {
-  const { address } = useAccount();
   const [cancelTooltip, setCancelTooltip] = useState(false);
   const [verifiedTooltip, setVerifiedTooltip] = useState(false);
   const [nonVerifiedTooltip, setNonVerifiedTooltip] = useState(false);

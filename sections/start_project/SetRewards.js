@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useApp } from '../../utils/appContext';
-import SectionTitle from '../../../components/typography/SectionTitle';
+import { useApp } from '../utils/appContext';
+import SectionTitle from '../../components/typography/SectionTitle';
 import {
   ButtonRow,
   IconBox,
@@ -13,17 +13,17 @@ import {
   RewardAction,
   Disclaimer,
   DisclaimerAdd,
-} from './StyleWrapper';
-import InputContainer from '../../../components/form/InputContainer';
-import {Wrapper} from '../../../components/format/Box'
-import ButtonAlt from '../../../components/buttons/ButtonAlt';
-import Tab from '../../../components/form/Tab';
-import { MainMilestoneContainer, MilestoneContainer } from '../SetGoals/StyleWrapper';
-import Tooltip from '../../../components/Tooltip';
-import { InfoIcon } from '../../../components/icons/Common';
-import { Row } from '../../../components/format/Row';
-import { AddIcon, RemoveIcon } from '../../../components/icons/Project';
-import Subtitle from '../../../components/typography/Subtitle';
+} from './Styles';
+import InputContainer from '../../components/form/InputContainer';
+import {Wrapper} from '../../components/format/Box'
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import Tab from '../../components/form/Tab';
+import { MainMilestoneContainer, MilestoneContainer } from './SetGoals/StyleWrapper';
+import Tooltip from '../../components/Tooltip';
+import { InfoIcon } from '../../components/icons/Common';
+import { Row } from '../../components/format/Row';
+import { AddIcon, RemoveIcon } from '../../components/icons/Project';
+import Subtitle from '../../components/typography/Subtitle';
 import {useTheme} from 'styled-components';
 
 const SetRewards = ({ setStep }) => {

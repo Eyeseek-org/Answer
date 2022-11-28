@@ -12,38 +12,11 @@ import usdt from '../../public/icons/usdt.png';
 import dai from '../../public/icons/dai.png';
 import { BetweenRow, Row } from '../../components/format/Row';
 import { G } from '../../components/typography/ColoredTexts';
-import StatRow from './StatRow';
-
-const RightPart = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-top: 3px solid #b0f6ff;
-  width: 50%;
-  margin-left: 3%;
-  margin-top: 2%;
-  @media (max-width: 768px) {
-    width: 100%;
-    margin: 0;
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
-`;
+import StatRow from '../../components/StatRow';
+import { RightPart, SmallBal } from '../../components/cards/CardStyles';
 
 const ButtonBox = styled.div`
   margin-top: 4%;
-`;
-
-const SmallBal = styled.div`
-  font-size: 0.7em;
-  margin-left: 20px;
-  font-family: 'Gemunu Libre';
-  opacity: 0.9;
-  color: ${(props) => props.theme.colors.font};
-  display: flex;
-  flex-direction: row;
-  gap: 7px;
 `;
 
 const AbsoluteShareIt = styled.div`

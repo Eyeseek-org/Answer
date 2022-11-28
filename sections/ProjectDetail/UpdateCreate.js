@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -11,17 +10,8 @@ import { useMutation } from '@tanstack/react-query';
 import { DapAPIService } from '../../services/DapAPIService';
 import Subtitle from '../../components/typography/Subtitle';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { FormDesc } from '../../components/typography/Descriptions';
 
-const Description = styled.div`
-  font-size: 1em;
-  font-family: 'Montserrat';
-  margin-bottom: 2%;
-  letter-spacing: 0.2px;
-  line-height: 1.5em;
-  background: ${(props) => props.theme.colors.invisible};
-  border-top: 1px solid rgba(176, 246, 255, 0.4);
-  padding-top: 0.5%;
-`;
 
 const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const [url, setUrl] = useState('');
@@ -82,10 +72,10 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
         <MainMilestoneContainer>
           <MilestoneContainer>
              <Subtitle text="Create new update" />
-            <Description>
+            <FormDesc>
               Notify backers and stakeholders about your project updates, rewards and followups. Insert reference to the project page or
               socials where your progress is described in more detail
-            </Description>
+            </FormDesc>
             <InputContainer
                 key={'title'}
                 name={'title'}

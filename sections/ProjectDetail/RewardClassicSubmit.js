@@ -1,15 +1,7 @@
-import styled from 'styled-components';
 import { useContractWrite } from 'wagmi';
 import donation from '../../abi/donation.json';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import { RowEnd } from '../../components/format/Row';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-`;
-
+import { RowEnd, ColRight } from '../../components/format/Row';
 
 const RewardClassicSubmit = ({ add, home, pid, cap }) => {
 
@@ -28,7 +20,7 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
   })
 
   return (
-    <Container>
+    <ColRight>
       <RowEnd>
           <ButtonAlt
             text={'Create reward'}
@@ -37,7 +29,7 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
             }}
           />
       </RowEnd>
-    </Container>
+    </ColRight>
   );
 };
 

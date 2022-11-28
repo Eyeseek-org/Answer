@@ -5,7 +5,7 @@ import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork
 import axios from 'axios';
 import {useTheme} from 'styled-components';
 import SectionTitle from '../../components/typography/SectionTitle';
-import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './Create/StyleWrapper';
+import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
 import FaqCard from '../../components/cards/FaqCard';
 import { BookIcon } from '../../components/icons/Common';
 import donation from '../../abi/donation.json';

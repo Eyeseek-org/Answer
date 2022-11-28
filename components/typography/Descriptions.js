@@ -69,3 +69,14 @@ export const Reference = styled.div`
     font-size: 1.2em;
   }
 `
+
+export const FormDesc = styled.div`
+  font-size: 1em;
+  font-family: 'Montserrat';
+  margin-bottom: 2%;
+  letter-spacing: 0.2px;
+  line-height: 1.5em;
+  background: ${(props) => props.theme.colors.invisible};
+  border-top: 1px solid rgba(176, 246, 255, 0.4);
+  padding-top: 0.5%;
+`

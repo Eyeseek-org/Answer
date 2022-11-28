@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useApp } from '../../utils/appContext';
-import InputContainer from '../../../components/form/InputContainer';
+import { useApp } from '../utils/appContext';
+import InputContainer from '../../components/form/InputContainer';
 import {
   ImageContainer,
   MilestoneContainer,
@@ -12,17 +12,17 @@ import {
   SelectionWrapper,
   BlockchainDesc,
   StreamAnnouncement,
-} from './StyleWrapper';
-import SectionTitle from '../../../components/typography/SectionTitle';
+} from './StylesGoals';
+import SectionTitle from '../../components/typography/SectionTitle';
 import { useSwitchNetwork, useNetwork } from 'wagmi';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { blockchains } from '../../../data/blockchains';
-import { BetweenRow, Col, Row } from '../../../components/format/Row';
+import { blockchains } from '../../data/blockchains';
+import { BetweenRow, Col, Row } from '../../components/format/Row';
 import Lottie from 'react-lottie';
-import octa from '../../../data/animations/octa.json';
-import ButtonAlt from '../../../components/buttons/ButtonAlt';
-import { MainContainer, Wrapper } from '../../../components/format/Box';
+import octa from '../../data/animations/octa.json';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { MainContainer, Wrapper } from '../../components/format/Box';
 
 const ImgActiveBox = styled.div`
   opacity: 1;

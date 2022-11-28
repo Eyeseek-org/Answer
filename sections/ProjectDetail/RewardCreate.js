@@ -3,7 +3,7 @@ import axios from 'axios'
 import styled from 'styled-components';
 import {useAccount, useContractEvent} from 'wagmi'
 import { useReward } from '../utils/rewardContext';
-import { RewardDesc, TabRow } from "../start_project/SetRewards/StyleWrapper";
+import { RewardDesc, TabRow } from "../start_project/Styles";
 import donation from "../../abi/donation.json"
 import Tab from "../../components/form/Tab";
 import { BetweenRow } from "../../components/format/Row";
@@ -18,7 +18,7 @@ import RewardFormToken from './RewardFormToken';
 import RewardFormNft from './RewardFormNft';
 import RewardFormClassic from './RewardFormClassic';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
-import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
+import { SumRow, SumTitle } from '../start_project/StylesCreate';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
 import { G } from '../../components/typography/ColoredTexts';
