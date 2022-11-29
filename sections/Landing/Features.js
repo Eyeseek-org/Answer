@@ -14,7 +14,6 @@ import {
 import styled from 'styled-components';
 import { useState } from 'react';
 import Image from 'next/image';
-import chaindonation from '../../public/chaindonation.gif';
 import fee from '../../public/fee.gif';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { P, B, F, G, R, O } from '../../components/typography/ColoredTexts';
