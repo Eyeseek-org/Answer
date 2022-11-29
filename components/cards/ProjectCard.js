@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import ImgSkeleton from '../skeletons/ImgSkeleton';
@@ -68,6 +68,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
   const [standardTypeTooltip, setStandardTypeTooltip] = useState(false);
   const [nftTooltip, setNftTooltip] = useState(false);
   const [erc20Tooltip, setErc20Tooltip] = useState(false);
+  const theme = useTheme()
 
   useEffect(() => {
     const res = GetProjectFundingAddress(chainId);
@@ -132,11 +133,11 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
           </IconWrapper>
           {hasFungible && (
             <IconWrapper onMouseEnter={() => { setErc20Tooltip(true) }} onMouseLeave={() => { setErc20Tooltip(false)}}>
-              <Erc20Icon width={50} height={70} />
+              <Erc20Icon width={50} height={70} color={theme.colors.icon}/>
             </IconWrapper>
           )}
           {hasNft && ( <IconWrapper onMouseEnter={() => { setNftTooltip(true) }} onMouseLeave={() => { setNftTooltip(false) }} >
-              <NftIcon width={40} height={40} />
+              <NftIcon width={40} height={40} color={theme.colors.icon} />
             </IconWrapper>
           )}
         </AbsoluteLeft>

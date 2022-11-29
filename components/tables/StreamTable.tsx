@@ -11,6 +11,7 @@ import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon } from '../icons/Project';
 import { SubcatPick } from '../functional/CatPicks';
 import SuperBalance from '../functional/SuperBalance';
+import {useTheme} from 'styled-components'
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
@@ -44,7 +45,7 @@ const columns: ColumnDef<GroupedStream, string>[] = [
         accessorKey: 'projectId',
         cell: (props) => (
           // @ts-ignore
-          <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}/></a>
+          <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}  color={theme.colors.icon}/></a>
         ),
         header: 'Detail',
       },
@@ -102,6 +103,7 @@ const columns: ColumnDef<GroupedStream, string>[] = [
 const StreamTable = () => {
   const [sorting, setSorting] = useState([]);
   const [data, setData] = useState<GroupedStream[]>([]);
+  const theme = useTheme();
 
   const { data: activeStreams } = useQuery(['streams'], () => UniService.getDataAll<Stream>('/classes/Stream?where={"isActive": true}'), {
     onError: (err) => {

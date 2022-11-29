@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { MicrofundIcon } from '../../components/icons/Landing';
 import { DonateIcon, NftIcon } from '../../components/icons/Project';
 import Address from '../../components/functional/Address';
@@ -36,6 +36,7 @@ const RewardCard = ({
   tokenAddress,
   selected,
 }) => {
+  const theme = useTheme();
 
   return (
     <MainContainer>
@@ -45,7 +46,7 @@ const RewardCard = ({
           > 
           <BetweenRow>
             <RewardTitle>{title}</RewardTitle>
-            {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30} />}
+            {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30}  color={theme.colors.icon} />}
           </BetweenRow>
           {tokenName && tokenAddress && (
             <RewardDesc>

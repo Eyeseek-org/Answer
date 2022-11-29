@@ -39,7 +39,7 @@ const BookmarkTable = () => {
     //   accessorKey: 'objectId',
     //   cell: (props) => (
     //     <RowCenter>
-    //        <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}/></a>
+    //        <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}  color={theme.colors.icon}/></a>
     //      <ImageHover onClick={()=>handleBookmark(props.getValue(), bookmarks)} ><BookmarkIcon color={theme.colors.icon} width={20}/></ImageHover>
     //     </RowCenter>
     //   ),

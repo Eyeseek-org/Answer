@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DapAPIService } from '../services/DapAPIService';
 import {AnimatedModal} from '../components/animated/AnimatedModal';
 import { RewardActiveIcon } from '../components/icons/Project';
-import {Buttons, ButtonRow} from '../components/notifications/Styles'
+import {Buttons, ButtonRow} from '../components/notifications/Styles';
 
 TimeAgo.addDefaultLocale(en);
 

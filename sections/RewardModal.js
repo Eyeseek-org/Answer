@@ -8,7 +8,6 @@ import Address from '../components/functional/Address';
 import { WarnTitle } from '../components/typography/Titles';
 import axios from 'axios';
 import { moralisApiConfig } from '../data/moralisApiConfig';
-import { ButtonBox } from './start_project/Styles';
 
 const Button = styled.button`
     background-color: transparent;

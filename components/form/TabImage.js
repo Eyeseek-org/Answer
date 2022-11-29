@@ -79,8 +79,8 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? 
             <Active>
-                {text === 'Projects' && <ColBetween><ProjectActiveIcon width={50} /><div>{text}</div></ColBetween>} 
-                {text === 'Donates' && <ColBetween><DonateActiveIcon width={50} /><div>{text}</div></ColBetween>}
+                {text === 'Projects' && <ColBetween><ProjectActiveIcon width={50}  color={theme.colors.icon}/><div>{text}</div></ColBetween>} 
+                {text === 'Donates' && <ColBetween><DonateActiveIcon width={50}  color={theme.colors.icon}/><div>{text}</div></ColBetween>}
                 {text === 'Bookmarks' && <ColBetween><BookmarkFilledIcon width={50} color={theme.colors.icon}/><div>{text}</div></ColBetween>}
                 {text === 'Streams' && <ColBetween><StreamIcon width={50} /><div>{text}</div></ColBetween>}
                 {text === 'Classic' && <ActBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
@@ -88,19 +88,19 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                 {text === 'ERC20' && <ActBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <Erc20ActiveIcon width={60} height={60}  /></ActBox>}
                 {text === 'ERC1155' && <ActBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <NftActiveIcon width={60} height={60} /></ActBox>}
+                    <NftActiveIcon width={60} height={60}  color={theme.colors.icon} /></ActBox>}
             </Active> : 
             <Inactive onClick={onClick}>
-                {text === 'Projects' && <ColBetween><ProjectIcon width={50}/><div>{text}</div></ColBetween>} 
-                {text === 'Donates' && <ColBetween><DonateIcon width={50} /><div>{text}</div></ColBetween>}
+                {text === 'Projects' && <ColBetween><ProjectIcon width={50}  color={theme.colors.icon}/><div>{text}</div></ColBetween>} 
+                {text === 'Donates' && <ColBetween><DonateIcon width={50}  color={theme.colors.icon} /><div>{text}</div></ColBetween>}
                 {text === 'Bookmarks' && <ColBetween><BookmarkIcon width={50} color={theme.colors.icon} /><div>{text}</div></ColBetween>}
                 {text === 'Streams' && <ColBetween><StreamIcon width={50}  /><div>{text}</div></ColBetween>}
                 {text === 'Classic' && <IconBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <RewardIcon width={60} height={60}  /></IconBox>} 
+                    <RewardIcon width={60} height={60}  color={theme.colors.icon} /></IconBox>} 
                 {text === 'ERC20' && <IconBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <Erc20Icon width={60} height={60} /></IconBox>}
+                    <Erc20Icon width={60} height={60}  color={theme.colors.icon} /></IconBox>}
                 {text === 'ERC1155' && <IconBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <NftIcon width={60}  height={60} /></IconBox>}
+                    <NftIcon width={60}  height={60}  color={theme.colors.icon}/></IconBox>}
             </Inactive>
         }</>
     }

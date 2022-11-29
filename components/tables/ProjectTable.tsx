@@ -18,7 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
 import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol } from './TableStyles';
-import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon, WarningIcons } from '../icons/Common';
+import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
 import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon, WebIcon } from '../icons/Project';
@@ -161,7 +161,7 @@ const ProjectTable = () => {
         cell: (props) => (
           <RowCenter>
             <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
-              <DetailIcon width={20} />
+              <DetailIcon width={20}  color={theme.colors.icon} />
             </a>
             <ImageHover
               onClick={() => {
