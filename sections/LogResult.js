@@ -4,8 +4,9 @@ import { loadingAnim, okAnim, errAnim } from '../components/animated/Animations'
 import {useState, useEffect} from 'react'
 import { ChainExplorer } from '../helpers/MultichainHelpers';
 import { useNetwork } from 'wagmi';
-import { B, G, R } from '../components/typography/ColoredTexts';
+import { B, G, O, R } from '../components/typography/ColoredTexts';
 import ButtonAlt from '../components/buttons/ButtonAlt';
+import { Typewriter } from 'react-simple-typewriter'
 
 const LogResult = ({ ev, error, apiError, success, type, data }) => {
     const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/');
@@ -16,28 +17,81 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
         setExplorer(ChainExplorer(chain.id))
       }
     },[])
+    
 
     return <>
        {type !== 'Stream project initialized' ? <TxStatus>
                 Transaction status
                 <LogRow>
-                  <InfoTag>Info</InfoTag> {type}
+                  <InfoTag>Info</InfoTag> 
+                  <Typewriter
+                      words={[type]}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />
                 </LogRow>
                 <LogRow>
-                  <InfoTag>Info</InfoTag> ...Bloockchain confirmation request
+                  <InfoTag>Info</InfoTag> 
+                  <Typewriter
+                      words={['...Bloockchain confirmation request']}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />
                 </LogRow>
-                {!ev && <LogRow>Please stay on page until transactions is confirmed</LogRow>}
+                {!ev && <LogRow><O>Please stay on page until transactions is confirmed</O></LogRow>}
                 <LogRow>
                     <InfoTag>Blockchain: </InfoTag>
-                  {ev ? <Ok>Success - Transaction was processed</Ok> : <>Usually processed in 5-10s</>}
-                  {apiError && <Err>Failed - Transaction failed to process in DB</Err>}
+                  {ev ? <Ok>
+                    <Typewriter
+                      words={['Success - Transaction was processed']}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />
+                  </Ok> :                   
+                  <Typewriter
+                      words={['...Transaction is usually processed in 5-15 seconds']}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />}
+                  {apiError && <Err>
+                    <Typewriter
+                      words={['Failed - Transaction failed to process in DB']}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />
+                    </Err>}
                 </LogRow>
                 {error && <LogRow>
-                    <InfoTag><R>Error</R></InfoTag><>Tx was rejected or failed, try again later or contact the team </>
+                    <InfoTag><R>Error</R></InfoTag><>
+                    <Typewriter
+                      words={[' Tx was rejected or failed, try again later or contact the team ']}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />
+                   </>
                 </LogRow>}
                 {ev && <>
                   <LogRow>
-                    <InfoTag>Info</InfoTag> Project transaction processed
+                    <InfoTag>Info</InfoTag>                      
+                    <Typewriter
+                      words={['Project transaction processed']}
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={60}
+                      delaySpeed={40000}
+                    />
                   </LogRow>
                   <LogRow>
                     {data && <><InfoTag>Info</InfoTag> 
