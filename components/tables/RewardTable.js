@@ -1,21 +1,24 @@
 import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getGroupedRowModel, getFacetedUniqueValues } from '@tanstack/react-table';
-import { useState, useMemo, useEffect } from 'react';
-import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover } from './TableStyles';
+import { useState } from 'react';
+import {Table, Header, Tr, Cell, HeadRow, HeaderCell, ImageHover } from './TableStyles';
 import { NonVerifiedIcon, UsersIcon, VerifiedIcon } from '../icons/Common';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import RewardModal from '../../sections/RewardModal'
 import {useTheme} from 'styled-components';
 import { RewardDesc } from '../typography/Descriptions';
 
-const RewardTable = ({data, donors}) => {
+const RewardTable = ({data}) => {
   const [sorting, setSorting] = useState([]);
+  const [backers, setBackers] = useState([]);
+  const [owner, setOwner] = useState();
   const [showRewardList, setShowRewardList] = useState(false);
   const theme = useTheme()
-  const handleRewardList = () => {
-    setShowRewardList(true)
+  const handleRewardList = (backers, owner) => {
+    setShowRewardList(!showRewardList);
+    setBackers(backers)
+    setOwner(owner)
   }
 
-  console.log(donors)
 
   const columns = [
     {
@@ -61,7 +64,7 @@ const RewardTable = ({data, donors}) => {
     {
         accessorKey: 'rewardId',
         cell: (props) => (
-          <ImageHover onClick={()=>{handleRewardList(props.getValue())}}>
+          <ImageHover onClick={()=>{handleRewardList(props.row.original.donors, props.row.original.owner)}}>
             <UsersIcon color={theme.colors.icon} width={20}/>
           </ImageHover>
         ),
@@ -119,8 +122,7 @@ const RewardTable = ({data, donors}) => {
           </tbody>
         </Table> : <RewardDesc>No rewards found for this project</RewardDesc>
       }
-      {showRewardList && data && <RewardModal showMe={showRewardList} donors={donors} />}
-      {showRewardList && <>First condition</>}
+      {showRewardList && data && <RewardModal backers={backers} showMe={showRewardList} owner={owner}/>}
     </>
 };
 

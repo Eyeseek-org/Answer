@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../components/icons/Notifications';
-import { RewardIcon, SuccessIcon } from '../components/icons/Common';
+import { SuccessIcon } from '../components/icons/Common';
 import ReactTimeAgo from 'react-time-ago';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DapAPIService } from '../services/DapAPIService';
 import {AnimatedModal} from '../components/animated/AnimatedModal';
 import { RewardActiveIcon } from '../components/icons/Project';
+import {Buttons, ButtonRow} from '../components/notifications/Styles'
 
 TimeAgo.addDefaultLocale(en);
 
@@ -79,37 +80,6 @@ const Ago = styled.div`
   }
 `;
 
-const ButtonRow = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  background: 'black';
-  padding: 2%;
-  padding-right: 5%;
-`;
-
-const Buttons = styled.div`
-  z-index: 100;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  font-family: 'Neucha';
-  font-style: italic;
-  font-weight: 400;
-  padding-right: 15px;
-  letter-spacing: 0.2px;
-  font-size: 1.2em;
-  color: #b0f6ff;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.9;
-  }
-  @media (min-width: 1780px) {
-    font-size: 1.4em;
-  }
-`;
 
 const Unread = styled.div`
   font-family: 'Gemunu Libre';

@@ -84,3 +84,6 @@ export const MyInput = styled.input`
   }
 `;
 
+export const ActionCol = styled.div`
+  min-width: 100px;
+`

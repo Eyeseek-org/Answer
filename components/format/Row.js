@@ -18,6 +18,14 @@ export const BetweenRow = styled.div`
   margin-bottom: 1%;
 `
 
+export const BetweenRowSm = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 0.7em;
+  width: 100%;
+`
+
 export const RowCenter = styled.div`
   position: relative;
   display: flex;

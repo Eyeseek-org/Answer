@@ -92,6 +92,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
             "nftId": Number(nftId),
             "rType": rType,
             "rewardId": rewardId,
+            "owner": address,
             "donors": []
           }, moralisApiConfig)
         

@@ -17,13 +17,13 @@ import Address from '../functional/Address';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
-import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header } from './TableStyles';
+import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol } from './TableStyles';
 import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon, WarningIcons } from '../icons/Common';
 import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon, WebIcon } from '../icons/Project';
 import RewardTable from './RewardTable';
-import { Row } from '../format/Row';
+import { Col, Row, BetweenRowSm, RowCenter } from '../format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../functional/CatPicks';
 import { RewardDesc } from '../typography/Descriptions';
@@ -33,6 +33,8 @@ import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
+import Tooltip from '../Tooltip';
+import { MainContainer } from '../format/Box';
 
 const PAGE_SIZE = 5;
 
@@ -67,6 +69,8 @@ const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.El
 };
 
 const ProjectTable = () => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipText, setTooltipText] = useState('');
   const [sorting, setSorting] = useState([]);
   const [projectId, setProjectId] = useState<string | undefined>();
   const theme = useTheme();
@@ -76,12 +80,17 @@ const ProjectTable = () => {
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  const handleTooltip = (text: string) => {
+    setShowTooltip(true);
+    setTooltipText(text);
+  }
+
   const columns = useMemo<ColumnDef<Project, string>[]>(
     () => [
       {
         accessorKey: 'chainId',
         cell: (props) => <ChainIconComponent ch={props.getValue()} />,
-        header: 'Chain',
+        header: <div onMouseEnter={() => { handleTooltip('Supported chains: Polygon, BNB, Optimism, Fantom') }} onMouseLeave={() => { setShowTooltip(false) }}>Ch</div>,
         enableSorting: false,
         meta: {
           filter: 'select',
@@ -108,13 +117,13 @@ const ProjectTable = () => {
       },
       {
         accessorKey: 'pid',
-        cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={'??'} />,
-        header: 'Goal',
-        meta: {
-          filter: 'select',
-        },
-        enableSorting: false,
-        filterFn: filterChains,
+        cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={props.row.original.chainId} />,
+        header: <Col>
+          <div onMouseEnter={() => { handleTooltip('Project goal, d = donated, m = microfunds created') }} onMouseLeave={() => { setShowTooltip(false) }}>Goal</div>
+          <BetweenRowSm><div>d</div><div>m</div></BetweenRowSm>
+        </Col>,
+        enableSorting: true,
+        enableColumnFilter: false,
       },
       // {
       //   accessorFn: row => `${row.pid} ${row.chainId}`,
@@ -141,36 +150,6 @@ const ProjectTable = () => {
         enableSorting: false,
       },
       {
-        accessorKey: 'urlProject',
-        cell: (props) => (
-          <>
-            {props.getValue() ? (
-              <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
-                <WebIcon color={theme.colors.icon} width={30} />
-              </a>
-            ) : (
-              <WarningIcons height={50} width={30} />
-            )}
-          </>
-        ),
-        header: 'Web',
-        enableColumnFilter: false,
-        enableSorting: false,
-      },
-      {
-        accessorKey: 'urlSocials',
-        cell: (props) => (
-          <>
-            <a href={props.getValue()} rel="noopener noreferrer" target="_blank">
-              <UrlSocialsIcon color={theme.colors.icon} height={30} width={30} />
-            </a>
-          </>
-        ),
-        header: 'Socials',
-        enableColumnFilter: false,
-        enableSorting: false,
-      },
-      {
         accessorKey: 'verified',
         cell: (props) => <>{props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={30} />}</>,
         header: 'Verified',
@@ -180,7 +159,7 @@ const ProjectTable = () => {
       {
         accessorKey: 'objectId',
         cell: (props) => (
-          <Row>
+          <RowCenter>
             <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
               <DetailIcon width={20} />
             </a>
@@ -191,9 +170,15 @@ const ProjectTable = () => {
             >
               <RewardIcon color={theme.colors.icon} width={20} />
             </ImageHover>
-          </Row>
+            <a href={props.row.original.urlProject} rel="noopener noreferrer" target="_blank">
+              <WebIcon color={theme.colors.icon} width={30} />
+            </a>
+            <a href={props.row.original.urlSocials} rel="noopener noreferrer" target="_blank">
+              <UrlSocialsIcon color={theme.colors.icon} height={25} width={25} />
+            </a>
+          </RowCenter>
         ),
-        header: 'Actions',
+        header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>Actions</ActionCol>,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -209,7 +194,7 @@ const ProjectTable = () => {
 
   const { data: projectRewards } = useQuery(
     ['rewards', projectId],
-    () => UniService.getDataSingle(`/classes/Reward?where={"project":"${projectId}"}`),
+    () => UniService.getDataAll(`/classes/Reward?where={"project":"${projectId}"}`),
     {
       onError: (err) => {
         console.log('err', err);
@@ -250,7 +235,8 @@ const ProjectTable = () => {
       {isLoading ? (
         <RewardDesc>Loading, server was sleeping...</RewardDesc>
       ) : (
-        <>
+        <Col>
+          {showTooltip && <Tooltip text={tooltipText} />}
           <Table>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -274,9 +260,9 @@ const ProjectTable = () => {
             </tbody>
           </Table>
           <TablePagination<Project> table={table} />
-        </>
+        </Col>
       )}
-      {projectRewards?.donors && <RewardTable data={projectRewards} donors={projectRewards.donors} />}
+      {projectRewards && <RewardTable data={projectRewards}  />}
     </>
   );
 };
