@@ -11,12 +11,14 @@ const RewardTable = ({data}) => {
   const [sorting, setSorting] = useState([]);
   const [backers, setBackers] = useState([]);
   const [owner, setOwner] = useState();
+  const [rewardId, setRewardId] = useState();
   const [showRewardList, setShowRewardList] = useState(false);
   const theme = useTheme()
-  const handleRewardList = (backers, owner) => {
+  const handleRewardList = (backers, owner, rewardId) => {
     setShowRewardList(!showRewardList);
     setBackers(backers)
     setOwner(owner)
+    setRewardId(rewardId)
   }
 
 
@@ -64,7 +66,7 @@ const RewardTable = ({data}) => {
     {
         accessorKey: 'rewardId',
         cell: (props) => (
-          <ImageHover onClick={()=>{handleRewardList(props.row.original.donors, props.row.original.owner)}}>
+          <ImageHover onClick={()=>{handleRewardList(props.row.original.donors, props.row.original.owner, props.row.original.objectId)}}>
             <UsersIcon color={theme.colors.icon} width={20}/>
           </ImageHover>
         ),
@@ -122,7 +124,7 @@ const RewardTable = ({data}) => {
           </tbody>
         </Table> : <RewardDesc>No rewards found for this project</RewardDesc>
       }
-      {showRewardList && data && <RewardModal backers={backers} showMe={showRewardList} owner={owner}/>}
+      {showRewardList && data && <RewardModal backers={backers} showMe={showRewardList} owner={owner} rewardId={rewardId}/>}
     </>
 };
 

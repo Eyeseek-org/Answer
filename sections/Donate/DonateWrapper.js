@@ -118,7 +118,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
 
 
   const updateReward = async (donors) => {
-    const newDonors = [...donors, {address: address, status: 0}];
+    const newDonors = [...donors, {address: address, status: 0, id: donors.length}];
     try{
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors}, moralisApiConfig);
       setApiError(false)
