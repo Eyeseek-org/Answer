@@ -21,7 +21,6 @@ const RewardTable = ({data}) => {
     setRewardId(rewardId)
   }
 
-
   const columns = [
     {
       accessorKey: 'title',
@@ -73,8 +72,6 @@ const RewardTable = ({data}) => {
         header: <HeaderCell>Backers</HeaderCell>,
       },
   ]
-
-
 
 //   const sortedUniqueValues = useMemo(
 //     () => Array.from(column.getFacetedUniqueValues().keys()).sort(),

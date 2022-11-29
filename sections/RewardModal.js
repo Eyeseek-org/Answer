@@ -1,13 +1,15 @@
 import {useState} from 'react';
 import {AnimatedModal} from '../components/animated/AnimatedModal'
 import { CloseIcon, ExpandIcon, ShrinkIcon } from '../components/icons/Notifications';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { ButtonRow, Buttons } from '../components/notifications/Styles';
 import { BetweenRow, RowCenter } from '../components/format/Row';
 import Address from '../components/functional/Address';
-import { WarnTitle } from '../components/typography/Titles';
 import axios from 'axios';
 import { moralisApiConfig } from '../data/moralisApiConfig';
+import { RewardDesc } from '../components/typography/Descriptions';
+import { HandshakeIcon, BackArrow, RemindIcon } from '../components/icons/Actions';
+import CircleButton from '../components/buttons/CircleButton'
 
 const Button = styled.button`
     background-color: transparent;
@@ -33,11 +35,18 @@ const BackerList = styled.div`
     padding: 5%;
 `
 
+const Index = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 0.7em;
+`
+
 
 const RewardModal = ({ showMe, rewardId, backers,owner }) => {
     const [display, setDisplay] = useState(showMe);
     const [expand, setExpand] = useState(false);
-
+    const theme = useTheme();
     // Upravit UI - Ikonky
 
     const updateRewardState = async(rewItemId, status) => {
@@ -70,12 +79,20 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
         return (
             <BackerList key={index}>
                 <BetweenRow>
-                  {!expand ? <Address address={backer.address}/> :  <WarnTitle>{backer.address}</WarnTitle>}
-                   {owner && <RowCenter>
-                        <button onClick={()=>{updateRewardState(backer.id, 2)}}>Resolve</button>
-                        <button onClick={()=>{updateRewardState(backer.id, 1)}}>Unresolve</button>
-                        <button onClick={()=>{handleRewardNotifications()}}>Remind</button>
+                  {!expand ? <><Address address={backer.address}/>
+                  {owner && <RowCenter>
+                        <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<HandshakeIcon width={20} height={20} color={theme.colors.icon}/>}/>
+                        <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<BackArrow width={20} height={15} color={theme.colors.icon}/>} />
+                        <CircleButton onClick={()=>{handleRewardNotifications()}} icon={<RemindIcon width={20} height={15} color={theme.colors.icon}/>} />
                    </RowCenter>}
+                  </> :  <><Index>{index+1}</Index><RewardDesc>{backer.address}</RewardDesc>
+                  {owner &&   <>
+                        <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<>Resolve<HandshakeIcon width={20} height={20} color={theme.colors.icon}/></>}/>
+                        <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<>Unresolve<BackArrow width={20} height={15} color={theme.colors.icon}/></>} />
+                        <CircleButton onClick={()=>{handleRewardNotifications()}} icon={<>Reminder<RemindIcon width={20} height={15} color={theme.colors.icon}/></>}/>
+                       </>}
+                  </>
+                  }
                 </BetweenRow>
             </BackerList>
         )
