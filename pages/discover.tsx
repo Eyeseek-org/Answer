@@ -5,6 +5,7 @@ import Tab from '../components/form/Tab';
 import { useState } from 'react';
 import Transactions from '../components/tables/Transactions';
 import ProjectTable from '../components/tables/ProjectTable';
+import RewardsAll from '../components/tables/RewardsAll';
 
 const Container = styled.div`
   display: flex;
@@ -28,20 +29,24 @@ const Discover = () => {
     <SectionTitle title={'Discover'} subtitle={'Data overview'} />
     <Container>
       <TabWrapper>
-        {/* @ts-ignore */}
          <Tab 
             active={active} 
             o1={'Projects'} 
             o2={'Streams'} 
             o3={'Transactions'}
+            o4={'Rewards'}
+            o5={undefined}
             change1={() => setActive('Projects')} 
             change2={() => setActive('Streams')} 
             change3={() => setActive('Transactions')} 
+            change4={() => setActive('Rewards')} 
+            change5={undefined}
           />
         </TabWrapper>
          {active === 'Projects' && <ProjectTable/>}
          {active === 'Streams' && <StreamTable/>}
          {active === 'Transactions' && <Transactions/>}
+         {active === 'Rewards' && <RewardsAll/>}
     </Container>
     </>
 };

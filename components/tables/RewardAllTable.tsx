@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Table, Header, Tr, Cell, HeadRow, PaginationContainer, ImageHover, AddCol, HeaderCell, MyInput } from './TableStyles';
-import { ChainIconComponent, ExplorerReference } from '../../helpers/MultichainHelpers';
+import { ExplorerReference } from '../../helpers/MultichainHelpers';
 import {
   Column,
   ColumnDef,
@@ -15,23 +15,23 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, FilterIcon } from '../icons/TableIcons';
-import { RowCenter } from '../format/Row';
+import { Row, RowCenter } from '../format/Row';
 import Address from '../functional/Address';
 import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
+import ProjectStats from '../functional/ProjectStats';
 
-interface ITransactionTable {
+interface ITable {
   data: any;
 }
 
-interface TransactionTableProps {
+interface RewardTableProps {
   amount: number;
-  backer: string;
-  chain: number;
-  currency_id: number;
+  owner: string;
+  tokenContract: string;
   date: string;
-  drained: number;
+  rewardType: number;
   fund_id: number;
   txn_hash: string;
 }
@@ -41,13 +41,6 @@ declare module '@tanstack/table-core' {
     filter: ArrElement<typeof filterInputs>;
   }
 }
-// TODO: move it shared folder once we have more detail about currencies on blockchain
-const currenciesIdMapping = {
-  1: 'USDC',
-  2: 'USDT',
-  3: 'DAI',
-};
-
 const PAGE_SIZE = 5;
 
 export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
@@ -57,10 +50,6 @@ export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
 
   const uniqueValues = useMemo(() => {
     let uniqueValues = Array.from(column.getFacetedUniqueValues().keys());
-
-    if (column.id === 'currency_id') {
-      uniqueValues = uniqueValues.map((currency) => currenciesIdMapping[currency]);
-    }
 
     return uniqueValues;
   }, [column.getFacetedUniqueValues]);
@@ -79,11 +68,12 @@ export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
   );
 };
 
-const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
+const RewardAllTable = ({ data }: ITable): JSX.Element => {
   const [sorting, setSorting] = useState([]);
   const [backerFilter, setBackerFilter] = useState<boolean>(false);
 
-  const columns: ColumnDef<TransactionTableProps, string>[] = [
+    // Missing project reference
+  const columns: ColumnDef<RewardTableProps, string>[] = [
     {
       header: (
         <RowCenter
@@ -91,55 +81,28 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
             setBackerFilter(!backerFilter);
           }}
         >
-          Chain{' '}
+          Owner{' '}
           <ImageHover>
             <FilterIcon width={13} />
           </ImageHover>
         </RowCenter>
       ),
-      accessorKey: 'chain',
-      enableSorting: false,
-      cell: (props) => {
-        return <ChainIconComponent ch={props.getValue()} />;
-      },
-      enableColumnFilter: true,
-      meta: {
-        filter: 'select',
-      },
-    },
-    {
-      header: (
-        <RowCenter
-          onClick={() => {
-            setBackerFilter(!backerFilter);
-          }}
-        >
-          Backer{' '}
-          <ImageHover>
-            <FilterIcon width={13} />
-          </ImageHover>
-        </RowCenter>
-      ),
-      accessorKey: 'backer',
+      accessorKey: 'owner',
       cell: (props) => (
         <AddCol>
-          <Address address={props.getValue()} />
+          <Address address={props.getValue()}/>
         </AddCol>
       ),
       enableSorting: false,
     },
     {
       header: (
-        <HeaderCell
-          onClick={() => {
-            setBackerFilter(!backerFilter);
-          }}
-        >
-          Amount {backerFilter ? <ArrowDown width={13} /> : <ArrowUp width={13} />}
+        <HeaderCell>
+          Project 
         </HeaderCell>
       ),
-      accessorKey: 'amount',
-      cell: (props) => <>${props.getValue() / 1000000}</>,
+      accessorKey: 'fund_id',
+      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
       enableSorting: true,
       enableColumnFilter: false,
     },
@@ -156,39 +119,50 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
           </ImageHover>
         </RowCenter>
       ),
-      enableColumnFilter: true,
-      accessorKey: 'currency_id',
-      meta: {
-        filter: 'select',
-      },
+      accessorKey: 'tokenContract',
+      cell: (props) => (
+        <>
+         {props.row.original.tokenContract != '0x0000000000000000000000000000000000000000' && <Address address={props.getValue()}/>}
+        </>
+      ),
       enableSorting: false,
-      cell: (props) => currenciesIdMapping[props.getValue()],
-    },
-    {
-      header: 'Date',
-      enableColumnFilter: false,
-      accessorKey: 'date',
     },
     {
       header: (
-        <HeaderCell
-          onClick={() => {
-            setBackerFilter(!backerFilter);
-          }}
-        >
-          Drained {backerFilter ? <ArrowDown width={13} /> : <ArrowUp width={13} />}
+        <HeaderCell>
+          Type 
         </HeaderCell>
       ),
+      accessorKey: 'rewardType',
+      cell: (props) => <>
+        {props.row.original.rewardType == 0 && 'Classic'}
+        {props.row.original.rewardType == 1 && 'ERC20'}
+        {props.row.original.rewardType == 2 && 'NFT'}
+      </>,
+      enableSorting: true,
       enableColumnFilter: false,
-      cell: (props) => <>{props.getValue() / 1000000}</>,
-      accessorKey: 'drained',
     },
     {
-      header: 'Tx',
-      accessorKey: 'txn_hash',
+      header: (
+        <HeaderCell>
+          #Token 
+        </HeaderCell>
+      ),
+      accessorKey: 'amount',
+      cell: (props) => <>{props.getValue()}</>,
+      enableSorting: true,
       enableColumnFilter: false,
+    },
+    {
+      header: (
+        <HeaderCell>
+          Tx
+        </HeaderCell>
+      ),
+      accessorKey: 'txn_hash',
       cell: (props) => <ExplorerReference ch={props.cell.row.original.chain} tx={props.getValue()} />,
       enableSorting: false,
+      enableColumnFilter: false,
     },
   ];
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -229,7 +203,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
                     desc: <></>,
                   }[header.column.getIsSorted() as string] ?? null}
                   {header.column.getCanFilter() ? (
-                    <>{backerFilter && <FilterInput<TransactionTableProps> column={header.column} />}</>
+                    <>{backerFilter && <FilterInput<RewardTableProps> column={header.column} />}</>
                   ) : null}
                 </Header>
               ))}
@@ -251,4 +225,4 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   );
 };
 
-export default TransactionTable;
+export default RewardAllTable;

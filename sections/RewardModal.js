@@ -47,7 +47,8 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
     const [display, setDisplay] = useState(showMe);
     const [expand, setExpand] = useState(false);
     const theme = useTheme();
-    // Upravit UI - Ikonky
+    // TBD Notifikace - zamyslet se nad custom message -> Nebo švihnout něco default 
+    // Zamyslet se, jestli má smysl při projektu, nebo až pak po ukončení
 
     const updateRewardState = async(rewItemId, status) => {
         const updatedBackers = backers;
@@ -81,14 +82,14 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
                 <BetweenRow>
                   {!expand ? <><Address address={backer.address}/>
                   {owner && <RowCenter>
-                        <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<HandshakeIcon width={20} height={20} color={theme.colors.icon}/>}/>
-                        <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<BackArrow width={20} height={15} color={theme.colors.icon}/>} />
+                       {backer.state === 1 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<HandshakeIcon width={20} height={20} color={theme.colors.icon}/>}/>}
+                       {backer.state === 2 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<BackArrow width={20} height={15} color={theme.colors.icon}/>} />}
                         <CircleButton onClick={()=>{handleRewardNotifications()}} icon={<RemindIcon width={20} height={15} color={theme.colors.icon}/>} />
                    </RowCenter>}
                   </> :  <><Index>{index+1}</Index><RewardDesc>{backer.address}</RewardDesc>
                   {owner &&   <>
-                        <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<>Resolve<HandshakeIcon width={20} height={20} color={theme.colors.icon}/></>}/>
-                        <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<>Unresolve<BackArrow width={20} height={15} color={theme.colors.icon}/></>} />
+                       {backer.state === 1 && <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<>Resolve<HandshakeIcon width={20} height={20} color={theme.colors.icon}/></>}/>}
+                      {backer.state === 2 &&   <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<>Unresolve<BackArrow width={20} height={15} color={theme.colors.icon}/></>} />}
                         <CircleButton onClick={()=>{handleRewardNotifications()}} icon={<>Reminder<RemindIcon width={20} height={15} color={theme.colors.icon}/></>}/>
                        </>}
                   </>
