@@ -45,9 +45,8 @@ const PAGE_SIZE = 5;
 
 export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
   const columnFilterValue = column.getFilterValue() as string | number;
-
   const isSelectInput = column.columnDef.meta?.filter === 'select';
-
+  // TBD tooltips
   const uniqueValues = useMemo(() => {
     let uniqueValues = Array.from(column.getFacetedUniqueValues().keys());
 
@@ -76,6 +75,17 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
   const columns: ColumnDef<RewardTableProps, string>[] = [
     {
       header: (
+        <HeaderCell>
+          Project 
+        </HeaderCell>
+      ),
+      accessorKey: 'fund_id',
+      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
+      enableSorting: true,
+      enableColumnFilter: false,
+    },
+    {
+      header: (
         <RowCenter
           onClick={() => {
             setBackerFilter(!backerFilter);
@@ -94,17 +104,6 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         </AddCol>
       ),
       enableSorting: false,
-    },
-    {
-      header: (
-        <HeaderCell>
-          Project 
-        </HeaderCell>
-      ),
-      accessorKey: 'fund_id',
-      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
-      enableSorting: true,
-      enableColumnFilter: false,
     },
     {
       header: (

@@ -14,7 +14,8 @@ Working repository for https://github.com/Eyeseek-org/funding, needed to fall ba
     ·
     <a href="https://github.com/helloitsm3/tiktok-android/issues">Request Feature</a>
     ·
-    <a href="https://www.fund.eyeseek.org">Project Website</a>
+    <a href="https://www.fund.eyeseek.org">Project Website (Still not live)</a>
+    <a href="https://www.test.eyeseek.org">Testnet Website</a>
     </div>
 </div>
 

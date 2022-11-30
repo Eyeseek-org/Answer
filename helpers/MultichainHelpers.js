@@ -25,7 +25,6 @@ export const ExplorerReference = ({ch, tx}) => {
 }
 
 export const ChainIcon = (chain) => {
- // TBD proč Optimism ikonka nefunguje
     if (chain === 80001) {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />
     } else if (chain === 97) {
@@ -40,6 +39,31 @@ export const ChainIcon = (chain) => {
     else {
         return <></>;
     }
+}
+
+export const ChainSmallIconComponent = ({ch}) => {
+  const [chainIcon, setChainIcon] = useState(<Image src={polygon} alt={'matic'} width={30} height={30} />);
+  useEffect(() => {
+    setChainIcon(ChainSmallIcon(ch))
+  }, []);
+  return <>{chainIcon}</>
+}
+
+export const ChainSmallIcon = (chain) => {
+  if (chain === 80001) {
+      return <Image src={polygon} alt={'matic'} width={15} height={15} />
+  } else if (chain === 97) {
+      return <Image src={binance} alt={'bnb'} width={15} height={15} />
+  } else if (chain === 4002) {
+      return <Image src={fantom} alt={'ftm'} width={15} height={15} />
+  } else if (chain === 420) {
+    return <Image src={optimism} alt={'optimism'} width={15} height={15} />
+  } else if (chain === undefined){
+    return <></>
+  }
+  else {
+      return <></>;
+  }
 }
 
 export const CurrAddress = (curr, chain) => {
