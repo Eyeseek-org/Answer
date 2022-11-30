@@ -1,7 +1,9 @@
-import styled from 'styled-components'
-import {useState} from 'react'
-import { InfoIcon } from '../icons/Common'
-import Tooltip from "../../components/Tooltip";
+import styled, {useTheme} from 'styled-components';
+import { useState } from 'react';
+import { InfoIcon } from '../icons/Common';
+import Tooltip from '../../components/Tooltip';
+
+
 
 const InputWrapper = styled.div`
   position: relative;
@@ -9,7 +11,7 @@ const InputWrapper = styled.div`
   align-items: center;
   padding: 2%;
   color: white;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   @media (max-width: 500px) {
     flex-direction: column;
   }
@@ -30,7 +32,7 @@ const InputAmount = styled.div`
 `;
 
 const Input = styled.input`
-  background: rgba(107, 255, 255, 0.05);
+  background: ${(props) => props.theme.colors.input};
   border: 1px solid #ffffff;
   border-radius: 10px;
   padding: 1rem;
@@ -66,25 +68,51 @@ const DonationRow = styled.div`
   @media (min-width: 1580px) {
     font-size: 1.3em;
   }
-`
+`;
 
 const InfoBox = styled.div`
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
-`
+`;
 
-const InputRow = ({ id, name, min, placeholder,onChange, onBlur,tooltip,currency }) => {
-    const [isTooltip, setIsTooltip] = useState()
+const InputRow = ({ id, name, min, placeholder, onChange, onBlur, tooltip, currency }) => {
+  const [isTooltip, setIsTooltip] = useState();
+  const theme = useTheme();
 
-    return    <InputWrapper>
-    {isTooltip && <Tooltip text={tooltip}/>}
-    <DonationRow> <div>{name}</div> <InfoBox onMouseEnter={() => { setIsTooltip(true) }} onMouseLeave={() => { setIsTooltip(false) }}> <InfoIcon width={15} /></InfoBox></DonationRow>
-    <InputInnerWrapper>
-        <Input id={id} name={name} min={min} type="text" placeholder={placeholder} onChange={onChange} onBlur={onBlur} inputMode="numeric"  />
+  return (
+    <InputWrapper>
+      {isTooltip && <Tooltip text={tooltip} margin={'-70px'}/>}
+      <DonationRow>
+        {' '}
+        <div>{name}</div>{' '}
+        <InfoBox
+          onMouseEnter={() => {
+            setIsTooltip(true);
+          }}
+          onMouseLeave={() => {
+            setIsTooltip(false);
+          }}
+        >
+          {' '}
+          <InfoIcon width={15} color={theme.colors.icon} />
+        </InfoBox>
+      </DonationRow>
+      <InputInnerWrapper>
+        <Input
+          id={id}
+          name={name}
+          min={min}
+          type="text"
+          placeholder={placeholder}
+          onChange={onChange}
+          onBlur={onBlur}
+          inputMode="numeric"
+        />
         <InputAmount>{currency}</InputAmount>
-    </InputInnerWrapper>
-</InputWrapper>
-}
+      </InputInnerWrapper>
+    </InputWrapper>
+  );
+};
 
-export default InputRow
+export default InputRow;

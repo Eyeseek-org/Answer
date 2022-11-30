@@ -1,44 +1,34 @@
-import styled from "styled-components"; 
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    text-align: left;
-    border-radius: 15px;
-    padding: 4%;
-    background: rgba(0, 0, 0, 0.4);
-`
-
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-bottom: 1%;
-`
-
-const Item = styled.div`
-    width: 50%;
-    font-size: 1em;
-    color: white;
-    font-family: 'Gemunu Libre';
-`
-
-const Value = styled.div`
-    font-style: italic;
-    font-weight: 500;
-    color: #FFFFFF;
-    font-family: 'Gemunu Libre';
-`
+import Tooltip from '../Tooltip';
+import { RewardTitle } from '../typography/Titles';
+import {useState} from 'react'
+import { InfoIcon } from '../icons/Common';
+import { Col } from '../format/Row';
+import {useTheme} from 'styled-components';
 
 
-const CalcOutcome = ({conn, multi}) => {
+const CalcOutcome = ({ conn, multi }) => {
+  const [microTooltip, setMicroTooltip] = useState(false);
+  const [impactTooltip, setImpactTooltip] = useState(false);
+  const theme = useTheme()
 
+  return (
+    <Col>
+      {conn ?
+        <RewardTitle onMouseEnter={()=>{setMicroTooltip(true)}} onMouseLeave={()=>{setMicroTooltip(false)}}>
+          {microTooltip && <Tooltip text={'Number of involved microfunds from other users'} margin={'-70px'}/>}
+          {conn} X 
+          <InfoIcon width={15} color={theme.colors.icon}/>
+        </RewardTitle>
+       : null}
+      {multi ? 
+        <RewardTitle onMouseEnter={()=>{setImpactTooltip(true)}} onMouseLeave={()=>{setImpactTooltip(false)}}>
+        {impactTooltip && <Tooltip text={'Total impact of this donation'} margin={'-50px'}/>}
+          ${multi}
+          <InfoIcon width={15} color={theme.colors.icon}/>
+        </RewardTitle>
+      : null}
+    </Col>
+  );
+};
 
-    return <Container>
-        <Row><Item>Microfund multiplier</Item><Value>{conn} X</Value></Row>
-        <Row><Item>Fund receives (in total)</Item><Value>{multi} USDC</Value></Row>
-    </Container>
-}
-
-export default CalcOutcome
+export default CalcOutcome;

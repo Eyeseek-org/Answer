@@ -1,47 +1,51 @@
-import {useState, useEffect} from 'react'
-import {useContractRead, useNetwork} from 'wagmi'
-import styled from 'styled-components'
-import token from '../../abi/token.json'
-import Amount from "./Amount";
-import { GetTokenAddress, GetFundingAddress } from './GetContractAddress';
-import { ethers } from 'ethers';
+import { useState, useEffect } from 'react';
+import { useContractRead, useNetwork } from 'wagmi';
+import token from '../../abi/token.json';
+import Amount from './Amount';
+import { GetFundingAddress } from '../../helpers/GetContractAddress';
+import Tooltip from '../Tooltip';
+import { InfoIcon } from '../icons/Common';
+import {useTheme} from 'styled-components';
 
-const Container = styled.div`
-    display: flex;
-    font-size: 0.9em;
-    font-weight: 400;
-    font-family: 'Gemunu Libre';
-`
+const ApprovedComponent = ({ address, currencyAddress }) => {
+  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const { chain } = useNetwork();
+  const theme = useTheme()
 
-const ApprovedComponent = ({address}) => {
-    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR)
-    const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_TOKEN)
-    const {chain} = useNetwork()
+  const dec = 6
 
-    useEffect(() => {
-        setAdd(GetFundingAddress(chain))
-        setTokenAdd(GetTokenAddress(chain))
-    },[])
+  useEffect(() => {
+    setAdd(GetFundingAddress(chain));
+    console.log(add)
+  }, []);
 
-    var fullValue
+  var fullValue;
 
-    const {data} = useContractRead({
-        address: tokenAdd,
-        abi: token.abi,
-        chainId: chain.id,
-        functionName: 'allowance',
-        args: [address, add],
-        watch: true,
-      })
+  const { data } = useContractRead({
+    address: currencyAddress,
+    abi: token.abi,
+    chainId: chain.id,
+    functionName: 'allowance',
+    args: [address, add],
+    watch: true,
+  });
 
-      if (data){
-        fullValue = ethers.utils.formatEther(data);
-      }
+  if (data && dec === 6) {
+    fullValue = data / 1000000;
+  }
 
-        
-    return <Container>
-        {data && <>Approved: <Amount value={data} /></>}
-    </Container>
-}
+  return (
+    <>
+      {showTooltip && <Tooltip text='Funded amount must be approved before spending'/>}
+      {data && (
+        <div onMouseEnter={()=>{setShowTooltip(true)}} onMouseLeave={()=>{setShowTooltip(false)}}>
+          <Amount value={fullValue} />
+          <InfoIcon width={15} color={theme.colors.icon}/>
+        </div>
+      )}
+    </>
+  );
+};
 
-export default ApprovedComponent
+export default ApprovedComponent;

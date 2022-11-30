@@ -1,158 +1,170 @@
-import styled from 'styled-components'
-import { usePrepareContractWrite, useContractWrite, useAccount, useContractEvent, useNetwork, useSwitchNetwork, useContractRead } from "wagmi";
-import {useState, useEffect} from 'react'
+import styled from 'styled-components';
+import { useContractWrite, useAccount, useContractEvent, useNetwork, useContractRead} from 'wagmi';
+import { useState, useEffect } from 'react';
+import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';
-import BalanceComponent from '../../components/functional/BalanceComponent'
-import ApprovedComponent from '../../components/functional/ApprovedComponent'
-import Button from "../../components/buttons/Button";
-import ApproveButton from "../../components/buttons/ApproveButton";
-import { SuccessIcon } from "../../components/icons/Common";
-import donation from "../../abi/donation.json";
-import token from "../../abi/token.json";
+import BalanceComponent from '../../components/functional/BalanceComponent';
+import ApprovedComponent from '../../components/functional/ApprovedComponent';
+import donation from '../../abi/donation.json';
+import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectTokenAddress } from '../../components/functional/GetContractAddress';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
+import { Row, RowCenter } from '../../components/format/Row';
+import ApproveUniversal from '../../components/buttons/ApproveUniversal';
+import ErrText from '../../components/typography/ErrText';
+import ButtonAlt from '../../components/buttons/ButtonAlt';
+import { DonateErrIcon, DonateFormIcon } from '../../components/icons/Project';
+import { MainContainer } from '../../components/format/Box';
+import Tooltip from '../../components/Tooltip';
+import LogResult from '../LogResult'
 
-const DonateButtonWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 3%;
-  gap: 1rem;
-`;
-
-const Err = styled.div`
-    position: absolute;
-    color: red;
-    font-family: 'Neucha';
-    letter-spacing: 0.5px;
-    bottom: -25px;
-    font-size: 0.9em;
-`
 
 const Metrics = styled.div`
-    @media (max-width: 768px) {
-        display: none;
+  font-family: 'Gemunu Libre';
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => {
+  const { address } = useAccount();
+  const [apiError, setApiError] = useState(false)
+  const [success, setSuccess] = useState(false);
+  const { chain } = useNetwork();
+  // @ts-ignore
+  const { appState } = useApp();
+  const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId, rewDonors } = appState;
+  const sumWei  = (parseInt(rewMAmount) + parseInt(rewDAmount))
+  const sum = (parseInt(rewMAmount) + parseInt(rewDAmount)) * 1000000;
+  const router = useRouter();
+  const { objectId } = router.query;
+  const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [ready,setReady] = useState(false)
+  const [donateTooltip, setDonateTooltip] = useState(false);
+
+  useEffect(() => {
+    setSpender(GetProjectFundingAddress(home));
+  }, []);
+
+  var all = 0;
+
+  const allowance = useContractRead({
+    address: currencyAddress,
+    abi: token.abi,
+    functionName: 'allowance',
+    chainId: home,
+    args: [address, add],
+    watch: true,
+  });
+
+  if (allowance.data) {
+    all = Number(allowance.data.toString()) / 1000000;
+  }
+
+  const useEv = async() => {
+    await setSuccess(true);
+    await updateBookmark(bookmarks);
+    if (rewEligible > 0){
+      await updateReward(rewDonors);
     }
-`
+  };
 
+  useContractEvent({
+    address: add,
+    abi: donation.abi,
+    chainId: home,
+    eventName: 'Donated',
+    listener: (event) => useEv(event),
+    once: true,
+  });
 
-const DonateWrapper = ({amountM, amountD, pid, bookmarks, currencyAddress,curr, add, home, rid}) => {
-    const { address } = useAccount();
-    const [explorer, setExplorer] = useState('https://mumbai.polygonscan.com/tx/')
-    const [success, setSuccess] = useState(false)
-    const {chain} = useNetwork()
-    const { switchNetwork } = useSwitchNetwork()
+  useContractEvent({
+    address: add,
+    abi: donation.abi,
+    chainId: home,
+    eventName: 'MicroCreated',
+    listener: (event) => useEv(event),
+    once: true,
+  });
 
-    const router = useRouter()
-    const { objectId } = router.query
+  const sixDonate = rewDAmount * 1000000; 
+  const sixMicro = rewMAmount * 1000000; 
+ 
+  const {write, data, error} = useContractWrite({
+    mode: 'recklesslyUnprepared',
+    address: add,
+    abi: donation.abi,
+    chainId: home,
+    functionName: 'contribute',
+    args: [sixMicro, sixDonate, pid, curr, rewId],
+  })
 
-    const [tokenAdd, setTokenAdd] = useState(process.env.NEXT_PUBLIC_AD_TOKEN)
+  const handleSubmit = async () => {
+    await write?.();
+    // Think about new event in contract - Something started
+    await  setReady(true)
+  };
 
-    useEffect(() => {
-        setTokenAdd(GetProjectTokenAddress(home))
-    },[])
-
-    var all = 0;
-
-    const allowance = useContractRead({
-        address: tokenAdd,
-        abi: token.abi,
-        functionName: 'allowance',
-        chainId: home,
-        args: [address, add],
-        watch: true,
-      })
-
-      if (allowance.data){
-        all = Number(allowance.data.toString())
-      }
-    
-
-    const useEv = (event) => {
-        setSuccess(true);
-        updateBookmark(bookmarks)
+  const updateBookmark = async (bookmarks) => {
+    const newBookmarks = [...bookmarks, address];
+    try {
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { bookmarks: newBookmarks }, moralisApiConfig);
+      setApiError(false)
+    } catch (er) {
+      setApiError(true)
     }
-
-    useContractEvent({
-        address: add,
-        abi: donation.abi,
-        chainId: home,
-        eventName: 'Donated',
-        listener: (event) => useEv(event),
-        once: true
-    })
-
-    useContractEvent({
-        address: add,
-        abi: donation.abi,
-        chainId: home,
-        eventName: 'MicroCreated',
-        listener: (event) => useEv(event),
-        once: true
-    })
+  };
 
 
-
-
-    const { config, error } = usePrepareContractWrite({
-        address: add,
-        abi: donation.abi,
-        chainId: home,
-        functionName: 'contribute',
-        args: [amountM, amountD, pid, curr, rid],
-    });
-
-    const { write, data } = useContractWrite(config);
-
-
-    const handleSubmit = async () => {
-        await write?.()
-        if (home === 80001) {
-            setExplorer('https://mumbai.polygonscan.com/tx/')
-        } else if (home === 97) {
-            setExplorer('https://bscscan.com/tx/')
-        } else if (home === 4002){
-            setExplorer('https://testnet.ftmscan.com/tx')
-        }
+  const updateReward = async (donors) => {
+    const newDonors = [...donors, {address: address, status: 0, id: donors.length}];
+    try{
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward/${rewObjectId}`, { eligibleActual: rewEligible - 1, donors: newDonors}, moralisApiConfig);
+      setApiError(false)
+    } catch (er) {
+      setApiError(true)
     }
-    const sum = (parseInt(amountM) + parseInt(amountD));
+  }
 
-
-    const updateBookmark = async (bookmarks) => {
-        const newBookmarks = [...bookmarks, address];
-        try {
-          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { 'bookmarks': newBookmarks }, moralisApiConfig)
-        } catch (error) {
-          console.log(error)
-        }
-    }
-
-    return <div> 
-        {chain && home === chain.id ? 
-        <DonateButtonWrapper>
-            {success ? <SuccessIcon width={50}/> : (
-                <>
-                    {address &&
-                    <Metrics>
-                        <BalanceComponent address={address} token={currencyAddress} />
-                        <ApprovedComponent address={address} />
-                    </Metrics>}
-                    <ApproveButton sum={sum} />
-                </>
+  return <>
+    <MainContainer>
+      {chain && home === chain.id ? (
+        <RowCenter>
+          {success ? null : (
+            <>
+              {address && (
+                <Metrics>
+                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress}  /></Row>
+                  <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
+                  {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
+                </Metrics>
+              )}
+             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6} />}
+             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6}/>}
+            </>
+          )}
+          <div>
+            {!success && (
+              <>
+                {all && all < sumWei ? (
+                  <ButtonAlt text={<><DonateErrIcon width={30}/></>}  onClick={() => handleSubmit()} />
+                ) : <>
+                    {sum === 0 ? null :                 
+                  <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
+                    {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
+                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>} /> }
+                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>}  /> }
+                  </div> }
+                </> }
+              </>
             )}
-            <div>
-                {!success && (
-                    <>
-                        {all && all < sum ? <Button text='Donate' width={'200px'} onClick={() => handleSubmit()}  error /> : <Button onClick={() => handleSubmit()} text='Donate' width={'200px'} />}
-                    </>
-                )}{(!error && success) && <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer"><Button text="Transaction detail" /></a>}
-            </div>
-            {error ? <Err>Insufficient balance or allowance</Err> : null}
-        </DonateButtonWrapper> : <Button text='Wrong network' onClick={() => switchNetwork(home)} width={'200px'} /> }
-    </div>
-}
+          </div>
+        </RowCenter>
+      ) : null}   
+    </MainContainer>
+        {ready && <LogResult ev={success} error={error} apiError={apiError} success={success} type={'Donation initialized'} data={data}/>}
+  </>
+};
 
-export default DonateWrapper
+export default DonateWrapper;

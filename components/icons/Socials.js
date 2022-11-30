@@ -8,8 +8,8 @@ export const EmailIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const DiscordIcon = ({ width, height }) => {
   return (
@@ -21,8 +21,8 @@ export const DiscordIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const TwitterIcon = ({ width, height }) => {
   return (
@@ -34,8 +34,8 @@ export const TwitterIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const MediumIcon = ({ width, height }) => {
   return (
@@ -47,8 +47,8 @@ export const MediumIcon = ({ width, height }) => {
         fill="#B0F6FF"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const LinkedIcon = ({ width, height }) => {
   return (
@@ -62,7 +62,15 @@ export const LinkedIcon = ({ width, height }) => {
         />
       </g>
       <defs>
-        <filter id="filter0_d_202_1972" x="0" y="0" width="585.917" height="591.478" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+        <filter
+          id="filter0_d_202_1972"
+          x="0"
+          y="0"
+          width="585.917"
+          height="591.478"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
           <feOffset dy="4" />
@@ -74,5 +82,12 @@ export const LinkedIcon = ({ width, height }) => {
         </filter>
       </defs>
     </svg>
-  )
+  );
+};
+
+export const YouTubeIcon = ({width, height}) => {
+  return <svg width={width} height={height} viewBox="0 0 512 359" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M162.303 0.913252C114.103 2.51325 77.8032 5.31325 60.8032 8.81325C36.9032 13.7133 17.7032 30.5133 10.7032 52.8133C6.3032 67.0133 2.7032 95.2133 0.703198 131.713C-0.596802 155.913 0.00319824 224.913 1.7032 244.813C4.5032 277.013 7.8032 297.313 12.1032 308.813C18.6032 326.513 35.3032 341.913 53.6032 347.313C100.803 361.313 384.503 362.613 451.803 349.213C472.103 345.113 489.603 331.413 498.103 312.813C503.103 301.713 506.903 280.013 510.003 243.313C511.703 223.113 511.803 132.613 510.003 112.813C507.103 79.2133 503.203 56.6133 498.303 46.1133C491.103 30.4133 478.203 18.2133 462.203 12.2133C446.903 6.51325 411.203 3.11325 342.803 0.813252C309.003 -0.286749 196.503 -0.286749 162.303 0.913252ZM298.003 155.513C319.903 168.113 337.803 178.613 337.803 178.913C337.803 179.413 216.203 249.913 207.103 254.713L204.803 255.913V178.913V101.913L231.603 117.313C246.303 125.813 276.203 143.013 298.003 155.513Z" fill="#EC1515"/>
+  <path d="M204.803 178.713C204.803 220.613 205.103 254.813 205.403 254.813C205.703 254.813 235.403 237.813 271.403 217.113C322.203 187.813 336.603 179.113 335.603 178.313C334.603 177.413 253.103 130.313 205.603 103.113C205.103 102.913 204.803 136.913 204.803 178.713Z" fill="#ECECEC"/>
+  </svg>
 }

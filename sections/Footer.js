@@ -1,8 +1,8 @@
-import styled from "styled-components"
-import { BookIcon } from "../components/icons/Common"
-import { DiscordIcon, EmailIcon, MediumIcon, TwitterIcon } from "../components/icons/Socials"
+import styled from 'styled-components';
+import { DiscordIcon, EmailIcon, MediumIcon } from '../components/icons/Socials';
 
 const Container = styled.div`
+  background: ${(props) => props.theme.colors.background};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -11,12 +11,12 @@ const Container = styled.div`
   padding: 5%;
   margin-bottom: 2%;
   margin-top: 2%;
-`
+`;
 
 const FooterSection = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const FooterItem = styled.div`
   display: flex;
@@ -26,14 +26,14 @@ const FooterItem = styled.div`
     opacity: 0.5;
   }
   font-size: 1em;
-  font-family: "Gemunu Libre", sans-serif;
+  font-family: 'Gemunu Libre', sans-serif;
   font-style: normal;
   letter-spacing: 1px;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (max-width: 768px) {
     font-size: 0.8em;
   }
-`
+`;
 
 const HeadSection = () => {
   return (
@@ -49,7 +49,7 @@ const HeadSection = () => {
         </FooterSection>
         <FooterSection>
           <FooterItem>
-            {" "}
+            {' '}
             <a href="https://discord.gg/JnTgUEZvtR" target="_blank" rel="noopener noreferrer">
               <DiscordIcon width={30} />
               Discord
@@ -66,14 +66,14 @@ const HeadSection = () => {
         </FooterSection>
         <FooterSection>
           <FooterItem>
-            <a href='pitch.pdf' target="_blank" rel="noopener noreferrer">
+            <a href="pitch.pdf" target="_blank" rel="noopener noreferrer">
               Pitch deck
-              </a>  
+            </a>
           </FooterItem>
         </FooterSection>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default HeadSection
+export default HeadSection;

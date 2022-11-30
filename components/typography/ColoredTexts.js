@@ -1,21 +1,25 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export const P = styled.a`
-    color: #8247e5;
-`
+export const P = styled.span`
+  color: #8247e5;
+`;
 
-export const B = styled.a`
-    color: #FFC107;
-`
+export const B = styled.span`
+  color: ${(props) => props.theme.colors.binance};
+`;
 
-export const F = styled.a`
-    color: #19e1ff;
-`
+export const F = styled.span`
+  color: #19e1ff;
+`;
 
-export const G = styled.a`
-    color: #00FC83;
-`
+export const G = styled.span`
+  color: ${(props) => props.theme.colors.darkGreen};
+`;
 
-export const R = styled.a`
-    color: #FF0000;
+export const R = styled.span`
+  color: #ff0000;
+`;
+
+export const O = styled.span`
+  color: #EC1515;
 `

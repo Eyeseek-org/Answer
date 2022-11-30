@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { useAccount, useProvider, useSigner } from 'wagmi'
+import { useNetwork, useAccount, useProvider, useSigner, useSwitchNetwork } from 'wagmi'
 import { abi } from '../../abi/supertoken.js'
+import { useQuery } from "@tanstack/react-query";
+import { UniService } from "../../services/DapAPIService";
 import styled from 'styled-components'
 import axios from 'axios'
 import { moralisApiConfig } from '../../data/moralisApiConfig'
-
 import Address from "../../components/functional/Address"
 import ButtonAlt from "../../components/buttons/ButtonAlt";
 import Subtitle from "../../components/typography/Subtitle";
+import {Reference, RewardDesc} from '../../components/typography/Descriptions'
 import ApproveUniversal from "../../components/buttons/ApproveUniversal";
 import StreamCounter from "../../components/functional/StreamCounter";
+import StreamBalances from './StreamBalances';
+import { BetweenRow } from "../../components/format/Row.js";
+import ButtonErr from "../../components/buttons/ButtonErr.js";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -20,13 +25,13 @@ const Container = styled.div`
 `
 // TBD component to display current stream - Destination, Flow, Amount sent
 const StreamComponent = styled.div`
-  background: rgba(0, 0, 0, 0.25);
+  background: ${(props) => props.theme.colors.transparent};
   display: flex;
   flex-direction: column;
   justify-content: space-between ;
   width: 100%;
-
-  padding-left: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
   min-height: 280px;
 `
 
@@ -42,7 +47,7 @@ const ValueRow = styled.div`
   display: flex; 
   flex-direction: row;
   justify-content: space-between;
-  background: rgba(107, 255, 255, 0.05);
+  background: ${(props) => props.theme.colors.invisible};
   border-radius: 15px;
   font-family: 'Roboto';
   font-style: normal;
@@ -53,15 +58,7 @@ const ValueRow = styled.div`
   padding: 1.4%;
   padding-left: 10px;
   padding-right: 10px;
-  color: #B0F6FF;
-`
-
-const ButtonBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 4%;
-  width: 100%;
+  color: ${(props) => props.theme.colors.primary};
 `
 // TBD component to create a stream 
 // With new Superfluid stream, it's needed to call axios as well
@@ -71,8 +68,7 @@ const Input = styled.input`
   border: none;
   box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.2);
   width: 150px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
 `
 
 const ActiveValue = styled.div`
@@ -81,6 +77,7 @@ const ActiveValue = styled.div`
 `
 
 const RowItem = styled.div`
+  font-family: 'Gemunu Libre';
   width: 33%;
 `
 
@@ -104,40 +101,61 @@ const A = styled.a`
   }
 `
 
-const SuperRef = styled.div`
-  color: #B0F6FF;
-  font-family: 'Neucha';
-  text-decoration: underline;
-  opacity: 0.7;
-  transition: 0.2s;
-  &:hover{
-    opacity: 1;
-  }
-`
 
-
-const Stream = ({ objectId, recipient }) => {
+const Stream = ({ objectId, recipient, chainId }) => {
   const { address } = useAccount();
   const [apiError, setApiError] = useState(false)
   const [flowRate, setFlowRate] = useState(0);
   const provider = useProvider()
   const { data: signer } = useSigner()
   const [streamFound, setStreamFound] = useState(false)
-  const [streamData, setStreamData] = useState()
   const [deposit, setDeposit] = useState(0)
-  const [owedDeposit, setOwedDeposit] = useState(0)
   const [superfluidError, setSuperfluidError] = useState(false)
   const [newStream, setNewStream] = useState(false)
-  const [displayRate, setDisplayRate] = useState(50)
+  const [myStream, setMyStream] = useState(false)
+  const [displayRate, setDisplayRate] = useState(0)
+  const [superTokenAddress, setSuperTokenAddress] = useState('0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f')
+  const {chain} = useNetwork()
+  const { switchNetwork } = useSwitchNetwork();
+
+  /// CFAv1Forwarder
+  const superContract = "0xcfA132E353cB4E398080B9700609bb008eceB125" // Same address fro both Polygon and Optimism
+
+  const query = `/classes/Stream?where={"projectId":"${objectId}", "isActive": true }`
+  const { data: streamData } = useQuery(['streams'], () => UniService.getDataAll(query),{
+    onError: () => {
+      setApiError(true)
+    },
+    // TBD on render does not work well
+    onSuccess: () => {
+      setApiError(false)
+      if (streamData && streamData.length > 0) {
+        setStreamFound(true)
+        for (let i = 0; i < streamData.length; i++) {
+          if (streamData[i].flowRate) {
+            /// Error here - For each array item add number to the displayRate total
+            setDisplayRate(parseInt(displayRate) + parseInt(streamData[i].flowRate))
+          }
+        }
+      }
+    }
+  });
+
+  useEffect(() => {
+    getFlowData()
+  }, [])
+
+  // Maybe rather call on backend - Aggregate automations 
 
   const getFlowData = async () => {
     // Key service to retrieve current deposit 
     const sf = await Framework.create({
       provider: provider,
-      chainId: 80001
+      chainId: chainId
     })
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
+    await setSuperTokenAddress(DAIx)
     /// TBD need to repair to get actual balance 
     /// TBD find simple way how to find address
     /// TBD pass correct values to the form and send to Superfluid & Moralis 
@@ -145,15 +163,12 @@ const Stream = ({ objectId, recipient }) => {
       const flow = await sf.cfaV1.getFlow({
         superToken: DAIx,
         sender: address,
-        receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        receiver: recipient,
         providerOrSigner: provider
       })
-      console.log(flow)
       if (flow.flowRate !== '0') {
+        setMyStream(true)
         setDeposit(flow.deposit)
-        setOwedDeposit(flow.owedDeposit)
-        console.log(deposit)
-        console.log(owedDeposit)
         setFlowRate(flow.flowRate)
       }
     } catch (err) {
@@ -162,16 +177,15 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-
-
   /// TBD - Update Moralis DB together with the streams on chain
   const addStreamState = async (oid) => {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
-        'project': oid,
+        'projectId': oid,
         'flowRate': flowRate,
-        'owner': "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        'owner': recipient,
         'isActive': true,
+        'chainId': chainId,
         'addressBacker': address,
       }, moralisApiConfig)
       setApiError(false)
@@ -181,31 +195,8 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-  const getStreamState = async (oid) => {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream?where={"projectId":"${oid}", "isActive": true }`, moralisApiConfig)
-      if (res.data.results.length > 0) {
-        setStreamFound(true)
-        setStreamData(res.data.results)
-        for (let i = 0; i < res.data.results.length; i++) {
-          if (res.data.results[i].flowRate) {
-            /// Error here - For each array item add number to the displayRate total
-            setDisplayRate(displayRate + res.data.results[i].flowRate)
-            console.log(displayRate)
-          }
-        }
-        // Set display rate, aggregation of all streams
-      } else {
-        setStreamFound(false)
-      }
-      setApiError(false)
-    } catch (error) {
-      console.log(error)
-      setApiError(true)
-    }
-  }
-
   const deleteStreamState = async (oid) => {
+    // Only owner of the stream should be able to delete it
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Stream`, {
         'projectId': { oid },
@@ -218,29 +209,23 @@ const Stream = ({ objectId, recipient }) => {
     }
   }
 
-  useEffect(() => {
-    getStreamState(objectId);
-  }, [])
-
   async function startStream() {
     const sf = await Framework.create({
       provider: provider,
-      chainId: 80001
+      chainId: chainId
     })
-
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
     const amount = flowRate.toString();
     try {
       const createFlowOperation = sf.cfaV1.createFlow({
         sender: address,
-        receiver: "0xcfA132E353cB4E398080B9700609bb008eceB125",
+        receiver: recipient,
         flowRate: amount,
         superToken: DAIx
       });
 
-      const result = await createFlowOperation.exec(signer);
-      console.log("Success" + result);
+      await createFlowOperation.exec(signer);
       await addStreamState(objectId)
       setApiError(false)
       await setNewStream(false)
@@ -251,14 +236,13 @@ const Stream = ({ objectId, recipient }) => {
       );
       console.error(error);
       setApiError(true)
-      console.log(address, recipient, amount, DAIx)
     }
   }
 
-  async function deleteFlow() {
+  async function stopStream() {
     const sf = await Framework.create({
       provider: provider,
-      chainId: 80001
+      chainId: chainId
     })
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
@@ -268,11 +252,12 @@ const Stream = ({ objectId, recipient }) => {
         receiver: recipient,
         superToken: DAIx
       });
-
       console.log("Deleting your stream...");
-
       await deleteFlowOperation.exec(signer);
       await deleteStreamState(objectId)
+      setStreamFound(false)
+      setMyStream(false)
+      setFlowRate(0)
 
     } catch (error) {
       console.error(error);
@@ -284,14 +269,13 @@ const Stream = ({ objectId, recipient }) => {
       <StreamComponent>
         {newStream ? <>
           <Title><Subtitle text={'New stream'} /></Title>
-          <ErrorBox>
-       Highly experimental feature - accepts only
-  <A href='https://docs.superfluid.finance/superfluid/developers/super-tokens/super-token-faucet' rel="noopener noreferrer" target="_blank">Super token</A> 
-        </ErrorBox>
+          <RewardDesc>
+            Experimental feature - accepts only wrapped DAIx (fDAIx) as a deposit.
+        </RewardDesc>
           <ValueRow>
             <RowItem>Recipient</RowItem>
             <RowItem>
-              <ActiveValue><Address address={'0xcfA132E353cB4E398080B9700609bb008eceB125'} /></ActiveValue>
+              <ActiveValue><Address address={recipient} /></ActiveValue>
             </RowItem>
             <RowRightItem>Address</RowRightItem>
           </ValueRow>
@@ -304,10 +288,11 @@ const Stream = ({ objectId, recipient }) => {
             <RowRightItem>dai/mo</RowRightItem>
           </ValueRow>
 
-          <ButtonBox>
-            <ApproveUniversal tokenContract={'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'} spender={'0xcfA132E353cB4E398080B9700609bb008eceB125'} amount={flowRate} />
-            <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} /></ButtonBox>
-          {apiError && <ErrorBox>Insufficient funds, no approval, or owner = backer</ErrorBox>}
+         <BetweenRow>
+            <ApproveUniversal tokenContract={superTokenAddress} spender={superContract} amount={flowRate} />
+            {address && <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} />}
+            </BetweenRow>
+          {apiError && <ErrorBox>Insufficient funds or allowance</ErrorBox>}
 
         </> : <>
           {streamFound ? <>
@@ -323,27 +308,38 @@ const Stream = ({ objectId, recipient }) => {
             <ValueRow>
               <RowItem>Deposited</RowItem>
               <RowItem>
-                <ActiveValue><StreamCounter startValue={deposit} endValue={displayRate} /></ActiveValue>
+                <ActiveValue><StreamCounter startValue={0} endValue={displayRate} /></ActiveValue>
               </RowItem>
               <RowRightItem>Value</RowRightItem>
             </ValueRow>
-            <ButtonBox>
-             {address && recipient !== address ? <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  /> : <></>}
-            </ButtonBox>
+            <BetweenRow>
+          {myStream ?    <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  /> : <>
+            {address && recipient !== address && <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />} 
+            {address && recipient === address && <RewardDesc>Cannot setup stream to yourself</RewardDesc>}
+            {chain && chain.id !== chainId && <ButtonErr text='Wrong network' onClick={() => switchNetwork(chain)} width={'250px'}/>}
+          </>}
+            </BetweenRow>
           </> : <> 
           <Title><Subtitle text={'No active stream found'} /></Title>
-              <ButtonBox>
-                  <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />
-              </ButtonBox>
+              <BetweenRow>
+               {address && recipient !== address ? <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  /> : <></>}
+              </BetweenRow>
               </>
           }
         </>}
-        <ButtonBox>
+        <BetweenRow>
                <a href='https://app.superfluid.finance' rel="noopener noreferrer" target="_blank">  
-                <SuperRef>Manage your streams in Superfluid App</SuperRef>
+                <Reference>Manage your streams in Superfluid App</Reference>
                </a>
-            </ButtonBox>
-      </StreamComponent>
+            </BetweenRow>
+        </StreamComponent>
+    {newStream &&  <StreamBalances 
+                        address={address} 
+                        provider={provider} 
+                        signer={signer} 
+                        token={superTokenAddress} 
+                        superContract={superContract} 
+                        chainId={chainId}/>}
     </Container>
   </>
 }

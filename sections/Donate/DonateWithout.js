@@ -1,22 +1,29 @@
-import { useFormik } from "formik";
-import {useEffect, useState} from 'react'
-import styled from 'styled-components'
-import { useContractRead } from "wagmi";
-import CalcOutcome from '../../components/functional/CalcOutcome'
-import { DonateSchema } from '../../util/validator'
-import WarningCard from '../../components/cards/WarningCard'
-import InputRow from '../../components/form/InputRow'
-import DonateWrapper from './DonateWrapper'
-import donation from "../../abi/donation.json";
+import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useContractRead } from 'wagmi';
+import CalcOutcome from '../../components/functional/CalcOutcome';
+import { DonateSchema } from '../../util/validator';
+import { useApp } from '../utils/appContext';
+import InputRow from '../../components/form/InputRow';
+import DonateWrapper from './DonateWrapper';
+import donation from '../../abi/donation.json';
+import { AbsoluteRight, MainContainer } from '../../components/format/Box';
+import Subtitle from '../../components/typography/Subtitle';
+import { DonateIcon } from '../../components/icons/Project';
+import { MicrofundIcon } from '../../components/icons/Landing';
+import { RowCenter } from '../../components/format/Row';
+
+// Donates directly any amount without reward
 
 const FormWrapper = styled.div`
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
-  border: 1px solid #3C3C3C;
+  background: ${(props) => props.theme.colors.gradient};
+  border: 1px solid #3c3c3c;
   border-radius: 5px;
-  padding: 10px 20px;
   padding: 2rem 5rem 1rem 5rem;
-  margin-bottom: 3%;
-  margin-top: 3%;
+  margin: 9%;
+  margin-top: 4%;
+  margin-bottom: 4%;
   @media (max-width: 769px) {
     padding: 2rem 1rem 1rem 3rem;
   }
@@ -25,98 +32,93 @@ const FormWrapper = styled.div`
   }
 `;
 
-const FormInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5%;
-  font-family: "Roboto";
-  font-size: 0.9em;
-  width: 100%;
-  @media (max-width: 500px) {
-    width: 100%;
-  }
-  @media (min-width: 1580px) {
-    font-size: 1.1em;
-  }
-`;
+const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, home, rid }) => {
+  const [multi, setMulti] = useState('');
+  const [conn, setConn] = useState('');
+  const { appState, setAppState } = useApp();
+  const { rewMAmount, rewDAmount } = appState;
 
+  const outcome = useContractRead({
+    address: add,
+    abi: donation.abi,
+    functionName: 'calcOutcome',
+    chainId: home,
+    args: [pid, rewDAmount],
+    watch: true
+  });
 
-const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, home, rid}) => {
-    const [amountM, setAmountM] = useState(0);
-    const [amountD, setAmountD] = useState(0)
+  const connections = useContractRead({
+    address: add,
+    abi: donation.abi,
+    functionName: 'calcInvolvedMicros',
+    chainId: home,
+    args: [pid, rewDAmount],
+    watch: true
+  });
 
-    const [multi, setMulti] = useState("")
-    const [conn, setConn] = useState("")
+  useEffect(() => {
+    setMulti((outcome.data ?? '').toString());
+    setConn((connections.data ?? '').toString());
+  }, [rewDAmount]);
 
-    const outcome = useContractRead({
-        address: add,
-        abi: donation.abi,
-        functionName: 'calcOutcome',
-        chainId: home,
-        args: [pid, amountD]
-    })
+  const handleChangeD = (e) => {
+    setAppState(appState => ({ ...appState, rewDAmount: e.target.value }));
+  };
 
-    const connections = useContractRead({
-        address: add,
-        abi: donation.abi,
-        functionName: 'calcInvolvedMicros',
-        chainId: home,
-        args: [pid, amountD]
-    })
+  const handleChangeM = (e) => {
+    setAppState(appState => ({ ...appState, rewMAmount: e.target.value }));
+  };
 
-    useEffect(() => {
-        setMulti((outcome.data ?? "").toString())
-        setConn((connections.data ?? "").toString())
-    }, [amountD])
+  const formik = useFormik({
+    initialValues: {
+      directDonation: rewDAmount,
+      microfund: rewMAmount,
+    },
+    validationSchema: DonateSchema,
+  });
 
-    const handleChangeD = (e) => {
-        setAmountD(e.target.value)
-    }
-
-    const handleChangeM = (e) => {
-        setAmountM(e.target.value)
-    }
-
-    const formik = useFormik({
-        initialValues: {
-            directDonation: amountD,
-            microfund: amountM,
-        },
-        validationSchema: DonateSchema,
-    });
-
-    return <> 
-    <FormWrapper>
+  return (
+    <MainContainer>
+      <Subtitle text="Choose donation type and pledge any amount" />
+      <FormWrapper>
+      <RowCenter><InputRow
+          id="directDonation"
+          name={<><DonateIcon width={50}/></>}
+          min={0}
+          placeholder="1000"
+          onChange={handleChangeD}
+          onBlur={formik.handleBlur}
+          tooltip={'Donation: Direct pledge to the project. If project is not successful, amount is returned.'}
+          currency={currency}
+        />          
+        <AbsoluteRight><CalcOutcome multi={multi} conn={conn} /></AbsoluteRight>
+      </RowCenter>
+      <RowCenter>
         <InputRow
-            id='directDonation'
-            name='Donate'
-            min={0}
-            placeholder='1000'
-            onChange={handleChangeD}
-            onBlur={formik.handleBlur}
-            tooltip={'Multiplier represents the number of deployed microfunds by other users'}
-            currency={currency}
+          id="microfund"
+          name={<><MicrofundIcon width={50}/></>}
+          min={0}
+          placeholder="1000"
+          onChange={handleChangeM}
+          onBlur={formik.handleBlur}
+          tooltip={
+            'Microfund: Anytime someone donates, the same amount is charged from all active microfunds until it is depleted. Non-depleted amount will be returned to you upon project finish.'
+          }
+          currency={currency}
         />
-        <CalcOutcome multi={multi} conn={conn} />
-        <InputRow
-            id="microfund"
-            name="Create microfund"
-            min={0}
-            placeholder="1000"
-            onChange={handleChangeM}
-            onBlur={formik.handleBlur}
-            tooltip={'Anytime someone donates, the same amount is charged from all active microfunds until it is depleted. Non-depleted amount will be returned to you upon project finish.'}
-            currency={currency}
-        />
-    </FormWrapper>
-        <WarningCard title={'Beware of scammers!'} description={'TBD'} />
-        <FormInfo>
-            <li>Funded amount must be approved before sending to the Eyeseek contract</li>
-        </FormInfo>
+        </RowCenter>
+      </FormWrapper>
+      <DonateWrapper
+        pid={pid}
+        bookmarks={bookmarks}
+        currencyAddress={currencyAddress}
+        add={add}
+        curr={curr}
+        home={home}
+        rid={rid}
+      />
+    </MainContainer>
+  );
+};
 
-        <DonateWrapper amountM={amountM} amountD={amountD} pid={pid}  bookmarks={bookmarks} currencyAddress={currencyAddress} add={add} curr={curr} home={home} rid={rid} />
-    </>
-}
-
-export default DonateWithout
+export default DonateWithout;

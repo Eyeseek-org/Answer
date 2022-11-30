@@ -1,27 +1,26 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Container = styled.div`
   position: absolute;
-  top: ${props => props.margin ? `${props.margin}` : '-30px'} ;
-  background: black;
+  top: ${(props) => (props.margin ? `${props.margin}` : '-30px')};
+  background: ${(props) => props.theme.colors.black};
   border-radius: 5px;
   padding: 5px;
-  color: white;
+  color: ${(props) => props.theme.colors.font};
   min-width: 200px;
   text-align: center;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.6px;
   font-size: 0.8em;
   font-family: 'Neucha';
-  border: 1px solid #2F2F2F;
+  border: 1px solid ${(props) => props.theme.colors.border};
   @media (min-width: 1580px) {
-    font-size: 1em;
+    font-size: 1.2em;
+    min-width: 300px;
   }
-`
+`;
 
-const Tooltip = ({text, margin}) => {
-    return <Container margin={margin}>
-        {text}
-    </Container>
-}
+const Tooltip = ({ text, margin }) => {
+  return <Container margin={margin}>{text}</Container>;
+};
 
-export default Tooltip
+export default Tooltip;

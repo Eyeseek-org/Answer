@@ -1,16 +1,22 @@
 export const testChains = {
-    polygonUsdcToken: "0x2bc37217445C34d616b2e2E2118a4Db6eFCD6ec8",
-    polygonUsdtToken: "0xa57aC6b03ed2A1A8e58c35C355b990dC72f252b9",
-    polygonUsdcFaucet: "0x035a905Aab6F1AeE17fa670EA64A88e2B73263EB",
-    polygonUsdtFaucet: "0x61BF7a1376a93df4C7F7E53C752a48dc4F5F89e4",
+  polygonUsdcToken: process.env.NEXT_PUBLIC_AD_USDC,
+  polygonUsdtToken: process.env.NEXT_PUBLIC_AD_USDT,
+  polygonUsdcFaucet: '0xb6AD0f79e22Ed4F99927CE0c4B094D9eD43d2cfe',
+  polygonUsdtFaucet: '0x8648ADd108723844a327731750d72DfbC21B7A4A',
+  
 
-    bnbUsdcToken: "0x96c185dB81d32d5e7efa65234cECa1C0040068BD",
-    bnbUsdtToken: "0xD43b86CD7ccD89cb127F028E47A1F9d51029Eba8",
-    bnbUsdcFaucet: "0x0985DdA74FbF59Cc77766758B97985874464beaB",
-    bnbUsdtFaucet: "0x57B6bfed18580EA81A07Ca265D1C5e304FA92eeA",
+  bnbUsdcToken: process.env.NEXT_PUBLIC_AD_USDC_BNB,
+  bnbUsdtToken: process.env.NEXT_PUBLIC_AD_USDT_FTM,
+  bnbUsdcFaucet: '0xb03c283301E4af82c40Cd8e3744a7876B3C8276E',
+  bnbUsdtFaucet: '0x30df859D3eb152E2ae97113b451412a2D6da003F',
 
-    fantomUsdcToken: "0x7383cC34B3eC68C327F93f9607Ea54b3D3B76dEe",
-    fantomUsdtToken: "0x49bC977a4c5428F798cc136FCB3f5C1117BE0b6f",
-    fantomUsdcFaucet: "0x958995CB71bAB652Dfde39979d08d70B79aE013e",
-    fantomUsdtFaucet: "0x0C7A2f0187D77FcFb5948dC899831EB5c50c3441",
-}
+  fantomUsdcToken:  process.env.NEXT_PUBLIC_AD_USDC_FTM,
+  fantomUsdtToken: process.env.NEXT_PUBLIC_AD_USDT_FTM,
+  fantomUsdcFaucet: '0x958995CB71bAB652Dfde39979d08d70B79aE013e',
+  fantomUsdtFaucet: '0x0C7A2f0187D77FcFb5948dC899831EB5c50c3441',
+
+  optimismUsdcToken: process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM,
+  optimismUsdtToken: process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM,
+  optimismUsdcFaucet: "0x490D5B3CDf9f76ef743ad9B69FAf25369aCdf425",
+  optimismUsdtFaucet: "0xeefcC23f432a2543DEC0C687b56dcD33Be7909aB",
+};

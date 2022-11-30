@@ -1,28 +1,29 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components';
-import {useContractEvent} from 'wagmi'
-import { TabRow, TooltipBox, IconBox } from "../start_project/SetRewards/StyleWrapper";
+import {useAccount, useContractEvent} from 'wagmi'
+import { useReward } from '../utils/rewardContext';
+import { RewardDesc, TabRow } from "../start_project/Styles";
 import donation from "../../abi/donation.json"
-import InputContainer from "../../components/form/InputContainer";
 import Tab from "../../components/form/Tab";
-import Tooltip from "../../components/Tooltip";
-import { InfoIcon } from "../../components/icons/Common";
-import { Row } from "../../components/format/Row";
-import { NextButton } from "../start_project/Category/StyleWrapper";
-import { useRouter } from 'next/router';
+import { BetweenRow } from "../../components/format/Row";
 import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
-import SectionTitle from '../../components/typography/SectionTitle';
 import ErrText from "../../components/typography/ErrText";
-import NftDisplay from "../../components/functional/NftDisplay";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
 import RewardNftSubmit from './RewardNftSubmit';
 import RewardTokenSubmit from './RewardTokenSubmit';
-import { GetProjectFundingAddress } from '../../components/functional/GetContractAddress';
-import { SumRow, SumTitle } from '../start_project/Create/StyleWrapper';
+import RewardClassicSubmit from './RewardClassicSubmit';
+import RewardFormToken from './RewardFormToken';
+import RewardFormNft from './RewardFormNft';
+import RewardFormClassic from './RewardFormClassic';
+import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
+import { SumRow, SumTitle } from '../start_project/StylesCreate';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
+import { G } from '../../components/typography/ColoredTexts';
+import Socials from '../../components/buttons/Socials';
+import TabImage from '../../components/form/TabImage';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -36,26 +37,20 @@ const Summary = styled.div`
     }
 `
 
-const RewardCreate = ({objectId, bookmarks, home, pid}) => {
-    const pType = "Standard" // Until stream is implemented
-    const [rType, setRType] = useState('Microfund')
-    const [tokenType, setTokenType] = useState('Classic')
-    const router = useRouter()
-    const [tokenTooltip, setTokenTooltip] = useState(false)
-    const [microTooltip, setMicroTooltip] = useState(false)
-    const [nftTooltip, setNftTooltip] = useState(false)
-    const [donationTooltip, setDonationTooltip] = useState(false)
-    const [success, setSuccess] = useState(false)
+const DescBox = styled.div`
+    display: flex;
+    margin-left: 10%;
+`
 
-    const [rewardTitle, setRewardTitle] = useState('')
-    const [rewardDesc, setRewardDesc] = useState('')
-    const [pledge, setPledge] = useState(0)
-    const [cap, setCap] = useState(0)
-    const [tokenName, setTokenName] = useState('')
-    const [tokenAddress, setTokenAddress] = useState('')
-    const [tokenAmount, setTokenAmount] = useState('')
-    const [nftId, setNftId] = useState(0)
-    const [nftType, setNftType] = useState(false)
+const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
+    const pType = "Standard" // Until stream is implemented
+    const [dType, setdType] = useState('Microfund')
+    const [tokenType, setTokenType] = useState('Classic')
+    const [success, setSuccess] = useState(false)
+    const {address} = useAccount()
+
+    const { rewardState, setRewardState } = useReward();
+    const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId } = rewardState;
     const [rewardId, setRewardId] = useState(0)
  
     const [apiError, setApiError] = useState(false)
@@ -65,80 +60,71 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
     useEffect (() => {
         setAdd(GetProjectFundingAddress(home))
     },[])
-    
-    const handleProjectNft = async (oid) => {
-        try {
-          await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, { 'hasNft': true }, moralisApiConfig) /// This is wrong, rewrite to array
-          setApiError(false)
-        } catch (error) {
-          setApiError(true)
-        }
-      }
 
-    const handleProjectFungible = async (oid) => {
-         try {
-           await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, { 'hasFungible': true }, moralisApiConfig) /// This is wrong, rewrite to array
-           setApiError(false)
-         } catch (error) {
-            setApiError(true)
-         }
-       }
+    useContractEvent({
+        address: add,
+        abi: donation.abi,
+        eventName: 'RewardCreated',
+        listener: (event) => listened(event),
+        once: false
+      })
 
-    const handleCreateReward = async () => {
+    const listened = async(event) => {
+        const parse = parseInt(event)
+        await setRewardId(parse + 1)
+        await handleSaveReward(objectId)
+      }    
+
+    const handleCreateReward = async (rType, n) => {
         try {
           await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward`, {
-            "title": rewardTitle,
-            "description": rewardDesc,
+            "title": title,
+            "description": desc,
             "eligibleActual": Number(cap),
             "cap": Number(cap),
             "active": true,
-            "type": rType,
+            "type": dType,
             "project": objectId,
-            "tokenName": tokenName,
+            "tokenName": n,
             "tokenAddress": tokenAddress,
             "tokenAmount": Number(tokenAmount),
             "requiredPledge": Number(pledge),
             "nftId": Number(nftId),
-            "nftType": nftType,
-            "rewardId": rewardId
+            "rType": rType,
+            "rewardId": rewardId,
+            "owner": address,
+            "donors": []
           }, moralisApiConfig)
-          setApiError(false)
+        
+          await setApiError(false)
+          setSuccess(true)
         } catch (error) {
-        setApiError(true)
+            setApiError(true)
         }
       }
     
-    const handleSubmit = async (oid) => {
-        await handleCreateReward()
+    const handleSaveReward = async () => {
         if (tokenType === 'ERC20') {
-            await handleProjectFungible(oid)
+            await handleCreateReward(1,'')
             await handleRewardNotifications('ERC20')
         } else if (tokenType === 'ERC1155') {
-            await handleProjectNft(oid)
+            await handleCreateReward(2,tokenName)
             await handleRewardNotifications('ERC1155')
         } else if (tokenType === 'Classic') {
+            await handleCreateReward(0,tokenName)
             await handleRewardNotifications('Classic')
         }
-        await setSuccess(true)
     }
-
-    // Calculate total tokens 
-    // Approval bude potřeba 
 
     const handleChangeTokenType = async(c) => {
         await setTokenType(c);
         //Clear specific form rows
         if (c === 'Classic'){
-            setNftType(false)
-            setTokenName('')
-            setTokenAddress('')
-            setTokenAmount(0)
-            setNftId(0)
+            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0 })
         } else if (c === 'ERC1155'){
-            setNftType(true)
+            console.log('NFT transmission')
         } else if (c === 'ERC20'){
-            setNftType(false)
-            setNftId(0)
+            setRewardState({ ...rewardState, nftId: 0 })
         }
     }
 
@@ -155,130 +141,52 @@ const RewardCreate = ({objectId, bookmarks, home, pid}) => {
           })
         }
       }
-
-    useContractEvent({
-        address: add,
-        abi: donation.abi,
-        eventName: 'RewardCreated',
-        listener: (event) => listened(event),
-        once: true
-      })
-
-    const listened = async(event) => {
-        await setRewardId(parseInt(event))
-        await handleSubmit(objectId)
-      }
-
     return <MainContainer>
-        <SectionTitle title='Create new reward' subtitle='Add a new reward to your project' />
         <RewardContainer>
-           <TabRow><Tab active={tokenType} o1={'Classic'} o2={'ERC20'} o3={'ERC1155'} change1={() => { handleChangeTokenType('Classic') }} change2={() => {handleChangeTokenType('ERC20')}}  change3={() => {handleChangeTokenType('ERC1155')}} /></TabRow>
+         <Subtitle text='Create new Reward' />
             <MainMilestoneContainer>
-                <Subtitle text={<>
-                    {tokenType === 'Classic' && <>Classic crowdfunding reward</>}
-                    {tokenType === 'ERC20' && <>Fungible token reward</>}
-                    {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
-                </>}/>
-                <MilestoneContainer>
-                    <TabRow> {pType === 'Standard' && <Tab active={rType} o1={'Microfund'} o2={'Donate'} change1={() => { setRType('Microfund') }} change2={() => { setRType('Donate') }} />}
-                        <TooltipBox>
-                            {microTooltip && <Tooltip text={'Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.'} />}
-                            {donationTooltip && <Tooltip text={'Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.'} />}
-                            {nftTooltip && <Tooltip text={'TBD Nft tooltip'}/>}
-                            {tokenTooltip &&  <Tooltip text={'Tooltip TBD'} />}
-                        </TooltipBox>
+            {!success && !apiError && <>
+                <BetweenRow>
+                    <Subtitle text={<>
+                        {tokenType === 'Classic' && address === owner ? <>Classic crowdfunding reward</> : <>Unable to create this reward type</>}
+                        {tokenType === 'ERC20' && <>Fungible token reward</>}
+                        {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
+                    </>}/>
+                    <TabRow><TabImage active={tokenType} o1={'Classic'} o2={'ERC20'} o3={'ERC1155'} 
+                        change1={() => { handleChangeTokenType('Classic') }} 
+                        change2={() => {handleChangeTokenType('ERC20')}}  
+                        change3={() => {handleChangeTokenType('ERC1155')}} />
                     </TabRow>
-                    <InputContainer
-                        label={'Title'}
-                        placeholder={'Godspeed'}
-                        description={'Create a unique title for your reward'}
-                        onChange={(e) => setRewardTitle(e.target.value)}
-                        type={'text'}
-                    />
-                    <InputContainer
-                        label={'Description'}
-                        placeholder={'Backer receives autographed copy of the book'}
-                        description={'Describe briefly what backer receives for this reward'}
-                        onChange={(e) => setRewardDesc(e.target.value)}
-                        type={'textArea'}
-                    />
-                    {rType === 'Microfund' && <InputContainer
-                        label={'Pledge'}
-                        placeholder={'1000'}
-                        onChange={(e) => setPledge(e.target.value)}
-                        description={
-                            <Row>Required amount of backer's microfund
-                                <IconBox onMouseEnter={() => setMicroTooltip(true)} onMouseLeave={() => setMicroTooltip(false)}>
-                                    <InfoIcon width={15} />
-                                </IconBox>
-                            </Row>}
-                        type={'number'}
-                    />}
-                    {rType === 'Donate' && <InputContainer
-                        label={'Pledge'}
-                        placeholder={'1000'}
-                        onChange={(e) => setPledge(e.target.value)}
-                        description={
-                            <Row>Required amount of donation
-                                <IconBox onMouseEnter={() => setDonationTooltip(true)} onMouseLeave={() => setDonationTooltip(false)}>
-                                    <InfoIcon width={15} />
-                                </IconBox>
-                            </Row>}
-                        type={'number'}
-                    />}
-                    <InputContainer
-                        label={'Capacity'}
-                        placeholder={'10'}
-                        description={'Number of claimable rewards'}
-                        onChange={(e) => setCap(e.target.value)}
-                        type={'number'}
-                    />
-                   {tokenType !== 'Classic' &&   <InputContainer
-                        label={'Token name'}
-                        placeholder={'EYE'}
-                        description={'Symbol/Name of the reward token you will offer to backers'}
-                        onChange={(e) => setTokenName(e.target.value)}
-                        type={'text'}
-                    />}
-                   {tokenType !== 'Classic'  && <InputContainer
-                        label={'Token address'}
-                        placeholder={process.env.NEXT_PUBLIC_AD_TOKEN}
-                        onChange={(e) => setTokenAddress(e.target.value)}
-                        description={'Contract address of the locked token'}
-                        type={'text'}
-                    />}
-                    {tokenType === 'ERC20' && <InputContainer
-                        label={'Amount/Backer'}
-                        placeholder={'1000000'}
-                        onChange={(e) => setTokenAmount(e.target.value)}
-                        description={<>        
-                        <IconBox onMouseEnter={() => setTokenTooltip(true)} onMouseLeave={() => setTokenTooltip(false)}>
-                        Amount of tokens eligible for reward for each backer <InfoIcon width={15} />
-                        </IconBox></>}
-                        type={'number'}
-                    />}
-                    {tokenType === 'ERC1155' && <InputContainer
-                        label={'Token ID'}
-                        placeholder={'1561891981'}
-                        onChange={(e) => setNftId(e.target.value)}
-                        description={<>ERC1155 token id defining the asset</>}
-                        type={'number'}
-                    />}
+                </BetweenRow>
+                <MilestoneContainer>
+                    <TabRow> 
+                        {pType === 'Standard' && <Tab active={dType} o1={'Microfund'} o2={'Donate'} change1={() => { setdType('Microfund') }} change2={() => { setdType('Donate') }} />}
+                        <DescBox>
+                            {dType === 'Microfund' && <RewardDesc>Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.</RewardDesc>}
+                            {dType === 'Donate' && <RewardDesc>Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.</RewardDesc>}
+                        </DescBox>
+                    </TabRow>
+                        {tokenType === 'ERC20' && <RewardFormToken dType={dType}/>}
+                        {tokenType === 'ERC1155' && <RewardFormNft dType={dType}/>}
+                        {tokenType === 'Classic' && address === owner && <RewardFormClassic dType={dType}/>}
                     <Summary>
-                        {rType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
-                        {rType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
+                        {dType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
+                        {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
                         {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b>$<Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
                     </Summary>
-                {rewardDesc !== "" ?  <> {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
+                {cap > 0 ?  <> 
+                    {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
+                    {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} />}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
-                    {!success ? 
-                        <>
-                            {tokenType === 'Classic' && <NextButton onClick={()=>{handleSubmit(objectId)}}>Create reward</NextButton>} 
-                            {apiError && <NextButton onClick={()=>{handleSubmit(objectId)}}>Error: Check your fields and retry</NextButton>}
-                        </> : <SuccessDisButton onClick={() => router.reload()} width={'100%'} text="Success: Reward was created (click for reload)"/>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>
+                 </>}
+                {success && !apiError &&    <>     
+                        <G>Great job!! Now expose yourself and share it {`:)`}</G>
+                        <Socials title={'I have added some juice rewards for participation in this crowdfunding project, check it out!!!'}/>
+                        <SuccessDisButton onClick={()=>{setSuccess(false)}} width={'100%'} text="Success: Reward was created (click for new reward)"/>
+                    </>}
             </MainMilestoneContainer>
         </RewardContainer>
     </MainContainer>

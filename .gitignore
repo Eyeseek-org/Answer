@@ -29,6 +29,9 @@ yarn-error.log*
 .env*.local
 .env
 
+# sentry
+.sentryclirc
+
 # vercel
 .vercel
 
@@ -38,3 +41,6 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Sentry
+.sentryclirc

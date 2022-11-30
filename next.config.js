@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 
+
 const nextConfig = {
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   compiler: {
     styledComponents: true,
   },
@@ -15,6 +19,8 @@ const nextConfig = {
       },
     ],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
+
+

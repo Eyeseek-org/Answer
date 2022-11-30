@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Image = styled.img`
   width: 40px;
@@ -12,7 +12,6 @@ export const InactiveImage = styled.img`
 `;
 
 const ImageSelect = ({ active, logo, onClick }) => {
-
   if (active) return <Image src={logo} onClick={onClick} alt="icon" />;
   return <InactiveImage src={logo} onClick={onClick} alt="icon" />;
 };

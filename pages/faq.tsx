@@ -1,129 +1,281 @@
-import React from 'react'
-import styled from 'styled-components'
-import type { NextPage } from "next";
-import Image from "next/image";
+import React from 'react';
+import styled, { useTheme } from 'styled-components';
+import type { NextPage } from 'next';
+import Image from 'next/image';
 
-import Eye7 from "../public/Eye7.png";
-import Footer from '../sections/Footer'
+import Eye7 from '../public/Eye7.png';
+import Footer from '../sections/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
+import { AiIcon, BoardGameIcon, DaoIcon, DefiIcon, HwIcon, IllustrationIcon, IoTIcon, LiteratureIcon, MobileGameIcon, MusicIcon, NftApeIcon, RoboticsIcon, VideoGameIcon, VideoIcon, WearablesIcon } from '../components/icons/Categories';
 import FaqCard from '../components/cards/FaqCard';
+import Subtitle from '../components/typography/Subtitle';
+import {motion} from 'framer-motion';
+import { YouTubeIcon } from '../components/icons/Socials';
 
-
-const Container = styled.div`
-`
 const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 7%;
-    padding-bottom: 4%;
-    gap: 10%;
-    border-bottom: 1px solid #262626;;
-    @media (max-width: 868px) {
-        flex-wrap: wrap;
-    }
-`
+  display: flex;
+  flex-direction: ${(props: { reverse: boolean }) => (props.reverse ? 'row-reverse' : 'row')};
+  width: 100%;
+  margin-top: 7%;
+  padding-bottom: 4%;
+  gap: 10%;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+  @media (max-width: 868px) {
+    flex-wrap: wrap;
+  }
+`;
 
 const FaqContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: 5% 10% 8% 17%;
-    @media (max-width: 768px) {
+  display: flex;
+  flex-direction: column;
+  padding: 5% 10% 8% 17%;
+  @media (max-width: 768px) {
     padding-left: 3%;
     padding-right: 3%;
   }
-`
+`;
 
-const Q = styled.div`
-    font-family: 'Neucha';
-    font-style: normal;
-    text-align: center;
-    font-weight: 400;
-    letter-spacing: 0.3;
-    font-size: 1.2em;
-    line-height: 43px;
-    min-width: 30%;
-    color: #B0F6FF;
-    @media (max-width: 1168px) {
-        line-height: 20px;
-    }
-    @media (min-width: 1780px) {
-       font-size: 1.8em;
+const Question = styled.div`
+  font-family: 'Neucha';
+  font-style: normal;
+  text-align: center;
+  font-weight: 400;
+  letter-spacing: 0.3;
+  font-size: 1.2em;
+  line-height: 43px;
+  min-width: 30%;
+  color: #b0f6ff;
+  @media (max-width: 1168px) {
+    line-height: 20px;
   }
-    @media (max-width: 768px) {
-        display: none;
-    }
-`
+  @media (min-width: 1780px) {
+    font-size: 1.8em;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const ImageBox = styled.div`
-        @media (max-width: 968px) {
-        display: none;
-    }
-`
+  @media (max-width: 968px) {
+    display: none;
+  }
+`;
 
 const EyeSevenBox = styled.div`
-    margin: 5%;
-    text-align: center;
-    position: relative;
+  margin: 5%;
+  text-align: center;
+  position: relative;
 `;
- 
 
-const texts = {
-    "q1": "Why Eyeseek Funding?",
-    "a1": "Benefits over other crowdfunding platforms",
-    "p11": "Platform fee costs only 1% per successfully funded project",
-    "p12": "Developer & Startup friendly environment, we are on the same page",
-    "p13": "No personal data needed. Wallet address is your primary identity",
-    "p14": "Extends crowdfunding features never seen before",
-    "q2": "What do I need as a project owner?",
-    "a2": "Rules to follow to be eligible of Eyeseek funding",
-    "p21": "Owner has to inform regularly backers with project updates",
-    "p22": "Projects must create something to share with others",
-    "p23": "Projects and backer statistics must be honest and clearly presented",
-    "p24": "Projects can't involve prohibited items",
-    "q3": "Why blockchain?",
-    "a3": "Possibilities granted by blockchain technology",
-    "p31": "Introduction of the game theory into crowdfunding thanks to the microfunds",
-    "p32": "Accept cryptocurrency payments from multiple blockchains at once",
-    "p33": "Real-time money streaming from backers to project owners",
-    "p34": "Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit",
-    "q4": "How does it work?",
-    "a4": "Creators can set up project in 5 simple steps",
-    "p41": "Possibility to offer limited amount of rewards, tokens and NFTs",
-    "p42": "Backers discover projects based on their interests and donate",
-    "p43": "Larger backers can play a game and deploy microfunds instead of donating",
-    "p44": "Microfunds incentivize smaller backers to join the ride with larger impact",
+const CatBox = styled.div`
+  padding-top: 3%;
+  display: flex;
+  flex-direction: column;
+`
+
+const CatIcons = styled.div`
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 90%;
+  gap: 1%;
+`
+
+const CatDesc = styled(motion.div)`
+  position: absolute;
+  font-family: 'Gemunu Libre';
+  letter-spacing: 0.3;
+  left: 50%;
+  background: ${(props) => props.theme.colors.gradient};
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 5px;
+`
+
+const YtLink = styled.span`
+  text-decoration: underline;
+  margin-right: 5%;
+`
+
+export interface IFAQ {
+  question: string;
+  answer: string;
+  points: string[];
+  image: JSX.Element;
 }
+
+export interface ICats {
+  text: string;
+  icon: JSX.Element;
+}
+
 
 const Faq: NextPage = () => {
-    return <>
-        <Container>
-            <SectionTitle title="FAQ" subtitle='Learn more about Eyeseek Funding' />
-            <FaqContainer>
-                <Row>
-                    <Q><div>{texts.q1} </div><ImageBox><BookIcon width={150} /></ImageBox> </Q>
-                    <FaqCard answer={texts.a1} point1={texts.p11} point2={texts.p12} point3={texts.p13} point4={texts.p14} />
-                </Row>
-                <Row>
-                    <FaqCard answer={texts.a2} point1={texts.p21} point2={texts.p22} point3={texts.p23} point4={texts.p24} />
-                    <Q><div>{texts.q2} </div><ImageBox><DeniedIcon width={150} /></ImageBox></Q>
-                </Row>
-                <Row>
-                    <Q><div>{texts.q3} </div><ImageBox><KeyIcon width={70} /></ImageBox> </Q>
-                    <FaqCard answer={texts.a3} point1={texts.p31} point2={texts.p32} point3={texts.p33} point4={texts.p34} />
-                </Row>
-                <Row>
-                    <FaqCard answer={texts.a4} point1={texts.p41} point2={texts.p42} point3={texts.p43} point4={texts.p44} />
-                    <Q><div>{texts.q4} </div><ImageBox><WorkIcon width={100} height={150} /></ImageBox></Q>
-                </Row>
-            </FaqContainer>
-        </Container>
-        <EyeSevenBox>
-            <Image src={Eye7} alt="Eye7" width={"400%"} height={"40%"} />
-        </EyeSevenBox>
-        <Footer />
-    </>
-}
+  const [catTooltip, setCatTooltip] = React.useState('');
+  // https://stackoverflow.com/questions/66483948/react-typescript-property-body-does-not-exist-type-defaulttheme
+  const theme = useTheme();
 
-export default Faq
+  const FAQS: IFAQ[] = [
+    {
+      question: 'Why Eyeseek Funding?',
+      answer: 'Benefits over other crowdfunding platforms',
+      points: [
+        'Platform fee costs only 1% per successfully funded project',
+        'Developer & Startup friendly environment, we are on the same page',
+        'No personal data needed. Wallet address is your primary identity',
+        'Extends crowdfunding features never seen before',
+      ],
+      image: <BookIcon width={150} color={theme.colors.icon} />,
+    },
+    {
+      question: 'What do I need as a project owner?',
+      answer: 'Rules to follow to be eligible of Eyeseek funding',
+      points: [
+        'Owner has to inform regularly backers with project updates',
+        'Projects must create something to share with others',
+        'Projects and backer statistics must be honest and clearly presented',
+        "Projects can't involve prohibited items",
+      ],
+      image: <DeniedIcon width={150}  color={theme.colors.icon} />,
+    },
+    {
+      question: 'Why blockchain?',
+      answer: 'Possibilities granted by blockchain technology',
+      points: [
+        'Introduction of the game theory into crowdfunding thanks to the microfunds',
+        'Accept cryptocurrency payments from multiple blockchains at once',
+        'Real-time money streaming from backers to project owners',
+        'Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit',
+      ],
+      image: <KeyIcon width={70}  color={theme.colors.icon} />,
+    },
+    {
+      //@ts-ignore
+      question: <><a href='https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg' rel="noopener noreferrer" target="_blank"><YtLink>How does it work?</YtLink><YouTubeIcon width={25}/></a></>,
+      answer: 'Creators can set up project in 5 simple steps',
+      points: [
+        'Possibility to offer limited amount of rewards, tokens and NFTs',
+        'Backers discover projects based on their interests and donate',
+        'Larger backers can play a game and deploy microfunds instead of donating',
+        'Microfunds incentivize smaller backers to join the ride with larger impact',
+      ],
+      image: <WorkIcon width={100} height={150}  color={theme.colors.icon}  />,
+    },
+  ];
+  
+  const ICats: ICats[] = [
+    {
+      text: 'Wearables - Invent new gadgets and accessories',
+      icon: <WearablesIcon width={50} height={50}  />,
+    },
+    {
+      text: 'Robotics - Help new generation of machines take over the world',
+      icon: <RoboticsIcon width={50} height={50} />,
+    },
+    {
+      text: 'AI - Feed data sets across the science labs and universities',
+      icon: <AiIcon width={50} height={50} />,
+    },
+    {
+      text: 'IoT - Use sensors to collect data and push automation to the next level',
+      icon: <IoTIcon width={50} height={50} />,
+    },
+    {
+      text: 'Mobile app - Implement a benefitial app or an addictive game',
+      icon: <MobileGameIcon width={50} height={50} />,
+    },
+    {
+      text: 'Board games - Design strategic masterpiece or a fun party game',
+      icon: <BoardGameIcon width={50} height={50} />
+    },
+    {
+      text: 'Video games - Build an indie game or a AAA blockbuster',
+      icon: <VideoGameIcon width={50} height={50} />
+    },
+    {
+      text: 'Hardware - Assemble powerful devices for green crypto mining',
+      icon: <HwIcon width={50} height={50} />
+    },
+    {
+      text: 'Movies - Become a director or produce a video with deep emotional impact',
+      icon: <VideoIcon width={50} height={50} />
+    },
+    {
+      text: 'Illustration - Draw anything you imagine and above',
+      icon: <IllustrationIcon width={50} height={50} />
+    },
+    {
+      text: 'Literature - Write a book of poems, autobiography, or a novel',
+      icon: <LiteratureIcon width={50} height={50} />
+    },
+    {
+      text: 'Music - Support of all kinds of music production, or musical events',
+      icon: <MusicIcon width={50} height={50} />
+    },
+    {
+      text: 'Defi - Lending, borrowing, all sorts of crypto trading',
+      icon: <DefiIcon width={50} height={50} />
+    },
+    {
+      text: 'NFT - Explore new ways how to leverage NFTs non-fungibility',
+      icon: <NftApeIcon width={50} height={50} />
+    },
+    {
+      text: 'DAO - Establish a decentralized autonomous organization',
+      icon: <DaoIcon width={50} height={50} />
+    }
+  ]
+
+  const CatIcon = ({text, icon}) => {
+    return <div onMouseEnter={()=>setCatTooltip(text)} onMouseLeave={()=>setCatTooltip('')} >{icon}</div>
+  }
+
+  return (
+    <>
+        <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
+        <FaqContainer>
+          {FAQS.map(({ answer, image: Image, points, question }, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <Row reverse={isEven} key={index}>
+                <FaqCard answer={answer} points={points} />
+                <Question>
+                  <div>{question}</div>
+                  <ImageBox>{Image}</ImageBox>
+                </Question>
+              </Row>
+            );
+          })}
+        
+        <CatBox>
+          {catTooltip !== '' &&   
+            <CatDesc
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.4,
+                scale: [0, 1, 0.5, 1],
+              }}>
+            {catTooltip}</CatDesc> }
+         <Subtitle text='Categories'/>
+          <CatIcons>
+            {ICats.map(({text, icon}, index) => {
+              return <CatIcon text={text} icon={icon} key={index}/>
+            })}
+          </CatIcons>
+        </CatBox>
+        </FaqContainer>
+ 
+      <EyeSevenBox>
+        <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
+      </EyeSevenBox>
+      <Footer />
+    </>
+  );
+};
+
+export default Faq;

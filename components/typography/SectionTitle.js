@@ -1,18 +1,15 @@
-import Title from "./Title"
-import Subtitle from "./Subtitle"
-import styled from "styled-components"
-
-
+import Title from './Title';
+import Subtitle from './Subtitle';
+import styled from 'styled-components';
 
 const TitleRow = styled.div`
   padding-left: 17%;
-  border-bottom: 1px solid #003E46;
+  border-bottom: 1px solid #003e46;
   @media (max-width: 768px) {
     padding-left: 15%;
     margin-bottom: 5%;
   }
-
-`
+`;
 
 const SubRow = styled.div`
   padding-left: 17%;
@@ -20,7 +17,7 @@ const SubRow = styled.div`
     padding-left: 15%;
     margin-bottom: 5%;
   }
-`
+`;
 
 const SectionTitle = ({ title, subtitle }) => {
   return (
@@ -32,7 +29,7 @@ const SectionTitle = ({ title, subtitle }) => {
         <Subtitle text={subtitle} />
       </SubRow>
     </>
-  )
-}
+  );
+};
 
-export default SectionTitle
+export default SectionTitle;

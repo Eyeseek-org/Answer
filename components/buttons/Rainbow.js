@@ -1,15 +1,14 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import styled from 'styled-components'
-import { useMoralis } from "react-moralis";
 import Image from 'next/image';
 
 const ConnectBtn = styled.button`
-  background-color: #9bffff;
+  background-color: ${(props) => props.theme.colors.primary};
   padding: 7px 12px 7px 12px;
   border-radius: 5px;
   border: none;
   font-size: 1em;
-  color: black;
+  color: ${(props) => props.theme.colors.black};
   font-family: "Gemunu Libre", sans-serif;
   font-style: normal;
   cursor: pointer;
@@ -22,8 +21,6 @@ const ConnectBtn = styled.button`
 `
 
 const Rainbow = () => {
-    
-  const { authenticate, isAuthenticated } = useMoralis();
     
   return (
     <ConnectButton.Custom>
@@ -41,9 +38,6 @@ const Rainbow = () => {
         const ready = mounted && authenticationStatus !== 'loading';
         const auth = async() => {
             await openConnectModal()
-            if (!isAuthenticated){
-                await authenticate()
-            }
         }
 
         const connected =
