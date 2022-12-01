@@ -16,6 +16,8 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import {darkTheme, lightTheme} from '../themes/theme'
 import { AbsoluteRight } from '../components/format/Box';
 import {mumbai,fantomTest, bnbTest, optimismTest} from '../data/configChain'
+import { Provider } from 'react-redux'
+import {store} from '../redux/store'
 
 const ThemeButton = styled.button`
   background: none;
@@ -61,9 +63,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const [th, setTh] = useState(darkTheme);
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
-  //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
 
-  // https://stackoverflow.com/questions/66483948/react-typescript-property-body-does-not-exist-type-defaulttheme
 
   const toggleTheme = () => {
     if (dTheme === 'dark') {
@@ -153,15 +153,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <meta name="theme-color" content="#317EFB" />
                   </Head>
                   <AppProvider>
-                    <RewardProvider>
-                    <Header />
-                    <AbsoluteRight>
-                      <ThemeButton onClick={()=>{toggleTheme()}}> 👀</ThemeButton>
-                    </AbsoluteRight>
-                    <Loading>
-                      <Component {...pageProps} />
-                    </Loading>
-                    </RewardProvider>
+                    <Provider store={store}>
+                      <RewardProvider>
+                        <Header />
+                        <AbsoluteRight>
+                          <ThemeButton onClick={()=>{toggleTheme()}}> 👀</ThemeButton>
+                        </AbsoluteRight>
+                        <Loading>
+                          <Component {...pageProps} />
+                        </Loading>
+                      </RewardProvider>
+                    </Provider>
                   </AppProvider>
                 </RainbowKitProvider>
             </MoralisProvider>

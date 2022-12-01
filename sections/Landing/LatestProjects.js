@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAccount } from 'wagmi';
-
 import ProjectCard from '../../components/cards/ProjectCard';
 import SectionTitle from '../../components/typography/SectionTitle';
 import Carousel from 'nuka-carousel/lib/carousel';
