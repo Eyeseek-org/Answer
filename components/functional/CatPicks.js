@@ -15,10 +15,11 @@ import Tooltip from '../Tooltip';
 // Science: ['Biology', 'Ecologogy', 'Psychology', 'Chemistry', 'Physics', 'Engineering', 'Medicine', 'Neuroscience', 'Other'],
 // OpenSource: ['AI', 'Big Data', 'Cloud', 'Cybersecurity', 'IoT', 'Machine Learning', 'Dev tools', 'Other'],
 
-export const SubcatPick = ({subcat}) => {
+export const SubcatPick = ({subcat, width}) => {
     const [subcatIcon, setSubcatIcon] = useState(<></>);
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipText, setTooltipText] = useState('');
+
 
     useEffect(() => {
       setSubcategory(subcat);
@@ -28,37 +29,37 @@ export const SubcatPick = ({subcat}) => {
     const setSubcategory = (subcat) => {
          setTooltipText(subcat)
         if (subcat === 'Gadgets') {
-            setSubcatIcon(<GadgetsIcon width={40} />)
+            setSubcatIcon(<GadgetsIcon width={width} />)
         } else if (subcat === 'Robots') {
-          setSubcatIcon( <RoboticsIcon width={40} />)
+          setSubcatIcon( <RoboticsIcon width={width} />)
         } else if (subcat === 'Wearables') {
-          setSubcatIcon( <WearablesIcon width={40} />)
+          setSubcatIcon( <WearablesIcon width={width} />)
         } else if (subcat === 'Other') {
-          setSubcatIcon( <CatOtherIcon width={40} />)
+          setSubcatIcon( <CatOtherIcon width={width} />)
         } else if (subcat === 'Mobile') {
-          setSubcatIcon( <MobileGameIcon width={40} />)
+          setSubcatIcon( <MobileGameIcon width={width} />)
         } else if (subcat === 'Board') {
-          setSubcatIcon( <BoardGameIcon width={40} />)
+          setSubcatIcon( <BoardGameIcon width={width} />)
         } else if (subcat === 'Video') {
-          setSubcatIcon( <VideoGameIcon width={40} />)
+          setSubcatIcon( <VideoGameIcon width={width} />)
         } else if (subcat === 'Hardware') {
-          setSubcatIcon( <HwIcon width={40} />)
+          setSubcatIcon( <HwIcon width={width} />)
         } else if (subcat === 'Video') {
-          setSubcatIcon( <VideoIcon width={40} />)
+          setSubcatIcon( <VideoIcon width={width} />)
         } else if (subcat === 'Illustrations'){
-          setSubcatIcon( <IllustrationIcon width={40} />)
+          setSubcatIcon( <IllustrationIcon width={width} />)
         } else if (subcat === 'Performance'){
-          setSubcatIcon( <PerformanceIcon width={40} />)
+          setSubcatIcon( <PerformanceIcon width={width} />)
         } else if (subcat === 'Publications'){
-          setSubcatIcon( <PerformanceIcon width={40} />)
+          setSubcatIcon( <PerformanceIcon width={width} />)
         } else if (subcat === 'Music'){
-          setSubcatIcon( <MusicIcon width={40} />)
+          setSubcatIcon( <MusicIcon width={width} />)
         } else if (subcat === 'Defi') {
-          setSubcatIcon( <DefiIcon width={40} />)
+          setSubcatIcon( <DefiIcon width={width} />)
         } else if (subcat === 'DAO') {
-          setSubcatIcon( <DaoIcon width={40} />)
+          setSubcatIcon( <DaoIcon width={width} />)
         } else if (subcat === 'NFT') {
-          setSubcatIcon( <NftApeIcon width={40} />)
+          setSubcatIcon( <NftApeIcon width={width} />)
         } else {
           setSubcatIcon(<>{subcat}</>)
         }

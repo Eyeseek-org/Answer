@@ -12,6 +12,8 @@ import FaqCard from '../components/cards/FaqCard';
 import Subtitle from '../components/typography/Subtitle';
 import {motion} from 'framer-motion';
 import { YouTubeIcon } from '../components/icons/Socials';
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
 
 const Row = styled.div`
   display: flex;
@@ -234,6 +236,11 @@ const Faq: NextPage = () => {
     return <div onMouseEnter={()=>setCatTooltip(text)} onMouseLeave={()=>setCatTooltip('')} >{icon}</div>
   }
 
+  const dispatch = useDispatch() 
+    const noti = (text) => {
+      dispatch(notify(text, 'info'))
+  }
+
   return (
     <>
         <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
@@ -245,7 +252,7 @@ const Faq: NextPage = () => {
                 <FaqCard answer={answer} points={points} />
                 <Question>
                   <div>{question}</div>
-                  <ImageBox>{Image}</ImageBox>
+                  <ImageBox onClick={()=>{noti(answer)}}>{Image}</ImageBox>
                 </Question>
               </Row>
             );

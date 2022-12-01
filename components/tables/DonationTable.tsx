@@ -85,6 +85,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
 
   const columns: ColumnDef<TransactionTableProps, string>[] = [
     {
+      //@ts-ignore
       header: (
         <RowCenter
           onClick={() => {
@@ -93,7 +94,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         >
           Chain{' '}
           <ImageHover>
-            <FilterIcon width={13} />
+            <FilterIcon width={13} height={13} />
           </ImageHover>
         </RowCenter>
       ),
@@ -108,6 +109,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       },
     },
     {
+      //@ts-ignore
       header: (
         <RowCenter
           onClick={() => {
@@ -116,7 +118,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         >
           Backer{' '}
           <ImageHover>
-            <FilterIcon width={13} />
+            <FilterIcon width={13} height={13} />
           </ImageHover>
         </RowCenter>
       ),
@@ -129,13 +131,14 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       enableSorting: false,
     },
     {
+        //@ts-ignore
       header: (
         <HeaderCell
           onClick={() => {
             setBackerFilter(!backerFilter);
           }}
         >
-          Amount {backerFilter ? <ArrowDown width={13} /> : <ArrowUp width={13} />}
+          Amount {backerFilter ? <ArrowDown width={13} height={13} /> : <ArrowUp width={13} height={13} />}
         </HeaderCell>
       ),
       accessorKey: 'amount',

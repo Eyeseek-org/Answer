@@ -4,6 +4,7 @@ import styled, {useTheme} from 'styled-components';
 import Eyeballs from '../../components/animated/Eyeballs'
 import eyemain from '../../public/eyemain.png';
 
+
 const Container = styled.div`
   position: relative;
 `;
@@ -135,6 +136,7 @@ const LandingMain = ({ width, height }) => {
   const [axColor, setAxColor] = useState('#343434');
   const [optColor, setOptColor] = useState(lightGray)
   const [url, setUrl] = useState();
+
 
   const showMoralis = () => {
     setUrl('https://moralis.io/');
