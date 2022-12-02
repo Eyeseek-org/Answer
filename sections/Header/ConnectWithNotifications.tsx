@@ -23,8 +23,6 @@ export const ConnectWithNotifications = () => {
         },
    });
 
-  
-
   return (
     <>
       <ConnectWalletBox>

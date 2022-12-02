@@ -142,11 +142,13 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         </HeaderCell>
       ),
       accessorKey: 'amount',
-      cell: (props) => <>${props.getValue() / 1000000}</>,
+        //@ts-ignore
+      cell: (props: number) => <>${props.getValue() / 1000000}</>,
       enableSorting: true,
       enableColumnFilter: false,
     },
     {
+         //@ts-ignore
       header: (
         <RowCenter
           onClick={() => {
@@ -155,7 +157,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         >
           Token{' '}
           <ImageHover>
-            <FilterIcon width={13} />
+            <FilterIcon height={13} width={13} />
           </ImageHover>
         </RowCenter>
       ),
@@ -173,17 +175,19 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       accessorKey: 'date',
     },
     {
+       //@ts-ignore
       header: (
         <HeaderCell
           onClick={() => {
             setBackerFilter(!backerFilter);
           }}
         >
-          Drained {backerFilter ? <ArrowDown width={13} /> : <ArrowUp width={13} />}
+          Drained {backerFilter ? <ArrowDown height={13} width={13} /> : <ArrowUp height={13} width={13} />}
         </HeaderCell>
       ),
       enableColumnFilter: false,
-      cell: (props) => <>{props.getValue() / 1000000}</>,
+        //@ts-ignore
+      cell: (props:number) => <>{props.getValue() / 1000000}</>,
       accessorKey: 'drained',
     },
     {

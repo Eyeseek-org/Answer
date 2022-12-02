@@ -74,17 +74,20 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
     // Missing project reference
   const columns: ColumnDef<RewardTableProps, string>[] = [
     {
+       //@ts-ignore
       header: (
         <HeaderCell>
           Project 
         </HeaderCell>
       ),
       accessorKey: 'fund_id',
+       //@ts-ignore
       cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
       enableSorting: true,
       enableColumnFilter: false,
     },
     {
+       //@ts-ignore
       header: (
         <RowCenter
           onClick={() => {
@@ -93,7 +96,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         >
           Owner{' '}
           <ImageHover>
-            <FilterIcon width={13} />
+            <FilterIcon width={13} height={13}/>
           </ImageHover>
         </RowCenter>
       ),
@@ -106,6 +109,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
       enableSorting: false,
     },
     {
+       //@ts-ignore
       header: (
         <RowCenter
           onClick={() => {
@@ -114,7 +118,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         >
           Token{' '}
           <ImageHover>
-            <FilterIcon width={13} />
+            <FilterIcon width={13} height={13} />
           </ImageHover>
         </RowCenter>
       ),
@@ -127,6 +131,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
       enableSorting: false,
     },
     {
+       //@ts-ignore
       header: (
         <HeaderCell>
           Type 
@@ -142,6 +147,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
       enableColumnFilter: false,
     },
     {
+       //@ts-ignore
       header: (
         <HeaderCell>
           #Token 
@@ -153,12 +159,14 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
       enableColumnFilter: false,
     },
     {
+       //@ts-ignore
       header: (
         <HeaderCell>
           Tx
         </HeaderCell>
       ),
       accessorKey: 'txn_hash',
+       //@ts-ignore
       cell: (props) => <ExplorerReference ch={props.cell.row.original.chain} tx={props.getValue()} />,
       enableSorting: false,
       enableColumnFilter: false,

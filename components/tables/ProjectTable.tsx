@@ -88,6 +88,7 @@ const ProjectTable = () => {
       {
         accessorKey: 'chainId',
         cell: (props) => <ChainIconComponent ch={props.getValue()} />,
+         //@ts-ignore
         header: <div onMouseEnter={() => { handleTooltip('Supported chains: Polygon, BNB, Optimism, Fantom') }} onMouseLeave={() => { setShowTooltip(false) }}>Ch</div>,
         enableSorting: false,
         meta: {
@@ -116,6 +117,7 @@ const ProjectTable = () => {
       {
         accessorKey: 'pid',
         cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={props.row.original.chainId} />,
+        //@ts-ignore
         header: <Col>
           <div onMouseEnter={() => { handleTooltip('Project goal, d = donated, m = microfunds created') }} onMouseLeave={() => { setShowTooltip(false) }}>Goal</div>
           <BetweenRowSm><div>d</div><div>m</div></BetweenRowSm>
@@ -140,7 +142,7 @@ const ProjectTable = () => {
       },
       {
         accessorKey: 'subcategory',
-        cell: (props) => <SubcatPick subcat={props.getValue()} />,
+        cell: (props) => <SubcatPick width={20} subcat={props.getValue()} />,
         header: 'Area',
         meta: {
           filter: 'select',
@@ -149,7 +151,7 @@ const ProjectTable = () => {
       },
       {
         accessorKey: 'verified',
-        cell: (props) => <>{props.getValue() ? <VerifiedIcon color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={30} />}</>,
+        cell: (props) => <>{props.getValue() ? <VerifiedIcon height={30} color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={30} height={30} color={theme.colors.icon} />}</>,
         header: 'Verified',
         enableSorting: true,
         enableColumnFilter: false,
@@ -159,23 +161,24 @@ const ProjectTable = () => {
         cell: (props) => (
           <RowCenter>
             <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
-              <DetailIcon width={20}  color={theme.colors.icon} />
+              <DetailIcon width={20}  color={theme.colors.icon} height={20} />
             </a>
             <ImageHover
               onClick={() => {
                 handleReward(props.getValue());
               }}
             >
-              <RewardIcon color={theme.colors.icon} width={20} />
+              <RewardIcon height={20} color={theme.colors.icon} width={20} />
             </ImageHover>
             <a href={props.row.original.urlProject} rel="noopener noreferrer" target="_blank">
-              <WebIcon color={theme.colors.icon} width={30} />
+              <WebIcon color={theme.colors.icon} width={30} height={20}/>
             </a>
             <a href={props.row.original.urlSocials} rel="noopener noreferrer" target="_blank">
               <UrlSocialsIcon color={theme.colors.icon} height={25} width={25} />
             </a>
           </RowCenter>
         ),
+         //@ts-ignore
         header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>Actions</ActionCol>,
         enableColumnFilter: false,
         enableSorting: false,
@@ -234,7 +237,7 @@ const ProjectTable = () => {
         <RewardDesc>Loading, server was sleeping...</RewardDesc>
       ) : (
         <Col>
-          {showTooltip && <Tooltip text={tooltipText} />}
+          {showTooltip && <Tooltip margin={undefined} text={tooltipText} />}
           <Table>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (

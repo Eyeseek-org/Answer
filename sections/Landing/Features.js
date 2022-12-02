@@ -11,7 +11,7 @@ import {
   RewardAnim,
   RewardLandingIcon,
 } from '../../components/icons/Landing';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useState } from 'react';
 import Image from 'next/image';
 import fee from '../../public/fee.gif';
@@ -61,6 +61,8 @@ const Features = () => {
   const [demoFee, setDemoFee] = useState(false);
   const [demoStream, setDemoStream] = useState(false);
   const [demoReward, setDemoReward] = useState(false);
+
+  const theme = useTheme()
 
   return (
     <Container>
@@ -141,7 +143,7 @@ const Features = () => {
         <Row>
           {demoFee ? (
             <FeatureCard
-              icon={<PiggyIcon width={55} />}
+              icon={<PiggyIcon width={55} color={theme.colors.icon} />}
               title={Texts.title3}
               description={<Image unoptimized={true} src={fee} width={500} height={300} />}
               onClick={() => {
@@ -150,7 +152,7 @@ const Features = () => {
             />
           ) : (
             <FeatureCard
-              icon={<PiggyIcon width={55} />}
+              icon={<PiggyIcon width={55} color={theme.colors.icon} />}
               anim={<CostAnim width={200} />}
               title={Texts.title3}
               description={Texts.description3}
