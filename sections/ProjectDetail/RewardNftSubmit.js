@@ -6,6 +6,9 @@ import multi from '../../abi/multi.json';
 import ApproveNftUniversal from '../../components/buttons/ApproveNftUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import ErrText from '../../components/typography/ErrText';
+import { useReward } from '../utils/rewardContext';
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
 
 const Container = styled.div`
   display: flex;
@@ -23,13 +26,24 @@ const ButtonBox = styled.div`
 const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) => {
   const [ev, setEv] = useState(false);
 
-  const listened = async () => {
-    await setEv(true);
-  };
+  const { rewardState, setRewardState } = useReward();
+  const {  loading } = rewardState;
+  const dispatch = useDispatch() 
+
+  const noti = (text, type) => {
+    dispatch(notify(text, type))
+  }
 
   const handleSubmit = async () => {
-    await write?.();
+    write?.();
+    setRewardState((prev) => ({ ...prev, loading: true }))
   };
+
+  const listened = async () => {
+    setEv(true);
+    noti('NFT Approved', 'success')
+  };
+
   useContractEvent({
     address: tokenAddress,
     abi: multi.abi,
@@ -52,12 +66,12 @@ const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) =
     <Container>
       <ButtonBox>
         <ApproveNftUniversal tokenContract={tokenAddress} spender={add} cap={cap} nftId={nftId} />
-        <ButtonAlt
-          text={'Submit'}
-          onClick={() => {
-            handleSubmit();
-          }}
-        />
+        {!loading ? <ButtonAlt
+            text={'Create reward'}
+            onClick={() => {
+              handleSubmit();
+            }}
+          /> : <ButtonAlt text={'Loading...'} disabled={true} />}
       </ButtonBox>
       {error && <ErrText text={'Missing/Incorrect parameter'} />}
     </Container>

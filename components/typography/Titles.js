@@ -45,6 +45,9 @@ export const RewardTitle = styled.div`
   &:hover{
     cursor: pointer;
   }
+  @media (min-width: 1580px) {
+    font-size: 1.15em;
+  }
 `
 
 export const WarnTitle = styled.div`

@@ -2,13 +2,16 @@ import { useContractWrite } from 'wagmi';
 import donation from '../../abi/donation.json';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { RowEnd, ColRight } from '../../components/format/Row';
+import { useReward } from '../utils/rewardContext';
 
 const RewardClassicSubmit = ({ add, home, pid, cap }) => {
+  const { rewardState, setRewardState } = useReward();
+  const {  loading } = rewardState;
 
   const handleSubmit = async () => {
-    await write?.();
+    write?.();
+    setRewardState((prev) => ({ ...prev, loading: true }))
   };
-
 
   const {write} = useContractWrite({
     mode: 'recklesslyUnprepared',
@@ -22,12 +25,12 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
   return (
     <ColRight>
       <RowEnd>
-          <ButtonAlt
+         {!loading ? <ButtonAlt
             text={'Create reward'}
             onClick={() => {
               handleSubmit();
             }}
-          />
+          /> : <ButtonAlt text={'Loading...'} disabled={true} />}
       </RowEnd>
     </ColRight>
   );

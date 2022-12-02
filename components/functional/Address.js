@@ -27,6 +27,9 @@ const CopyRow = styled.div`
   &:active {
     transform: scale(0.98);
   }
+  @media (min-width: 1568px) {
+    font-size: 0.9em;
+  }
 `;
 
 const IconBox = styled(motion.div)`

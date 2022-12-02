@@ -46,11 +46,13 @@ const MyStreams = () => {
     const [wrappedAmount, setWrappedAmount] = useState(1000)
     const { data: signer } = useSigner()
     const token = '0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f'
+    const [chainId, setChainId] = useState(80001)
     const query = `/classes/Stream?where={"addressBacker":"${address}", "isActive": true }`
     const { data: streamData } = useQuery(['my-stream'], () => UniService.getDataSingle(query),{
         onSuccess: (data) => {
             // Get data from the stream - - Very similarly to Stream
-            getFlowData(data.owner,data.backer,data.chainId)
+            setChainId(data.chainId)
+            getFlowData(data.owner,data.backer,chainId)
           },
      });
 
