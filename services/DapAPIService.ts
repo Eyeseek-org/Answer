@@ -29,6 +29,7 @@ export class DapAPIService {
       title,
       url,
       project: id,
+      isRead: false
     });
   }
 

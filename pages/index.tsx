@@ -2,14 +2,15 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import styled from 'styled-components';
-import Eye7 from '../public/Eye7.png';
-import { useEffect } from 'react';
-import Footer from '../sections/Footer';
+import Script from 'next/script';
+import { useEffect  } from 'react';
 
+import Eye7 from '../public/Eye7.png';
+import Footer from '../sections/Footer';
 import LandingMain from '../sections/Landing/LandingMain';
 import LatestProjects from '../sections/Landing/LatestProjects';
 import Features from '../sections/Landing/Features';
-import Script from 'next/script';
+
 
 const Container = styled.div`
   position: relative;
@@ -29,6 +30,7 @@ const Home: NextPage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, []);
 
+
   return (
     <>
       <Container>
@@ -38,7 +40,6 @@ const Home: NextPage = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <LandingMain width={'100%'} height={'100%'} />
-        {/* <ImageBox><Image src={Eye1} alt='Eye1' width={'1000px'} /></ImageBox> */}
         <Features />
         <LatestProjects my={false} />
         <EyeSevenBox>

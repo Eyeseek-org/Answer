@@ -5,17 +5,14 @@ import NotificationsSystem, {atalhoTheme, dismissNotification, setUpNotification
 setUpNotifications({
     defaultProps: {
         position: 'top-right',
-        dismissible: true
+        dismissible: true,
+        dismissAfter: 8000
     } 
 })
 
 const Reapop = () => {
     const dispatch = useDispatch();
     const notifications = useSelector((state) => state.notifications)
-
-    const func = () => {
-        console.log('test')
-    }
     
     return (
         <div>

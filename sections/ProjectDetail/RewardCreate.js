@@ -136,7 +136,8 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
               'description': `Project added ${token} reward incentivization.`,
               'type': 'rewardAdded',
               'project': `${objectId}`,
-              'user': bookmark
+              'user': bookmark,
+              'isRead': false
             }, moralisApiConfig)
           })
         }

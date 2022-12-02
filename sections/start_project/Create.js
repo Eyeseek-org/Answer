@@ -13,12 +13,13 @@ import Eye10 from '../../public/Eye10.png';
 import Rainbow from '../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
-import { BetweenRow, Col } from '../../components/format/Row';
+import { BetweenRow, Col, RowEnd } from '../../components/format/Row';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { MainContainer } from '../../components/format/Box';
 import LogResult from '../LogResult';
 import { ChainName } from '../../helpers/MultichainHelpers';
-import { G } from '../../components/typography/ColoredTexts';
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
 
 const texts = [
   {
@@ -46,11 +47,17 @@ const Create = ({ setStep }) => {
   const { switchNetwork } = useSwitchNetwork();
   const [add, setAdd] = useState("");
   const theme = useTheme()
+  const dispatch = useDispatch() 
 
+  const noti = (text, type) => {
+    dispatch(notify(text, type))
+  }
 
   const handleBack = () => {
     setStep((prev) => (prev -= 1));
   };
+
+
 
 
   useEffect(() => {
@@ -77,13 +84,19 @@ const Create = ({ setStep }) => {
         },
         moralisApiConfig
       );
-      await setSuccess(true);
-      await setApiError(false);
+      setSuccess(true);
+      setApiError(false);
+      noti("Congratulations, now you should spam your achievement :)", "success")
+
     } catch (err) {
-      console.log(err);
-      await setApiError(true);
+      setApiError(true);
+      noti("Error while creating project, we will take a look", "error")
     }
   };
+
+  
+
+
 
   // Event upon successful project creation on blockchain
   // Update state and project id (pid) as key between web2/web3
@@ -153,6 +166,7 @@ const Create = ({ setStep }) => {
         await handleContract();
       } else if (pType === 'Stream') {
         await handleMoralis(1);
+        noti("GJ, dude that was quick...you should spam it :)", "success")
       }
   }
 
@@ -234,9 +248,11 @@ const Create = ({ setStep }) => {
             )}
           </>
         )}
-         {success && <a href={`/project/${oid}`} rel="noopener noreferrer" target="_blank">
-           You can find your project <G> here {`:)`}</G>
-          </a>}
+         {success &&
+         <RowEnd>
+            <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/> 
+            <ButtonAlt text="Go to project" onClick={() => window.location.href = `/project/${oid}`}/>
+         </RowEnd>}
         
         {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
       </RulesContainer>

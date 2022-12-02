@@ -1,10 +1,12 @@
 import Tooltip from '../Tooltip';
 import { RewardTitle } from '../typography/Titles';
-import {useState} from 'react'
+import  {useState} from 'react'
 import { InfoIcon } from '../icons/Common';
-import { Col } from '../format/Row';
-import {useTheme} from 'styled-components';
+import styled,{useTheme} from 'styled-components';
 
+const Container = styled.div`
+  min-width: 100px;
+`
 
 const CalcOutcome = ({ conn, multi }) => {
   const [microTooltip, setMicroTooltip] = useState(false);
@@ -12,10 +14,10 @@ const CalcOutcome = ({ conn, multi }) => {
   const theme = useTheme()
 
   return (
-    <Col>
+    <Container>
       {conn ?
         <RewardTitle onMouseEnter={()=>{setMicroTooltip(true)}} onMouseLeave={()=>{setMicroTooltip(false)}}>
-          {microTooltip && <Tooltip text={'Number of involved microfunds from other users'} margin={'-70px'}/>}
+          {microTooltip && <Tooltip text={'Multiplier: Number of involved microfunds from other users'} margin={'-70px'}/>}
           {conn} X 
           <InfoIcon width={15} color={theme.colors.icon}/>
         </RewardTitle>
@@ -27,7 +29,7 @@ const CalcOutcome = ({ conn, multi }) => {
           <InfoIcon width={15} color={theme.colors.icon}/>
         </RewardTitle>
       : null}
-    </Col>
+    </Container>
   );
 };
 

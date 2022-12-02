@@ -54,22 +54,6 @@ export const WarnDesc = styled.div`
   }
 `
 
-export const Reference = styled.div`
-  margin-top: 3%;
-  padding-bottom: 2%;
-  color: #B0F6FF;
-  font-family: 'Neucha';
-  text-decoration: underline;
-  opacity: 0.7;
-  transition: 0.2s;
-  &:hover{
-    opacity: 1;
-  }
-  @media (min-width: 1580px) {
-    font-size: 1.2em;
-  }
-`
-
 export const FormDesc = styled.div`
   font-size: 1em;
   font-family: 'Montserrat';

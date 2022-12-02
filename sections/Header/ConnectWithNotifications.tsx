@@ -12,15 +12,18 @@ import { ConnectWalletBox, IconFrame, Notis } from './styles';
 export const ConnectWithNotifications = () => {
   const { address } = useAccount();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
 
-  const { data: notifications } = useQuery(['notification-data'], () =>
-    UniService.getDataAll(`/classes/Notification?where={"user":"${address}"}`)
-  );
+  
+  const query = `/classes/Notification?where={"user":"${address}"}`
+  const { data: notifications } = useQuery(['my-stream'], () => UniService.getDataAll(query),{
+      onSuccess: (data) => {
+          const fil =  data.filter((item: any) => item.isRead === false)
+          setUnreadNotifications(fil)
+        },
+   });
 
-  const undreadNotifications = useMemo(() => {
-    return notifications ? notifications.filter((item: any) => item.isRead === false) : [];
-  }, [notifications]);
-
+  
 
   return (
     <>
@@ -29,7 +32,7 @@ export const ConnectWithNotifications = () => {
         {address && (
           <IconFrame onClick={() => setNotificationsOpen(!notificationsOpen)}>
             {!notificationsOpen ? <BellIcon /> : <CloseIcon width={20} height={20} />}
-            {undreadNotifications.length > 0 && (
+            {unreadNotifications && unreadNotifications.length > 0 && (
               <Notis
                 animate={{
                   scale: [1, 2, 2, 1, 1],
@@ -37,7 +40,7 @@ export const ConnectWithNotifications = () => {
                   borderRadius: ['20%', '20%', '50%', '50%', '20%'],
                 }}
               >
-                {undreadNotifications.length}
+                {unreadNotifications.length}
               </Notis>
             )}
           </IconFrame>

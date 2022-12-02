@@ -41,7 +41,7 @@ export const RowEnd = styled.div`
   align-items: center;
   justify-content: flex-end;
   margin-top: 3%;
-  gap: 1rem;
+  gap: 5%;
 `
 
 export const RowStart = styled.div`
@@ -49,6 +49,7 @@ export const RowStart = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  gap: 5%;
 `
 
 export const Col = styled.div`

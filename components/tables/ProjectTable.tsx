@@ -34,8 +34,6 @@ import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
 import Tooltip from '../Tooltip';
-import { MainContainer } from '../format/Box';
-
 const PAGE_SIZE = 5;
 
 declare module '@tanstack/table-core' {
@@ -186,7 +184,7 @@ const ProjectTable = () => {
     []
   );
 
-  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1}'), {
+  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1, "type": "Standard"}'), {
     onError: (err) => {
       console.log('err', err);
     },
