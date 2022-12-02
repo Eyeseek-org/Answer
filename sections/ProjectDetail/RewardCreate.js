@@ -25,6 +25,8 @@ import { G } from '../../components/typography/ColoredTexts';
 import Socials from '../../components/buttons/Socials';
 import TabImage from '../../components/form/TabImage';
 
+
+
 const Summary = styled.div`
     margin-top: 1%;
     padding-top: 1%;
@@ -48,14 +50,11 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const [tokenType, setTokenType] = useState('Classic')
     const [success, setSuccess] = useState(false)
     const {address} = useAccount()
-
+    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
     const { rewardState, setRewardState } = useReward();
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId } = rewardState;
     const [rewardId, setRewardId] = useState(0)
- 
     const [apiError, setApiError] = useState(false)
-
-    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
 
     useEffect (() => {
         setAdd(GetProjectFundingAddress(home))

@@ -3,7 +3,7 @@ import {motion} from 'framer-motion'
 
 const Outer = styled(motion.div)`
     position: absolute;
-    background: black;
+    background: ${props => props.theme.colors.black};
     box-shadow: 0px 5px 30px rgba(255, 255, 255, 0.25);
     z-index: 100;
     margin-right: 18%;
