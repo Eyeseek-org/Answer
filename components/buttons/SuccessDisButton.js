@@ -8,8 +8,8 @@ const MyButton = styled(motion.button)`
   box-sizing: border-box;
   color: white;
   display: inline-block;
-  font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-family: 'Gemunu Libre';
+  font-size: 1.05em;
   font-weight: 500;
   height: 40px;
   line-height: 20px;

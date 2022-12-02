@@ -23,7 +23,7 @@ import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon, WebIcon } from '../icons/Project';
 import RewardTable from './RewardTable';
-import { Col, Row, BetweenRowSm, RowCenter } from '../format/Row';
+import { Col, BetweenRowSm, RowCenter } from '../format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../functional/CatPicks';
 import { RewardDesc } from '../typography/Descriptions';
@@ -34,7 +34,7 @@ import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
 import Tooltip from '../Tooltip';
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 10;
 
 declare module '@tanstack/table-core' {
   interface ColumnMeta<TData extends unknown, TValue> {
@@ -125,12 +125,6 @@ const ProjectTable = () => {
         enableSorting: true,
         enableColumnFilter: false,
       },
-      // {
-      //   accessorFn: row => `${row.pid} ${row.chainId}`,
-      //   id: 'contact',
-      //   header: 'Goal',
-      //   cell: (row) => <>${row.column.accessorFn()}</>,
-      // },
       {
         accessorKey: 'category',
         cell: (props) => <>{props.getValue()}</>,
@@ -142,7 +136,7 @@ const ProjectTable = () => {
       },
       {
         accessorKey: 'subcategory',
-        cell: (props) => <SubcatPick width={20} subcat={props.getValue()} />,
+        cell: (props) => <SubcatPick width={40} subcat={props.getValue()} />,
         header: 'Area',
         meta: {
           filter: 'select',
@@ -151,7 +145,7 @@ const ProjectTable = () => {
       },
       {
         accessorKey: 'verified',
-        cell: (props) => <>{props.getValue() ? <VerifiedIcon height={30} color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={30} height={30} color={theme.colors.icon} />}</>,
+        cell: (props) => <>{props.getValue() ? <VerifiedIcon height={30} color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={40} height={40} color={theme.colors.icon} />}</>,
         header: 'Verified',
         enableSorting: true,
         enableColumnFilter: false,

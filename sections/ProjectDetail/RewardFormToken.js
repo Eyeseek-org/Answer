@@ -27,11 +27,25 @@ const RewardFormToken = ({dType}) => {
         type={'text'}
     />
     <InputContainer
+        label={'Specific delivery'}
+        placeholder={'Token + Autograph'}
+        description={'Shortly and specifically what backer will receive'}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, delivery: e.target.value  }))}
+        type={'text'}
+    />
+    <InputContainer
         label={'Description'}
         placeholder={'Backer receives autographed copy of the book'}
-        description={'Describe briefly what backer receives for this reward'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, desc:e.target.value  }))}
+        description={'Describe briefly benefit of this reward'}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, desc: e.target.value  }))}
         type={'textArea'}
+    />
+    <InputContainer
+        label={'Estimated delivery'}
+        placeholder={'October 2055'}
+        description={'Estimate time of delivery'}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, estimation: e.target.value  }))}
+        type={'text'}
     />
     <InputContainer
         label={'Pledge'}

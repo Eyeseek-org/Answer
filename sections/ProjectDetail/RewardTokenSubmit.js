@@ -6,6 +6,9 @@ import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { ColRight } from '../../components/format/Row';
+import { useReward } from '../utils/rewardContext';
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
 
 const ButtonBox = styled.div`
   display: flex;
@@ -16,15 +19,25 @@ const ButtonBox = styled.div`
 
 const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) => {
   const [ev, setEv] = useState(false);
+  const { rewardState, setRewardState } = useReward();
+  const {  loading } = rewardState;
+  const dispatch = useDispatch() 
+
+  const noti = (text, type) => {
+    dispatch(notify(text, type))
+  }
+
 
   var total = cap * tokenAmount;
 
   const listened = async () => {
-    await setEv(true);
+    setEv(true);
+    noti('NFT Approved', 'success')
   };
 
   const handleSubmit = async () => {
-    await write?.();
+    write?.();
+    setRewardState((prev) => ({ ...prev, loading: true }))
   };
 
   useContractEvent({
@@ -50,12 +63,12 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     <ColRight>
       <ButtonBox>
         <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={1} />
-          <ButtonAlt
-            text={'Submit'}
+        {!loading ? <ButtonAlt
+            text={'Create reward'}
             onClick={() => {
               handleSubmit();
             }}
-          />
+          /> : <ButtonAlt text={'Loading...'} disabled={true} />}
       </ButtonBox>
     </ColRight>
   );

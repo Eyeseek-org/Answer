@@ -38,6 +38,9 @@ export const RewardDesc = styled.div`
   @media (min-width: 1580px) {
     font-size: 1.2em;
   }
+  @media (min-width: 2180px) {
+    font-size: 1.3em;
+  }
 `
 
 export const MiniDesc = styled.div`

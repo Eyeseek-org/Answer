@@ -12,6 +12,11 @@ export const F = styled.span`
   color: #19e1ff;
 `;
 
+export const E = styled.span`
+  color: ${(props) => props.theme.colors.primary};
+`;
+
+
 export const G = styled.span`
   color: ${(props) => props.theme.colors.darkGreen};
 `;

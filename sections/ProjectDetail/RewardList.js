@@ -23,6 +23,9 @@ const RewardList = ({ oid, chain }) => {
   const { setAppState } = useApp();
   const [selected, setSelected] = useState('');
   const [desc, setDesc] = useState('');
+  const [delivery, setDelivery] = useState('');
+  const [title, setTitle] = useState('');
+  const [estimation, setEstimation] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
   const [showDesc, setShowDesc] = useState(false);
 
@@ -32,11 +35,15 @@ const RewardList = ({ oid, chain }) => {
   // Extract image json.image, display it
   const query = `/classes/Reward?where={"project":"${oid}"}`
   const { data: rewards, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
-
-  const handleRewardClick = (sel, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors) => {
+  estimation
+  const handleRewardClick = (title, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors, estimation, delivery) => {
     setDesc(rewDesc)
     setShowDesc(!showDesc)
     setSelected(rewObjectId);
+    setDelivery(delivery)
+    setEstimation(estimation)
+    setTitle(title)
+    console.log(title)
     if (type === 'Microfund') {
       setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors  }));
     } else if (type === 'Donate') {
@@ -103,7 +110,18 @@ const RewardList = ({ oid, chain }) => {
                     selected={selected}
                     chain={chain}
                     rType={reward.rType}
-                    onClick={() => handleRewardClick(reward.title, reward.description, reward.requiredPledge, reward.type, reward.rewardId, reward.eligibleActual, reward.objectId, reward.donors)}
+                    onClick={() => handleRewardClick(
+                      reward.title, 
+                      reward.description, 
+                      reward.requiredPledge, 
+                      reward.type, 
+                      reward.rewardId, 
+                      reward.eligibleActual, 
+                      reward.objectId, 
+                      reward.donors,
+                      reward.estimation,
+                      reward.delivery
+                      )}
                   /> :  <RewardDepletedCard
                     key={reward.objectId}
                     rid={reward.rewardId}
@@ -128,7 +146,7 @@ const RewardList = ({ oid, chain }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-         {showDesc &&  <RewardAnimatedBox text={desc}/>}
+         {showDesc &&  <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title}/>}
       </Col>
     </>
   );

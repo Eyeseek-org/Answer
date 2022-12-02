@@ -5,12 +5,15 @@ export const RewardProvider = (props) => {
   const [rewardState, setRewardState] = useState({
     title: '',
     desc: '',
+    delivery: '',
+    estimation: '',
     pledge: 0,
     cap: 0,
     tokenAddress: '',
     tokenName: '',
     tokenAmount: 0,
-    nftId: 0
+    nftId: 0,
+    loading: false,
   });
 
   return (

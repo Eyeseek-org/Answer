@@ -52,7 +52,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const {address} = useAccount()
     const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
     const { rewardState, setRewardState } = useReward();
-    const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId } = rewardState;
+    const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId, delivery, estimation, loading } = rewardState;
     const [rewardId, setRewardId] = useState(0)
     const [apiError, setApiError] = useState(false)
 
@@ -70,8 +70,9 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
 
     const listened = async(event) => {
         const parse = parseInt(event)
-        await setRewardId(parse + 1)
+        setRewardId(parse + 1)
         await handleSaveReward(objectId)
+        setRewardState((prev) => ({ ...prev, loading: false }))
       }    
 
     const handleCreateReward = async (rType, n) => {
@@ -84,6 +85,8 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
             "active": true,
             "type": dType,
             "project": objectId,
+            "delivery": delivery,
+            "estimation": estimation,
             "tokenName": n,
             "tokenAddress": tokenAddress,
             "tokenAmount": Number(tokenAmount),
@@ -95,10 +98,11 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
             "donors": []
           }, moralisApiConfig)
         
-          await setApiError(false)
+          setApiError(false)
           setSuccess(true)
         } catch (error) {
             setApiError(true)
+            setRewardState((prev) => ({ ...prev, loading: false }))
         }
       }
     
