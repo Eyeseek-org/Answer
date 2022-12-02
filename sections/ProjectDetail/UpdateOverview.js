@@ -11,7 +11,7 @@ import Timeline from '../../components/Timeline'
 TimeAgo.addDefaultLocale(en)
 
 const Container = styled.div`
-    margin-top: 5%;
+    margin-top: 2%;
     color: ${(props) => props.theme.colors.font};
 `
 
@@ -20,9 +20,7 @@ const List = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 17%;
     font-family: 'Neucha';
-    
 `
 
 const A = styled.a`

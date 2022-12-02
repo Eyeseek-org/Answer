@@ -13,6 +13,7 @@ import { DapAPIService } from '../services/DapAPIService';
 import {AnimatedModal} from '../components/animated/AnimatedModal';
 import { RewardActiveIcon } from '../components/icons/Project';
 import {Buttons, ButtonRow} from '../components/notifications/Styles';
+import { RewardDesc, MiniDesc } from '../components/typography/Descriptions';
 
 TimeAgo.addDefaultLocale(en);
 
@@ -157,7 +158,8 @@ const Notifications = ({ notis }) => {
                       {noti.type === 'rewardAdded' && <RewardActiveIcon width={30} height={30} />}
                     </IconWrapper>
                     <Col>
-                      <Desc expand={expand}>{noti.description}</Desc>
+                      <Desc expand={expand}>{noti.title}</Desc>
+                     {expand ?  <RewardDesc>{noti.description}</RewardDesc> : <MiniDesc>{noti.description}</MiniDesc>}
                       <Ago>
                         <ReactTimeAgo date={noti.createdAt} locale="en-US" />
                       </Ago>

@@ -15,95 +15,95 @@ import {useTheme} from 'styled-components'
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
-const columns: ColumnDef<GroupedStream, string>[] = [
-
-  {
-    header: 'Project',
-    columns: [
-      {
-        accessorKey: 'chainId',
-        cell: (props) => (
-          <ChainIconComponent ch={props.getValue()} />
-        ),
-        header: 'Chain',
-      },
-      {
-        accessorKey: 'title',
-        header: 'Title',
-      },
-      {
-        accessorKey: 'subcategory',
-        cell: (props) => (
-          <>
-           <SubcatPick subcat={props.getValue()}/>  
-          </>
-        ),
-         // @ts-ignore
-        header: <HeaderCell>Area</HeaderCell>,
-      },
-      {
-        accessorKey: 'projectId',
-        cell: (props) => (
-          // @ts-ignore
-          <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}  color={theme.colors.icon}/></a>
-        ),
-        header: 'Detail',
-      },
-      {
-        accessorKey: 'chainId',
-        cell: (props) => (
-          <SuperBalance chain={props.getValue()} address={'0xa0a39c5823A51184043655711C8157ef4826447a'} />
-        ),
-        header: 'wBalance',
-      },
-    ],
-  },
-  {
-    header: 'Streams',
-    columns: [
-      {
-        accessorKey: 'addressBacker',
-        cell: (props) => (
-          <AddCol>
-            <Address address={props.getValue()} />
-          </AddCol>
-        ),
-        header: 'Address',
-      },
-      {
-        accessorKey: 'owner',
-        cell: (props) => (
-          <AddCol>
-            <Address address={props.getValue().toLowerCase()} />
-          </AddCol>
-        ),
-        header: 'Creator',
-      },
-      {
-        accessorKey: 'flowRate',
-        cell: (props) => (
-          <>
-            {props.getValue()}
-          </>
-        ),
-        header: 'Rate /mo',
-      },
-    ],
-  },
-  // streamCol.accessor('stream', {
-  //   header: () => 'Stream',
-  //   cell: (
-  //     <AddCol>
-  //       <StreamCounter startValue={0} endValue={500000} />
-  //     </AddCol>
-  //   ),
-  // }),
-];
-
 const StreamTable = () => {
   const [sorting, setSorting] = useState([]);
   const [data, setData] = useState<GroupedStream[]>([]);
   const theme = useTheme();
+
+  const columns: ColumnDef<GroupedStream, string>[] = [
+
+    {
+      header: 'Projects',
+      columns: [
+        {
+          accessorKey: 'chainId',
+          cell: (props) => (
+            <ChainIconComponent ch={props.getValue()} />
+          ),
+          header: 'Chain',
+        },
+        {
+          accessorKey: 'title',
+          header: 'Title',
+        },
+        {
+          accessorKey: 'subcategory',
+          cell: (props) => (
+            <>
+             <SubcatPick width={20} subcat={props.getValue()}/>  
+            </>
+          ),
+           // @ts-ignore
+          header: <HeaderCell>Area</HeaderCell>,
+        },
+        {
+          accessorKey: 'projectId',
+          cell: (props) => (
+            // @ts-ignore
+            <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}  color={theme.colors.icon}/></a>
+          ),
+          header: 'Detail',
+        },
+        {
+          accessorKey: 'chainId',
+          cell: (props) => (
+            <SuperBalance chain={props.getValue()} address={'0xa0a39c5823A51184043655711C8157ef4826447a'} />
+          ),
+          header: 'wBalance',
+        },
+      ],
+    },
+    {
+      header: 'Active streams',
+      columns: [
+        {
+          accessorKey: 'addressBacker',
+          cell: (props) => (
+            <AddCol>
+              <Address address={props.getValue()} />
+            </AddCol>
+          ),
+          header: 'Address',
+        },
+        {
+          accessorKey: 'owner',
+          cell: (props) => (
+            <AddCol>
+              <Address address={props.getValue().toLowerCase()} />
+            </AddCol>
+          ),
+          header: 'Creator',
+        },
+        {
+          accessorKey: 'flowRate',
+          cell: (props) => (
+            <>
+              {props.getValue()}
+            </>
+          ),
+          header: 'Rate /mo',
+        },
+      ],
+    },
+    // streamCol.accessor('stream', {
+    //   header: () => 'Stream',
+    //   cell: (
+    //     <AddCol>
+    //       <StreamCounter startValue={0} endValue={500000} />
+    //     </AddCol>
+    //   ),
+    // }),
+  ];
 
   const { data: activeStreams } = useQuery(['streams'], () => UniService.getDataAll<Stream>('/classes/Stream?where={"isActive": true}'), {
     onError: (err) => {

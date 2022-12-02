@@ -24,9 +24,9 @@ export const MicrofundIcon = ({ width }) => {
   );
 };
 
-export const PiggyIcon = ({ width }) => {
+export const PiggyIcon = ({ width, height }) => {
   return (
-    <svg width={width} height="74" viewBox="0 0 79 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 79 78" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

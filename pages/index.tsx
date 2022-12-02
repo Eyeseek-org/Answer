@@ -11,7 +11,6 @@ import LandingMain from '../sections/Landing/LandingMain';
 import LatestProjects from '../sections/Landing/LatestProjects';
 import Features from '../sections/Landing/Features';
 
-
 const Container = styled.div`
   position: relative;
   margin-top: 1%;
@@ -24,6 +23,7 @@ const EyeSevenBox = styled.div`
   text-align: center;
   position: relative;
 `;
+
 
 const Home: NextPage = () => {
   useEffect(() => {

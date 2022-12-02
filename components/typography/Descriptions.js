@@ -40,6 +40,20 @@ export const RewardDesc = styled.div`
   }
 `
 
+export const MiniDesc = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: 'Neucha';
+  letter-spacing: 0.4px;
+  font-size: 0.8em;
+  margin-bottom: 2px;
+  color: ${(props) => props.theme.colors.font};
+  @media (min-width: 1580px) {
+    font-size: 1em;
+  }
+`
+
 export const WarnDesc = styled.div`
   font-family: 'Roboto';
   font-style: normal;

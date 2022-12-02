@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TabHeader, TabsContainer } from './Tab.styles';
 
 export interface TabsContent {
+  active: string;
   label: string;
   component: React.ReactNode;
 }
@@ -17,7 +18,9 @@ export const Tab = ({ tabs }: TabProps): JSX.Element => {
     <>
       <TabsContainer>
         {tabs.map((tab, index) => {
-          return <TabHeader onClick={() => setActiveTabIndex(index)}>{tab.label}</TabHeader>;
+          return <>
+           {tab.active === tab.label ?  <TabHeader onClick={() => setActiveTabIndex(index)}>{tab.label}</TabHeader> : <TabHeader onClick={() => setActiveTabIndex(index)}>{tab.label}</TabHeader>}
+          </>
         })}
       </TabsContainer>
       {tabs[activeTabIndex].component}

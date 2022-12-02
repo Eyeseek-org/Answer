@@ -137,8 +137,8 @@ const Distribute: NextPage = () => {
         await axios.post(
           `${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`,
           {
-            title: 'Project funded',
-            description: `Project ${project.title} was successfully funded.`,
+            title: `Project  ${project.title} funded`,
+            description: `You sons of bitches, you did it!! Creator will notify users about next steps.`,
             type: 'projectFunded',
             project: `${project.objectId}`,
             user: bookmark,

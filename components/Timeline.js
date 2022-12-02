@@ -6,8 +6,8 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 9%;
-    padding-bottom: 5%;
+    margin-top: 2%;
+    padding-bottom: 8%;
     @media (max-width: 1068px) {
         display: none;
     }
@@ -83,8 +83,6 @@ const Date = styled.div`
 `
 
 const Timeline = ({milestones}) => {
-    
-
     const Mil = ({date, title, url}) => {
         const [show, setShow] = useState(false)
         return <>

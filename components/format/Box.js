@@ -106,3 +106,13 @@ export const RewardBox = styled(motion.div)`
     font-size: 1.1em;
   }
 `;
+
+export const SpacingBox = styled.div`
+  padding-left: 16%;
+  padding-right: 16%;
+  @media (max-width: 768px) {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+`
+
