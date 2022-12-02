@@ -23,6 +23,15 @@ export const LogRow = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 5px;
+  animation: fadeIn 0.7s;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 export const Ref = styled.div`

@@ -112,6 +112,7 @@ const ProjectDetail = ({
             type: 'projectCanceled',
             project: `${objectId}`,
             user: bookmark,
+            isRead: false,
           },
           moralisApiConfig
         );

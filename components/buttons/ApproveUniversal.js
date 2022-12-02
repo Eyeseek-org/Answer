@@ -6,20 +6,10 @@ import Rainbow from './Rainbow'
 import Lottie from "react-lottie";
 import ButtonAlt from './ButtonAlt'
 import {okAnim, loadingAnim} from '../animated/Animations';
+import { AbsoluteLeft } from '../format/Box'
+import { Col } from '../format/Row'
 
 const Container = styled.div`
-    position: relative;
-`
-
-const ApprovalBox = styled.div`
-    position: absolute;
-    left: 0;
-    z-index: 50;
-`
-
-const Approve = styled.div`
-    display: flex;
-    flex-direction: column;
     position: relative;
 `
 
@@ -45,8 +35,8 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const appAmount = amount * d
 
     const listened = async() => {
-        await setEv(true)
-        await setLoading(false)
+        setEv(true)
+        setLoading(false)
     }
 
     useEffect (() => {
@@ -82,20 +72,18 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     }
 
 
-
     return <Container>
-
         {!address && <Rainbow/>}
         {address && <Wrapper>
-        <ApprovalBox>
+        <AbsoluteLeft>
             {ev && !loading && <><Lottie height={30} width={30} options={okAnim} /></>} 
             {!ev && loading && !error && <><Lottie height={50} width={50} options={loadingAnim} /></>}
-        </ApprovalBox>
+        </AbsoluteLeft>
             {!ev ?  
             <ButtonAlt 
                 width={'200px'} 
                 onClick={() => handleApprove()} 
-                text={<Approve><div>Approve</div><Amount>{amount}</Amount></Approve>} />
+                text={<Col><div>Approve</div><Amount>{amount}</Amount></Col>} />
                 : 
             <ButtonAlt width={'200px'} text={'Approve again'} onClick={() => handleApprove()}  />}
          </Wrapper>}

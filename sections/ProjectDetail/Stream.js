@@ -10,12 +10,14 @@ import { moralisApiConfig } from '../../data/moralisApiConfig'
 import Address from "../../components/functional/Address"
 import ButtonAlt from "../../components/buttons/ButtonAlt";
 import Subtitle from "../../components/typography/Subtitle";
-import {Reference, RewardDesc} from '../../components/typography/Descriptions'
+import {RewardDesc} from '../../components/typography/Descriptions'
 import ApproveUniversal from "../../components/buttons/ApproveUniversal";
 import StreamCounter from "../../components/functional/StreamCounter";
 import StreamBalances from './StreamBalances';
 import { BetweenRow } from "../../components/format/Row.js";
 import ButtonErr from "../../components/buttons/ButtonErr.js";
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
 
 const Container = styled.div`
   padding-left: 1%;
@@ -79,6 +81,10 @@ const ActiveValue = styled.div`
 const RowItem = styled.div`
   font-family: 'Gemunu Libre';
   width: 33%;
+  color: ${(props) => props.theme.colors.primary};
+  @media (min-width: 1550px) {
+    font-size: 1.2em;
+  }
 `
 
 const RowRightItem = styled(RowItem)`
@@ -117,6 +123,13 @@ const Stream = ({ objectId, recipient, chainId }) => {
   const [superTokenAddress, setSuperTokenAddress] = useState('0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f')
   const {chain} = useNetwork()
   const { switchNetwork } = useSwitchNetwork();
+
+  const dispatch = useDispatch() 
+
+  const noti = (text, type) => {
+    dispatch(notify(text, type))
+  }
+
 
   /// CFAv1Forwarder
   const superContract = "0xcfA132E353cB4E398080B9700609bb008eceB125" // Same address fro both Polygon and Optimism
@@ -188,6 +201,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
         'chainId': chainId,
         'addressBacker': address,
       }, moralisApiConfig)
+      noti("Well done, stream was successfully created", "success")
       setApiError(false)
     } catch (error) {
       console.log(error)
@@ -203,6 +217,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
         'isActive': false
       }, moralisApiConfig)
       setApiError(false)
+      noti("Stream was deactivated", "success")
     } catch (error) {
       console.log(error)
       setApiError(true)
@@ -327,11 +342,6 @@ const Stream = ({ objectId, recipient, chainId }) => {
               </>
           }
         </>}
-        <BetweenRow>
-               <a href='https://app.superfluid.finance' rel="noopener noreferrer" target="_blank">  
-                <Reference>Manage your streams in Superfluid App</Reference>
-               </a>
-            </BetweenRow>
         </StreamComponent>
     {newStream &&  <StreamBalances 
                         address={address} 

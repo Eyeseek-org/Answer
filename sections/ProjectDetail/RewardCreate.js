@@ -7,7 +7,7 @@ import { RewardDesc, TabRow } from "../start_project/Styles";
 import donation from "../../abi/donation.json"
 import Tab from "../../components/form/Tab";
 import { BetweenRow } from "../../components/format/Row";
-import {MainMilestoneContainer, MilestoneContainer,MainContainer,RewardContainer } from '../../components/form/InputWrappers'
+import {MainMilestoneContainer, MilestoneContainer,MainContainer } from '../../components/form/InputWrappers'
 import ErrText from "../../components/typography/ErrText";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import Subtitle from '../../components/typography/Subtitle';
@@ -136,13 +136,13 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
               'description': `Project added ${token} reward incentivization.`,
               'type': 'rewardAdded',
               'project': `${objectId}`,
-              'user': bookmark
+              'user': bookmark,
+              'isRead': false
             }, moralisApiConfig)
           })
         }
       }
     return <MainContainer>
-        <RewardContainer>
          <Subtitle text='Create new Reward' />
             <MainMilestoneContainer>
             {!success && !apiError && <>
@@ -188,7 +188,6 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                         <SuccessDisButton onClick={()=>{setSuccess(false)}} width={'100%'} text="Success: Reward was created (click for new reward)"/>
                     </>}
             </MainMilestoneContainer>
-        </RewardContainer>
     </MainContainer>
 }
 

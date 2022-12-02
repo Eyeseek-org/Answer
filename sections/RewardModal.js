@@ -66,11 +66,12 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
             if (backers && backers.length > 0) {
               backers.forEach(async (backer) => {
                 await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`, {
-                  'title': `Reward elibility`,
-                  'description': `Update about project rewards.`,
+                  'title': `Rewards unlocked`,
+                  'description': `Take a look which project unlocked rewards for its backers.`,
                   'type': 'rewardEligible',
                   'project': `${objectId}`, // vzít pak z parenta
-                  'user': backer.address
+                  'user': backer.address,
+                  'isRead': false
                 }, moralisApiConfig)
               })
             }

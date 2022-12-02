@@ -14,6 +14,7 @@ import {motion} from 'framer-motion';
 import { YouTubeIcon } from '../components/icons/Socials';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
+import { PiggyIcon } from '../components/icons/Landing';
 
 const Row = styled.div`
   display: flex;
@@ -167,6 +168,18 @@ const Faq: NextPage = () => {
       ],
       image: <WorkIcon width={100} height={150}  color={theme.colors.icon}  />,
     },
+    {
+      question: 'What happens after the project is funded?',
+      answer: 'Creators should handle their responsibilities',
+      points: [
+        'Project owner should notify backers with next steps',
+        'Token rewards are automatically distributed to backers',
+        'Non-token rewards are in hand of the project owner',
+        'Microfund resources not charged are returned to backers',
+        'Project owner receives on wallet address USDC/USDT funds',
+      ],
+      image: <PiggyIcon width={150} height={100} color={theme.colors.icon} />,
+    }
   ];
   
   const ICats: ICats[] = [

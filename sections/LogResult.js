@@ -5,7 +5,6 @@ import {useState, useEffect} from 'react'
 import { ChainExplorer } from '../helpers/MultichainHelpers';
 import { useNetwork } from 'wagmi';
 import { B, G, O, R } from '../components/typography/ColoredTexts';
-import ButtonAlt from '../components/buttons/ButtonAlt';
 import { Typewriter } from 'react-simple-typewriter'
 
 const LogResult = ({ ev, error, apiError, success, type, data }) => {
@@ -84,23 +83,10 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 </LogRow>}
                 {ev && <>
                   <LogRow>
-                    <InfoTag>Info</InfoTag>                      
-                    <Typewriter
-                      words={['Project transaction processed']}
-                      cursor
-                      cursorStyle='_'
-                      typeSpeed={60}
-                      delaySpeed={40000}
-                    />
-                  </LogRow>
-                  <LogRow>
                     {data && <><InfoTag>Info</InfoTag> 
                     <a href={`${explorer}${data.hash}`} target="_blank" rel="noopener noreferrer">
-                     <B> Transaction detail in blockchain explorer</B>
+                     <B> <u>Transaction detail in blockchain explorer</u></B>
                     </a></> }
-                  </LogRow>
-                  <LogRow>
-                    <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/>
                   </LogRow>
                   </>}
                 {ev && success && ( <AnimBox> <Lottie height={100} width={100} options={okAnim} /> </AnimBox>)}
@@ -116,9 +102,6 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 {!apiError && <>
                   <LogRow>
                     <InfoTag>Info</InfoTag> <G>Project was created with type: Stream</G>
-                  </LogRow>
-                  <LogRow>
-                    <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/>
                   </LogRow>
                 </>}
                 {apiError && ( <AnimBox> <Lottie height={100} width={100} options={errAnim} /></AnimBox> )}

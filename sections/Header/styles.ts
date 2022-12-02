@@ -93,6 +93,7 @@ export const Notis = styled(motion.div)`
   height: 17px;
   font-size: 13px;
   padding: 2%;
+  z-index: 50;
   border-radius: 15px;
   background: #ab0000;
   right: -10%;

@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import InputContainer from '../../components/form/InputContainer';
-import { MainMilestoneContainer, MilestoneContainer, MainContainer, RewardContainer } from '../../components/form/InputWrappers';
+import { MainMilestoneContainer, MilestoneContainer, MainContainer } from '../../components/form/InputWrappers';
 import { HTTPS_URL_REGEX } from '../../util/regex';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import { useMutation } from '@tanstack/react-query';
@@ -16,9 +16,6 @@ import { FormDesc } from '../../components/typography/Descriptions';
 const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const [url, setUrl] = useState('');
   const [updateTitle, setUpdateTitle] = useState('');
-
-  // Missing auth for parse, maybe master: true needed
- // const { mutate: updateParseProject, isSuccess, isError } = useMutation(DapAPIService.updateParseProject);
   const { mutate: updateProject, isSuccess, isError } = useMutation(DapAPIService.updateProject);
 
   const { mutate: notifyReward } = useMutation(DapAPIService.handleRewardNotification);
@@ -26,8 +23,9 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const handleUpdate = async (oid) => {
     updateProject(
       {
-        id: oid,
         title,
+        id: oid,
+        description,
         url,
       },
       {
@@ -40,8 +38,8 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     if (bookmarks) {
       bookmarks.forEach(async (bookmark) => {
         notifyReward({
-          title: updateTitle,
-          oldTitle: title,
+          title: 'Project update',
+          description: updateTitle,
           objectId,
           bookmark,
         });
@@ -68,7 +66,6 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
 
   return (
     <MainContainer>
-      <RewardContainer>
         <MainMilestoneContainer>
           <MilestoneContainer>
              <Subtitle text="Create new update" />
@@ -120,7 +117,6 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
             {isSuccess && <SuccessDisButton width={'100%'} text="Success! Watchers were notified"></SuccessDisButton>}
           </MilestoneContainer>
         </MainMilestoneContainer>
-      </RewardContainer>
     </MainContainer>
   );
 };

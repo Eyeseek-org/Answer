@@ -12,7 +12,6 @@ import Tooltip from '../../components/Tooltip';
 import Warning from '../../components/animated/Warning';
 import ButtonErr from '../../components/buttons/ButtonErr';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
-import { blockchains } from '../../data/blockchains';
 import { currencies } from '../../data/currencies';
 import { testChains } from '../../data/contracts';
 import NativeFaucet from '../../sections/Donate/NativeFaucet';
@@ -24,7 +23,7 @@ import DonateWrapper from '../../sections/Donate/DonateWrapper';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
-import {ChainIcon, ChainIconComponent, CurrAddress} from '../../helpers/MultichainHelpers'
+import {ChainIconComponent, CurrAddress} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
@@ -148,11 +147,12 @@ const Donate: NextPage = () => {
 
 
   const query = `/classes/Project?where={"objectId":"${objectId}"}`
-  const { data: projectDetail, error } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
+  const { data: projectDetail } = useQuery(['project-detail'], () => UniService.getDataSingle(query), {
     enabled: !!router.isReady,
     onSuccess: (data) => {
        // @ts-ignore
       setAdd(GetProjectFundingAddress(data.chainId));
+      setCurrencyAddress(CurrAddress(currency, data.chainId));
     },
     onError: (error) => {
       setApiError(true);
@@ -219,33 +219,6 @@ const Donate: NextPage = () => {
     }
   };
 
-  const RenderBlockchain = () => {
-    return (
-      <>
-        {blockchains.map((bc, index) => {
-          const { logo, chainId } = bc;
-          return (
-            <Option key={chainId}>
-              {chain && chain.id === chainId ? (
-                <ImgActiveBox key={index}>
-                  <Image src={logo} alt="alt" width={'40'} height={'40'} />
-                </ImgActiveBox>
-              ) : (
-                <ImgBox
-                  onClick={() => {
-                    handleSwitchNetwork(chainId);
-                  }}
-                >
-                  <Image src={logo} alt="alt" width={'40'} height={'40'} />
-                </ImgBox>
-              )}
-            </Option>
-          );
-        })}
-      </>
-    );
-  };
-
   const RenderCurrency = () => {
     return <>
         {currencies.map((c, index) => {
@@ -297,7 +270,7 @@ const Donate: NextPage = () => {
           </DonateOptionTitle>
            <Row>
               {projectDetail && <div> <ChainIconComponent ch={projectDetail.chainId} /></div>}
-              {chain?.id !== projectDetail?.chainId && <ButtonErr text="Wrong network" onClick={() => switchNetwork(projectDetail?.chainId)} width={'150px'} />}
+              {chain?.id !== projectDetail?.chainId && <ButtonErr text="Wrong network" onClick={() => handleSwitchNetwork(projectDetail?.chainId)} width={'150px'} />}
             </Row>
         </DonateOption>
         <DonateOption>

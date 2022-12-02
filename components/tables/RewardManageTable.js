@@ -1,8 +1,8 @@
 import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getGroupedRowModel, getFacetedUniqueValues } from '@tanstack/react-table';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
-import { useState, useMemo } from 'react';
-import {Table, Header, Tr, Cell, HeadRow, AddCol, HeaderCell } from './TableStyles';
+import { useState } from 'react';
+import {Table, Header, Tr, Cell, HeadRow} from './TableStyles';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 
 const RewardManageTable = ({rewardId}) => {

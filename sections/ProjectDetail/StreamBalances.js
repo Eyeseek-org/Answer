@@ -11,6 +11,8 @@ import Tooltip from "../../components/Tooltip.js";
 import ButtonAlt from "../../components/buttons/ButtonAlt";
 import { Reference } from "../../components/typography/Descriptions.js";
 import { InfoIcon } from "../../components/icons/Common.js";
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
 
 
 const Row = styled.div`
@@ -49,6 +51,15 @@ const Input = styled.input`
   padding-right: 10px;
 `
 
+const RowItem = styled.div`
+  font-family: 'Gemunu Libre';
+  color: ${(props) => props.theme.colors.primary};
+  @media (min-width: 1550px) {
+    font-size: 1.2em;
+  }
+`
+
+
 const Texts = {
     wrappedTooltip: "Wrapped tokens are tokens that are wrapped into a SuperToken. This allows you to use them in the Superfluid protocol.",
     nativeTooltip: "Native tokens are tokens that are not wrapped into a SuperToken. This means that you can't use them in the Superfluid protocol.",
@@ -60,6 +71,11 @@ const StreamBalances = ({address, provider, signer, token, superContract}) => {
     const [tooltipText, setTooltipText] = useState('')
     const [wrappedAmount, setWrappedAmount] = useState(1000)
     const theme = useTheme()
+    const dispatch = useDispatch() 
+
+    const noti = (text, type) => {
+      dispatch(notify(text, type))
+    }
 
     const native = "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7"
 
@@ -87,31 +103,19 @@ const StreamBalances = ({address, provider, signer, token, superContract}) => {
             amount: amtToUpgrade.toString()
           });
           const upgradeTxn = await upgradeOperation.exec(signer);
-          await upgradeTxn.wait().then(function (tx) {
-            console.log(
-              `
-              Congrats - you've just upgraded DAI to DAIx!
-            `
-            );
+          await upgradeTxn.wait().then(function () {
+            noti("Your tokens were upgraded to Super tokens", "success")
           });
         } catch (error) {
           console.error(error);
+          noti("It does not look good, check if you have enough balance", "error")
         }
       }
     
     
       async function unwrap(amt) {
-        const sf = await Framework.create({
-          provider: provider,
-          chainId: chainId
-        })
-    
-      
-        const DAIx = await sf.loadSuperToken(
-          token
-        );
-      
-      
+        const sf = await Framework.create({provider: provider,chainId: chainId})
+        const DAIx = await sf.loadSuperToken(token);
         try {
           console.log(`Downgrading $${amt} fDAIx...`);
           const amtToDowngrade = ethers.utils.parseEther(amt.toString());
@@ -119,30 +123,27 @@ const StreamBalances = ({address, provider, signer, token, superContract}) => {
             amount: amtToDowngrade.toString()
           });
           const downgradeTxn = await downgradeOperation.exec(signer);
-          await downgradeTxn.wait().then(function (tx) {
-            console.log(
-              `
-                Looks like success
-            `
-            );
+          await downgradeTxn.wait().then(function () {
+            noti("Downgraded back to ERC20 stablecoins", "success")
           });
         } catch (error) {
           console.error(error);
+          noti("It does not look good, check if you have enough balance", "error")
         }
       }
 
     return  <BalancesBox>
        {showTooltip && <Tooltip text={tooltipText}/>}
         <Row>
-            <div onMouseEnter={()=>{handleTooltip(Texts.wrappedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Wrapped balance <InfoIcon color={theme.colors.icon} width={15}/> </div> 
+            <div onMouseEnter={()=>{handleTooltip(Texts.wrappedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}><RowItem>Wrapped balance <InfoIcon color={theme.colors.icon} width={15}/></RowItem> </div> 
             <BalanceComponent token={token} address={address} dec/>
         </Row>
         <Row>
-            <div onMouseEnter={()=>{handleTooltip(Texts.nativeTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Native balance <InfoIcon color={theme.colors.icon} width={15}/></div> 
+            <div onMouseEnter={()=>{handleTooltip(Texts.nativeTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}><RowItem>Native balance <InfoIcon color={theme.colors.icon} width={15}/></RowItem> </div> 
             <BalanceComponent token={native} address={address} dec/>
         </Row>
         <Row>
-            <div onMouseEnter={()=>{handleTooltip(Texts.approvedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}>Approved amount <InfoIcon color={theme.colors.icon} width={15}/></div> 
+            <div onMouseEnter={()=>{handleTooltip(Texts.approvedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}><RowItem>Approved amount <InfoIcon color={theme.colors.icon} width={15}/></RowItem> </div> 
             <Allowance address={address} spender={superContract} apprToken={token} tokenSymbol={'fDAIx'} />
         </Row>
         <ActionRow>

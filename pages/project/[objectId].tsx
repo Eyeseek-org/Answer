@@ -14,6 +14,7 @@ import StatsTable from '../../components/tables/StatsTable';
 import SectionTitle from '../../components/typography/SectionTitle';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
+import { SpacingBox } from '../../components/format/Box';
 
 const Container = styled.div`
   margin-top: 5%;
@@ -99,18 +100,18 @@ const Project: NextPage = () => {
               />
             )}
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 
-              <>
-                <TabBox><RewardList oid={objectId} chain={project.chainId} /></TabBox>
+              <SpacingBox>
+                <RewardList oid={objectId} chain={project.chainId} />
                 {address === project.owner && (
                   <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} owner={project.owner} />
                 )}
-              </> : null
+              </SpacingBox> : null
             }
             {project && mode === 'Updates' && (
-              <>
+              <SpacingBox>
                 <UpdateOverview objectId={objectId} />
                 {address === project.owner && <UpdateCreate objectId={objectId} bookmarks={project.bookmarks} title={project.title} />}
-              </>
+              </SpacingBox>
             )}
             {project && mode === 'Transactions' && <StatsTable pid={project.pid} chain={project.chainId} />}
           </>

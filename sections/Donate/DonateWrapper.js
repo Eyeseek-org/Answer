@@ -10,15 +10,35 @@ import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
-import { Row, RowCenter } from '../../components/format/Row';
+import { Row, RowCenter} from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { DonateErrIcon, DonateFormIcon } from '../../components/icons/Project';
 import { MainContainer } from '../../components/format/Box';
 import Tooltip from '../../components/Tooltip';
-import LogResult from '../LogResult'
+import {notify} from 'reapop'
+import {useDispatch} from 'react-redux'
+import Socials from '../../components/buttons/Socials';
+import LoaderSmall from '../../components/animated/LoaderSmall'
 
+const ButtonBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  padding-right: 10%;
+  gap: 5%;
+  animation: fadeIn 1.7s;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`
 
 const Metrics = styled.div`
   font-family: 'Gemunu Libre';
@@ -31,6 +51,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const { address } = useAccount();
   const [apiError, setApiError] = useState(false)
   const [success, setSuccess] = useState(false);
+  const [ready, setReady] = useState(false);
   const { chain } = useNetwork();
   // @ts-ignore
   const { appState } = useApp();
@@ -40,8 +61,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const router = useRouter();
   const { objectId } = router.query;
   const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
-  const [ready,setReady] = useState(false)
   const [donateTooltip, setDonateTooltip] = useState(false);
+  const dispatch = useDispatch() 
+
+
+  const noti = (text, type) => {
+    dispatch(notify(text, type))
+  }
 
   useEffect(() => {
     setSpender(GetProjectFundingAddress(home));
@@ -63,11 +89,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   }
 
   const useEv = async() => {
-    await setSuccess(true);
-    await updateBookmark(bookmarks);
+    setSuccess(true);
+    updateBookmark(bookmarks);
+    setReady(false)
     if (rewEligible > 0){
       await updateReward(rewDonors);
     }
+    noti("It worked, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
   };
 
   useContractEvent({
@@ -91,7 +119,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const sixDonate = rewDAmount * 1000000; 
   const sixMicro = rewMAmount * 1000000; 
  
-  const {write, data, error} = useContractWrite({
+  const {write} = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: add,
     abi: donation.abi,
@@ -101,9 +129,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   })
 
   const handleSubmit = async () => {
-    await write?.();
-    // Think about new event in contract - Something started
-    await  setReady(true)
+    setReady(true)
+    write?.();
   };
 
   const updateBookmark = async (bookmarks) => {
@@ -124,6 +151,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
       setApiError(false)
     } catch (er) {
       setApiError(true)
+      noti("Reward was not claimed, contact us, we will solve it", "error")
     }
   }
 
@@ -151,19 +179,23 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
                   <ButtonAlt text={<><DonateErrIcon width={30}/></>}  onClick={() => handleSubmit()} />
                 ) : <>
                     {sum === 0 ? null :                 
-                  <div onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
+                  <Row onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
                     {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
                     {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>} /> }
                     {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>}  /> }
-                  </div> }
+                    {ready && <LoaderSmall/>}
+                  </Row> }
                 </> }
               </>
             )}
           </div>
         </RowCenter>
       ) : null}   
+      {success && <ButtonBox>
+          <Socials text='I just donated to this project via Eyeeseek, come join me to support this cool idea'/>
+          <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/> 
+        </ButtonBox>}
     </MainContainer>
-        {ready && <LogResult ev={success} error={error} apiError={apiError} success={success} type={'Donation initialized'} data={data}/>}
   </>
 };
 

@@ -34,6 +34,7 @@ export const AbsoluteLeft = styled.div`
   top: 0;
   display: flex;
   flex-direction: column;
+  z-index: 50;
 `
 
 export const Wrapper = styled.div`
@@ -57,7 +58,7 @@ export const Wrapper = styled.div`
 export const MainContainer = styled.div`
   position: relative;
   padding-top: 5%;
-  margin-bottom: 10%;
+  margin-bottom: 8%;
   width: 100%;
   animation: fadeIn 0.7s;
   z-index: 1;
@@ -105,3 +106,13 @@ export const RewardBox = styled(motion.div)`
     font-size: 1.1em;
   }
 `;
+
+export const SpacingBox = styled.div`
+  padding-left: 16%;
+  padding-right: 16%;
+  @media (max-width: 768px) {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+`
+

@@ -41,3 +41,7 @@ a {
   margin: 0;
   padding: 0;
 }
+
+.reapop__notification--success .reapop__notification--info .reapop__notification--error {
+  background-color: #141414 !important;
+}

@@ -29,6 +29,7 @@ export class DapAPIService {
       title,
       url,
       project: id,
+      isRead: false
     });
   }
 
@@ -40,13 +41,14 @@ export class DapAPIService {
     });
   }
 
-  static async handleRewardNotification({ title, oldTitle, objectId, bookmark }) {
+  static async handleRewardNotification({ title, description, objectId, bookmark }) {
     return await DapAxiosInstance.post('/classes/Notification', {
-      title,
-      description: `Project ${oldTitle} has been updated!`,
+      title: title,
+      description: description,
       type: 'projectUpdate',
       project: objectId,
       user: bookmark,
+      isRead: false,
     });
   }
 

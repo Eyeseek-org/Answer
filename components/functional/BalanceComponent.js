@@ -27,7 +27,6 @@ const BalanceComponent = ({ token, address, dec }) => {
     chainId: ch,
   });
 
-
   return (
     <Container>
        <div> {!dec ? <Amount value={(Number(data?.formatted) / 1000000)} /> 
