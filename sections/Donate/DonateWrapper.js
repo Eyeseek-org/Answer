@@ -134,13 +134,15 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   };
 
   const updateBookmark = async (bookmarks) => {
-    const newBookmarks = [...bookmarks, address];
-    try {
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { bookmarks: newBookmarks }, moralisApiConfig);
-      setApiError(false)
-    } catch (er) {
-      setApiError(true)
-    }
+    if (!bookmarks.includes(address)){
+      const newBookmarks = [...bookmarks, address];
+      try {
+        await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${objectId}`, { bookmarks: newBookmarks }, moralisApiConfig);
+        setApiError(false)
+      } catch (er) {
+        setApiError(true)
+      }
+    } 
   };
 
 

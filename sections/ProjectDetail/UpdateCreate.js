@@ -16,6 +16,7 @@ import { FormDesc } from '../../components/typography/Descriptions';
 const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const [url, setUrl] = useState('');
   const [updateTitle, setUpdateTitle] = useState('');
+  const [updateDesc, setUpdateDesc] = useState('');
   const { mutate: updateProject, isSuccess, isError } = useMutation(DapAPIService.updateProject);
 
   const { mutate: notifyReward } = useMutation(DapAPIService.handleRewardNotification);
@@ -23,9 +24,9 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const handleUpdate = async (oid) => {
     updateProject(
       {
-        title,
+        title: updateTitle,
         id: oid,
-        description,
+        description: updateDesc,
         url,
       },
       {
@@ -38,10 +39,11 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     if (bookmarks) {
       bookmarks.forEach(async (bookmark) => {
         notifyReward({
-          title: 'Project update',
-          description: updateTitle,
+          title: `Project update - ${updateTitle}`,
+          description: updateDesc,
           objectId,
           bookmark,
+          long: true
         });
       });
     }
@@ -58,9 +60,10 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
     validationSchema: Yup.object({
       url: Yup.string().required('URL is required field').matches(HTTPS_URL_REGEX, 'References are accepted with HTTPS prefix only'),
       title: Yup.string().required('Title is required field'),
+      description: Yup.string().required('Description is required field'),
     }),
     onSubmit: (values) => {
-      handleUpdate(objectOd);
+      handleUpdate(values.objectId);
     },
   });
 
@@ -79,12 +82,25 @@ const UpdateCreate = ({ objectId, bookmarks, title }) => {
                 label={'Update title'}
                 value={updateTitle}
                 placeholder={'Alpha available!'}
-                description={'Describe your update in two or three words'}
+                description={'Entitle the update in two or three words'}
                 onChange={(e) => setUpdateTitle(e.target.value)}
                 type={'text'}
                 maxLength={30}
                 isError={formik.errors[updateTitle] != null}
                 errorText={formik.errors[updateTitle]}
+              />
+            <InputContainer
+                key={'description'}
+                name={'description'}
+                label={'Description'}
+                value={updateDesc}
+                placeholder={'Desc TBD'}
+                description={'Describe your update briefly'}
+                onChange={(e) => setUpdateDesc(e.target.value)}
+                type={'textArea'}
+                maxLength={250}
+                isError={formik.errors[updateDesc] != null}
+                errorText={formik.errors[updateDesc]}
               />
             <InputContainer
               key={'url'}
