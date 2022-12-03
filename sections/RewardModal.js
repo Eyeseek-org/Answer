@@ -3,13 +3,14 @@ import {AnimatedModal} from '../components/animated/AnimatedModal'
 import { CloseIcon, ExpandIcon, ShrinkIcon } from '../components/icons/Notifications';
 import styled, {useTheme} from 'styled-components';
 import { ButtonRow, Buttons } from '../components/notifications/Styles';
-import { BetweenRow, RowCenter } from '../components/format/Row';
+import { BetweenRow, Row } from '../components/format/Row';
 import Address from '../components/functional/Address';
 import axios from 'axios';
 import { moralisApiConfig } from '../data/moralisApiConfig';
 import { RewardDesc } from '../components/typography/Descriptions';
-import { HandshakeIcon, BackArrow, RemindIcon } from '../components/icons/Actions';
 import CircleButton from '../components/buttons/CircleButton'
+import ClickableIcon from '../components/animated/ClickableIcon'
+import { B } from '../components/typography/ColoredTexts';
 
 const Button = styled.button`
     background-color: transparent;
@@ -31,8 +32,16 @@ const ActionIcons = styled.div`
 const BackerList = styled.div`
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
+    padding: 1%;
+`
+
+const HeadRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     margin-top: 10%;
-    padding: 5%;
+    padding: 3%;
 `
 
 const Index = styled.div`
@@ -43,7 +52,7 @@ const Index = styled.div`
 `
 
 
-const RewardModal = ({ showMe, rewardId, backers,owner }) => {
+const RewardModal = ({ showMe, rewardId, backers,owner, projectId }) => {
     const [display, setDisplay] = useState(showMe);
     const [expand, setExpand] = useState(false);
     const theme = useTheme();
@@ -62,14 +71,31 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
           }
         };
     
+    
+    const handleRewardNotification = async (reci) => {
+          try {
+            await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`, {
+              'title': `Reward notification`,
+              'description': `Owner of this project does have something new for ya. Check project Updates.`,
+              'type': 'rewardEligible',
+              'project': `${projectId}`, // vzít pak z parenta
+              'user': reci,
+              'isRead': false
+            }, moralisApiConfig)
+            } catch (error){
+              console.log(error)
+            }
+          }
+        
+    
     const handleRewardNotifications = async () => {
             if (backers && backers.length > 0) {
               backers.forEach(async (backer) => {
                 await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Notification`, {
-                  'title': `Rewards unlocked`,
+                  'title': `Reward notification`,
                   'description': `Take a look which project unlocked rewards for its backers.`,
                   'type': 'rewardEligible',
-                  'project': `${objectId}`, // vzít pak z parenta
+                  'project': `${projectId}`, // vzít pak z parenta
                   'user': backer.address,
                   'isRead': false
                 }, moralisApiConfig)
@@ -77,21 +103,23 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
             }
           }
 
+
+          
     const backerList = backers.map((backer, index) => {
         return (
             <BackerList key={index}>
                 <BetweenRow>
                   {!expand ? <><Address address={backer.address}/>
-                  {owner && <RowCenter>
-                       {backer.state === 1 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<HandshakeIcon width={20} height={20} color={theme.colors.icon}/>}/>}
-                       {backer.state === 2 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<BackArrow width={20} height={15} color={theme.colors.icon}/>} />}
-                        <CircleButton onClick={()=>{handleRewardNotifications()}} icon={<RemindIcon width={20} height={15} color={theme.colors.icon}/>} />
-                   </RowCenter>}
+                  {owner && <>
+                       {backer.state === 1 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<ClickableIcon type={'handshake'}/>}/>}
+                       {backer.state === 2 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<ClickableIcon type={'back'}/>}/>}
+                        <CircleButton onClick={()=>{handleRewardNotification(backer.address)}} icon={<ClickableIcon type={'remind'}/>} />
+                   </>}
                   </> :  <><Index>{index+1}</Index><RewardDesc>{backer.address}</RewardDesc>
                   {owner &&   <>
-                       {backer.state === 1 && <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<>Resolve<HandshakeIcon width={20} height={20} color={theme.colors.icon}/></>}/>}
-                      {backer.state === 2 &&   <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<>Unresolve<BackArrow width={20} height={15} color={theme.colors.icon}/></>} />}
-                        <CircleButton onClick={()=>{handleRewardNotifications()}} icon={<>Reminder<RemindIcon width={20} height={15} color={theme.colors.icon}/></>}/>
+                       {backer.state === 1 && <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<Row>Resolve<ClickableIcon type={'handshake'}/></Row>}/>}
+                      {backer.state === 2 &&   <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<Row>Unresolve<ClickableIcon type={'back'}/></Row>} />}
+                        <CircleButton onClick={()=>{handleRewardNotification(backer.address)}} icon={<Row>Notify one<ClickableIcon type={'remind'}/></Row>}/>
                        </>}
                   </>
                   }
@@ -113,7 +141,13 @@ const RewardModal = ({ showMe, rewardId, backers,owner }) => {
                     </Button>
                 </ActionIcons>  
             </ButtonRow>
+        <div>  
+         {owner && <HeadRow>
+              <RewardDesc>Notify backers about updates</RewardDesc>
+              <CircleButton onClick={()=>{handleRewardNotifications()}} icon={ <>{expand ? <Row><B>Notify all</B> <ClickableIcon type={'notifyAll'}/></Row> : <ClickableIcon type={'notifyAll'}/>}</>} />
+          </HeadRow>}
             {backerList}
+        </div>
         </AnimatedModal> }
         </>
 }
