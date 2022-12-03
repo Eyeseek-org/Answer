@@ -24,6 +24,7 @@ import Amount from '../../components/functional/Amount';
 import { G } from '../../components/typography/ColoredTexts';
 import Socials from '../../components/buttons/Socials';
 import TabImage from '../../components/form/TabImage';
+import { pushDiscordReward } from '../../data/discord/projectData';
 
 
 
@@ -73,6 +74,9 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
         setRewardId(parse + 1)
         await handleSaveReward(objectId)
         setRewardState((prev) => ({ ...prev, loading: false }))
+        if (process.env.NEXT_PUBLIC_ENV === "production") {
+            pushDiscordReward(title, desc, pledge, cap, delivery, estimation, address );
+        }
       }    
 
     const handleCreateReward = async (rType, n) => {

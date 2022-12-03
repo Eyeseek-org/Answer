@@ -61,3 +61,49 @@ export const pushDiscordProject = async(pTitle, pDesc, category, subcategory, pm
     } 
 }
 
+export const pushDiscordReward = async(title, desc, pledge, cap, delivery, estimation, address) => {
+    const discordProjectData = {
+        "username": "Servant",
+        "avatar_url": 'https://fund.eyeseek.org/bots/servant.jpg',
+        "content": "Reward was added to a project.",
+        "embeds": [
+          {
+            "author": {
+              "name": address,
+            },
+            "title": title,
+            "url": `https://fund.eyeseek.io/project/${oid}`,
+            "description": desc,
+            "color": 12056946,
+            "fields": [
+                {
+                    "name": "Pledge required",
+                    "value": pledge,
+                    "inline": true
+                },
+              {
+                "name": "# of rewards",
+                "value": cap,
+                "inline": true
+              },
+              {
+                "name": "Promised value",
+                "value": delivery,
+              },
+              {
+                "name": "Estimated delivery",
+                "value": estimation,
+              }
+            ]
+          }
+        ]
+      }
+    try {
+        await axios.post(
+        process.env.NEXT_PUBLIC_DISCORD,
+        discordProjectData
+        );
+    } catch (err) {
+        console.log(err)
+    } 
+}
