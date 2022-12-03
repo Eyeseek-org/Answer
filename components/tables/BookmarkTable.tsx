@@ -2,22 +2,22 @@ import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getGroup
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useState, useMemo } from 'react';
-import {Table, Header, Tr, Cell, HeadRow, HeaderCell, ImageHover } from './TableStyles';
+import {Table, Header, Tr, Cell, HeadRow, HeaderCell } from './TableStyles';
 import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { RewardDesc } from '../typography/Descriptions';
 import { useAccount } from 'wagmi';
 import { MainContainer } from '../format/Box';
-import { Row, RowCenter } from '../format/Row';
-import { BookmarkIcon } from '../icons/Common';
+import { RowCenter } from '../format/Row';
 import {useTheme} from 'styled-components';
 import { DetailIcon } from '../icons/Project';
+import Bookmark from '../functional/Bookmark';
 
 const BookmarkTable = () => {
   const [sorting, setSorting] = useState([]);
   const {address} = useAccount(); 
   const theme = useTheme();
-  const [marked, setMarked] = useState();
+  const [marked, setMarked] = useState<boolean>();
 
   const columns = [
     {
@@ -35,35 +35,25 @@ const BookmarkTable = () => {
       accessorKey: 'description',
       header: 'Description',
     },
-    // {
-    //   accessorKey: 'objectId',
-    //   cell: (props) => (
-    //     <RowCenter>
-    //        <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon width={20}  color={theme.colors.icon}/></a>
-    //      <ImageHover onClick={()=>handleBookmark(props.getValue(), bookmarks)} ><BookmarkIcon color={theme.colors.icon} width={20}/></ImageHover>
-    //     </RowCenter>
-    //   ),
-    //   header: <HeaderCell>Actions</HeaderCell>,
-    // },
+    {
+      accessorKey: 'objectId',
+      cell: (props) => (
+        <>
+           <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank" ><DetailIcon height={20} width={20}  color={theme.colors.icon}/></a>
+        </>
+      ),
+      header: <HeaderCell>Detail</HeaderCell>,
+    },
+    {
+      accessorKey: 'objectId',
+      cell: (props) => (
+        <RowCenter>
+           <Bookmark objectId={props.getValue()} bookmarks={props.row.original.bookmarks}/>
+        </RowCenter>
+      ),
+      header: <HeaderCell>Unmark</HeaderCell>,
+    },
   ]
-
-  // TBD need to merge columns Bookmark with ObjectId
-
-  // const handleBookmark = (objectId, bookmarks) => {
-  //   if (!marked) {
-  //     // Add address to bookmarks array
-  //     const newBookmarks = [...bookmarks, address];
-  //     // Update Project with new bookmarks array
-  //     updateBookmark(objectId, newBookmarks);
-  //     setMarked(true);
-  //   } else {
-  //     // Remove address from bookmarks array
-  //     const newBookmarks = bookmarks.filter((item) => item !== address);
-  //     // Update Project with new bookmarks array
-  //     updateBookmark(objectId, newBookmarks);
-  //     setMarked(false);
-  //   }
-  // };
 
   const { data, isLoading } = useQuery(['bookmarked-projects'], () => UniService.getDataAll(`/classes/Project?where={"state": 1, "bookmarks": "${address}"}`), {
     onError: (err) => {

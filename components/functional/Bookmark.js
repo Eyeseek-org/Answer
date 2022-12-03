@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { BookmarkIcon, BookmarkFilledIcon } from '../icons/Common';
 import { useAccount } from 'wagmi';
+import { moralisApiConfig } from '../../data/moralisApiConfig';
 
 const Bkmrk = styled.div`
   display: flex;
@@ -18,14 +19,8 @@ const Bookmark = ({ objectId, bookmarks }) => {
   const theme = useTheme();
 
   const updateBookmark = async (oid, newBookmarks) => {
-    const config = {
-      headers: {
-        'X-Parse-Application-Id': `${process.env.NEXT_PUBLIC_DAPP_ID}`,
-        'Content-Type': 'application/json',
-      },
-    };
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, { bookmarks: newBookmarks }, config);
+      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/Project/${oid}`, { bookmarks: newBookmarks }, moralisApiConfig);
     } catch (error) {
       console.log(error);
     }

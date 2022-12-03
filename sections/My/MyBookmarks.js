@@ -1,20 +1,11 @@
-import styled from 'styled-components'
 import BookmarkTable from '../../components/tables/BookmarkTable'
-import Subtitle from '../../components/typography/Subtitle'
-import { Wrapper } from '../../components/format/Box'
-
-const Container = styled.div`
-    text-align: center;
-`
+import { SpacingBox } from '../../components/format/Box'
 
 const MyBookmarks = () => {
 
-    return <Container>  
-        <Subtitle text="Watched projects" />
-        <Wrapper>
+    return <SpacingBox>  
             <BookmarkTable/>
-        </Wrapper>
-    </Container>
+    </SpacingBox>
 }
 
 export default MyBookmarks
