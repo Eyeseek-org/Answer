@@ -8,12 +8,10 @@ import { UniService } from '../../services/DapAPIService';
 import Notifications from '../Notifications';
 import { ConnectWalletBox, IconFrame, Notis } from './styles';
 
-// TODO: refactor this component - separate connect wallet from notification
 export const ConnectWithNotifications = () => {
   const { address } = useAccount();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
-
   
   const query = `/classes/Notification?where={"user":"${address}"}`
   const { data: notifications } = useQuery(['my-stream'], () => UniService.getDataAll(query),{

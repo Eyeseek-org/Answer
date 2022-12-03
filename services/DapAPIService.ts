@@ -24,12 +24,12 @@ export class UniService {
 }
 
 export class DapAPIService {
-  static async updateProject({ id, title, url }: { title: string; url: string; id: string }) {
+  static async updateProject({ id, title, description, url }: { title: string; description: string, url: string; id: string }) {
     return await DapAxiosInstance.post(`/classes/Update`, {
       title,
+      description,
       url,
       project: id,
-      isRead: false
     });
   }
 
@@ -41,7 +41,7 @@ export class DapAPIService {
     });
   }
 
-  static async handleRewardNotification({ title, description, objectId, bookmark }) {
+  static async handleRewardNotification({ title, description, objectId, bookmark, long }) {
     return await DapAxiosInstance.post('/classes/Notification', {
       title: title,
       description: description,
@@ -49,6 +49,7 @@ export class DapAPIService {
       project: objectId,
       user: bookmark,
       isRead: false,
+      long: long
     });
   }
 

@@ -127,6 +127,7 @@ const Notifications = ({ notis }) => {
     confirmRead();
   }, []);
 
+
   const confirmRead = () => {
     if (notis) {
       notis.forEach((noti) => {

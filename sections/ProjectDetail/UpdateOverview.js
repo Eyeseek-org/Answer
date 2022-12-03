@@ -26,6 +26,7 @@ const List = styled.div`
 const A = styled.a`
     font-size: 1em;
     color: ${(props) => props.theme.colors.font};
+    cursor: pointer;
 `
 
 const Created = styled.div`
@@ -46,20 +47,15 @@ const RefCard = styled(motion.div)`
         font-size: 1.4em;
     }
     &:hover {
-        cursor: pointer;
         border: 1px solid rgba(160, 244, 255, 0.4);
     }
 `
 
 const UpdateOverview = ({objectId}) => {
     const [apiError, setApiError] = useState(false)
+    const [showDesc, setShowDesc] = useState(false)
 
     const query = `/classes/Update?where={"project":"${objectId}"}`
-    // const { data: updates } = useQuery(['updates'], () => UniService.getDataAll(query),{
-    //     onError: () => {
-    //         setApiError(true)
-    //     },
-    // });
 
     const { data: updates } = useQuery(['updates'], () => UniService.getDataAll(query),{
         onError: () => {
@@ -74,10 +70,8 @@ const UpdateOverview = ({objectId}) => {
         <List>
             {updates && updates.length > 0 ?
                 updates.map((update)=> 
-                    <RefCard key={update.objectId}
-                        whileHover={{ scale: 1.05 }} 
-                    >
-                        <A href={`${update.url}`} rel="noopener noreferrer" target="_blank"><>{update.title}</></A>
+                    <RefCard key={update.objectId} whileHover={{ scale: 1.05 }} onMouseEnter={()=>{setShowDesc(!showDesc)}}>
+                        <A href={`${update.url}`} rel="noopener noreferrer" target="_blank"><u>{update.title}</u></A>
                         <Created><ReactTimeAgo date={update.createdAt} locale="en-US"/></Created>
                   </RefCard>) : <>No updates published by the author</>
             }        
