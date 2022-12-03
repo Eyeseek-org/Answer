@@ -7,7 +7,7 @@ import { useContractWrite, useContractEvent, usePrepareContractWrite } from 'wag
 import Tag from '../../components/typography/Tag';
 import ErrText from '../../components/typography/ErrText';
 import ImgSkeleton from '../../components/skeletons/ImgSkeleton';
-import { CancelIcon, VerifiedIcon, NonVerifiedIcon, UrlIcon, UrlSocialsIcon } from '../../components/icons/Common';
+import { VerifiedIcon, NonVerifiedIcon, UrlIcon, UrlSocialsIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
 import { CanceledTypo } from '../../components/icons/Typography';
 import donation from '../../abi/donation.json';
@@ -32,8 +32,6 @@ const CanceledBox = styled.div`
     top: 25%;
   }
 `;
-
-
 
 const ProjectDetail = ({
   objectId,
