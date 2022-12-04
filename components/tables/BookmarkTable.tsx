@@ -12,6 +12,7 @@ import { RowCenter } from '../format/Row';
 import {useTheme} from 'styled-components';
 import { DetailIcon } from '../icons/Project';
 import Bookmark from '../functional/Bookmark';
+import TableSkeleton from '../skeletons/TableSkeleton';
 
 const BookmarkTable = () => {
   const [sorting, setSorting] = useState([]);
@@ -77,7 +78,7 @@ const BookmarkTable = () => {
   });
 
   return  <MainContainer>
- {isLoading ? <RewardDesc>Loading, server was sleeping...</RewardDesc> : 
+ {isLoading ? <TableSkeleton/> : 
       <>
         {data && data.length > 0 && (
           <Table>

@@ -1,8 +1,10 @@
 import { useContractWrite } from 'wagmi';
 import donation from '../../abi/donation.json';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import { RowEnd, ColRight } from '../../components/format/Row';
+import { RowEnd, ColRight, Row } from '../../components/format/Row';
 import { useReward } from '../utils/rewardContext';
+import { loadingAnim } from '../../components/animated/Animations';
+import Lottie from 'react-lottie';
 
 const RewardClassicSubmit = ({ add, home, pid, cap }) => {
   const { rewardState, setRewardState } = useReward();
@@ -25,12 +27,12 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
   return (
     <ColRight>
       <RowEnd>
-         {!loading ? <ButtonAlt
+      {!loading ? <ButtonAlt
             text={'Create reward'}
             onClick={() => {
               handleSubmit();
             }}
-          /> : <ButtonAlt text={'Loading...'} disabled={true} />}
+            /> : <ButtonAlt text={<Row><div>Waiting for blockchain...</div><div><Lottie height={100} width={100} options={loadingAnim} /></div></Row>} disabled={true} />}
       </RowEnd>
     </ColRight>
   );

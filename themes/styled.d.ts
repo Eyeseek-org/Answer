@@ -24,7 +24,8 @@ declare module 'styled-components' {
             binance:  string,
             projectCard:  string,
             icon:  string,
-            redPastel:  string
+            redPastel:  string,
+            darkRed:  string
         };
     }
 }

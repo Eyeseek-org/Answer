@@ -34,7 +34,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 <LogRow>
                   <InfoTag>Info</InfoTag> 
                   <Typewriter
-                      words={['...Bloockchain confirmation request']}
+                      words={['...Bloockchain confirmation request (usually in 5-15 seconds']}
                       cursor
                       cursorStyle='_'
                       typeSpeed={60}
@@ -44,7 +44,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 {!ev && <LogRow><O>Please stay on page until transactions is confirmed</O></LogRow>}
                 <LogRow>
                     <InfoTag>Blockchain: </InfoTag>
-                  {ev ? <Ok>
+                  {ev && <Ok>
                     <Typewriter
                       words={['Success - Transaction was processed']}
                       cursor
@@ -52,17 +52,10 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                       typeSpeed={60}
                       delaySpeed={40000}
                     />
-                  </Ok> :                   
-                  <Typewriter
-                      words={['...Transaction is usually processed in 5-15 seconds']}
-                      cursor
-                      cursorStyle='_'
-                      typeSpeed={60}
-                      delaySpeed={40000}
-                    />}
+                  </Ok>}
                   {apiError && <Err>
                     <Typewriter
-                      words={['Failed - Transaction failed to process in DB']}
+                      words={['Failed - Transaction failed']}
                       cursor
                       cursorStyle='_'
                       typeSpeed={60}

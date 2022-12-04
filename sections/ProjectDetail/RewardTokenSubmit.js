@@ -68,7 +68,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
             onClick={() => {
               handleSubmit();
             }}
-          /> : <ButtonAlt text={'Loading...'} disabled={true} />}
+            /> : <ButtonAlt text={<Row><div>Waiting for blockchain...</div><div><Lottie height={100} width={100} options={loadingAnim} /></div></Row>} disabled={true} />}
       </ButtonBox>
     </ColRight>
   );

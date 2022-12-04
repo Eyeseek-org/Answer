@@ -29,10 +29,9 @@ export const Tr = styled.tr`
 `;
 
 export const HeadRow = styled(Tr)`
-  &:hover {
-    background: ${(props) => props.theme.colors.transparentCard};
-  }
+  background: ${(props) => props.theme.colors.gradient};
 `;
+
 export const Cell = styled.td`
   padding: 2px;
   font-family: 'Neucha';

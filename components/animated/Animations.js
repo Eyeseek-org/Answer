@@ -1,6 +1,7 @@
 import successAnimation from '../../data/successAnimation.json';
 import smallLoading from '../../data/smallLoading.json';
 import errorAnimation from '../../data/errorAnimation.json';
+import skeletonAnimation from '../../data/animations/skeletonAnimation.json';
 // Animation configs
 export const okAnim = {
   loop: false,
@@ -27,3 +28,13 @@ export const errAnim = {
     preserveAspectRatio: 'xMidYMid slice',
   },
 };
+
+export const skelAnim = {
+  loop: true,
+  autoplay: true,
+  animationData: skeletonAnimation,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
+

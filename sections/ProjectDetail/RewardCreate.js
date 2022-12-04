@@ -189,11 +189,11 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>
                  </>}
-                {success && !apiError &&    <>     
-                        <G>Great job!! Now expose yourself and share it {`:)`}</G>
+                {success && !apiError &&    <MainContainer>     
+                        <RewardDesc><G>Great job!! Now expose yourself and share it {`:)`}</G></RewardDesc>
                         <Socials title={'I have added some juice rewards for participation in this crowdfunding project, check it out!!!'}/>
                         <SuccessDisButton onClick={()=>{setSuccess(false)}} width={'100%'} text="Success: Reward was created (click for new reward)"/>
-                    </>}
+                    </MainContainer>}
             </MainMilestoneContainer>
     </MainContainer>
 }

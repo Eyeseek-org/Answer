@@ -18,7 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
 import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol } from './TableStyles';
-import { NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
+import { InfoIcon, NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
 import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon, WebIcon } from '../icons/Project';
@@ -26,7 +26,7 @@ import RewardTable from './RewardTable';
 import { Col, BetweenRowSm, RowCenter } from '../format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../functional/CatPicks';
-import { RewardDesc } from '../typography/Descriptions';
+import TableSkeleton from '../skeletons/TableSkeleton';
 import { Project } from '../../types/project';
 import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
@@ -82,6 +82,7 @@ const ProjectTable = () => {
     setShowTooltip(true);
     setTooltipText(text);
   }
+
 
   const columns = useMemo<ColumnDef<Project, string>[]>(
     () => [
@@ -155,17 +156,15 @@ const ProjectTable = () => {
         cell: (props) => (
           <RowCenter>
             <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
-              <DetailIcon width={20}  color={theme.colors.icon} height={20} />
+              <DetailIcon width={20}  color={theme.colors.icon} height={25} />
             </a>
             <ImageHover
-              onClick={() => {
-                handleReward(props.getValue());
-              }}
+              onClick={() => {handleReward(props.getValue())}}
             >
-              <RewardIcon height={20} color={theme.colors.icon} width={20} />
+              <RewardIcon height={25} color={theme.colors.icon} width={20} />
             </ImageHover>
             <a href={props.row.original.urlProject} rel="noopener noreferrer" target="_blank">
-              <WebIcon color={theme.colors.icon} width={30} height={20}/>
+              <WebIcon color={theme.colors.icon} width={30} height={25}/>
             </a>
             <a href={props.row.original.urlSocials} rel="noopener noreferrer" target="_blank">
               <UrlSocialsIcon color={theme.colors.icon} height={25} width={25} />
@@ -173,7 +172,9 @@ const ProjectTable = () => {
           </RowCenter>
         ),
          //@ts-ignore
-        header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>Actions</ActionCol>,
+        header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>
+                      Actions <InfoIcon  width={15} color={theme.colors.icon} />
+                </ActionCol>,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -228,7 +229,7 @@ const ProjectTable = () => {
   return (
     <>
       {isLoading ? (
-        <RewardDesc>Loading, server was sleeping...</RewardDesc>
+        <TableSkeleton/>
       ) : (
         <Col>
           {showTooltip && <Tooltip margin={undefined} text={tooltipText} />}

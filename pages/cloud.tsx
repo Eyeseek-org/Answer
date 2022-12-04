@@ -32,14 +32,6 @@ const Cloud = () => {
     <Container>
         <h1>Cloud</h1>
         <button onClick={cloudCall}>Make Cloud Call</button>
-        <button
-            type="button"
-            onClick={() => {
-              throw new Error("Sentry Frontend Error");
-            }}
-          >
-            Throw error
-          </button>
     </Container>
   );
 };
