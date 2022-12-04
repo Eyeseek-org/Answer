@@ -63,6 +63,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const [th, setTh] = useState(darkTheme);
   const serverUrl = process.env.NEXT_PUBLIC_DAPP as string;
   const appId = process.env.NEXT_PUBLIC_DAPP_ID as string;
+  
+  //const serverUrl = process.env.NEXT_PUBLIC_LOCAL as string;
 
 
   const toggleTheme = () => {
