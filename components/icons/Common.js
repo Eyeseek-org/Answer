@@ -23,7 +23,7 @@ export const BookmarkFilledIcon = ({ width, color }) => {
   );
 };
 
-export const NoImage = ({ width, color }) => {
+export const NoImage = ({ width }) => {
   return (
     <svg width={width} height="265" viewBox="0 0 264 265" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -36,7 +36,7 @@ export const NoImage = ({ width, color }) => {
   );
 };
 
-export const CancelIcon = ({ width, color }) => {
+export const CancelIcon = ({ width }) => {
   return (
     <>
       <svg width={width} height="35" viewBox="0 0 51 49" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -188,7 +188,7 @@ export const RewardIcon = ({ width, height, color }) => {
   );
 };
 
-export const UpdateSvg = ({ width, color }) => {
+export const UpdateSvg = ({ width }) => {
   return (
     <svg width={width} height="49" viewBox="0 0 115 49" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

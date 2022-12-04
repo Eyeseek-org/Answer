@@ -82,7 +82,7 @@ const InputRow = ({ id, name, min, placeholder, onChange, onBlur, tooltip, curre
 
   return (
     <InputWrapper>
-      {isTooltip && <Tooltip text={tooltip} margin={'-70px'}/>}
+      {isTooltip && <Tooltip text={tooltip} margin={'-110px'}/>}
       <DonationRow>
         {' '}
         <div>{name}</div>{' '}

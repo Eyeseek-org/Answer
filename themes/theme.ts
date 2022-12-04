@@ -23,7 +23,8 @@ export const darkTheme: DefaultTheme  = {
         binance: '#ffc107',
         projectCard: 'rgba(0, 0, 0, 0.3)',
         icon: 'white',
-        redPastel: '#8d0000'
+        redPastel: '#8d0000',
+        darkRed: 'rgba(9, 0, 0)'
     }
   };
 
@@ -44,12 +45,13 @@ export const lightTheme: DefaultTheme = {
         transparent: 'rgba(0, 0, 0, 0.2)',
         transparentCard: 'rgba(110, 110, 110, 0.3)',
         invisible: 'rgba(0, 0, 0, 0.05)',
-        red: '#8B0000',
+        red: 'rgba(9, 0, 0)',
         input: 'rgba(107, 255, 255, 0.05)',
         darkGreen: '#008B0E',
-        binance: '#8B6D00',
+        binance: '#676f00',
         projectCard: 'rgba(242, 255, 254, 0.9)',
         icon: '#283B41',
-        redPastel: '#ff9393'
+        redPastel: '#ff9393',
+        darkRed: '#ff9393'
     }
   };

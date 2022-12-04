@@ -17,6 +17,9 @@ const Container = styled.div`
     font-size: 1.2em;
     min-width: 300px;
   }
+  &:hover{
+    cursor: pointer;
+  }
 `;
 
 const Tooltip = ({ text, margin }) => {

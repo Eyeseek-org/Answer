@@ -49,6 +49,8 @@ const Option = styled.div`
   font-size: 0.8em;
   min-width: 90px;
   letter-spacing: 0.4px;
+  border-radius: 90px;
+  background: ${(props) => props.theme.colors.gradient};
   align-items: center;
   font-family: 'Neucha';
   @media (min-width: 1580px) {
@@ -62,7 +64,7 @@ const OptionItemWrapper = styled.div`
   padding: 1%;
   display: flex;
   align-items: center;
-  background: #0f0f0f;
+  background: ${(props) => props.theme.colors.body};
   & > div {
     margin-right: 1rem;
   }
@@ -254,7 +256,7 @@ const Donate: NextPage = () => {
     <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
     {!apiError ?
       <BodyBox>
-        <Warning text='ahoj'/>
+        <Warning/>
         <DonateOption>
           {/* @ts-ignore */}
           {tooltip && <Tooltip text="Donates accepted only on this chain" />}
