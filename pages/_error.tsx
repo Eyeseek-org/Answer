@@ -8,7 +8,7 @@ const CustomErrorComponent = props => {
 };
 
 CustomErrorComponent.getInitialProps = async contextData => {
-  await Sentry.captureUnderscoreErrorException(contextData);e
+  await Sentry.captureUnderscoreErrorException(contextData);
   return NextErrorComponent.getInitialProps(contextData);
 };
 
