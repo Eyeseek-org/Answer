@@ -4,13 +4,29 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 
 import Eye7 from '../public/Eye7.png';
-import Footer from '../sections/Footer';
+import Footer from '../sections/Footer/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
-import { AiIcon, BoardGameIcon, DaoIcon, DefiIcon, HwIcon, IllustrationIcon, IoTIcon, LiteratureIcon, MobileGameIcon, MusicIcon, NftApeIcon, RoboticsIcon, VideoGameIcon, VideoIcon, WearablesIcon } from '../components/icons/Categories';
+import {
+  AiIcon,
+  BoardGameIcon,
+  DaoIcon,
+  DefiIcon,
+  HwIcon,
+  IllustrationIcon,
+  IoTIcon,
+  LiteratureIcon,
+  MobileGameIcon,
+  MusicIcon,
+  NftApeIcon,
+  RoboticsIcon,
+  VideoGameIcon,
+  VideoIcon,
+  WearablesIcon,
+} from '../components/icons/Categories';
 import FaqCard from '../components/cards/FaqCard';
 import Subtitle from '../components/typography/Subtitle';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import { YouTubeIcon } from '../components/icons/Socials';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
@@ -76,7 +92,7 @@ const CatBox = styled.div`
   padding-top: 3%;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const CatIcons = styled.div`
   margin-top: 5%;
@@ -85,7 +101,7 @@ const CatIcons = styled.div`
   flex-wrap: wrap;
   max-width: 90%;
   gap: 1%;
-`
+`;
 
 const CatDesc = styled(motion.div)`
   position: absolute;
@@ -97,12 +113,12 @@ const CatDesc = styled(motion.div)`
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 5px;
-`
+`;
 
 const YtLink = styled.span`
   text-decoration: underline;
   margin-right: 5%;
-`
+`;
 
 export interface IFAQ {
   question: string;
@@ -115,7 +131,6 @@ export interface ICats {
   text: string;
   icon: JSX.Element;
 }
-
 
 const Faq: NextPage = () => {
   const [catTooltip, setCatTooltip] = React.useState('');
@@ -143,7 +158,7 @@ const Faq: NextPage = () => {
         'Projects and backer statistics must be honest and clearly presented',
         "Projects can't involve prohibited items",
       ],
-      image: <DeniedIcon width={150}  color={theme.colors.icon} />,
+      image: <DeniedIcon width={150} color={theme.colors.icon} />,
     },
     {
       question: 'Why blockchain?',
@@ -154,11 +169,18 @@ const Faq: NextPage = () => {
         'Real-time money streaming from backers to project owners',
         'Guaranteed rewards in ERC20/ERC1155 tokens as additional benefit',
       ],
-      image: <KeyIcon width={70}  color={theme.colors.icon} />,
+      image: <KeyIcon width={70} color={theme.colors.icon} />,
     },
     {
       //@ts-ignore
-      question: <><a href='https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg' rel="noopener noreferrer" target="_blank"><YtLink>How does it work?</YtLink><YouTubeIcon width={25}/></a></>,
+      question: (
+        <>
+          <a href="https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg" rel="noopener noreferrer" target="_blank">
+            <YtLink>How does it work?</YtLink>
+            <YouTubeIcon width={25} />
+          </a>
+        </>
+      ),
       answer: 'Creators can set up project in 5 simple steps',
       points: [
         'Possibility to offer limited amount of rewards, tokens and NFTs',
@@ -166,7 +188,7 @@ const Faq: NextPage = () => {
         'Larger backers can play a game and deploy microfunds instead of donating',
         'Microfunds incentivize smaller backers to join the ride with larger impact',
       ],
-      image: <WorkIcon width={100} height={150}  color={theme.colors.icon}  />,
+      image: <WorkIcon width={100} height={150} color={theme.colors.icon} />,
     },
     {
       question: 'What happens after the project is funded?',
@@ -181,11 +203,11 @@ const Faq: NextPage = () => {
       image: <PiggyIcon width={150} height={100} color={theme.colors.icon} />,
     }
   ];
-  
+
   const ICats: ICats[] = [
     {
       text: 'Wearables - Invent new gadgets and accessories',
-      icon: <WearablesIcon width={50} height={50}  />,
+      icon: <WearablesIcon width={50} height={50} />,
     },
     {
       text: 'Robotics - Help new generation of machines take over the world',
@@ -205,49 +227,53 @@ const Faq: NextPage = () => {
     },
     {
       text: 'Board games - Design strategic masterpiece or a fun party game',
-      icon: <BoardGameIcon width={50} height={50} />
+      icon: <BoardGameIcon width={50} height={50} />,
     },
     {
       text: 'Video games - Build an indie game or a AAA blockbuster',
-      icon: <VideoGameIcon width={50} height={50} />
+      icon: <VideoGameIcon width={50} height={50} />,
     },
     {
       text: 'Hardware - Assemble powerful devices for green crypto mining',
-      icon: <HwIcon width={50} height={50} />
+      icon: <HwIcon width={50} height={50} />,
     },
     {
       text: 'Movies - Become a director or produce a video with deep emotional impact',
-      icon: <VideoIcon width={50} height={50} />
+      icon: <VideoIcon width={50} height={50} />,
     },
     {
       text: 'Illustration - Draw anything you imagine and above',
-      icon: <IllustrationIcon width={50} height={50} />
+      icon: <IllustrationIcon width={50} height={50} />,
     },
     {
       text: 'Literature - Write a book of poems, autobiography, or a novel',
-      icon: <LiteratureIcon width={50} height={50} />
+      icon: <LiteratureIcon width={50} height={50} />,
     },
     {
       text: 'Music - Support of all kinds of music production, or musical events',
-      icon: <MusicIcon width={50} height={50} />
+      icon: <MusicIcon width={50} height={50} />,
     },
     {
       text: 'Defi - Lending, borrowing, all sorts of crypto trading',
-      icon: <DefiIcon width={50} height={50} />
+      icon: <DefiIcon width={50} height={50} />,
     },
     {
       text: 'NFT - Explore new ways how to leverage NFTs non-fungibility',
-      icon: <NftApeIcon width={50} height={50} />
+      icon: <NftApeIcon width={50} height={50} />,
     },
     {
       text: 'DAO - Establish a decentralized autonomous organization',
-      icon: <DaoIcon width={50} height={50} />
-    }
-  ]
+      icon: <DaoIcon width={50} height={50} />,
+    },
+  ];
 
-  const CatIcon = ({text, icon}) => {
-    return <div onMouseEnter={()=>setCatTooltip(text)} onMouseLeave={()=>setCatTooltip('')} >{icon}</div>
-  }
+  const CatIcon = ({ text, icon }) => {
+    return (
+      <div onMouseEnter={() => setCatTooltip(text)} onMouseLeave={() => setCatTooltip('')}>
+        {icon}
+      </div>
+    );
+  };
 
   const dispatch = useDispatch() 
     const noti = (text) => {
@@ -256,40 +282,43 @@ const Faq: NextPage = () => {
 
   return (
     <>
-        <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
-        <FaqContainer>
-          {FAQS.map(({ answer, image: Image, points, question }, index) => {
-            const isEven = index % 2 === 0;
-            return (
-              <Row reverse={isEven} key={index}>
-                <FaqCard answer={answer} points={points} />
-                <Question>
-                  <div>{question}</div>
-                  <ImageBox onClick={()=>{noti(answer)}}>{Image}</ImageBox>
-                </Question>
-              </Row>
-            );
-          })}
-        
+      <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
+      <FaqContainer>
+        {FAQS.map(({ answer, image: Image, points, question }, index) => {
+          const isEven = index % 2 === 0;
+          return (
+            <Row reverse={isEven} key={index}>
+              <FaqCard answer={answer} points={points} />
+              <Question>
+                <div>{question}</div>
+                <ImageBox>{Image}</ImageBox>
+              </Question>
+            </Row>
+          );
+        })}
+
         <CatBox>
-          {catTooltip !== '' &&   
+          {catTooltip !== '' && (
             <CatDesc
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{
                 duration: 0.4,
                 scale: [0, 1, 0.5, 1],
-              }}>
-            {catTooltip}</CatDesc> }
-         <Subtitle text='Categories'/>
+              }}
+            >
+              {catTooltip}
+            </CatDesc>
+          )}
+          <Subtitle text="Categories" />
           <CatIcons>
-            {ICats.map(({text, icon}, index) => {
-              return <CatIcon text={text} icon={icon} key={index}/>
+            {ICats.map(({ text, icon }, index) => {
+              return <CatIcon text={text} icon={icon} key={index} />;
             })}
           </CatIcons>
         </CatBox>
-        </FaqContainer>
- 
+      </FaqContainer>
+
       <EyeSevenBox>
         <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
       </EyeSevenBox>
