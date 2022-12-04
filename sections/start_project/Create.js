@@ -123,6 +123,8 @@ const Create = ({ setStep }) => {
     write?.();
   };
 
+  const softDeadline = new Date().getTime() + 1000 * 60 * 60 * 24 * 30; // 30 days
+
   const handleMoralis = async (st) => {
     try {
       const res = await axios.post(
@@ -143,6 +145,7 @@ const Create = ({ setStep }) => {
           chainId: pChain,
           bookmarks: [address], // Add owner to bookmark
           verified: false,
+          softDeadline: softDeadline
         },
         moralisApiConfig
       );
