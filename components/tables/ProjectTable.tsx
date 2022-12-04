@@ -26,7 +26,7 @@ import RewardTable from './RewardTable';
 import { Col, BetweenRowSm, RowCenter } from '../format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../functional/CatPicks';
-import { RewardDesc } from '../typography/Descriptions';
+import TableSkeleton from '../skeletons/TableSkeleton';
 import { Project } from '../../types/project';
 import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
@@ -228,7 +228,7 @@ const ProjectTable = () => {
   return (
     <>
       {isLoading ? (
-        <RewardDesc>Loading, server was sleeping...</RewardDesc>
+        <TableSkeleton/>
       ) : (
         <Col>
           {showTooltip && <Tooltip margin={undefined} text={tooltipText} />}
