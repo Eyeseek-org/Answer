@@ -2,14 +2,14 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import styled from 'styled-components';
-import Script from 'next/script';
-import { useEffect  } from 'react';
-
 import Eye7 from '../public/Eye7.png';
-import Footer from '../sections/Footer';
+import { useEffect } from 'react';
+import Footer from '../sections/Footer/Footer';
+
 import LandingMain from '../sections/Landing/LandingMain';
 import LatestProjects from '../sections/Landing/LatestProjects';
 import Features from '../sections/Landing/Features';
+import Script from 'next/script';
 
 const Container = styled.div`
   position: relative;
@@ -46,10 +46,7 @@ const Home: NextPage = () => {
           <Image src={Eye7} alt="Eye7" width={'350px'} height={'30px'} />
         </EyeSevenBox>
         <Footer />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=GTM-WV83C9F"
-          strategy="afterInteractive"
-        />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-WV83C9F" strategy="afterInteractive" />
       </Container>
     </>
   );

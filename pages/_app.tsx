@@ -55,7 +55,6 @@ type AppProps = {
   pageProps: any;
 };
 
-
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
