@@ -257,7 +257,7 @@ const ProjectTable = () => {
           <TablePagination<Project> table={table} />
         </Col>
       )}
-      {projectRewards && <RewardTable data={projectRewards}  />}
+      {projectRewards && <RewardTable data={projectRewards}  projectId={projectId} />}
     </>
   );
 };

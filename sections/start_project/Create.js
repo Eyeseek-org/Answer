@@ -20,6 +20,7 @@ import LogResult from '../LogResult';
 import { ChainName } from '../../helpers/MultichainHelpers';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
+import {pushDiscordProject} from '../../data/discord/projectData'
 
 const texts = [
   {
@@ -85,15 +86,14 @@ const Create = ({ setStep }) => {
       setSuccess(true);
       setApiError(false);
       noti("Congratulations, now you should spam your achievement :)", "success")
-
+      if (process.env.NEXT_PUBLIC_ENV === "production"){
+        pushDiscordProject(pTitle, pDesc, category, subcategory, pm1, pType, pChain, pSocial, pWeb, address, oid);
+      }
     } catch (err) {
       setApiError(true);
       noti("Error while creating project, we will take a look", "error")
     }
   };
-
-  
-
 
 
   // Event upon successful project creation on blockchain

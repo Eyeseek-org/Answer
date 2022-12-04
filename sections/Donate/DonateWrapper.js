@@ -88,7 +88,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     all = Number(allowance.data.toString()) / 1000000;
   }
 
-  const useEv = async() => {
+  const useEv = async(ev) => {
     setSuccess(true);
     updateBookmark(bookmarks);
     setReady(false)

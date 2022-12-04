@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useMoralisCloudFunction } from "react-moralis";
+import { useSigner } from 'wagmi';
 
 
 const Container = styled.div`
@@ -13,6 +14,10 @@ const Container = styled.div`
 
 
 const Cloud = () => {
+  const {data: signer} = useSigner();
+  const params = { 
+    custom: "custom" 
+  };
     const { fetch } = useMoralisCloudFunction(
         "firstOne"
       );
@@ -20,12 +25,21 @@ const Cloud = () => {
       const cloudCall = () => {
         fetch({
           onSuccess: (data) => console.log(data), 
+          onError: (error) => console.log(error)
         });
       };
   return (
     <Container>
         <h1>Cloud</h1>
         <button onClick={cloudCall}>Make Cloud Call</button>
+        <button
+            type="button"
+            onClick={() => {
+              throw new Error("Sentry Frontend Error");
+            }}
+          >
+            Throw error
+          </button>
     </Container>
   );
 };

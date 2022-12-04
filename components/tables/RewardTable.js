@@ -7,7 +7,7 @@ import RewardModal from '../../sections/RewardModal'
 import {useTheme} from 'styled-components';
 import { RewardDesc } from '../typography/Descriptions';
 
-const RewardTable = ({data}) => {
+const RewardTable = ({data, projectId}) => {
   const [sorting, setSorting] = useState([]);
   const [backers, setBackers] = useState([]);
   const [owner, setOwner] = useState();
@@ -121,7 +121,7 @@ const RewardTable = ({data}) => {
           </tbody>
         </Table> : <RewardDesc>No rewards found for this project</RewardDesc>
       }
-      {showRewardList && data && <RewardModal backers={backers} showMe={showRewardList} owner={owner} rewardId={rewardId}/>}
+      {showRewardList && data && <RewardModal backers={backers} showMe={showRewardList} owner={owner} rewardId={rewardId} projectId={projectId}/>}
     </>
 };
 
