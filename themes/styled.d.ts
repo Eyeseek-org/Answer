@@ -13,6 +13,7 @@ declare module 'styled-components' {
             black:  string,
             gradient:  string,
             errGradient:  string,
+            tableGradient: string,
             border:  string,
             progressBorder:  string,
             transparent:  string,

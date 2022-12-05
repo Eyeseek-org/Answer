@@ -17,7 +17,7 @@ import Address from '../functional/Address';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
-import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol } from './TableStyles';
+import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol, TableWrapper } from './TableStyles';
 import { InfoIcon, NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
 import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
@@ -34,6 +34,7 @@ import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
 import Tooltip from '../Tooltip';
+
 const PAGE_SIZE = 10;
 
 declare module '@tanstack/table-core' {
@@ -46,6 +47,7 @@ const filterChains: FilterFn<Project> = (row, columnId, value) => row.getValue(c
 
 const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.Element => {
   const [showFilter, setShowFilter] = useState(false);
+  const theme = useTheme();
 
   return (
     <>
@@ -53,7 +55,7 @@ const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.El
         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
         {header.column.getCanFilter() && (
           <ImageHover onClick={() => setShowFilter(!showFilter)}>
-            <FilterIcon height={13} width={13} />
+            <FilterIcon height={13} width={13} color={theme.colors.icon}/>
           </ImageHover>
         )}
       </HeaderCell>
@@ -156,24 +158,24 @@ const ProjectTable = () => {
         cell: (props) => (
           <RowCenter>
             <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
-              <DetailIcon width={20}  color={theme.colors.icon} height={25} />
+              <DetailIcon width={30}  color={theme.colors.icon} height={30} />
             </a>
             <ImageHover
               onClick={() => {handleReward(props.getValue())}}
             >
-              <RewardIcon height={25} color={theme.colors.icon} width={20} />
+              <RewardIcon height={30} color={theme.colors.icon} width={20} />
             </ImageHover>
             <a href={props.row.original.urlProject} rel="noopener noreferrer" target="_blank">
-              <WebIcon color={theme.colors.icon} width={30} height={25}/>
+              <WebIcon color={theme.colors.icon} width={30} height={30}/>
             </a>
             <a href={props.row.original.urlSocials} rel="noopener noreferrer" target="_blank">
-              <UrlSocialsIcon color={theme.colors.icon} height={25} width={25} />
+              <UrlSocialsIcon color={theme.colors.icon} height={30} width={30} />
             </a>
           </RowCenter>
         ),
          //@ts-ignore
         header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>
-                      Actions <InfoIcon  width={15} color={theme.colors.icon} />
+                      Actions <ImageHover><InfoIcon  width={15} color={theme.colors.icon} /></ImageHover>
                 </ActionCol>,
         enableColumnFilter: false,
         enableSorting: false,
@@ -227,7 +229,7 @@ const ProjectTable = () => {
   });
 
   return (
-    <>
+    <TableWrapper>
       {isLoading ? (
         <TableSkeleton/>
       ) : (
@@ -259,7 +261,7 @@ const ProjectTable = () => {
         </Col>
       )}
       {projectRewards && <RewardTable data={projectRewards}  projectId={projectId} />}
-    </>
+    </TableWrapper>
   );
 };
 

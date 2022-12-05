@@ -11,6 +11,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {veri_form} from '../../data/forms/veriForm'
 import { RewardDesc } from '../../components/typography/Descriptions';
+import { Col } from '../../components/format/Row';
+import { G, R } from '../../components/typography/ColoredTexts';
 
 const Container = styled.div`
   padding-left: 18%;
@@ -30,6 +32,7 @@ const Verification = ({ objectId, owner }) => {
 
   const [success, setSuccess] = useState(false);
   const {address} = useAccount()
+  const [verified, setVerified] = useState(false);
 
   const HTTPS_URL_REGEX = /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
 
@@ -60,22 +63,26 @@ const Verification = ({ objectId, owner }) => {
         moralisApiConfig
       );
       setApiError(false);
-      await setSuccess(true);
+      setSuccess(true);
     } catch (err) {
       console.log(err);
       setApiError(true);
     }
   };
 
-  const query = `/classes/Verification?where={"projectId":"${objectId}"}`
-  const { data: veri } = useQuery(['verifications'], () => UniService.getDataSingle(query),{
+  const query = `/classes/Project?where={"objectId":"${objectId}"}`
+  const { data: veri } = useQuery(['project-detail'], () => UniService.getDataSingle(query),{
       onError: () => {
           setApiError(true)
       },
+      onSuccess: () => {
+          setVerified(true)
+      }
   });
 
+  // Potřebuješ project query
 
-  /// TBD Socials share link
+
 
   return (
     <Container>
@@ -101,7 +108,10 @@ const Verification = ({ objectId, owner }) => {
       />
       <div>{!success ? <ButtonAlt text="Send verification request" onClick={()=>{sendVeriRequest(objectId, url)}} /> : <div>Verification request sent</div>}</div>
       </>}
-      {veri ? <RewardDesc>Project was sent to verification by the Eyeseek team</RewardDesc> : <RewardDesc>Project is not verified by the Eyeseek team</RewardDesc>}
+      <Col>
+      <div>Verification status: {!verified ? <R>Project is not verified. Be aware.</R> : <G>Project is verified</G>}</div>
+      <div>Application status: {veri ? <>Project was sent to verification by the Eyeseek team</> : <>Verification application was not sent by the project owner</>}</div>
+      </Col>
     </Container>
   );
 };

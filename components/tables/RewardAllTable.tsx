@@ -21,6 +21,9 @@ import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
 import ProjectStats from '../functional/ProjectStats';
+import { XIcon } from '../icons/Project';
+import {useTheme} from 'styled-components';
+import TokenStats from '../functional/TokenStats';
 
 interface ITable {
   data: any;
@@ -70,6 +73,7 @@ export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
 const RewardAllTable = ({ data }: ITable): JSX.Element => {
   const [sorting, setSorting] = useState([]);
   const [backerFilter, setBackerFilter] = useState<boolean>(false);
+  const theme = useTheme()
 
     // Missing project reference
   const columns: ColumnDef<RewardTableProps, string>[] = [
@@ -83,8 +87,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
       accessorKey: 'fund_id',
        //@ts-ignore
       cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
-      enableSorting: true,
-      enableColumnFilter: false,
+      enableSorting: false,
     },
     {
        //@ts-ignore
@@ -96,7 +99,7 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         >
           Owner{' '}
           <ImageHover>
-            <FilterIcon width={13} height={13}/>
+            <FilterIcon width={13} height={13} color={theme.colors.icon}/>
           </ImageHover>
         </RowCenter>
       ),
@@ -118,14 +121,17 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         >
           Token{' '}
           <ImageHover>
-            <FilterIcon width={13} height={13} />
+            <FilterIcon width={13} height={13} color={theme.colors.icon} />
           </ImageHover>
         </RowCenter>
       ),
+      // Token component - Number, Amount, Address
       accessorKey: 'tokenContract',
       cell: (props) => (
         <>
-         {props.row.original.tokenContract != '0x0000000000000000000000000000000000000000' && <Address address={props.getValue()}/>}
+         {props.row.original.tokenContract !== '0x0000000000000000000000000000000000000000' 
+         ?  <TokenStats address={props.row.original.tokenContract} amount={props.row.original.amount} name={undefined}  /> 
+         : <XIcon width={30} height={30} color={'#FF4D4D'}/>}
         </>
       ),
       enableSorting: false,
@@ -143,18 +149,6 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         {props.row.original.rewardType == 1 && 'ERC20'}
         {props.row.original.rewardType == 2 && 'NFT'}
       </>,
-      enableSorting: true,
-      enableColumnFilter: false,
-    },
-    {
-       //@ts-ignore
-      header: (
-        <HeaderCell>
-          #Token 
-        </HeaderCell>
-      ),
-      accessorKey: 'amount',
-      cell: (props) => <>{props.getValue()}</>,
       enableSorting: true,
       enableColumnFilter: false,
     },
