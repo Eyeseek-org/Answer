@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useState, useEffect } from 'react';
 import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../components/icons/Notifications';
 import { SuccessIcon } from '../components/icons/Common';
@@ -118,6 +118,7 @@ const ImageBox = styled.div`
 const Notifications = ({ notis }) => {
   const [expand, setExpand] = useState(false);
   const queryClient = useQueryClient();
+  const theme = useTheme();
 
   const { mutate: updateNotification } = useMutation({
     mutationFn: (id) => DapAPIService.updateReadNotifications(id),
@@ -179,7 +180,7 @@ const Notifications = ({ notis }) => {
       <ButtonRow>
         <Buttons>Notifications</Buttons>
         <Buttons onClick={() => setExpand(!expand)}>
-          {!expand ? <ExpandIcon width={20} height={20} /> : <ShrinkIcon width={20} height={20} />}
+          {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} />}
         </Buttons>
       </ButtonRow>
     </AnimatedModal>

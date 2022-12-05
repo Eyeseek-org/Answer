@@ -5,6 +5,7 @@ import binance from '../public/icons/binance.png';
 import optimism from '../public/icons/optimism.png';
 import {useState, useEffect} from 'react';
 import { ExpandIcon } from '../components/icons/Notifications';
+import {useTheme} from 'styled-components';
 
 export const ChainIconComponent = ({ch}) => {
   const [chainIcon, setChainIcon] = useState(<Image src={polygon} alt={'matic'} width={30} height={30} />);
@@ -16,11 +17,12 @@ export const ChainIconComponent = ({ch}) => {
 
 export const ExplorerReference = ({ch, tx}) => {
   const [explorer, setExplorer] = useState('https://polygonscan.com/tx/');
+  const theme = useTheme();
   useEffect(() => {
     setExplorer(ChainExplorer(ch))
   }, []);
   return   <a href={`${explorer}${tx}`} target="_blank" rel="noreferrer">
-        <ExpandIcon width={20} height={20} />
+        <ExpandIcon width={20} height={20} color={theme.colors.primary} />
       </a>
 }
 
