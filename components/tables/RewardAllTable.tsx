@@ -80,8 +80,14 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
     {
        //@ts-ignore
       header: (
-        <HeaderCell>
+        <HeaderCell 
+            onClick={() => {
+              setBackerFilter(!backerFilter);
+            }}>
           Project 
+          <ImageHover>
+            <FilterIcon width={13} height={13} color={theme.colors.icon}/>
+          </ImageHover>
         </HeaderCell>
       ),
       accessorKey: 'fund_id',

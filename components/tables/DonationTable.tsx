@@ -20,6 +20,7 @@ import Address from '../functional/Address';
 import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
+import {useTheme} from 'styled-components'
 
 interface ITransactionTable {
   data: any;
@@ -51,6 +52,7 @@ const currenciesIdMapping = {
 const PAGE_SIZE = 5;
 
 export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
+  const theme = useTheme();
   const columnFilterValue = column.getFilterValue() as string | number;
 
   const isSelectInput = column.columnDef.meta?.filter === 'select';

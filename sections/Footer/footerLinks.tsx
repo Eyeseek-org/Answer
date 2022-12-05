@@ -8,27 +8,58 @@ interface IFooterLinks {
   target?: HTMLAttributeAnchorTarget;
 }
 
-export const footerLinks: IFooterLinks[] = [
+export const socialLinks: IFooterLinks[] = [
   {
     href: 'mailto: eyeseek@proton.me',
-    text: 'eyeseek@proton.me',
-    icon: <EmailIcon width={50} />,
+    text: 'Email',
+    icon: <EmailIcon width={30} height={10} />,
   },
   {
     href: 'https://discord.gg/JnTgUEZvtR',
     text: 'Discord',
-    icon: <DiscordIcon width={30} />,
+    icon: <DiscordIcon width={30} height={10} />,
     target: '_blank',
   },
   {
     href: 'https://medium.com/eyeseek',
     text: 'Medium',
-    icon: <MediumIcon width={30} />,
+    icon: <MediumIcon width={30} height={10} />,
+    target: '_blank',
+  }
+];
+
+export const refLinks: IFooterLinks[] = [
+  {
+    href: 'pitch.pdf',
+    text: 'Pitch deck',
     target: '_blank',
   },
   {
     href: 'pitch.pdf',
     text: 'Pitch deck',
+    target: '_blank',
+  },
+  {
+    href: 'pitch.pdf',
+    text: 'Pitch deck',
+    target: '_blank',
+  },
+];
+
+export const docLinks: IFooterLinks[] = [
+  {
+    href: '/',
+    text: 'Setup a project',
+    target: '_blank',
+  },
+  {
+    href: '/',
+    text: 'Reward incentivizations',
+    target: '_blank',
+  },
+  {
+    href: '/',
+    text: 'Streaming',
     target: '_blank',
   },
 ];
