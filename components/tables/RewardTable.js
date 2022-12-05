@@ -24,7 +24,7 @@ const RewardTable = ({data, projectId}) => {
   const columns = [
     {
       accessorKey: 'title',
-      header: 'Reward',
+      header: 'Project'
     },
     {
         accessorKey: 'requiredPledge',
@@ -83,6 +83,8 @@ const RewardTable = ({data, projectId}) => {
     columns,
     state: {
       sorting,
+      pagination,
+      columnFilters,
     },
     enableGrouping: true,
     onSortingChange: setSorting,

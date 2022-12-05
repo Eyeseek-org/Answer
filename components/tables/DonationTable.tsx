@@ -94,7 +94,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         >
           Chain{' '}
           <ImageHover>
-            <FilterIcon width={13} height={13} />
+            <FilterIcon width={13} height={13} color={theme.colors.icon} />
           </ImageHover>
         </RowCenter>
       ),
@@ -118,7 +118,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         >
           Backer{' '}
           <ImageHover>
-            <FilterIcon width={13} height={13} />
+            <FilterIcon width={13} height={13} color={theme.colors.icon} />
           </ImageHover>
         </RowCenter>
       ),
@@ -157,7 +157,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         >
           Token{' '}
           <ImageHover>
-            <FilterIcon height={13} width={13} />
+            <FilterIcon height={13} width={13} color={theme.colors.icon} />
           </ImageHover>
         </RowCenter>
       ),

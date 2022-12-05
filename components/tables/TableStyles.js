@@ -7,7 +7,7 @@ export const Table = styled.table`
   border-radius: 10px;
   border: none;
   text-align: center;
-  background: linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%);
+  background: ${(props) => props.theme.colors.tableGradient};
   box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
   margin-bottom: 2%;
   border: 1px solid grey;
@@ -56,7 +56,6 @@ export const ImageHover = styled.button`
 `;
 
 export const HeaderCell = styled.div`
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,6 +66,9 @@ export const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 250px;
+  font-family: 'Neucha';
+  letter-spacing: 1px;
   gap: 1rem;
 `;
 
@@ -85,4 +87,8 @@ export const MyInput = styled.input`
 
 export const ActionCol = styled.div`
   min-width: 100px;
+`
+
+export const TableWrapper = styled.div`
+  position: relative;
 `

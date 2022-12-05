@@ -17,6 +17,7 @@ import {
 import { ArrowDown, ArrowUp, FilterIcon } from '../icons/TableIcons';
 import { RowCenter } from '../format/Row';
 import Address from '../functional/Address';
+import {useTheme} from 'styled-components'
 
 interface ITransactionTable {
   data: any;
@@ -80,9 +81,10 @@ const FilterInput = ({ column }: { column: Column<TransactionTableProps> }) => {
 const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   const [sorting, setSorting] = useState([]);
   const [backerFilter, setBackerFilter] = useState<boolean>(false)
+  const theme = useTheme();
   const columns: ColumnDef<TransactionTableProps, string>[] = [
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13} height={13} color={theme.colors.icon}/></ImageHover></RowCenter>,
       accessorKey: 'chain',
       enableSorting: false,
       cell: (props) => {
@@ -94,7 +96,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       },
     },
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13} height={13} color={theme.colors.icon}/></ImageHover></RowCenter>,
       accessorKey: 'backer',
       cell: (props) => (
         <AddCol>
