@@ -6,7 +6,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  background: 'black';
+  background: ${(props) => props.theme.colors.black};
   padding: 2%;
   padding-right: 5%;
 `;
