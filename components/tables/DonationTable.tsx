@@ -52,7 +52,6 @@ const currenciesIdMapping = {
 const PAGE_SIZE = 5;
 
 export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
-  const theme = useTheme();
   const columnFilterValue = column.getFilterValue() as string | number;
 
   const isSelectInput = column.columnDef.meta?.filter === 'select';
@@ -84,6 +83,7 @@ export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
 const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   const [sorting, setSorting] = useState([]);
   const [backerFilter, setBackerFilter] = useState<boolean>(false);
+  const theme = useTheme();
 
   const columns: ColumnDef<TransactionTableProps, string>[] = [
     {
