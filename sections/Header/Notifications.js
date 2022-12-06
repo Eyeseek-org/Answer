@@ -1,33 +1,30 @@
 import styled, {useTheme} from 'styled-components';
 import { useState, useEffect } from 'react';
-import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../components/icons/Notifications';
-import { SuccessIcon } from '../components/icons/Common';
+import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../../components/icons/Notifications';
+import { SuccessIcon } from '../../components/icons/Common';
 import ReactTimeAgo from 'react-time-ago';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 import Image from 'next/image';
-import Eye1 from '../public/Eye1.png';
+import Eye1 from '../../public/Eye1.png';
 import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DapAPIService } from '../services/DapAPIService';
-import {AnimatedModal} from '../components/animated/AnimatedModal';
-import { RewardActiveIcon } from '../components/icons/Project';
-import {Buttons, ButtonRow} from '../components/notifications/Styles';
-import { RewardDesc, MiniDesc } from '../components/typography/Descriptions';
+import { DapAPIService ,UniService} from '../../services/DapAPIService';
+import {AnimatedModal} from '../../components/animated/AnimatedModal';
+import { RewardActiveIcon } from '../../components/icons/Project';
+import {Buttons, ButtonRow, NotiTabWrapper, NotiBox} from '../../components/notifications/Styles';
+import { RewardDesc, MiniDesc } from '../../components/typography/Descriptions';
+import { useQuery } from '@tanstack/react-query';
+import Tab from '../../components/form/Tab';
 
 TimeAgo.addDefaultLocale(en);
 
-const NotiBox = styled.div`
-  margin-top: 60px;
-  position: relative;
-  z-index: 80;
-`;
 
 const NotiItem = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-bottom: 1px solid #585858;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
 `;
 
 const Col = styled.div`
@@ -44,7 +41,6 @@ const Col = styled.div`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  background: ${(props) => props.theme.colors.background};
   padding: 2%;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -61,7 +57,7 @@ const Desc = styled.div`
   transition: 0.5s;
   letter-spacing: 0.2px;
   font-size: ${(props) => (props.expand ? '1.1em' : '0.8em')};
-  color: #ffffff;
+  color: ${(props) => props.theme.colors.font};
   @media (min-width: 1780px) {
     font-size: ${(props) => (props.expand ? '1.3em' : '1.1em')};
   }
@@ -75,7 +71,7 @@ const Desc = styled.div`
 const Ago = styled.div`
   font-family: 'Arial';
   font-size: 0.65em;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (min-width: 1780px) {
     font-size: 0.8em;
   }
@@ -115,23 +111,63 @@ const ImageBox = styled.div`
   z-index: -1;
 `;
 
-const Notifications = ({ notis }) => {
+const Counter = styled.div`
+  font-family: 'Gemunu Libre';
+  font-size: 0.8em;
+  color: ${(props) => props.theme.colors.font};
+`
+
+const Notifications = ({ notis, address}) => {
   const [expand, setExpand] = useState(false);
   const queryClient = useQueryClient();
   const theme = useTheme();
+  const [active, setActive] = useState('Unread');
+  const [data, setData] = useState(notis);
 
   const { mutate: updateNotification } = useMutation({
     mutationFn: (id) => DapAPIService.updateReadNotifications(id),
   });
 
+  const query = `/classes/Notification?where={"user":"${address}", "isRead":true}`
+  const { data: readNotis } = useQuery(['notis-read'], () => UniService.getDataAll(query),{  });
+
+  const unreadQuery = `/classes/Notification?where={"user":"${address}", "isRead":false}`
+  const { data: unreadNotis } = useQuery(['notis-unread'], () => UniService.getDataAll(unreadQuery),{ });
+
+  const updateQuery = `/classes/Notification?where={"user":"${address}", "type": "projectUpdate"}`
+  const { data: updateNotis } = useQuery(['notis-updates'], () => UniService.getDataAll(updateQuery),{});
+
+  const messageQuery = `/classes/Message?where={"user":"${address}"}`
+  const { data: messages } = useQuery(['messages'], () => UniService.getDataAll(messageQuery),{});
+
   useEffect(() => {
     confirmRead();
   }, []);
 
+  const handleRead = () => {
+    setActive('Read')
+    setData(readNotis)
+  }
+
+  const handleUnread = () => {
+    setActive('Unread')
+    setData(unreadNotis)
+  }
+
+  const handleUpdate = () => {
+    setActive('Updates')
+    setData(updateNotis)
+  }
+
+  const handleMessages = () => {
+    setActive('Messages')
+    setData(messages)
+  }
+
 
   const confirmRead = () => {
-    if (notis) {
-      notis.forEach((noti) => {
+    if (data) {
+      data.forEach((noti) => {
         if (noti.isRead === false) {
           updateNotification(noti.objectId, {
             onSuccess: () => {
@@ -146,8 +182,8 @@ const Notifications = ({ notis }) => {
   return (
     <AnimatedModal expand={expand}>
       <NotiBox>
-        {notis &&
-          notis
+        {data &&
+          data
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((noti, index) => (
               <NotiItem key={index}>
@@ -178,7 +214,15 @@ const Notifications = ({ notis }) => {
         )}
       </NotiBox>
       <ButtonRow>
-        <Buttons>Notifications</Buttons>
+        <Buttons>
+          <Col>
+             <NotiTabWrapper>
+                <Tab active={active} o1={'Unread'} o2={'Read'} o3={'Updates'} o4={'Messages'} change1={()=>{handleUnread()}} change2={()=>{handleRead()}} change3={()=>{handleUpdate()}} change4={()=>{handleMessages()}}/>
+                <Counter>({unreadNotis ? unreadNotis.length : null} / {readNotis ? readNotis.length : null} / {updateNotis ? updateNotis.length : null} / {messages ? messages.length : null})</Counter>
+             </NotiTabWrapper>
+     
+        </Col>
+        </Buttons>
         <Buttons onClick={() => setExpand(!expand)}>
           {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} />}
         </Buttons>

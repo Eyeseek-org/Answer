@@ -2,12 +2,12 @@ import styled, { css } from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import Loading from '../components/Loading';
-import { categories } from '../data/categories';
-import defaultProfile from '../data/profile';
+import Loading from '../../components/Loading';
+import { categories } from '../../data/categories';
+import defaultProfile from '../../data/profile';
 import { useQuery } from '@tanstack/react-query';
-import { moralisApiConfig } from '../data/moralisApiConfig';
-import { UniService } from "../services/DapAPIService";
+import { moralisApiConfig } from '../../data/moralisApiConfig';
+import { UniService } from "../../services/DapAPIService";
 
 const Container = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const Label = styled.label`
 /// TBD update does not work correctly
 
 const Preferences = () => {
-  const [loading, setLoading] = useState(true);
+
   const { address } = useAccount();
   const [ref, setPref] = useState(defaultProfile);
 
@@ -87,40 +87,36 @@ const Preferences = () => {
   });
 
 
-  const updateProfile = async (e) => {
-    // update profile in database
-    try {
-      await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User/${user.objectId}`, { pref: [profile] }, moralisApiConfig);
-      localStorage.setItem('localProfile', JSON.stringify(profile));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const updateProfile = async (e) => {
+  //   try {
+  //     await axios.put(`${process.env.NEXT_PUBLIC_DAPP}/classes/_User/${user.objectId}`, { pref: [profile] }, moralisApiConfig);
+  //     localStorage.setItem('localProfile', JSON.stringify(profile));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const handleSelect = async (category, subcategory) => {
     const newProfile = { ...pref };
     newProfile[category][subcategory] = !newProfile[category][subcategory];
     address(newProfile);
-    updateProfile();
+    // updateProfile();
   };
 
   // Check local storage for profile, if not there, then create one
   useEffect(() => {
     const localProfile = localStorage.getItem('localProfile');
     if (localProfile) {
-      setPref(JSON.parse(localProfile));
-      setLoading(false);
+   //   setPref(JSON.parse(localProfile));
     } else {
-      localStorage.setItem('localProfile', JSON.stringify(profile));
-      setLoading(false);
+   //   localStorage.setItem('localProfile', JSON.stringify(profile));
     }
   }, []);
 
   return (
     <Container>
-      {loading ? <Loading /> : null}
       {/* map out categories and their corresponding subcategories, if the user selects one then add the category and corresponding subcategory to the profile */}
-      {!loading &&
+      {
         Object.keys(categories)
           .sort()
           .map((category, index) => {
@@ -134,7 +130,7 @@ const Preferences = () => {
                         key={index}
                         onClick={() => handleSelect(category, subcategory)}
                         name={`${category}-${subcategory}`}
-                        selected={profile[category ?? ''][subcategory ?? '']}
+                        selected={[category ?? ''][subcategory ?? '']}
                       >
                         {subcategory}
                       </Label>

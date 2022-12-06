@@ -89,13 +89,13 @@ export const Notis = styled(motion.div)`
   color: ${(props) => props.theme.colors.font};
   text-align: center;
   align-items: center;
-  width: 17px;
-  height: 17px;
+  padding-left: 5px;
+  padding-right: 5px;
   font-size: 13px;
   padding: 2%;
   z-index: 50;
   border-radius: 15px;
-  background: #ab0000;
+  background: ${(props) => props.theme.colors.redPastel};
   right: -10%;
   top: -20%;
 `;
@@ -103,7 +103,7 @@ export const Notis = styled(motion.div)`
 export const HeaderBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   color: ${(props) => props.theme.colors.primary};
   padding: 2%;

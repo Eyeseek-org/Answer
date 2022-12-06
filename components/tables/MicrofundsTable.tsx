@@ -117,7 +117,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       enableColumnFilter: false,
     },
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13} height={13}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13} height={13} color={theme.colors.icon}/></ImageHover></RowCenter>,
       enableColumnFilter: true,
       accessorKey: 'currency_id',
       meta: {

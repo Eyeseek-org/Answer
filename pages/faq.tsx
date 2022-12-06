@@ -177,7 +177,7 @@ const Faq: NextPage = () => {
         <>
           <a href="https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg" rel="noopener noreferrer" target="_blank">
             <YtLink>How does it work?</YtLink>
-            <YouTubeIcon width={25} />
+            <YouTubeIcon width={25} height={25} />
           </a>
         </>
       ),

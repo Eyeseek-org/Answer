@@ -4,7 +4,7 @@ const Container = styled.div`
   display: flex;
   position: relative;
   flex-direction: row;
-  gap: 1%;
+  gap: 5px;
   color: ${(props) => props.theme.colors.font};
   padding: 0.5%;
   width: 40%;
@@ -20,10 +20,10 @@ const Inactive = styled.div`
     cursor: pointer;
     background: ${(props) => props.theme.colors.invisible};
     border-bottom: 1px solid ${(props) => props.theme.colors.border};
-    transition: 0.2s;
+    transition: 0.1s;
     box-shadow: 0px 0px 0px 0px ${(props) => props.theme.colors.font};
     &:hover{
-        opacity: 0.7;
+        opacity: 0.9;
     }
     @media (min-width: 1768px) {
         font-size: 1.1em;
@@ -33,11 +33,18 @@ const Inactive = styled.div`
 const Active = styled(Inactive)`
     color: ${(props) => props.theme.colors.primary};
     border-bottom: 1px solid ${(props) => props.theme.colors.primary};
+    animation: fadeIn 0.3s;
+    @keyframes fadeIn {
+        0% {
+        opacity: 0.7;
+        }
+        100% {
+        opacity: 1;
+        }
+    }
 `
 
-
 const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, change5 }) => {
-
 
     const Item = ({ act, text, onClick }) => {
         return <>{active === act ? 
