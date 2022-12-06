@@ -1,34 +1,24 @@
 import styled, {useTheme} from 'styled-components';
 import { useState, useEffect } from 'react';
-import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../components/icons/Notifications';
-import { SuccessIcon } from '../components/icons/Common';
+import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../../components/icons/Notifications';
+import { SuccessIcon } from '../../components/icons/Common';
 import ReactTimeAgo from 'react-time-ago';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 import Image from 'next/image';
-import Eye1 from '../public/Eye1.png';
+import Eye1 from '../../public/Eye1.png';
 import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DapAPIService ,UniService} from '../services/DapAPIService';
-import {AnimatedModal} from '../components/animated/AnimatedModal';
-import { RewardActiveIcon } from '../components/icons/Project';
-import {Buttons, ButtonRow} from '../components/notifications/Styles';
-import { RewardDesc, MiniDesc } from '../components/typography/Descriptions';
+import { DapAPIService ,UniService} from '../../services/DapAPIService';
+import {AnimatedModal} from '../../components/animated/AnimatedModal';
+import { RewardActiveIcon } from '../../components/icons/Project';
+import {Buttons, ButtonRow, NotiTabWrapper, NotiBox} from '../../components/notifications/Styles';
+import { RewardDesc, MiniDesc } from '../../components/typography/Descriptions';
 import { useQuery } from '@tanstack/react-query';
-import Tab from '../components/form/Tab';
+import Tab from '../../components/form/Tab';
 
 TimeAgo.addDefaultLocale(en);
 
-const NotiBox = styled.div`
-  margin-top: 60px;
-  position: relative;
-  z-index: 80;
-  background: ${(props) => props.theme.colors.body};
-`;
-
-const NotiTabWrapper = styled.div`
-  font-size: 0.7em;
-`
 
 const NotiItem = styled.div`
   display: flex;
@@ -147,6 +137,9 @@ const Notifications = ({ notis, address}) => {
   const updateQuery = `/classes/Notification?where={"user":"${address}", "type": "projectUpdate"}`
   const { data: updateNotis } = useQuery(['notis-updates'], () => UniService.getDataAll(updateQuery),{});
 
+  const messageQuery = `/classes/Message?where={"user":"${address}"}`
+  const { data: messages } = useQuery(['messages'], () => UniService.getDataAll(messageQuery),{});
+
   useEffect(() => {
     confirmRead();
   }, []);
@@ -164,6 +157,11 @@ const Notifications = ({ notis, address}) => {
   const handleUpdate = () => {
     setActive('Updates')
     setData(updateNotis)
+  }
+
+  const handleMessages = () => {
+    setActive('Messages')
+    setData(messages)
   }
 
 
@@ -219,8 +217,8 @@ const Notifications = ({ notis, address}) => {
         <Buttons>
           <Col>
              <NotiTabWrapper>
-                <Tab active={active} o1={'Unread'} o2={'Read'} o3={'Updates'} change1={()=>{handleUnread()}} change2={()=>{handleRead()}} change3={()=>{handleUpdate()}} />
-                <Counter>({unreadNotis ? unreadNotis.length : null} / {readNotis ? readNotis.length : null} / {updateNotis ? updateNotis.length : null})</Counter>
+                <Tab active={active} o1={'Unread'} o2={'Read'} o3={'Updates'} o4={'Messages'} change1={()=>{handleUnread()}} change2={()=>{handleRead()}} change3={()=>{handleUpdate()}} change4={()=>{handleMessages()}}/>
+                <Counter>({unreadNotis ? unreadNotis.length : null} / {readNotis ? readNotis.length : null} / {updateNotis ? updateNotis.length : null} / {messages ? messages.length : null})</Counter>
              </NotiTabWrapper>
      
         </Col>

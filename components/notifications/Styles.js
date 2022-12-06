@@ -31,3 +31,15 @@ export const Buttons = styled.div`
     font-size: 1.4em;
   }
 `;
+
+export const NotiTabWrapper = styled.div`
+  font-size: 0.7em;
+`
+
+export const NotiBox = styled.div`
+  margin-top: 60px;
+  position: relative;
+  z-index: 80;
+  background: ${(props) => props.theme.colors.body};
+`;
+

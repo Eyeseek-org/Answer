@@ -103,7 +103,7 @@ export const Notis = styled(motion.div)`
 export const HeaderBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   color: ${(props) => props.theme.colors.primary};
   padding: 2%;

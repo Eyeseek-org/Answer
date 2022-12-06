@@ -75,7 +75,7 @@ const InputContainer = ({ label, name, placeholder, onChange, description, type,
 
   return (
     <Container>
-      <label className="input_label">{label}</label>
+      {label && <label className="input_label">{label}</label>}
       <div className="input_container">
         {type === 'number' && (
           <input
