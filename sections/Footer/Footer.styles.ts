@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  border-top: 1px solid ${(props) => props.theme.colors.primary};
+  border-top: 1px solid #003e46;
   gap: 7%;
   padding: 5%;
   margin-bottom: 2%;

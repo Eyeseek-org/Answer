@@ -1,25 +1,18 @@
 import { useState } from 'react';
 import type { NextPage } from 'next';
-import styled from 'styled-components';
 import Footer from '../sections/Footer/Footer';
 import TabImage from '../components/form/TabImage';
 import { Col } from '../components/format/Row';
+import { TabBox } from '../components/format/Box';
 import MyProjects from '../sections/My/MyProjects';
 import MyStreams from '../sections/My/MyStreams';
 import MyBookmarks from '../sections/My/MyBookmarks';
-
-const TabBox = styled.div`
-  margin-top: 3%;
-  margin-bottom: 3%;
-  padding-left: 15%;
-  font-size: 1.2em;
-`;
 
 const My: NextPage = () => {
   const [mode, setMode] = useState('Projects');
   const [active, setActive] = useState('Projects');
 
-  const handleMode = (m) => {
+  const handleMode = (m:string) => {
     setMode(m);
     setActive(m);
   };

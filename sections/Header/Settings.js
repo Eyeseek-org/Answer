@@ -7,7 +7,7 @@ import { ButtonRow, Buttons, NotiBox, NotiTabWrapper } from "../../components/no
 import { Col } from "../../components/format/Row";
 import Tab from "../../components/form/Tab";
 import { ExpandIcon, ShrinkIcon } from "../../components/icons/Notifications";
-import PrivateMessage from "../../components/notifications/PrivateMessage";
+import PrivateMessage from "./PrivateMessage";
 
 
 const Settings = () => {

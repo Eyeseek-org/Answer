@@ -74,10 +74,21 @@ export const WarnDesc = styled.div`
 export const FormDesc = styled.div`
   font-size: 1em;
   font-family: 'Montserrat';
-  margin-bottom: 2%;
+  margin-bottom: 5%;
   letter-spacing: 0.2px;
   line-height: 1.5em;
   background: ${(props) => props.theme.colors.invisible};
   border-top: 1px solid rgba(176, 246, 255, 0.4);
   padding-top: 0.5%;
+`
+
+export const ToggleDesc = styled.div`
+  font-family: 'Neucha';
+  letter-spacing: 0.4px;
+  font-size: 0.8em;
+  margin-bottom: 2px;
+  color: ${(props) => props.theme.colors.font};
+  @media (min-width: 1580px) {
+    font-size: 1em;
+  }
 `

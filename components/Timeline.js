@@ -6,7 +6,6 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5%;
     padding-bottom: 7%;
     @media (max-width: 1068px) {
         display: none;

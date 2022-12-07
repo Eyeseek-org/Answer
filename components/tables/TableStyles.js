@@ -103,3 +103,9 @@ export const TableWrapper = styled.div`
 export const AbsoluteFilter = styled.div`
   position: absolute;
 `
+
+export const ToggleBox = styled.div`
+  position: absolute;
+  top: -80px;
+  right: 0;
+`

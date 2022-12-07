@@ -122,7 +122,7 @@ const RenderMilestones = () => {
             description={'Set amount to reach the funding milestone'}
             onChange={(e) => setAppState((prev) => ({ ...prev, amount: e.target.value }))}
             type={'number'}
-            min={1000}
+            min={100}
           />
           <InputContainer
             label={'Describe goal spending'}
@@ -145,7 +145,6 @@ const SetGoals = ({ setStep }) => {
   const { appState, setAppState } = useApp();
   const { pm1, pType } = { ...appState };
   const { chain } = useNetwork();
-
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -203,10 +202,10 @@ const SetGoals = ({ setStep }) => {
             </MilestoneContainer>
             {RenderMilestones}
           </MainMilestoneContainer>
-          {pm1 < 1000 && <StreamAnnouncement>$1000 is a minimum amount for the funding goal</StreamAnnouncement>}
+          {pm1 < 100 && <StreamAnnouncement>$100 is a minimum amount for the funding goal</StreamAnnouncement>}
           <BetweenRow>
             <ButtonAlt onClick={handleBack} text='Back'/>
-            {pm1 >= 1000 ? <ButtonAlt onClick={handleClick} text='Next'/> : null}
+            {pm1 >= 100 ? <ButtonAlt onClick={handleClick} text='Next'/> : null}
           </BetweenRow>
         </>
       ) : (

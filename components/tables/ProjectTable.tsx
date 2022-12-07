@@ -23,7 +23,7 @@ import { ArrowUp, ArrowDown, FilterIcon, FilterFullIcon } from '../icons/TableIc
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon, WebIcon } from '../icons/Project';
 import RewardTable from './RewardTable';
-import { Col, BetweenRowSm, RowCenter } from '../format/Row';
+import { Col, BetweenRowSm, RowCenter, Row } from '../format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../functional/CatPicks';
 import TableSkeleton from '../skeletons/TableSkeleton';
@@ -35,6 +35,8 @@ import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
 import Tooltip from '../Tooltip';
 import IconToggle from '../buttons/IconToggle';
+import Toggle from '../form/Toggle'
+import { AbsoluteRight } from '../format/Box';
 
 const PAGE_SIZE = 10;
 
@@ -71,10 +73,12 @@ const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.El
 };
 
 const ProjectTable = () => {
+  const [verified, setVerified] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
   const [sorting, setSorting] = useState([]);
   const [projectId, setProjectId] = useState<string | undefined>();
+  const [tableData, setTableData] = useState<Project[]>([]);
   const theme = useTheme();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -105,6 +109,14 @@ const ProjectTable = () => {
       {
         accessorKey: 'title',
         header: 'Project',
+        cell: (props) => (
+          <RowCenter>
+            {props.getValue()}
+            <AbsoluteRight>
+              {props.row.original.verified && <VerifiedIcon height={15} width={15} color={theme.colors.icon} />}
+            </AbsoluteRight>
+          </RowCenter>
+        ),
         enableColumnFilter: true,
         enableSorting: false,
       },
@@ -149,13 +161,6 @@ const ProjectTable = () => {
         enableSorting: false,
       },
       {
-        accessorKey: 'verified',
-        cell: (props) => <>{props.getValue() ? <VerifiedIcon height={30} color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={40} height={40} color={theme.colors.icon} />}</>,
-        header: 'Verified',
-        enableSorting: true,
-        enableColumnFilter: false,
-      },
-      {
         accessorKey: 'objectId',
         cell: (props) => (
           <RowCenter>
@@ -186,10 +191,10 @@ const ProjectTable = () => {
     []
   );
 
-  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1, "type": "Standard"}'), {
+  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll(`/classes/Project?where={"state": 1, "type": "Standard"}`), {
     onError: (err) => {
       console.log('err', err);
-    },
+    }
   });
 
   const { data: projectRewards } = useQuery(

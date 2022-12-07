@@ -184,6 +184,7 @@ const Notifications = ({ notis, address}) => {
       <NotiBox>
         {data &&
           data
+            .slice(0, 20)
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((noti, index) => (
               <NotiItem key={index}>
@@ -198,6 +199,8 @@ const Notifications = ({ notis, address}) => {
                     <Col>
                       <Desc expand={expand}>{noti.title}</Desc>
                      {expand ?  <RewardDesc>{noti.description}</RewardDesc> : <MiniDesc>{noti.description}</MiniDesc>}
+                     <Desc expand={expand}>{noti.sender}</Desc>
+                     {expand ?  <RewardDesc>{noti.message}</RewardDesc> : <MiniDesc>{noti.message}</MiniDesc>}
                       <Ago>
                         <ReactTimeAgo date={noti.createdAt} locale="en-US" />
                       </Ago>
