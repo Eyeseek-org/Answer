@@ -15,7 +15,7 @@ import Loading from '../components/Loading';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {darkTheme, lightTheme} from '../themes/theme'
 import { AbsoluteRight } from '../components/format/Box';
-import {mumbai,fantomTest, bnbTest, optimismTest} from '../data/configChain'
+import {mumbai,fantomTest, bnbTest, optimismTest, polygon, bnb, fantom, optimism} from '../data/configChain'
 import { Provider } from 'react-redux'
 import {store} from '../redux/store'
 
@@ -32,10 +32,15 @@ const Container = styled.div`
   font-family: Inter, sans-serif !important;
 `;
 
+const testChains = [mumbai, fantomTest, bnbTest, optimismTest]
+const prodChains = [polygon, bnb, fantom, optimism]
+
+const testProviders = [publicProvider(), publicProvider(), publicProvider(), publicProvider()]
+const prodProviders = [alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_POLYGON}), publicProvider(), publicProvider(), alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM})]
+
 
 const { provider, webSocketProvider, chains } = configureChains(
-  [mumbai, fantomTest, bnbTest, optimismTest],
-  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY }), publicProvider()]
+  testChains, testProviders
 );
 
 const { connectors } = getDefaultWallets({
