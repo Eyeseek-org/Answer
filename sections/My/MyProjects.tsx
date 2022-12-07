@@ -18,7 +18,7 @@ import Tab from '../../components/form/Tab';
 
 const MyProjects = () => {
   const { address } = useAccount();
-  const [active, setActive] = useState('Rewards');
+  const [active, setActive] = useState('Overview');
 
   const { data: project } = useQuery(
     ['active-project'],

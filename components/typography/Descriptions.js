@@ -74,7 +74,7 @@ export const WarnDesc = styled.div`
 export const FormDesc = styled.div`
   font-size: 1em;
   font-family: 'Montserrat';
-  margin-bottom: 2%;
+  margin-bottom: 5%;
   letter-spacing: 0.2px;
   line-height: 1.5em;
   background: ${(props) => props.theme.colors.invisible};

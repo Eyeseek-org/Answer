@@ -19,7 +19,7 @@ const My: NextPage = () => {
   const [mode, setMode] = useState('Projects');
   const [active, setActive] = useState('Projects');
 
-  const handleMode = (m) => {
+  const handleMode = (m:string) => {
     setMode(m);
     setActive(m);
   };

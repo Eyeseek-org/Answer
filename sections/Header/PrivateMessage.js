@@ -1,7 +1,7 @@
-import InputContainer from "../form/InputContainer"
+import InputContainer from "../../components/form/InputContainer"
 import styled, { useTheme } from 'styled-components'
-import { RewardDesc } from "../typography/Descriptions"
-import ButtonAlt from "../buttons/ButtonAlt"
+import { RewardDesc } from "../../components/typography/Descriptions"
+import ButtonAlt from "../../components/buttons/ButtonAlt"
 import { useFormik } from "formik"
 import * as Yup from 'yup';
 import { useAccount } from "wagmi"
@@ -9,9 +9,9 @@ import axios from "axios"
 import { moralisApiConfig } from "../../data/moralisApiConfig"
 import Lottie from 'react-lottie'
 import { useState } from 'react'
-import { errAnim, okAnim } from "../animated/Animations"
-import { G, R } from "../typography/ColoredTexts"
-import { Col, RowCenter} from "../format/Row"
+import { errAnim, okAnim } from "../../components/animated/Animations"
+import { G, R } from "../../components/typography/ColoredTexts"
+import { Col, RowCenter} from "../../components/format/Row"
 
 const Container = styled.div`
     display: flex;
@@ -36,7 +36,7 @@ const PrivateMessage = () => {
       message: '',
       address: '',
     },
-    validateOnChange: true,
+    validateOnChange: false,
     validateOnBlur: true,
     validationSchema: Yup.object({
       message: Yup.string().required('Message is required field'),
