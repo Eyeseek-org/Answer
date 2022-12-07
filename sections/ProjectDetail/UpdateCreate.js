@@ -10,10 +10,15 @@ import Subtitle from '../../components/typography/Subtitle';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { FormDesc } from '../../components/typography/Descriptions';
 
+import styled from 'styled-components';
 
-const UpdateCreate = ({ objectId, bookmarks }) => {
+const Divider = styled.div`
+  margin-top: 10%;
+`
+
+
+const UpdateCreate = ({ objectId, bookmarks, title }) => {
   const { mutate: updateProject, isSuccess, isError } = useMutation(DapAPIService.updateProject);
-
   const { mutate: notifyReward } = useMutation(DapAPIService.handleRewardNotification);
 
   const handleUpdate = async (title, oid, description, url) => {
@@ -64,7 +69,7 @@ const UpdateCreate = ({ objectId, bookmarks }) => {
         <MainMilestoneContainer>
           <MilestoneContainer>
             <form onSubmit={formik.handleSubmit}>
-             <Subtitle text="Create new update" />
+             <Subtitle text={`Create new update for ${title}`} />
             <FormDesc>
               Notify backers and stakeholders about your project updates, rewards and followups. Insert reference to the project page or
               socials where your progress is described in more detail
@@ -105,13 +110,14 @@ const UpdateCreate = ({ objectId, bookmarks }) => {
               isError={formik.errors['url'] != null}
               errorText={formik.errors['url']}
             />
-            {!isSuccess && !isError && (
-              <ButtonAlt text={' Send notification'} />      
-            )}
-            {isError && (
-              <ButtonAlt text ='Technical error: Please try again later'/>
-              
-            )}
+            <Divider/>
+              {!isSuccess && !isError && (
+                <ButtonAlt text={' Send notification'} width={'100%'} />      
+              )}
+              {isError && (
+                <ButtonAlt text ='Technical error: Please try again later'/>
+                
+              )}
             </form>
             {isSuccess && <SuccessDisButton  width={'100%'} text="Success! Watchers were notified"></SuccessDisButton>}
           </MilestoneContainer>

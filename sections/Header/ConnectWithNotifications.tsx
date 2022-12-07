@@ -55,7 +55,7 @@ export const ConnectWithNotifications = () => {
         </>}
       </ConnectWalletBox>
       {settingsOpen && <Settings />}
-      {notificationsOpen  && <Notifications notis={unreadNotis.slice(0, 20)} address={address} />}
+      {notificationsOpen  && <Notifications notis={unreadNotis} address={address} />}
     </>
   );
 };

@@ -115,4 +115,10 @@ export const SpacingBox = styled.div`
     padding-right: 2%;
   }
 `
-
+export const TabBox = styled.div`
+  margin-top: 3%;
+  margin-bottom: 3%;
+  padding-left: 16%;
+  padding-right: 16%;
+  font-size: 1.1em;
+`;
