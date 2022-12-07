@@ -1,12 +1,17 @@
 import InputContainer from "../form/InputContainer"
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { RewardDesc } from "../typography/Descriptions"
 import ButtonAlt from "../buttons/ButtonAlt"
 import { useFormik } from "formik"
 import * as Yup from 'yup';
-import { DapAPIService } from "../../services/DapAPIService"
-import { useMutation } from "@tanstack/react-query"
 import { useAccount } from "wagmi"
+import axios from "axios"
+import { moralisApiConfig } from "../../data/moralisApiConfig"
+import Lottie from 'react-lottie'
+import { useState } from 'react'
+import { errAnim, okAnim } from "../animated/Animations"
+import { G, R } from "../typography/ColoredTexts"
+import { Col, RowCenter} from "../format/Row"
 
 const Container = styled.div`
     display: flex;
@@ -15,64 +20,86 @@ const Container = styled.div`
     gap: 10px;
 `
 
+const Divider = styled.div`
+  height: 20px;
+`
+
 const PrivateMessage = () => {
-    const { address } = useAccount()
+  const { address } = useAccount()
+  const [error, setError] = useState(false)
+  const [success, setSuccess] = useState(false)
 
-    const addRegex = /^0x[a-fA-F0-9]{40}$/
+  const addRegex = /^0x[a-fA-F0-9]{40}$/
 
-    const formik = useFormik({
-        initialValues: {
-          message: '',
-          address: '',
-        },
-        validateOnChange: true,
-        validateOnBlur: true,
-        validationSchema: Yup.object({
-          message: Yup.string().required('Message is required field'),
-          address: Yup.string().required('Address is required field').matches(addRegex, 'EVM address in invalid format'),
-        }),
-        onSubmit: (values) => {
-          handleClick(values.message, values.address);
-        },
-      });
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+      address: '',
+    },
+    validateOnChange: true,
+    validateOnBlur: true,
+    validationSchema: Yup.object({
+      message: Yup.string().required('Message is required field'),
+      address: Yup.string().required('Address is required field').matches(addRegex, 'EVM address in invalid format'),
+    }),
+    onSubmit: (values) => {
+      sendMessage(address, values.address, values.message);
+    },
+  });
 
-    const { mutate: sendMessage } = useMutation({
-        mutationFn: (address, receiver, message) => DapAPIService.sendMessage(address, receiver, message),
-      });
-
-    const handleClick = () => {
-        console.log('Clicked')
-        sendMessage(address, formik.values)
+  const sendMessage = async (sender, recipient, message) => {
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Message`, {
+        sender: sender,
+        recipient: recipient,
+        message: message,
+      }, moralisApiConfig)
+      setError(false)
+      setSuccess(true)
     }
 
-   
+    catch (e) { setError(true) }
+  }
 
-    return <Container>
-        <RewardDesc>Send message to another user</RewardDesc>
-        <InputContainer
-                key={'message'}
-                name={'message'}
-                placeholder={'Hello friend, please check out my project, I think you will like it.'}
-                description={'Description'}
-                type={'textArea'}
-                maxLength={250}
-                onChange={formik.handleChange}
-                isError={formik.errors['message'] != null}
-                errorText={formik.errors['message']}
-              />
-        <InputContainer
-                key={'address'}
-                name={'address'}
-                placeholder={'Address TBD'}
-                description={'Description'}
-                type={'text'}
-                maxLength={50}
-                onChange={formik.handleChange}
-                isError={formik.errors['address'] != null}
-                errorText={formik.errors['address']}
-              />
-        <ButtonAlt text='Send message' onClick={()=>{handleClick}}/>
-    </Container>
+  return <Container>
+    <RewardDesc>Send message to another user</RewardDesc>
+    <form onSubmit={formik.handleSubmit}>
+      <InputContainer
+        key={'message'}
+        name={'message'}
+        placeholder={'Hello friend, please check out my project, I think you will like it.'}
+        description={'Message to a recipient'}
+        type={'textArea'}
+        maxLength={250}
+        onChange={formik.handleChange}
+        isError={formik.errors['message'] != null}
+        errorText={formik.errors['message']}
+      />
+      <InputContainer
+        key={'address'}
+        name={'address'}
+        placeholder={'0x...'}
+        description={'Wallet address'}
+        type={'text'}
+        maxLength={42}
+        onChange={formik.handleChange}
+        isError={formik.errors['address'] != null}
+        errorText={formik.errors['address']}
+      />
+      <Divider />
+      {!success ? <Col>
+        <ButtonAlt text='Send message' width={'100%'} />
+        <Divider />
+        <RewardDesc>Message is not encrypted, serves purely to help settle rewards between you and opposite</RewardDesc>
+      </Col> : <Lottie height={100} width={100} options={okAnim} />}
+      {error && <Lottie height={100} width={100} options={errAnim} />}
+      <Divider />
+      <RowCenter>
+        {success && <RewardDesc><G>Message sent</G></RewardDesc>}
+        {error && <RewardDesc><R>Message failed, service not available</R></RewardDesc>}
+      </RowCenter>
+    </form>
+  </Container>
 }
 
 export default PrivateMessage

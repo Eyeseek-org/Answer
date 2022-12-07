@@ -43,7 +43,7 @@ const MyButton = styled(motion.button)`
 const ButtonAlt = ({ text, onClick, width }) => {
   return (
     <>
-      <MyButton whileHover={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }} onClick={onClick} width={width}>
+      <MyButton  whileHover={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }} onClick={onClick} width={width}>
         {text}
       </MyButton>
     </>
