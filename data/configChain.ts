@@ -59,4 +59,59 @@ export const mumbai: Chain = {
     },
     testnet: true,
   };
+
+  export const polygon: Chain = {
+    id: 137,
+    name: 'Polygon',
+    network: 'polygon',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'MATIC',
+      symbol: 'MATIC',
+    },
+    rpcUrls: {
+      default: 'https://rpc-mainnet.maticvigil.com',
+    },
+  }
   
+  export const bnb: Chain = {
+    id: 56,
+    name: 'Binance Smart Chain',
+    network: 'binance',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'Binanace Coin',
+      symbol: 'BNB',
+    },
+    rpcUrls: {
+      default: 'https://bsc-dataseed.binance.org',
+    },
+  }
+
+  export const fantom: Chain = {
+    id: 250,
+    name: 'Fantom',
+    network: 'fantom',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'Fantom',
+      symbol: 'FTM',
+    },
+    rpcUrls: {
+      default: 'https://rpcapi.fantom.network',
+    },
+  }
+
+  export const optimism: Chain = {
+    id: 10,
+    name: 'Optimism',
+    network: 'optimism',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+    },
+    rpcUrls: {
+      default: 'https://mainnet.optimism.io',
+    },
+  }

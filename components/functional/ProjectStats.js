@@ -5,6 +5,7 @@ import { ChainSmallIconComponent } from "../../helpers/MultichainHelpers";
 import { DetailIcon } from "../icons/Project";
 import { BetweenRow, Row, RowCenter } from "../format/Row";
 import { SubcatPick } from "./CatPicks";
+import IconTooltip from "../buttons/IconTooltip";
 
 const MiniContainer = styled.div`
     display: flex;
@@ -28,7 +29,9 @@ const ProjectStats = ({fund, chain}) => {
     {project && <MiniContainer>
             <AbsoluteChain><ChainSmallIconComponent ch={chain}/></AbsoluteChain>
            <BetweenRow> 
-           <div>  <a href={`/${project.objectId}`} target="_blank" rel="noreferrer"><DetailIcon width={30} height={30} color={theme.colors.icon}/></a></div>
+           <div>  <a href={`/${project.objectId}`} target="_blank" rel="noreferrer">
+            <IconTooltip icon={<DetailIcon width={30} height={30} color={theme.colors.icon}/>} tooltip={"View Project"}/>
+              </a></div>
                    <div> {project.title}</div>
                     <div><SubcatPick subcat={project.subcategory} width={30}/></div>
             </BetweenRow>

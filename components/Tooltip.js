@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import {motion} from 'framer-motion'
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   position: absolute;
   top: ${(props) => (props.margin ? `${props.margin}` : '-30px')};
   background: ${(props) => props.theme.colors.black};
@@ -23,7 +24,13 @@ const Container = styled.div`
 `;
 
 const Tooltip = ({ text, margin }) => {
-  return <Container margin={margin}>{text}</Container>;
+  return <Container margin={margin}
+    initial={{ x: -100 }}
+    animate={{
+        x: -20,
+    }}
+  transition={{  duration: 0.3 }}
+    >{text}</Container>;
 };
 
 export default Tooltip;

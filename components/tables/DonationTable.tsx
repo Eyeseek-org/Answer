@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Table, Header, Tr, Cell, HeadRow, PaginationContainer, ImageHover, AddCol, HeaderCell, MyInput } from './TableStyles';
+import { Table, Header, Tr, Cell, HeadRow, PaginationContainer, ImageHover, AddCol, HeaderCell, MyInput, AbsoluteFilter } from './TableStyles';
 import { ChainIconComponent, ExplorerReference } from '../../helpers/MultichainHelpers';
 import {
   Column,
@@ -66,7 +66,7 @@ export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
     return uniqueValues;
   }, [column.getFacetedUniqueValues]);
 
-  return isSelectInput ? (
+  return isSelectInput ? <AbsoluteFilter>
     <select onChange={(e) => column.setFilterValue(e.target.value)}>
       <option value="" selected>
         All
@@ -75,9 +75,9 @@ export const FilterInput = <T,>({ column }: { column: Column<T> }) => {
         <option value={value}>{value}</option>
       ))}
     </select>
-  ) : (
+    </AbsoluteFilter> : <AbsoluteFilter>
     <MyInput value={columnFilterValue ?? ''} onChange={(e) => column.setFilterValue(e.target.value)} />
-  );
+    </AbsoluteFilter>
 };
 
 const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
@@ -101,7 +101,6 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
         </RowCenter>
       ),
       accessorKey: 'chain',
-      enableSorting: false,
       cell: (props) => {
         return <ChainIconComponent ch={props.getValue()} />;
       },

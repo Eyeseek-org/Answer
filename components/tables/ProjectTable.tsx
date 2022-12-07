@@ -19,7 +19,7 @@ import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
 import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol, TableWrapper } from './TableStyles';
 import { InfoIcon, NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
-import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
+import { ArrowUp, ArrowDown, FilterIcon, FilterFullIcon } from '../icons/TableIcons';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import { DetailIcon, WebIcon } from '../icons/Project';
 import RewardTable from './RewardTable';
@@ -34,6 +34,7 @@ import { ArrElement } from '../../types/common';
 import { FilterInput } from './DonationTable';
 import BalanceProjectSmall from '../functional/BalanceProjectSmall';
 import Tooltip from '../Tooltip';
+import IconToggle from '../buttons/IconToggle';
 
 const PAGE_SIZE = 10;
 
@@ -55,15 +56,16 @@ const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.El
         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
         {header.column.getCanFilter() && (
           <ImageHover onClick={() => setShowFilter(!showFilter)}>
-            <FilterIcon height={13} width={13} color={theme.colors.icon}/>
+              <IconToggle icon={<FilterIcon height={13} width={13} color={theme.colors.icon}/>} toggleIcon={<FilterFullIcon height={13} width={13} color={theme.colors.icon}/>} />
           </ImageHover>
         )}
-      </HeaderCell>
-      {{
+          {{
         asc: <ArrowDown height={10} width={10} />,
         desc: <ArrowUp height={10} width={10} />,
       }[header.column.getIsSorted() as string] ?? null}
       {header.column.getCanFilter() && showFilter && <FilterInput column={header.column} />}
+      </HeaderCell>
+
     </>
   );
 };
@@ -125,7 +127,7 @@ const ProjectTable = () => {
           <div onMouseEnter={() => { handleTooltip('Project goal, d = donated, m = microfunds created') }} onMouseLeave={() => { setShowTooltip(false) }}>Goal</div>
           <BetweenRowSm><div>d</div><div>m</div></BetweenRowSm>
         </Col>,
-        enableSorting: true,
+        enableSorting: false,
         enableColumnFilter: false,
       },
       {

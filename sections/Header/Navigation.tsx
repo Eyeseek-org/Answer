@@ -28,12 +28,12 @@ export const Navigation = () => {
         return <>
          {!auth && <NavItem bold={active === title} key={index}>
             <Link href={url}>
-              <a>{title}</a>
+              <span>{title}</span>
             </Link>
           </NavItem> }
          {auth && address && <NavItem bold={active === title} key={index}>
             <Link href={url}>
-              <a>{title}</a>
+              <span>{title}</span>
             </Link>
           </NavItem> }
           </>
