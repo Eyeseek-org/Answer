@@ -46,6 +46,7 @@
     "react-share": "^4.4.1",
     "react-simple-typewriter": "^5.0.1",
     "react-time-ago": "^7.2.1",
+    "react-tooltip": "^5.0.0",
     "reapop": "^4.2.0",
     "redux": "^4.2.0",
     "siwe": "^1.1.6",

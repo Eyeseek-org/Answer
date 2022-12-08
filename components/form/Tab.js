@@ -7,10 +7,20 @@ const Container = styled.div`
   gap: 5px;
   color: ${(props) => props.theme.colors.font};
   padding: 0.5%;
+  max-height: 50px;
   width: 40%;
   @media (max-width: 768px) {
     width: 100%;
   }
+  animation: fadeIn 0.3s;
+    @keyframes fadeIn {
+        0% {
+        opacity: 0.7;
+        }
+        100% {
+        opacity: 1;
+        }
+    }
 `
 
 const Inactive = styled.div`
@@ -33,15 +43,6 @@ const Inactive = styled.div`
 const Active = styled(Inactive)`
     color: ${(props) => props.theme.colors.primary};
     border-bottom: 1px solid ${(props) => props.theme.colors.primary};
-    animation: fadeIn 0.3s;
-    @keyframes fadeIn {
-        0% {
-        opacity: 0.7;
-        }
-        100% {
-        opacity: 1;
-        }
-    }
 `
 
 const Tab = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, change4, change5 }) => {
