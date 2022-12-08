@@ -155,7 +155,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
             {!success && !apiError && <>
                 <BetweenRow>
                     <Subtitle text={<>
-                        {tokenType === 'Classic' && address === owner ? <>Classic crowdfunding reward</> : <>Unable to create this reward type</>}
+                        {tokenType === 'Classic' && address === owner && <>Classic crowdfunding reward</>}
                         {tokenType === 'ERC20' && <>Fungible token reward</>}
                         {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
                     </>}/>

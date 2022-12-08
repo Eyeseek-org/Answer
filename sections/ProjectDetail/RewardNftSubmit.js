@@ -71,7 +71,7 @@ const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) =
             onClick={() => {
               handleSubmit();
             }}
-          /> : <ButtonAlt text={<Row><div>Waiting for blockchain...</div><div><Lottie height={100} width={100} options={loadingAnim} /></div></Row>} disabled={true} />}
+          /> : <ButtonAlt text={<div>Waiting for blockchain... <Lottie height={50} width={50} options={loadingAnim} /></div>} disabled={true} />}
       </ButtonBox>
       {error && <ErrText text={'Missing/Incorrect parameter'} />}
     </Container>
