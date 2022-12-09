@@ -6,6 +6,7 @@ import {ArrowUp, ArrowDown} from '../icons/TableIcons'
 import RewardModal from '../../sections/RewardModal'
 import {useTheme} from 'styled-components';
 import { RewardDesc } from '../typography/Descriptions';
+import RewardStats from '../functional/RewardStats';
 
 const RewardTable = ({data, projectId}) => {
   const [sorting, setSorting] = useState([]);
@@ -24,6 +25,14 @@ const RewardTable = ({data, projectId}) => {
   const columns = [
     {
       accessorKey: 'title',
+      cell: (props) => (
+        <RewardStats 
+          desc={props.row.original.description}  
+          delivery={props.row.original.delivery} 
+          estimation={props.row.original.estimation}  
+          title={props.row.original.title}
+        />
+      ),
       header: 'Project'
     },
     {
@@ -82,9 +91,7 @@ const RewardTable = ({data, projectId}) => {
     data,
     columns,
     state: {
-      sorting,
-      pagination,
-      columnFilters,
+      sorting
     },
     enableGrouping: true,
     onSortingChange: setSorting,

@@ -9,6 +9,9 @@ import ErrText from '../../components/typography/ErrText';
 import { useReward } from '../utils/rewardContext';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
+import { loadingAnim } from '../../components/animated/Animations';
+import Lottie from 'react-lottie';
+
 
 const Container = styled.div`
   display: flex;

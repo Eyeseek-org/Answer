@@ -49,7 +49,7 @@ export const RewardAnimatedBox = ({text, delivery, estimation, title}) => {
     {text === '' ? null : 
     <Outer
           initial={ { opacity: 0 }}
-          animate={{ y: 150 ,opacity: 1 }}
+          animate={{ y: 100 ,opacity: 1 }}
           transition={{
             duration: 0.4,
             scale: [0, 1, 0.5, 1],

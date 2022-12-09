@@ -27,7 +27,7 @@ const RewardFormNft = ({dType}) => {
         type={'text'}
     />
     <InputContainer
-        label={'Specific delivery'}
+        label={'Specify delivery'}
         placeholder={'Token + Autograph'}
         description={'Shortly and specifically what backer will receive'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, delivery: e.target.value  }))}
