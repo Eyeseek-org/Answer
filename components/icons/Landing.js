@@ -37,9 +37,9 @@ export const PiggyIcon = ({ width, height, color }) => {
   );
 };
 
-export const StreamIcon = ({ width }) => {
+export const StreamIcon = ({ width, height }) => {
   return (
-    <svg width={width} height="74" viewBox="0 0 63 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 63 74" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

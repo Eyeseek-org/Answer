@@ -1,1 +1,1 @@
-export const cats = ['Technology', 'Games', 'Art', 'Web3', 'Science', 'Food', 'OpenSource'];
+export const cats = ['Technology', 'Games', 'Art', 'Web3', 'Science', 'OpenSource'];

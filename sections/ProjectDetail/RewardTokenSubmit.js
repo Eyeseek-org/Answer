@@ -9,6 +9,9 @@ import { ColRight } from '../../components/format/Row';
 import { useReward } from '../utils/rewardContext';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
+import { loadingAnim } from '../../components/animated/Animations';
+import Lottie from 'react-lottie';
+
 
 const ButtonBox = styled.div`
   display: flex;
