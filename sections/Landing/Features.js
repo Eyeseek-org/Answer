@@ -115,7 +115,10 @@ const Features = () => {
             <FeatureCard
               icon={<RewardLandingIcon width={5} />}
               title={Texts.title5}
-              description={<Image unoptimized={true} src={fee} width={500} height={300} />}
+              description={<LiteYouTubeEmbed 
+                id="1iUu2oLOMnM"
+                title="Rewards"
+            />}
             />
           ) : (
             <FeatureCard
@@ -123,6 +126,9 @@ const Features = () => {
               anim={<RewardAnim width={180} />}
               title={Texts.title5}
               description={Texts.description5}
+              onClick={() => {
+                setDemoReward(!demoReward);
+              }}
             />
           )}
           {demoStream ? (
