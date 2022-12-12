@@ -8,6 +8,7 @@ import HeaderComponent from "./HeaderComponent";
 import { TablePagination } from "./TablePagination";
 import { Cell, Header, HeadRow, Table, Tr } from "./TableStyles"
 import { Transaction } from '../../types/transaction';
+import { Microfund } from '../../types/microfund';
 
 const ProjectHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.Element => {
     return <HeaderComponent header={header}/>
@@ -24,8 +25,14 @@ const StreamHeader = ({ header }: { header: HeaderProps<Stream, unknown> }): JSX
 const TransactionHeader = ({ header }: { header: HeaderProps<Transaction, unknown> }): JSX.Element => {
     return <HeaderComponent header={header}/>
 };
+
+const MicrofundHeader = ({ header }: { header: HeaderProps<Microfund, unknown> }): JSX.Element => {
+  return <HeaderComponent header={header}/>
+};
+
   
 const filterChains: FilterFn<Project> = (row, columnId, value) => row.getValue(columnId).toString().includes(value);
+
   
 
 const TableComponent = ({type, columns, data}) => {
@@ -74,6 +81,8 @@ const TableComponent = ({type, columns, data}) => {
               {type === 'stream' && <StreamHeader header={header} />}
               {/*//@ts-ignore */}
               {type === 'transactions' && <TransactionHeader header={header} />}
+              {/*//@ts-ignore */}
+              {type === 'microfund' && <MicrofundHeader header={header} />}
             </Header>
           ))}
         </HeadRow>

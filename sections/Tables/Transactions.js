@@ -7,7 +7,7 @@ import {Loading} from '../../components/tables/TableStyles'
 import { RewardDesc } from '../../components/typography/Descriptions';
 import optimism from '../../public/icons/optimism.png'
 import TransactionTable from './DonationTable';
-import MicrofundsTable from '../../components/tables/MicrofundsTable';
+import MicrofundsTable from './MicrofundsTable';
 
 const Sub = styled.div`
   display: flex;
