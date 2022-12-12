@@ -7,7 +7,7 @@ import Subtitle from '../typography/Subtitle';
 import {Loading} from './TableStyles'
 import { RewardDesc } from '../typography/Descriptions';
 import optimism from '../../public/icons/optimism.png'
-import RewardAllTable from './RewardAllTable';
+import RewardAllTable from '../../sections/Tables/RewardAllTable';
 
 const Sub = styled.div`
   display: flex;

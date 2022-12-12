@@ -26,7 +26,7 @@ const NumberBox = styled.div`
 
 const IconBox = styled.div`
   position: absolute;
-  z-index: 50;
+  z-index: 20;
   top: 5px;
 `
 
@@ -58,7 +58,7 @@ const RewardCard = ({
   chain,
 }) => {
   const [typeTooltip, setTypeTooltip] = useState(false);
-  const {theme} = useTheme();
+  const theme = useTheme();
 
   return (
     <MainContainer key={key}>

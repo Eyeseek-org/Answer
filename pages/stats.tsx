@@ -1,9 +1,9 @@
-import StreamTable from '../components/tables/StreamTable';
+import StreamTable from '../sections/Tables/StreamTable';
 import styled from 'styled-components';
 import SectionTitle from '../components/typography/SectionTitle';
 import Tab from '../components/form/Tab';
 import { useState } from 'react';
-import ProjectTable from '../components/tables/ProjectTable';
+import ProjectTable from '../sections/Tables/ProjectTable';
 import TransactionSection from '../sections/TransactionSection';
 
 const Container = styled.div`

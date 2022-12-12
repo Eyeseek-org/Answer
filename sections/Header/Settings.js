@@ -14,7 +14,7 @@ const Settings = () => {
     const theme = useTheme();
     const [active, setActive] = useState('Pref');
     const [expand, setExpand] = useState(false);
-    return <AnimatedModal expand={expand}>
+    return <AnimatedModal expand={expand ? true : undefined}>
         <ButtonRow>
             <Buttons>
             <Col>
