@@ -7,8 +7,6 @@ import { E } from "../typography/ColoredTexts"
 const Outer = styled(motion.div)`
     background: ${props => props.theme.colors.black};
     box-shadow: 0px 5px 30px rgba(255, 255, 255, 0.25);
-    z-index: 100;
-    margin-right: 18%;
 `
 
 const Container = styled.div`
@@ -19,7 +17,6 @@ const Container = styled.div`
     font-family: 'Montserrat';
     display: flex;
     flex-direction: column;
-    z-index: 100;
     gap: 5%;
 `
 
