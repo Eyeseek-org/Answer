@@ -1,4 +1,4 @@
-import { GroupedStream } from "../components/tables/StreamTable";
+import { GroupedStream } from "../sections/Tables/StreamTable";
 import { Project } from "../types/project";
 import { Stream } from "../types/stream";
 

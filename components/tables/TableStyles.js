@@ -14,6 +14,7 @@ export const Table = styled.table`
 `;
 
 export const Header = styled.th`
+  position: relative;
   border-right: 1px solid grey;
   padding: 1% 16px;
   font-family: 'Roboto';
@@ -81,7 +82,6 @@ export const PaginationContainer = styled.div`
 `;
 
 export const MyInput = styled.input`
-  background: {props => props.theme.colors.transparent};
   padding: 2px;
   padding-left: 5px;
   padding-right: 5px;
@@ -103,6 +103,7 @@ export const TableWrapper = styled.div`
 
 export const AbsoluteFilter = styled.div`
   position: absolute;
+  bottom: 7px;
 `
 
 export const ToggleBox = styled.div`

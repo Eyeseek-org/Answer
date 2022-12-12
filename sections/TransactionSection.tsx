@@ -3,7 +3,7 @@ import {getLatestBlockHeight, getLogEvents} from '../pages/api/covalent';
 import {useEffect, useState} from 'react';
 import Subtitle from '../components/typography/Subtitle';
 import {Cell, Loading} from '../components/tables/TableStyles';
-import TransactionTable from '../components/tables/DonationTable';
+import TransactionTable from './Tables/DonationTable';
 
 const AddressCell = styled(Cell)`
   width: 100px;
