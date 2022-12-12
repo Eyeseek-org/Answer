@@ -138,16 +138,7 @@ const ProjectDetail = ({
             {nonVerifiedTooltip && <Tooltip text={'Project not verified'} />}
             {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
             {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
-            {chainTooltip && (
-              <Tooltip
-                text={
-                  <>
-                    Project chain: {' '}
-                   <ChainName chain={chainId} />
-                  </>
-                }
-              />
-            )}
+            {chainTooltip &&  <Tooltip text={`Chain ID: ${chainId}`}  />}
           </AbsoluteLeft>
           <ProjectType>
             {verified ? (

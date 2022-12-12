@@ -103,16 +103,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
 
   return (
       <Container whileHover={{ scale: 1.05 }}>
-        {chainTooltip && (
-          <Tooltip
-            text={
-              <>     
-              Project chain:
-              <ChainName chain={chainId}/>
-              </>
-            }
-          />
-        )}
+        {chainTooltip &&  <Tooltip text={`Chain ID: ${chainId}`}  />}
         {standardTypeTooltip && <Tooltip text={'Funding type: Standard crowdfunnding'} />}
         {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
         {nftTooltip && <Tooltip text={'NFT Rewards offered'} />}

@@ -26,7 +26,7 @@ const NumberBox = styled.div`
 
 const IconBox = styled.div`
   position: absolute;
-  z-index: 50;
+  z-index: 20;
   top: 5px;
 `
 
