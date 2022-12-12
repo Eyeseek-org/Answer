@@ -5,7 +5,7 @@ import Amount from './Amount'
 
 const TokenStats = ({ address, amount, name }) => {
     return <Row>
-          <Amount value={amount} />x   <Address address={address}/> 
+        {address &&   <><Amount value={amount} />x   <Address address={address}/> </>}
     </Row>    
 }
 export default TokenStats

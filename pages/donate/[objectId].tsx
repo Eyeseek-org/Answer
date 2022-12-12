@@ -27,7 +27,6 @@ import {ChainIconComponent, CurrAddress} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
 import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
-
 const DonateOption = styled.div`
   position: relative;
   display: flex;
@@ -252,7 +251,8 @@ const Donate: NextPage = () => {
     setShowRewards(true);
   };
 
-  return <MainContainer>  
+  return <>
+  <MainContainer>        
     <SectionTitle title={'Donate'} subtitle={'Select an option below'} />
     {!apiError ?
       <BodyBox>
@@ -336,6 +336,7 @@ const Donate: NextPage = () => {
         )}
     </BodyBox> : <ErrText text='Service is temporarily unavailable'/>}
   </MainContainer>
+  </>
 };
 
 export default Donate;

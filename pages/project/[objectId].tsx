@@ -15,6 +15,7 @@ import SectionTitle from '../../components/typography/SectionTitle';
 import { UniService } from '../../services/DapAPIService';
 import { useQuery } from '@tanstack/react-query';
 import { SpacingBox } from '../../components/format/Box';
+import AnimatedLeftPanel from '../../components/animated/AnimatedLeftPanel';
 
 const Container = styled.div`
   margin-top: 5%;
@@ -101,7 +102,7 @@ const Project: NextPage = () => {
             )}
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 
               <SpacingBox>
-                <RewardList oid={objectId} chain={project.chainId} />
+                   <AnimatedLeftPanel title={'Reward list'} component={<RewardList oid={objectId} chain={project.chainId} />}/>
                 {address === project.owner && (
                   <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} owner={project.owner} />
                 )}

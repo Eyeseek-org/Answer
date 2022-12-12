@@ -9,7 +9,7 @@ export const Table = styled.table`
   text-align: center;
   background: ${(props) => props.theme.colors.tableGradient};
   box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
-  margin-bottom: 2%;
+  margin-bottom: 5%;
   border: 1px solid grey;
 `;
 
@@ -40,7 +40,8 @@ export const HeadRow = styled(Tr)`
 `;
 
 export const Cell = styled.td`
-  padding: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
   font-family: 'Neucha';
   border-right: 1px solid grey;
 `;

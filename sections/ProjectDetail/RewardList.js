@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
 import {RewardAnimatedBox} from '../../components/format/BoxAnimated';
-import Subtitle from '../../components/typography/Subtitle';
 import styled from 'styled-components';
 
 const MutipleRewards = styled.div`
@@ -86,7 +85,6 @@ const RewardList = ({ oid, chain }) => {
   return (
     <>
       <Col>
-        <Subtitle text="List of rewards" />
         <Row>
           {rewards && rewards.length > 0 ? (
             <>
