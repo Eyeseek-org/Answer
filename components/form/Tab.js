@@ -7,7 +7,7 @@ const Container = styled.div`
   gap: 5px;
   color: ${(props) => props.theme.colors.font};
   padding: 0.5%;
-  max-height: 50px;
+  max-height: 65px;
   width: 40%;
   @media (max-width: 768px) {
     width: 100%;

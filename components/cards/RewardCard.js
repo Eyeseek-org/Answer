@@ -58,7 +58,7 @@ const RewardCard = ({
   chain,
 }) => {
   const [typeTooltip, setTypeTooltip] = useState(false);
-  const theme = useTheme();
+  const {theme} = useTheme();
 
   return (
     <MainContainer key={key}>

@@ -28,13 +28,11 @@ const Circle = styled(motion.div)`
 
 const TimeBox = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 100px;
     align-items: center;
-    padding-left: 10%;
-    padding-right: 10%;
-    width: 100%;
-    height: 2px;
+    width: 2px;
+    height: 100%;
     background: #004207;
 `
 
@@ -44,6 +42,9 @@ const MileTitle = styled(motion.div)`
     letter-spacing: 0.8px;
     font-size: 1.3em;
     color: ${(props) => props.theme.colors.primary};
+    background: ${(props) => props.theme.colors.body};
+    border: 1px solid ${(props) => props.theme.colors.border};
+    padding: 2%;
     margin-bottom: 2%;
 `
 
@@ -53,9 +54,8 @@ const O = styled.div`
 
 const Line = styled(motion.div)`
     position: absolute;
-    height: 100px;
+    height: 50px;
     width: 2px;
-    background: ${(props) => props.theme.colors.font};
     left: 5px;
 `
 
@@ -65,7 +65,7 @@ const Milestone = styled.div`
     flex-direction: column;
     position: absolute;
     left: 30px;
-    top: 70px;
+    top: 40px;
     width: 400px;
 `
 
@@ -81,7 +81,7 @@ const Date = styled.div`
     font-size: 1.2em;
 `
 
-const Timeline = ({milestones}) => {
+const TimelineX = ({milestones}) => {
     const Mil = ({date, title, url}) => {
         const [show, setShow] = useState(false)
         return <>
@@ -128,4 +128,4 @@ const Timeline = ({milestones}) => {
     </>
 }
 
-export default Timeline
+export default TimelineX

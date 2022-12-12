@@ -6,7 +6,8 @@ import { UniService } from "../../services/DapAPIService"
 import ReactTimeAgo from 'react-time-ago'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
-import Timeline from '../../components/Timeline'
+import TimelineX from '../../components/TimelineX'
+import AnimatedLeftPanel from "../../components/animated/AnimatedLeftPanel"
 
 TimeAgo.addDefaultLocale(en)
 
@@ -65,8 +66,8 @@ const UpdateOverview = ({objectId}) => {
     
 
     return <Container>
-         
-        {updates && updates.length > 0 &&  <Timeline milestones={updates.slice(0, 10)}/>}
+    
+        {updates && updates.length > 0 &&  <AnimatedLeftPanel title={'Timeline'} component={ <TimelineX milestones={updates.slice(0, 10)}/>}/>}
         <List>
             {updates && updates.length > 0 ?
                 updates.map((update)=> 

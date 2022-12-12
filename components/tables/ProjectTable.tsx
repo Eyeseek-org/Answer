@@ -73,12 +73,10 @@ const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.El
 };
 
 const ProjectTable = () => {
-  const [verified, setVerified] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
   const [sorting, setSorting] = useState([]);
   const [projectId, setProjectId] = useState<string | undefined>();
-  const [tableData, setTableData] = useState<Project[]>([]);
   const theme = useTheme();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
