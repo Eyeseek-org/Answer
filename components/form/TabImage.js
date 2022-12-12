@@ -89,6 +89,9 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <Erc20ActiveIcon width={60} height={60}  /></ActBox>}
                 {text === 'ERC1155' && <ActBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <NftActiveIcon width={60} height={60}  color={theme.colors.icon} /></ActBox>}
+                {text === 'Notifications' && <ProjectActiveIcon width={20}  color={theme.colors.icon}/>}
+                {text === 'Updates' && <ProjectActiveIcon width={20}  color={theme.colors.icon}/>}
+                {text === 'Messages' && <ProjectActiveIcon width={20}  color={theme.colors.icon}/>}
             </Active> : 
             <Inactive onClick={onClick}>
                 {text === 'Projects' && <ColBetween><ProjectIcon width={50}  color={theme.colors.icon}/><div>{text}</div></ColBetween>} 
@@ -101,6 +104,9 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <Erc20Icon width={60} height={60}  color={theme.colors.icon} /></IconBox>}
                 {text === 'ERC1155' && <IconBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <NftIcon width={60}  height={60}  color={theme.colors.icon}/></IconBox>}
+                {text === 'Notifications' && <ProjectActiveIcon width={20}  color={theme.colors.icon}/>}
+                {text === 'Updates' && <ProjectActiveIcon width={20}  color={theme.colors.icon}/>}
+                {text === 'Messages' && <ProjectActiveIcon width={20}  color={theme.colors.icon}/>}
             </Inactive>
         }</>
     }

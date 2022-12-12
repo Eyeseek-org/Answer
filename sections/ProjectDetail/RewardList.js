@@ -10,12 +10,24 @@ import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
 import {RewardAnimatedBox} from '../../components/format/BoxAnimated';
 import styled from 'styled-components';
+import Modal from 'react-modal';
 
 const MutipleRewards = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 `
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
 
 
 const RewardList = ({ oid, chain }) => {
@@ -27,9 +39,23 @@ const RewardList = ({ oid, chain }) => {
   const [estimation, setEstimation] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
   const [showDesc, setShowDesc] = useState(false);
-
-  // Dummy data
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
+
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+ 
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
 
   // Extract image json.image, display it
   const query = `/classes/Reward?where={"project":"${oid}"}`
@@ -144,7 +170,16 @@ const RewardList = ({ oid, chain }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-         {showDesc &&  <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title}/>}
+         <button onClick={openModal}>Open Modal</button>
+         <Modal
+            isOpen={modalIsOpen}
+            onAfterOpen={afterOpenModal}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+          {showDesc &&  <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title}/>}
+      </Modal>
       </Col>
     </>
   );

@@ -2,14 +2,32 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import Subtitle from "../typography/Subtitle";
 
+
 const AnimatedModal = styled(motion.div)`
-    position: fixed;
+    position: absolute;
     top: 35%;
     left: 0;
-    width: 18%;
+    width: 17.2%;
     z-index: 100;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    max-height: 100%;
     @media (max-width: 768px) {
         display: none;
+    }
+    overflow-y: scroll;
+    overflow-x: hidden;
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: ${(props) => props.theme.colors.border};
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #9bffff;
     }
 `;
 

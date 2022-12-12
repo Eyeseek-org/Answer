@@ -17,8 +17,8 @@ export const ConnectWithNotifications = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const theme = useTheme();
   
-  const query = `/classes/Notification?where={"user":"${address}", "isRead":false}`
-  const { data: unreadNotis } = useQuery(['notis-unread'], () => UniService.getDataAll(query),{   });
+  const query = `/classes/Notification?where={"user":"${address}"}`
+  const { data: unreadNotis } = useQuery(['notis'], () => UniService.getDataAll(query),{   });
 
   const handleOpenSettings = (b:boolean) => {
     setNotificationsOpen(false);

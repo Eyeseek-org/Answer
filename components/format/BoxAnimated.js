@@ -5,7 +5,6 @@ import { Col } from "./Row"
 import { E } from "../typography/ColoredTexts"
 
 const Outer = styled(motion.div)`
-    position: absolute;
     background: ${props => props.theme.colors.black};
     box-shadow: 0px 5px 30px rgba(255, 255, 255, 0.25);
     z-index: 100;
@@ -20,6 +19,7 @@ const Container = styled.div`
     font-family: 'Montserrat';
     display: flex;
     flex-direction: column;
+    z-index: 100;
     gap: 5%;
 `
 
@@ -48,8 +48,8 @@ export const RewardAnimatedBox = ({text, delivery, estimation, title}) => {
     return <>
     {text === '' ? null : 
     <Outer
-          initial={ { opacity: 0 }}
-          animate={{ y: 100 ,opacity: 1 }}
+          initial={ { x: -100, opacity: 0 }}
+          animate={{ x: 0 ,opacity: 1 }}
           transition={{
             duration: 0.4,
             scale: [0, 1, 0.5, 1],

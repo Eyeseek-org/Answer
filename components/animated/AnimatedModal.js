@@ -8,7 +8,7 @@ export const AnimatedModal = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  right: 0%;
+  right: 0;
   z-index: 80;
   top: 15%;
   transition: all 0.7s ease-in-out;
@@ -18,6 +18,8 @@ export const AnimatedModal = styled(motion.div)`
   border-radius: 10px;
   border: 1px solid #4e4e4e;
   overflow-y: scroll;
+  margin: 5px;
+  overflow-x: hidden;
   ::-webkit-scrollbar {
     width: 2px;
   }
