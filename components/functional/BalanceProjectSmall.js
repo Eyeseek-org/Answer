@@ -3,16 +3,17 @@ import { B, G } from '../typography/ColoredTexts';
 import Amount from './Amount';
 import { useContractRead } from 'wagmi';
 import donation from '../../abi/donation.json';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { Col, BetweenRowSm } from '../format/Row';
+import { diamond } from '../../data/contracts';
 
 
 const BalanceProjectSmall = ({pid, chainId}) => {
   const [add, setAdd] = useState();
 
     useEffect(() => {
-      const res = GetProjectFundingAddress(chainId);
-      setAdd(res);
+      if (process.env.PROD !== 'something'){
+        setAdd(diamond.mumbai.fundFacet)
+      }
     }, []);
 
 
@@ -23,7 +24,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
     const funds = useContractRead({
       address: add,
       abi: donation.abi,
-      functionName: 'funds',
+      functionName: 'getFundDetail',
       chainId: chainId,
       args: [pid],
       watch: false,

@@ -1,7 +1,7 @@
 import { useContractWrite } from 'wagmi';
 import donation from '../../abi/donation.json';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import { RowEnd, ColRight, Row } from '../../components/format/Row';
+import { RowEnd, ColRight } from '../../components/format/Row';
 import { useReward } from '../utils/rewardContext';
 import { loadingAnim } from '../../components/animated/Animations';
 import Lottie from 'react-lottie';

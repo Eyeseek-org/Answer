@@ -3,10 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ImgSkeleton from '../skeletons/ImgSkeleton';
 import Tag from '../../components/typography/Tag';
-import donation from '../../abi/donation.json';
+import fundFacet from '../../abi/fundFacet.json';
 import { useContractRead } from 'wagmi';
 import { BlockchainIcon, StreamIcon } from '../icons/Landing';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -18,9 +17,10 @@ import {ImageBoxSm} from '../format/Images'
 import { ProjectTitle } from '../typography/Titles';
 import { ProjectDesc } from '../typography/Descriptions';
 import { AbsoluteLeft, AbsoluteRight } from '../format/Box';
-import { ChainIconComponent, ChainName } from '../../helpers/MultichainHelpers';
+import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
+import { diamond } from '../../data/contracts';
 
 const A = styled(Link)`
   &:hover {
@@ -71,8 +71,9 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
   const theme = useTheme()
 
   useEffect(() => {
-    const res = GetProjectFundingAddress(chainId);
-    setAdd(res);
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai.fundFacet)
+    }
   }, []);
 
   let bal = 'n/a';
@@ -81,8 +82,8 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
 
   const funds = useContractRead({
     address: add,
-    abi: donation.abi,
-    functionName: 'funds',
+    abi: fundFacet.abi,
+    functionName: 'getFundDetail',
     chainId: chainId,
     args: [pid],
     watch: false,

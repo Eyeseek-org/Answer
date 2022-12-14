@@ -119,7 +119,7 @@ const Project: NextPage = () => {
         ) : (
           <>{projectError && <>Project failed to fetch</>}</>
         )}
-        {project && mode === 'Verification' && address === project.owner && project.verified !== true && <Verification objectId={objectId} owner={project.owner} />}
+        {project && mode === 'Verification' && <Verification objectId={objectId} owner={project.owner} />}
       </Container>
     </>
   );

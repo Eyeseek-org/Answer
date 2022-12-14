@@ -5,10 +5,13 @@ import Amount from "./Amount";
 import { ethers } from 'ethers';
 
 const Container = styled.div`
-    display: flex;
-    font-size: 0.9em;
-    font-weight: 400;
-    font-family: 'Gemunu Libre';
+      display: flex;
+      font-size: 0.9em;
+      font-weight: 400;
+      font-family: 'Gemunu Libre';
+    @media {
+      font-size: 1.2em;
+  }
 `
 
 const Allowance = ({address, spender, apprToken, tokenSymbol}) => {

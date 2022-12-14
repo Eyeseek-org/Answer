@@ -7,12 +7,13 @@ import { DonateSchema } from '../../util/validator';
 import { useApp } from '../utils/appContext';
 import InputRow from '../../components/form/InputRow';
 import DonateWrapper from './DonateWrapper';
-import donation from '../../abi/donation.json';
+import fundFacet from '../../abi/fundFacet.json';
 import { AbsoluteRight, MainContainer } from '../../components/format/Box';
 import Subtitle from '../../components/typography/Subtitle';
 import { DonateIcon } from '../../components/icons/Project';
 import { MicrofundIcon } from '../../components/icons/Landing';
 import { RowCenter } from '../../components/format/Row';
+import { diamond } from '../../data/contracts';
 
 // Donates directly any amount without reward
 
@@ -32,15 +33,15 @@ const FormWrapper = styled.div`
   }
 `;
 
-const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, home, rid }) => {
+const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, rid }) => {
   const [multi, setMulti] = useState('');
   const [conn, setConn] = useState('');
   const { appState, setAppState } = useApp();
   const { rewMAmount, rewDAmount } = appState;
 
   const outcome = useContractRead({
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.fundFacet,
+    abi: fundFacet.abi,
     functionName: 'calcOutcome',
     chainId: home,
     args: [pid, rewDAmount],
@@ -48,8 +49,8 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
   });
 
   const connections = useContractRead({
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.fundFacet,
+    abi: fundFacet.abi,
     functionName: 'calcInvolvedMicros',
     chainId: home,
     args: [pid, rewDAmount],
@@ -112,7 +113,6 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, add, h
         pid={pid}
         bookmarks={bookmarks}
         currencyAddress={currencyAddress}
-        add={add}
         curr={curr}
         home={home}
         rid={rid}

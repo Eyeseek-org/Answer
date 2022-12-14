@@ -25,7 +25,6 @@ import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
 import {ChainIconComponent, CurrAddress} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 
 const DonateOption = styled.div`
   position: relative;
@@ -138,7 +137,6 @@ const Donate: NextPage = () => {
   const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet);
   const [currencyAddress, setCurrencyAddress] = useState<string>('USDC');
   const [curr, setCurr] = useState(1);
-  const [add, setAdd] = useState<string>();
 
   const [active, setActive] = useState('No reward');
   // @ts-ignore
@@ -152,7 +150,6 @@ const Donate: NextPage = () => {
     enabled: !!router.isReady,
     onSuccess: (data) => {
        // @ts-ignore
-      setAdd(GetProjectFundingAddress(data.chainId));
       setCurrencyAddress(CurrAddress(currency, data.chainId));
     },
     onError: (error) => {
@@ -172,25 +169,21 @@ const Donate: NextPage = () => {
       case 80001:
         setUsdcFaucet(testChains.polygonUsdcFaucet);
         setUsdtFaucet(testChains.polygonUsdtFaucet);
-        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR);
         setCurrencyAddress(CurrAddress(currency, id));
         break;
       case 97:
         setUsdcFaucet(testChains.bnbUsdcFaucet);
         setUsdtFaucet(testChains.bnbUsdtFaucet);
-        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_BSC);
         setCurrencyAddress(CurrAddress(currency, id));
         break;
       case 4002:
         setUsdcFaucet(testChains.fantomUsdcFaucet);
         setUsdtFaucet(testChains.fantomUsdtFaucet);
-        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_FTM);
         setCurrencyAddress(CurrAddress(currency, id));
         break;
       case 420:
         setUsdcFaucet(testChains.optimismUsdcFaucet);
         setUsdtFaucet(testChains.optimismUsdtFaucet);
-        setAdd(process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM);
         setCurrencyAddress(CurrAddress(currency, id));
         break;
       default:
@@ -317,7 +310,6 @@ const Donate: NextPage = () => {
               pid={projectDetail?.pid}
               bookmarks={projectDetail?.bookmarks}
               currencyAddress={currencyAddress}
-              add={add}
               curr={curr}
               home={projectDetail?.chainId}
             />
@@ -328,7 +320,6 @@ const Donate: NextPage = () => {
             currency={currency}
             bookmarks={projectDetail?.bookmarks}
             currencyAddress={currencyAddress}
-            add={add}
             curr={curr}
             home={projectDetail?.chainId}
             rid={rewId}
