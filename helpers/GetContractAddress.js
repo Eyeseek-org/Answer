@@ -15,8 +15,7 @@ export const GetProjectTokenAddress = (chain) => {
   }
 };
 
-// Nussubg YSDT
-
+// Only USDC, missing other currencies, production addresses
 export const GetTokenAddress = (chain) => {
   switch(chain) {
     case 80001: return stable.mumbai.usdc;

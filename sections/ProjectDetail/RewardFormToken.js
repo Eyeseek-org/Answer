@@ -3,6 +3,7 @@ import {useState} from 'react'
 import InputContainer from "../../components/form/InputContainer";
 import { Row } from "../../components/format/Row";
 import { G, R } from '../../components/typography/ColoredTexts';
+import { stable } from '../../data/contracts/stablecoins';
 
 const RewardFormToken = ({dType}) => {
     const { setRewardState } = useReward();
@@ -67,7 +68,7 @@ const RewardFormToken = ({dType}) => {
     />
     <InputContainer
         label={'Token address'}
-        placeholder={process.env.NEXT_PUBLIC_AD_TOKEN}
+        placeholder={stable.mumbai.usdc}
         onChange={(e) => handleAddressChange(e)}
         description={<Row>Contract address of the locked token - 
                {!validAddress ? <R>Token address is not valid</R> : <G>Token address is valid</G>}
