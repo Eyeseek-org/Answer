@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useContractEvent, useNetwork } from 'wagmi';
+import { useContractEvent } from 'wagmi';
 import masterFacet from '../../abi/masterFacet.json';
-import { GetFundingAddress } from '../../helpers/GetContractAddress';
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 const Container = styled.div`
   margin-top: 50px;
@@ -22,7 +21,6 @@ const Tag = styled(motion.div)`
 const LandingDonate = () => {
   const [showDonate, setShowDonate] = useState(false);
   const [add, setAdd] = useState(diamond.mumbai.masterFacet);
-  const { chain } = useNetwork();
 
   const handleContractListener = () => {
     setShowDonate(!showDonate);
@@ -40,7 +38,9 @@ const LandingDonate = () => {
   });
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chain));
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai.masterFacet)
+    }
   }, []);
 
   /// Use it for rewards

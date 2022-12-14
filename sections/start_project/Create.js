@@ -12,7 +12,6 @@ import fundFacet from '../../abi/fundFacet.json';
 import Eye10 from '../../public/Eye10.png';
 import Rainbow from '../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { BetweenRow, Col, RowEnd } from '../../components/format/Row';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { MainContainer } from '../../components/format/Box';
@@ -21,7 +20,7 @@ import { ChainName } from '../../helpers/MultichainHelpers';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import {pushDiscordProject} from '../../data/discord/projectData'
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 const texts = [
   {
@@ -47,7 +46,7 @@ const Create = ({ setStep }) => {
   const [oid, setOid] = useState(null);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
-  const [add, setAdd] = useState("");
+  const [add, setAdd] = useState(diamond.mumbai.fundFacet);
   const theme = useTheme()
   const dispatch = useDispatch() 
 
@@ -62,9 +61,8 @@ const Create = ({ setStep }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    const res = GetProjectFundingAddress(pChain);
-    if (res){
-      setAdd(res)
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai.fundFacet)
     }
   
     if (!chainName){

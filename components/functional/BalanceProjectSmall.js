@@ -2,9 +2,9 @@ import {useEffect, useState} from 'react';
 import { B, G } from '../typography/ColoredTexts';
 import Amount from './Amount';
 import { useContractRead } from 'wagmi';
-import donation from '../../abi/donation.json';
+import fundFacet from '../../abi/fundFacet.json';
 import { Col, BetweenRowSm } from '../format/Row';
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 
 const BalanceProjectSmall = ({pid, chainId}) => {
@@ -23,7 +23,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
   
     const funds = useContractRead({
       address: add,
-      abi: donation.abi,
+      abi: fundFacet.abi,
       functionName: 'getFundDetail',
       chainId: chainId,
       args: [pid],
@@ -32,7 +32,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
 
     const micros = useContractRead({
       address: add,
-      abi: donation.abi,
+      abi: fundFacet.abi,
       functionName: 'getConnectedMicroFunds',
       chainId: chainId,
       args: [pid],

@@ -20,7 +20,7 @@ import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import Socials from '../../components/buttons/Socials';
 import LoaderSmall from '../../components/animated/LoaderSmall'
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 const ButtonBox = styled.div`
   display: flex;

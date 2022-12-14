@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {useAccount, useContractEvent} from 'wagmi'
 import { useReward } from '../utils/rewardContext';
 import { RewardDesc, TabRow } from "../start_project/Styles";
-import donation from "../../abi/donation.json"
+import rewardFacet from "../../abi/rewardFacet.json"
 import Tab from "../../components/form/Tab";
 import { BetweenRow } from "../../components/format/Row";
 import {MainMilestoneContainer, MilestoneContainer,MainContainer } from '../../components/form/InputWrappers'
@@ -17,7 +17,6 @@ import RewardClassicSubmit from './RewardClassicSubmit';
 import RewardFormToken from './RewardFormToken';
 import RewardFormNft from './RewardFormNft';
 import RewardFormClassic from './RewardFormClassic';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { SumRow, SumTitle } from '../start_project/StylesCreate';
 import SuccessDisButton from '../../components/buttons/SuccessDisButton';
 import Amount from '../../components/functional/Amount';
@@ -25,6 +24,7 @@ import { G } from '../../components/typography/ColoredTexts';
 import Socials from '../../components/buttons/Socials';
 import TabImage from '../../components/form/TabImage';
 import { pushDiscordReward } from '../../data/discord/projectData';
+import { diamond } from '../../data/contracts/core';
 
 
 
@@ -51,19 +51,21 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const [tokenType, setTokenType] = useState('Classic')
     const [success, setSuccess] = useState(false)
     const {address} = useAccount()
-    const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+    const [add, setAdd] = useState(diamond.mumbai.rewardFacet);
     const { rewardState, setRewardState } = useReward();
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId, delivery, estimation, loading } = rewardState;
     const [rewardId, setRewardId] = useState(0)
     const [apiError, setApiError] = useState(false)
 
     useEffect (() => {
-        setAdd(GetProjectFundingAddress(home))
+        if (process.env.PROD !== 'something'){
+            setAdd(diamond.mumbai.rewardFacet)
+          }
     },[])
 
     useContractEvent({
         address: add,
-        abi: donation.abi,
+        abi: rewardFacet.abi,
         eventName: 'RewardCreated',
         listener: (event) => listened(event),
         once: false

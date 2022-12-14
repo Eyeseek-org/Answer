@@ -6,6 +6,7 @@ import optimism from '../public/icons/optimism.png';
 import {useState, useEffect} from 'react';
 import { ExpandIcon } from '../components/icons/Notifications';
 import {useTheme} from 'styled-components';
+import { stable } from '../data/contracts/stablecoins';
 
 export const ChainIconComponent = ({ch}) => {
   const [chainIcon, setChainIcon] = useState(<Image src={polygon} alt={'matic'} width={30} height={30} />);
@@ -72,39 +73,31 @@ export const CurrAddress = (curr, chain) => {
   switch(chain) {
     case 80001:
     if (curr === 'USDC') {
-      return process.env.NEXT_PUBLIC_AD_USDC;
+      return stable.mumbai.usdc;
     } else if (curr === 'USDT') {
-      return process.env.NEXT_PUBLIC_AD_USDT;
-    } else if (curr === 'DAI') {
-      return process.env.NEXT_PUBLIC_AD_DAI;
-    }
+      return stable.mumbai.usdt;
+    } 
     break;
     case 97:
       if (curr === 'USDC') {
-        return process.env.NEXT_PUBLIC_AD_USDC_BNB;
+        return stable.bnbTestnet.usdc;
       } else if (curr === 'USDT') {
-        return process.env.NEXT_PUBLIC_AD_USDT_BNB;
-      } else if (curr === 'DAI') {
-        return process.env.NEXT_PUBLIC_AD_DAI_BNB;
+        return stable.bnbTestnet.usdt;
       }
       break;
     case 4002:
         if (curr === 'USDC') {
-          return process.env.NEXT_PUBLIC_AD_USDC_FTM;
+          return stable.ftmTestnet.usdc;
         } else if (curr === 'USDT') {
-          return process.env.NEXT_PUBLIC_AD_USDT_FTM;
-        } else if (curr === 'DAI') {
-          return process.env.NEXT_PUBLIC_AD_DAI_FTM;
-        }
+          return stable.ftmTestnet.usdt;
+        } 
       break;
     case 420:
         if (curr === 'USDC') {
-          return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
+          return stable.optimismTestnet.usdc;
         } else if (curr === 'USDT') {
-          return process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM;
-        } else if (curr === 'DAI') {
-          return process.env.NEXT_PUBLIC_AD_DAI_OPTIMISM;
-        }
+          return stable.optimismTestnet.usdt;
+        } 
     break;
   }
  }
@@ -113,39 +106,31 @@ export const CurrAddress = (curr, chain) => {
   switch(chain) {
     case 137:
     if (curr === 'USDC') {
-      return process.env.NEXT_PUBLIC_AD_USDC;
+      return stable.mumbai.usdc;
     } else if (curr === 'USDT') {
-      return process.env.NEXT_PUBLIC_AD_USDT;
-    } else if (curr === 'DAI') {
-      return process.env.NEXT_PUBLIC_AD_DAI;
-    }
+      return stable.mumbai.usdt;
+    } 
     break;
     case 56:
       if (curr === 'USDC') {
-        return process.env.NEXT_PUBLIC_AD_USDC_BNB;
+        return stable.bnbTestnet.usdc;
       } else if (curr === 'USDT') {
-        return process.env.NEXT_PUBLIC_AD_USDT_BNB;
-      } else if (curr === 'DAI') {
-        return process.env.NEXT_PUBLIC_AD_DAI_BNB;
+        return stable.bnbTestnet.usdt;
       }
       break;
     case 250:
         if (curr === 'USDC') {
-          return process.env.NEXT_PUBLIC_AD_USDC_FTM;
+          return stable.ftmTestnet.usdc;
         } else if (curr === 'USDT') {
-          return process.env.NEXT_PUBLIC_AD_USDT_FTM;
-        } else if (curr === 'DAI') {
-          return process.env.NEXT_PUBLIC_AD_DAI_FTM;
-        }
+          return stable.ftmTestnet.usdt;
+        } 
       break;
     case 10:
         if (curr === 'USDC') {
-          return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
+          return stable.optimismTestnet.usdc;
         } else if (curr === 'USDT') {
-          return process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM;
-        } else if (curr === 'DAI') {
-          return process.env.NEXT_PUBLIC_AD_DAI_OPTIMISM;
-        }
+          return stable.optimismTestnet.usdt;
+        } 
     break;
   }
  }

@@ -14,7 +14,7 @@ import { BetweenRow, Row } from '../../components/format/Row';
 import { G } from '../../components/typography/ColoredTexts';
 import StatRow from '../../components/StatRow';
 import { RightPart, SmallBal } from '../../components/cards/CardStyles';
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 const ButtonBox = styled.div`
   margin-top: 4%;
@@ -80,18 +80,19 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
 
   }
 
-  const backers = useContractRead({
-    address: add,
-    abi: fundFacet.abi,
-    functionName: 'getBackers',
-    chainId: chainId,
-    args: [pid],
-    watch: false,
-  });
+  // TBD to integrate new function with all addresses
+  // const backers = useContractRead({
+  //   address: add,
+  //   abi: fundFacet.abi,
+  //   functionName: 'getBackers',
+  //   chainId: chainId,
+  //   args: [pid],
+  //   watch: false,
+  // });
 
-  if (backers.data) {
-    backing = backers.data.toString();
-  }
+  // if (backers.data) {
+  //   backing = backers.data.toString();
+  // }
 
   const micros = useContractRead({
     address: add,
