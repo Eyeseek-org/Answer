@@ -8,7 +8,6 @@ import ButtonAlt from './ButtonAlt';
 import { Col } from '../format/Row';
 import {okAnim, loadingAnim} from '../animated/Animations';
 
-
 const Container = styled.div`
   position: relative;
 `;

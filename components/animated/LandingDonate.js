@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useContractEvent, useNetwork } from 'wagmi';
-import donation from '../../abi/donation.json';
+import masterFacet from '../../abi/masterFacet.json';
 import { GetFundingAddress } from '../../helpers/GetContractAddress';
+import { diamond } from '../../data/contracts';
 
 const Container = styled.div`
   margin-top: 50px;
@@ -20,7 +21,7 @@ const Tag = styled(motion.div)`
 
 const LandingDonate = () => {
   const [showDonate, setShowDonate] = useState(false);
-  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [add, setAdd] = useState(diamond.mumbai.masterFacet);
   const { chain } = useNetwork();
 
   const handleContractListener = () => {
@@ -32,7 +33,7 @@ const LandingDonate = () => {
 
   useContractEvent({
     address: add,
-    abi: donation.abi,
+    abi: masterFacet.abi,
     eventName: 'Donated',
     listener: (_event) => handleContractListener(),
     once: false,

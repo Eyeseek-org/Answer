@@ -5,11 +5,10 @@ import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent';
 import ApprovedComponent from '../../components/functional/ApprovedComponent';
-import donation from '../../abi/donation.json';
+import masterFacet from '../../abi/masterFacet.json';
 import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { Row, RowCenter} from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
@@ -21,6 +20,7 @@ import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import Socials from '../../components/buttons/Socials';
 import LoaderSmall from '../../components/animated/LoaderSmall'
+import { diamond } from '../../data/contracts';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const Metrics = styled.div`
   }
 `;
 
-const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => {
+const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   const { address } = useAccount();
   const [apiError, setApiError] = useState(false)
   const [success, setSuccess] = useState(false);
@@ -60,7 +60,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const sum = (parseInt(rewMAmount) + parseInt(rewDAmount)) * 1000000;
   const router = useRouter();
   const { objectId } = router.query;
-  const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [spender, setSpender] = useState(diamond.mumbai.core);
   const [donateTooltip, setDonateTooltip] = useState(false);
   const dispatch = useDispatch() 
 
@@ -70,7 +70,9 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   }
 
   useEffect(() => {
-    setSpender(GetProjectFundingAddress(home));
+    if (process.env.PROD !== 'something'){
+      setSpender(diamond.mumbai.core)
+    }
   }, []);
 
   var all = 0;
@@ -80,7 +82,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     abi: token.abi,
     functionName: 'allowance',
     chainId: home,
-    args: [address, add],
+    args: [address, diamond.mumbai.core],
     watch: true,
   });
 
@@ -99,8 +101,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   };
 
   useContractEvent({
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.masterFacet,
+    abi: masterFacet.abi,
     chainId: home,
     eventName: 'Donated',
     listener: (event) => useEv(event),
@@ -108,8 +110,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   });
 
   useContractEvent({
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.masterFacet,
+    abi: masterFacet.abi,
     chainId: home,
     eventName: 'MicroCreated',
     listener: (event) => useEv(event),
@@ -121,8 +123,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
  
   const {write} = useContractWrite({
     mode: 'recklesslyUnprepared',
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.masterFacet,
+    abi: masterFacet.abi,
     chainId: home,
     functionName: 'contribute',
     args: [sixMicro, sixDonate, pid, curr, rewId],

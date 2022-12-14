@@ -9,10 +9,10 @@ import BalanceComponent from "../../components/functional/BalanceComponent.js";
 import Allowance from "../../components/functional/Allowance.js";
 import Tooltip from "../../components/Tooltip.js";
 import ButtonAlt from "../../components/buttons/ButtonAlt";
-import { Reference } from "../../components/typography/Descriptions.js";
 import { InfoIcon } from "../../components/icons/Common.js";
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
+import { RewardDesc } from "../../components/typography/Descriptions.js";
 
 
 const Row = styled.div`
@@ -66,7 +66,7 @@ const Texts = {
     approvedTooltip: "Amount of approved SuperTokens able to stream.",
 }
 
-const StreamBalances = ({address, provider, signer, token, superContract}) => {
+const StreamBalances = ({address, provider, signer, token, superContract, chainId}) => {
     const [showTooltip, setShowTooltip] = useState(false)
     const [tooltipText, setTooltipText] = useState('')
     const [wrappedAmount, setWrappedAmount] = useState(1000)
@@ -151,8 +151,8 @@ const StreamBalances = ({address, provider, signer, token, superContract}) => {
            <ButtonAlt width={100} text='Wrap' onClick={()=>{wrap(wrappedAmount)}}/>
            <ButtonAlt width={100} text='Unwrap' onClick={()=>{unwrap(wrappedAmount)}}/>
         </ActionRow>
-        <a href='https://app.superfluid.finance/wrap?upgrade' rel="noopener noreferrer" target="_blank">  
-            <Reference>Alternatively Wrap/Unwrap stablecoin on Superfluid</Reference>
+          <a href='https://app.superfluid.finance/wrap?upgrade' rel="noopener noreferrer" target="_blank">  
+            <RewardDesc>Alternatively Wrap/Unwrap stablecoin on Superfluid</RewardDesc>
            </a>
 </BalancesBox>
 }

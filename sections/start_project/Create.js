@@ -8,7 +8,7 @@ import SectionTitle from '../../components/typography/SectionTitle';
 import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
 import FaqCard from '../../components/cards/FaqCard';
 import { BookIcon } from '../../components/icons/Common';
-import donation from '../../abi/donation.json';
+import fundFacet from '../../abi/fundFacet.json';
 import Eye10 from '../../public/Eye10.png';
 import Rainbow from '../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
@@ -21,6 +21,7 @@ import { ChainName } from '../../helpers/MultichainHelpers';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import {pushDiscordProject} from '../../data/discord/projectData'
+import { diamond } from '../../data/contracts';
 
 const texts = [
   {
@@ -110,8 +111,8 @@ const Create = ({ setStep }) => {
   const Six = pm1 * 1000000;
 
   const { config, isError } = usePrepareContractWrite({
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.fundFacet,
+    abi: fundFacet.abi,
     functionName: 'createFund',
     chainId: pChain,
     args: [Six]
@@ -172,8 +173,8 @@ const Create = ({ setStep }) => {
   }
 
   useContractEvent({
-    address: add,
-    abi: donation.abi,
+    address: diamond.mumbai.fundFacet,
+    abi: fundFacet.abi,
     eventName: 'FundCreated',
     chainId: pChain,
     listener: (event) => useEv(event),

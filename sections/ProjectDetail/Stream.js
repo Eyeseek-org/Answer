@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { useNetwork, useAccount, useProvider, useSigner, useSwitchNetwork } from 'wagmi'
-import { abi } from '../../abi/supertoken.js'
-import { useQuery } from "@tanstack/react-query";
-import { UniService } from "../../services/DapAPIService";
 import styled from 'styled-components'
 import axios from 'axios'
 import { moralisApiConfig } from '../../data/moralisApiConfig'
@@ -18,6 +15,7 @@ import { BetweenRow } from "../../components/format/Row.js";
 import ButtonErr from "../../components/buttons/ButtonErr.js";
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
+import { useMoralisCloudFunction } from "react-moralis";
 
 const Container = styled.div`
   padding-left: 1%;
@@ -97,28 +95,15 @@ const ErrorBox = styled.div`
   font-family: 'Neucha';
 `
 
-const A = styled.a`
-  color: green;
-  text-decoration: underline;
-  margin-left: 5px;
-  &:hover{
-    cursor: pointer;
-    opacity: 0.9;
-  }
-`
-
-
 const Stream = ({ objectId, recipient, chainId }) => {
   const { address } = useAccount();
   const [apiError, setApiError] = useState(false)
   const [flowRate, setFlowRate] = useState(0);
   const provider = useProvider()
   const { data: signer } = useSigner()
-  const [streamFound, setStreamFound] = useState(false)
-  const [deposit, setDeposit] = useState(0)
-  const [superfluidError, setSuperfluidError] = useState(false)
+  const [streamTotal, setStreamTotal] = useState()
+  const [sumDeposited, setSumDeposited] = useState(0)
   const [newStream, setNewStream] = useState(false)
-  const [myStream, setMyStream] = useState(false)
   const [displayRate, setDisplayRate] = useState(0)
   const [superTokenAddress, setSuperTokenAddress] = useState('0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f')
   const {chain} = useNetwork()
@@ -130,65 +115,32 @@ const Stream = ({ objectId, recipient, chainId }) => {
     dispatch(notify(text, type))
   }
 
-
   /// CFAv1Forwarder
   const superContract = "0xcfA132E353cB4E398080B9700609bb008eceB125" // Same address fro both Polygon and Optimism
 
-  const query = `/classes/Stream?where={"projectId":"${objectId}", "isActive": true }`
-  const { data: streamData } = useQuery(['streams'], () => UniService.getDataAll(query),{
-    onError: () => {
-      setApiError(true)
-    },
-    // TBD on render does not work well
-    onSuccess: () => {
-      setApiError(false)
-      if (streamData && streamData.length > 0) {
-        setStreamFound(true)
-        for (let i = 0; i < streamData.length; i++) {
-          if (streamData[i].flowRate) {
-            /// Error here - For each array item add number to the displayRate total
-            setDisplayRate(parseInt(displayRate) + parseInt(streamData[i].flowRate))
-          }
-        }
-      }
-    }
-  });
+  const params = 
+  {
+    "projectId": objectId
+  }
+
+    const { fetch } = useMoralisCloudFunction(
+        "getStreamData", params
+      );
+    
+      const cloudCall = () => {
+        fetch({
+          onSuccess: (data) => {
+            setStreamTotal(data)
+            setDisplayRate(data.flowRate)
+            setSumDeposited(data.deposited)
+          }, 
+          onError: (error) => console.log(error)
+        });
+      };
 
   useEffect(() => {
-    getFlowData()
+    cloudCall()
   }, [])
-
-  // Maybe rather call on backend - Aggregate automations 
-
-  const getFlowData = async () => {
-    // Key service to retrieve current deposit 
-    const sf = await Framework.create({
-      provider: provider,
-      chainId: chainId
-    })
-    const DAIxContract = await sf.loadSuperToken("fDAIx");
-    const DAIx = DAIxContract.address;
-    await setSuperTokenAddress(DAIx)
-    /// TBD need to repair to get actual balance 
-    /// TBD find simple way how to find address
-    /// TBD pass correct values to the form and send to Superfluid & Moralis 
-    try {
-      const flow = await sf.cfaV1.getFlow({
-        superToken: DAIx,
-        sender: address,
-        receiver: recipient,
-        providerOrSigner: provider
-      })
-      if (flow.flowRate !== '0') {
-        setMyStream(true)
-        setDeposit(flow.deposit)
-        setFlowRate(flow.flowRate)
-      }
-    } catch (err) {
-      console.log(err)
-      setSuperfluidError("Stream not found")
-    }
-  }
 
   /// TBD - Update Moralis DB together with the streams on chain
   const addStreamState = async (oid) => {
@@ -243,8 +195,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
       await createFlowOperation.exec(signer);
       await addStreamState(objectId)
       setApiError(false)
-      await setNewStream(false)
-      await setStreamFound(true)
+      setNewStream(false)
     } catch (error) {
       console.log(
         "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
@@ -270,8 +221,6 @@ const Stream = ({ objectId, recipient, chainId }) => {
       console.log("Deleting your stream...");
       await deleteFlowOperation.exec(signer);
       await deleteStreamState(objectId)
-      setStreamFound(false)
-      setMyStream(false)
       setFlowRate(0)
 
     } catch (error) {
@@ -308,27 +257,26 @@ const Stream = ({ objectId, recipient, chainId }) => {
             {address && <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} />}
             </BetweenRow>
           {apiError && <ErrorBox>Insufficient funds or allowance</ErrorBox>}
-
         </> : <>
-          {streamFound ? <>
+          {streamTotal ? <>
             <Title><Subtitle text={'Overview'} /></Title>
             <ValueRow>
               <RowItem>Flow rate</RowItem>
               <RowItem>
-                <ActiveValue>{displayRate}</ActiveValue>
+                <ActiveValue>${displayRate}</ActiveValue>
               </RowItem>
-              <RowRightItem>dai/mo</RowRightItem>
+              <RowRightItem>monthly</RowRightItem>
             </ValueRow>
 
             <ValueRow>
               <RowItem>Deposited</RowItem>
               <RowItem>
-                <ActiveValue><StreamCounter startValue={0} endValue={displayRate} /></ActiveValue>
+                <ActiveValue><StreamCounter startValue={sumDeposited} endValue={displayRate} /></ActiveValue>
               </RowItem>
-              <RowRightItem>Value</RowRightItem>
+              <RowRightItem>total</RowRightItem>
             </ValueRow>
             <BetweenRow>
-          {myStream ?    <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  /> : <>
+           {address === recipient ?  <ButtonAlt width={'100%'} text='Close stream' onClick={()=>{stopStream()}}  /> : <>
             {address && recipient !== address && <ButtonAlt width={'100%'} text='Setup stream' onClick={()=>{setNewStream(true)}}  />} 
             {address && recipient === address && <RewardDesc>Cannot setup stream to yourself</RewardDesc>}
             {chain && chain.id !== chainId && <ButtonErr text='Wrong network' onClick={() => switchNetwork(chain)} width={'250px'}/>}
@@ -343,13 +291,14 @@ const Stream = ({ objectId, recipient, chainId }) => {
           }
         </>}
         </StreamComponent>
-    {newStream &&  <StreamBalances 
-                        address={address} 
-                        provider={provider} 
-                        signer={signer} 
-                        token={superTokenAddress} 
-                        superContract={superContract} 
-                        chainId={chainId}/>}
+        {newStream &&  <StreamBalances 
+                            address={address} 
+                            provider={provider} 
+                            signer={signer} 
+                            token={superTokenAddress} 
+                            superContract={superContract} 
+                            chainId={chainId}
+                            />}
     </Container>
   </>
 }

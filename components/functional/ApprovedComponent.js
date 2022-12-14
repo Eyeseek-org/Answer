@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useContractRead, useNetwork } from 'wagmi';
 import token from '../../abi/token.json';
 import Amount from './Amount';
-import { GetFundingAddress } from '../../helpers/GetContractAddress';
 import Tooltip from '../Tooltip';
 import { InfoIcon } from '../icons/Common';
 import {useTheme} from 'styled-components';
+import { diamond } from '../../data/contracts';
 
 const ApprovedComponent = ({ address, currencyAddress }) => {
   const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
@@ -16,11 +16,13 @@ const ApprovedComponent = ({ address, currencyAddress }) => {
   const dec = 6
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chain));
-    console.log(add)
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai.core)
+    }
   }, []);
 
   var fullValue;
+
 
   const { data } = useContractRead({
     address: currencyAddress,

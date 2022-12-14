@@ -10,6 +10,9 @@ const Container = styled.div`
   font-size: 0.9em;
   font-weight: 400;
   font-family: 'Gemunu Libre';
+  @media {
+    font-size: 1.2em;
+  }
 `;
 const BalanceComponent = ({ token, address, dec }) => {
   const [ch, setCh] = useState(80001);

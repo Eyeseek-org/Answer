@@ -13,6 +13,7 @@ import { SubcatPick } from '../../components/functional/CatPicks';
 import SuperBalance from '../../components/functional/SuperBalance';
 import {useTheme} from 'styled-components'
 import TableComponent from '../../components/tables/TableComponent';
+import TableSkeleton from '../../components/skeletons/TableSkeleton';
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
@@ -78,7 +79,7 @@ const StreamTable = () => {
     },
   ];
 
-  const { data: activeStreams } = useQuery(['streams'], () => UniService.getDataAll<Stream>('/classes/Stream?where={"isActive": true}'), {
+  const { data: activeStreams, isLoading } = useQuery(['streams'], () => UniService.getDataAll<Stream>('/classes/Stream?where={"isActive": true}'), {
     onError: (err) => {
       console.log('err', err);
     },
@@ -91,13 +92,13 @@ const StreamTable = () => {
     },
   });
 
-  return (
-    <>
+  return <>
+    {isLoading ? <TableSkeleton/> :  <>
       {activeStreams && activeStreams.length > 0 && (
         <TableComponent data={data} type={'stream'} columns={columns}/>
       )}
-    </>
-  );
+    </> }
+  </>
 };
 
 export default StreamTable;
