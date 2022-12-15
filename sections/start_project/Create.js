@@ -5,7 +5,7 @@ import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork
 import axios from 'axios';
 import {useTheme} from 'styled-components';
 import SectionTitle from '../../components/typography/SectionTitle';
-import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
+import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
 import FaqCard from '../../components/cards/FaqCard';
 import { BookIcon } from '../../components/icons/Common';
 import fundFacet from '../../abi/fundFacet.json';
@@ -21,6 +21,8 @@ import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import {pushDiscordProject} from '../../data/discord/projectData'
 import { diamond } from '../../data/contracts/core';
+import { RewardDesc } from './Styles';
+import { R } from '../../components/typography/ColoredTexts';
 
 const texts = [
   {
@@ -254,7 +256,7 @@ const Create = ({ setStep }) => {
             <ButtonAlt text="Go to project" onClick={() => window.location.href = `/project/${oid}`}/>
          </RowEnd>}
         
-        {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
+        {isError && pType !== 'Stream' && <RewardDesc><R>Smart contract error, check if all your data inputs are valid</R></RewardDesc>}
       </RulesContainer>
     </MainContainer>
   );

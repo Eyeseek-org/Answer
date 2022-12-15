@@ -20,4 +20,5 @@ export interface Project {
   urlSocials: string;
   verified: boolean;
   pid: number;
+  softDeadline: number;
 }

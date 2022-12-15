@@ -25,6 +25,14 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+        port: '2053',
+        pathname: '/**',
+      },
+    ],
   },
 };
 

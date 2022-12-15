@@ -26,7 +26,7 @@ export const testChains = {
 export const diamond = {
   mumbai: {
     fundFacet: "0x56684CA97e6E35d12B5b35c50E1F53Dd8C7F15Ed",
-    core: "0x17dcEE1Dd8E1253563472407F888D79DC981f7Fc",
+    core: "0x12a6952B21389cF2d4d467aDC8dcF0e868864281",
     rewardFacet: "0x1616C4Ebd839D2F074875B3CF242BFC2F7D034C5",
     masterFacet: "0x354084bb0768c254090EaCab35c4B1961B9f3e8c"
   },

@@ -17,8 +17,9 @@ import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
 import BalanceProjectSmall from '../../components/functional/BalanceProjectSmall';
 import Tooltip from '../../components/Tooltip';
-import { AbsoluteRight } from '../../components/format/Box';
+import { AbsoluteLeft, AbsoluteRight } from '../../components/format/Box';
 import TableComponent from '../../components/tables/TableComponent';
+import Deadline from '../../components/tables/Deadline';
 
 
 declare module '@tanstack/table-core' {
@@ -65,6 +66,9 @@ const ProjectTable = () => {
             <AbsoluteRight>
               {props.row.original.verified && <VerifiedIcon height={15} width={15} color={theme.colors.icon} />}
             </AbsoluteRight>
+            <AbsoluteLeft>
+              {props.row.original.softDeadline && <Deadline deadline={props.row.original.softDeadline} />}
+            </AbsoluteLeft>
           </RowCenter>
         ),
         enableColumnFilter: true,
