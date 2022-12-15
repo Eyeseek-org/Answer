@@ -5,14 +5,13 @@ import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork
 import axios from 'axios';
 import {useTheme} from 'styled-components';
 import SectionTitle from '../../components/typography/SectionTitle';
-import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
+import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
 import FaqCard from '../../components/cards/FaqCard';
 import { BookIcon } from '../../components/icons/Common';
 import fundFacet from '../../abi/fundFacet.json';
 import Eye10 from '../../public/Eye10.png';
 import Rainbow from '../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { BetweenRow, Col, RowEnd } from '../../components/format/Row';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { MainContainer } from '../../components/format/Box';
@@ -21,7 +20,9 @@ import { ChainName } from '../../helpers/MultichainHelpers';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import {pushDiscordProject} from '../../data/discord/projectData'
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
+import { RewardDesc } from './Styles';
+import { R } from '../../components/typography/ColoredTexts';
 
 const texts = [
   {
@@ -47,7 +48,7 @@ const Create = ({ setStep }) => {
   const [oid, setOid] = useState(null);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
-  const [add, setAdd] = useState("");
+  const [add, setAdd] = useState(diamond.mumbai.fundFacet);
   const theme = useTheme()
   const dispatch = useDispatch() 
 
@@ -62,9 +63,8 @@ const Create = ({ setStep }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    const res = GetProjectFundingAddress(pChain);
-    if (res){
-      setAdd(res)
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai.fundFacet)
     }
   
     if (!chainName){
@@ -256,7 +256,7 @@ const Create = ({ setStep }) => {
             <ButtonAlt text="Go to project" onClick={() => window.location.href = `/project/${oid}`}/>
          </RowEnd>}
         
-        {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
+        {isError && pType !== 'Stream' && <RewardDesc><R>Smart contract error, check if all your data inputs are valid</R></RewardDesc>}
       </RulesContainer>
     </MainContainer>
   );

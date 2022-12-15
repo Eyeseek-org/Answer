@@ -13,7 +13,7 @@ import Warning from '../../components/animated/Warning';
 import ButtonErr from '../../components/buttons/ButtonErr';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { currencies } from '../../data/currencies';
-import { testChains } from '../../data/contracts';
+import { testChains } from '../../data/contracts/core';
 import NativeFaucet from '../../sections/Donate/NativeFaucet';
 import Faucet from '../../components/buttons/Faucet';
 import LandingDonate from '../../components/animated/LandingDonate';

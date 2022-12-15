@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import type { NextPage } from 'next';
-import { usePrepareContractWrite, useContractWrite, useNetwork, useContractEvent } from 'wagmi';
+import { usePrepareContractWrite, useContractWrite, useContractEvent } from 'wagmi';
 import { useState, useEffect } from 'react';
 import Lottie from 'react-lottie';
 import axios from 'axios';
 
-import donation from '../abi/donation.json';
+import masterFacet from '../abi/masterFacet.json';
 import SectionTitle from '../components/typography/SectionTitle';
 import successAlt from '../data/animations/successAlt.json';
-import { GetFundingAddress } from '../helpers/GetContractAddress';
 import { moralisApiConfig } from '../data/moralisApiConfig';
+import { diamond } from '../data/contracts/core';
 
 const okAnim = {
   loop: false,
@@ -64,20 +64,20 @@ const Distribute: NextPage = () => {
   const [identifier, setIdentifier] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [ev, setEv] = useState<boolean>(false);
-  const { chain } = useNetwork();
   const [chainId, setChainId] = useState<number>(80001);
   const [apiError, setApiError] = useState<boolean>(false);
   const [project, setProject] = useState<any>({});
   const [bookmarks, setBookmarks] = useState([]);
 
-  const [add, setAdd] = useState<string>(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [add, setAdd] = useState<string>(diamond.mumbai.masterFacet);
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chain));
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai.masterFacet)
+    }
   }, []);
 
   /// Need to retrieve chainId, contract
-
   const handleId = (e: number) => {
     setIdentifier(e);
     getProjectDetail(e);
@@ -102,7 +102,7 @@ const Distribute: NextPage = () => {
 
   const { config } = usePrepareContractWrite({
     address: add,
-    abi: donation.abi,
+    abi: masterFacet.abi,
     chainId: chainId,
     functionName: 'distribute',
     args: [identifier],
@@ -116,7 +116,7 @@ const Distribute: NextPage = () => {
 
   useContractEvent({
     address: add,
-    abi: donation.abi,
+    abi: masterFacet.abi,
     chainId: chainId,
     eventName: 'DistributionAccomplished',
     listener: (event) => handleListener(event),

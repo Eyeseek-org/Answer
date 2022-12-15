@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
+import { diamond } from '../../data/contracts/core';
 
 //Ethers functions
 const utils = ethers.utils;
@@ -14,7 +14,7 @@ const reward_hash = utils.keccak256(reward_topic);
 
 // GET LOG EVENTS FOR A CONTRACT
 export const getRewardEvents = async (startingBlock: number, chain: number, latest: number): Promise<any> => {
-  const eye_seek_contract_address = GetProjectFundingAddress(chain);
+  const eye_seek_contract_address = diamond.mumbai.masterFacet
   try {
     const response = await axios.get(
       `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`

@@ -20,7 +20,7 @@ import { AbsoluteLeft, AbsoluteRight } from '../format/Box';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 const A = styled(Link)`
   &:hover {

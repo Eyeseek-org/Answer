@@ -34,7 +34,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   const theme = useTheme();
   const columns: ColumnDef<Microfund, string>[] = [
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain <ImageHover><FilterIcon width={13} height={13} color={theme.colors.icon}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain </RowCenter>,
       accessorKey: 'chain',
       enableSorting: false,
       cell: (props) => {
@@ -46,7 +46,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       },
     },
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer <ImageHover><FilterIcon width={13} height={13} color={theme.colors.icon}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer </RowCenter>,
       accessorKey: 'backer',
       cell: (props) => (
         <AddCol>
@@ -67,7 +67,7 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
       enableColumnFilter: false,
     },
     {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token <ImageHover><FilterIcon width={13} height={13} color={theme.colors.icon}/></ImageHover></RowCenter>,
+      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Token </RowCenter>,
       enableColumnFilter: true,
       accessorKey: 'currency_id',
       meta: {

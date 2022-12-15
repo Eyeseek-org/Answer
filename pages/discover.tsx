@@ -19,6 +19,7 @@ const Container = styled.div`
 
 const TabWrapper = styled.div`
   margin-bottom: 5%;
+  padding-left: 2%;
 `
 
 // Create couple of common tables

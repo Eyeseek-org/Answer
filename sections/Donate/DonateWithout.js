@@ -13,7 +13,7 @@ import Subtitle from '../../components/typography/Subtitle';
 import { DonateIcon } from '../../components/icons/Project';
 import { MicrofundIcon } from '../../components/icons/Landing';
 import { RowCenter } from '../../components/format/Row';
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 // Donates directly any amount without reward
 

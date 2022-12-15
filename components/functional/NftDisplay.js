@@ -1,37 +1,41 @@
-import Moralis from 'moralis';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import axios from 'axios';
+import { ethers } from 'ethers';
+import IpfsDisplay from '../image/IpfsDisplay'
 
 const NFTDisplay = ({ address, tokenId }) => {
   const [data, setData] = useState();
+  const add = ethers.utils.isAddress(address) 
 
-  const fetchNftData = async () => {
-    await Moralis.start({
-      apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
-    });
 
-    // TBD recognize chain from the parameter
-
-    const response = await Moralis.EvmApi.nft.getNFTMetadata({
-      address,
-      tokenId,
-    });
-
-    const image_url = JSON.parse(response?.data?.metadata)?.image;
-    const filtered = image_url.includes('ipfs://') ? image_url.replace('ipfs://', 'https://ipfs.io/ipfs/') : image_url;
-
-    setData(filtered);
-  };
+    const getNftMetadata = async () => {
+      const header = {
+        headers: {
+          'X-API-Key': process.env.NEXT_PUBLIC_MORALIS_API_KEY,
+          'Content-Type': 'application/json'
+        },
+      }
+      try {
+        const response = await axios.get(`https://deep-index.moralis.io/api/v2/nft/${address}/${tokenId}?chain=mumbai`, header)
+        const image_url = JSON.parse(response?.data?.metadata)?.image;
+        const filtered = image_url.includes('ipfs://') ? image_url.replace('ipfs://', 'https://ipfs.io/ipfs/') : image_url;
+        setData(filtered);
+        console.log(data)
+      } catch (err){
+        console.log(err)
+      }
+    }
 
   useEffect(() => {
-    if (address !== '' && tokenId !== 0) {
-      fetchNftData();
+    if (add) {
+      getNftMetadata();
     }
   }, []);
 
   return (
     <>
-      <Image src={data} alt="alt" width={200} height={200} />
+      {data && data !== undefined && <IpfsDisplay ipfsHash={data} />}
+      {!add && <p>Invalid contract address</p>}
     </>
   );
 };

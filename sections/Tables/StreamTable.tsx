@@ -14,6 +14,7 @@ import SuperBalance from '../../components/functional/SuperBalance';
 import {useTheme} from 'styled-components'
 import TableComponent from '../../components/tables/TableComponent';
 import TableSkeleton from '../../components/skeletons/TableSkeleton';
+import { RewardDesc } from '../start_project/Styles';
 
 export type GroupedStream = Stream & Pick<Project, 'title' | 'subcategory' | 'chainId'>;
 
@@ -94,9 +95,9 @@ const StreamTable = () => {
 
   return <>
     {isLoading ? <TableSkeleton/> :  <>
-      {activeStreams && activeStreams.length > 0 && (
+      {activeStreams && activeStreams.length > 0 ? <>
         <TableComponent data={data} type={'stream'} columns={columns}/>
-      )}
+      </> : <RewardDesc>No stream projects active</RewardDesc>}
     </> }
   </>
 };

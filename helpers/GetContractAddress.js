@@ -1,62 +1,31 @@
-// This function expects wagmi useNetwork() chain as an input
-// Which means actually used network
-export const GetFundingAddress = (chain) => {
-  if (chain && chain.id === 80001) {
-    return process.env.NEXT_PUBLIC_AD_DONATOR;
-  } else if (chain && chain.id === 97) {
-    return process.env.NEXT_PUBLIC_AD_DONATOR_BNB;
-  } else if (chain && chain.id === 4002) {
-    return process.env.NEXT_PUBLIC_AD_DONATOR_FTM;
-  } else if (chain && chain.id === 420) {
-    return process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM;
-  }
-   else {
-    return process.env.NEXT_PUBLIC_AD_DONATOR;
-  }
-};
-
-// This function expects external chain as an input
-// Typically chain of already created project
-
-export const GetProjectFundingAddress = (chain) => {
-  switch(chain) {
-    case 80001: return process.env.NEXT_PUBLIC_AD_DONATOR;
-    case 97: return process.env.NEXT_PUBLIC_AD_DONATOR_BNB;
-    case 4002: return process.env.NEXT_PUBLIC_AD_DONATOR_FTM;
-    case 420: return process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM;
-    case 137: return process.env.NEXT_PUBLIC_AD_DONATOR;
-    case 56: return process.env.NEXT_PUBLIC_AD_DONATOR_BSC;
-    case 250: return process.env.NEXT_PUBLIC_AD_DONATOR_FANTOM;
-    case 10: return process.env.NEXT_PUBLIC_AD_DONATOR_OPTIMISM;
-    default: return process.env.NEXT_PUBLIC_AD_DONATOR;
-  }
-}
+import {stable} from '../data/contracts/stablecoins.js';
 
 // Not used anywhere now, will be needed for donate form later
 export const GetProjectTokenAddress = (chain) => {
   if (chain === 80001) {
-    return process.env.NEXT_PUBLIC_AD_USDC;
+    return stable.mumbai.usdc;
   } else if (chain === 97) {
-    return process.env.NEXT_PUBLIC_AD_USDC_BNB;
+    return stable.bnbTestnet.usdc;
   } else if (chain === 4002) {
-    return process.env.NEXT_PUBLIC_AD_USDC_FTM;
+    return stable.ftmTestnet.usdc;
   } else if (chain === 420) {
-    return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
+    return stable.optimismTestnet.usdc;
   } else {
-    return process.env.NEXT_PUBLIC_AD_USDC;
+    return stable.mumbai.usdc;
   }
 };
 
+// Only USDC, missing other currencies, production addresses
 export const GetTokenAddress = (chain) => {
   switch(chain) {
-    case 80001: return process.env.NEXT_PUBLIC_AD_USDC;
-    case 97: return process.env.NEXT_PUBLIC_AD_USDC_BNB;
-    case 4002: return process.env.NEXT_PUBLIC_AD_USDC_FTM;
-    case 420: return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
-    case 137: return process.env.NEXT_PUBLIC_AD_USDC;
-    case 56: return process.env.NEXT_PUBLIC_AD_USDC_BSC;
-    case 250: return process.env.NEXT_PUBLIC_AD_USDC_FANTOM;
-    case 10: return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
-    default: return process.env.NEXT_PUBLIC_AD_USDC;
+    case 80001: return stable.mumbai.usdc;
+    case 97: return stable.bnbTestnet.usdc;
+    case 4002: return stable.ftmTestnet.usdc;
+    case 420: return stable.optimismTestnet.usdc;
+    case 137: return stable.mumbai.usdc;
+    case 56: return stable.bnbTestnet.usdc;
+    case 250: return stable.ftmTestnet.usdc;
+    case 10: return stable.optimismTestnet.usdc;
+    default: return stable.mumbai.usdc;
   }
 }

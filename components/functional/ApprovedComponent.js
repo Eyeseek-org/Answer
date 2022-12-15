@@ -5,10 +5,10 @@ import Amount from './Amount';
 import Tooltip from '../Tooltip';
 import { InfoIcon } from '../icons/Common';
 import {useTheme} from 'styled-components';
-import { diamond } from '../../data/contracts';
+import { diamond } from '../../data/contracts/core';
 
 const ApprovedComponent = ({ address, currencyAddress }) => {
-  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [add, setAdd] = useState(diamond.mumbai.core);
   const [showTooltip, setShowTooltip] = useState(false);
   const { chain } = useNetwork();
   const theme = useTheme()
