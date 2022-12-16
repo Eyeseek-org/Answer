@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {useAccount, useContractEvent} from 'wagmi'
 import { useReward } from '../utils/rewardContext';
 import { RewardDesc, TabRow } from "../start_project/Styles";
-import rewardFacet from "../../abi/rewardFacet.json"
+import diamondAbi from "../../abi/diamondAbi.json"
 import Tab from "../../components/form/Tab";
 import { BetweenRow } from "../../components/format/Row";
 import {MainMilestoneContainer, MilestoneContainer,MainContainer } from '../../components/form/InputWrappers'
@@ -51,7 +51,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const [tokenType, setTokenType] = useState('Classic')
     const [success, setSuccess] = useState(false)
     const {address} = useAccount()
-    const [add, setAdd] = useState(diamond.mumbai.rewardFacet);
+    const [add, setAdd] = useState(diamond.mumbai);
     const { rewardState, setRewardState } = useReward();
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId, delivery, estimation, loading } = rewardState;
     const [rewardId, setRewardId] = useState(0)
@@ -59,13 +59,13 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
 
     useEffect (() => {
         if (process.env.PROD !== 'something'){
-            setAdd(diamond.mumbai.rewardFacet)
+            setAdd(diamond.mumbai)
           }
     },[])
 
     useContractEvent({
         address: add,
-        abi: rewardFacet.abi,
+        abi: diamondAbi,
         eventName: 'RewardCreated',
         listener: (event) => listened(event),
         once: false

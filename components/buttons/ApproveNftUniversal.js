@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi';
 import styled from 'styled-components';
-import multi from '../../abi/multi.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import Rainbow from './Rainbow';
 import Lottie from 'react-lottie';
 import ButtonAlt from './ButtonAlt';
@@ -40,14 +40,14 @@ const ApproveNftUniversal = ({ tokenContract, spender, amount }) => {
 
   const { config } = usePrepareContractWrite({
     address: tokenContract,
-    abi: multi.abi,
+    abi: diamondAbi,
     functionName: 'setApprovalForAll',
     args: [spender, true],
   });
 
   useContractEvent({
     address: tokenContract,
-    abi: multi.abi,
+    abi: diamondAbi,
     eventName: 'ApprovalForAll',
     listener: (event) => listened(event),
     once: true,
@@ -56,7 +56,7 @@ const ApproveNftUniversal = ({ tokenContract, spender, amount }) => {
   const { write } = useContractWrite(config);
 
   const handleApprove = async () => {
-    await write?.();
+    write?.();
     setLoading(true);
   };
 

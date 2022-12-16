@@ -14,7 +14,7 @@ const reward_hash = utils.keccak256(reward_topic);
 
 // GET LOG EVENTS FOR A CONTRACT
 export const getRewardEvents = async (startingBlock: number, chain: number, latest: number): Promise<any> => {
-  const eye_seek_contract_address = diamond.mumbai.masterFacet
+  const eye_seek_contract_address = diamond.mumbai
   try {
     const response = await axios.get(
       `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`

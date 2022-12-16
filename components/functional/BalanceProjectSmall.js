@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import { B, G } from '../typography/ColoredTexts';
 import Amount from './Amount';
 import { useContractRead } from 'wagmi';
-import fundFacet from '../../abi/fundFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { Col, BetweenRowSm } from '../format/Row';
 import { diamond } from '../../data/contracts/core';
 
@@ -12,7 +12,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
 
     useEffect(() => {
       if (process.env.PROD !== 'something'){
-        setAdd(diamond.mumbai.fundFacet)
+        setAdd(diamond.mumbai)
       }
     }, []);
 
@@ -23,7 +23,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
   
     const funds = useContractRead({
       address: add,
-      abi: fundFacet.abi,
+      abi: diamondAbi,
       functionName: 'getFundDetail',
       chainId: chainId,
       args: [pid],
@@ -32,7 +32,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
 
     const micros = useContractRead({
       address: add,
-      abi: fundFacet.abi,
+      abi: diamondAbi,
       functionName: 'getConnectedMicroFunds',
       chainId: chainId,
       args: [pid],

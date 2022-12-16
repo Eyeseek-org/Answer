@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ImgSkeleton from '../skeletons/ImgSkeleton';
 import Tag from '../../components/typography/Tag';
-import fundFacet from '../../abi/fundFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { useContractRead } from 'wagmi';
 import { BlockchainIcon, StreamIcon } from '../icons/Landing';
 import { useEffect, useState } from 'react';
@@ -72,7 +72,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
-      setAdd(diamond.mumbai.fundFacet)
+      setAdd(diamond.mumbai)
     }
   }, []);
 
@@ -82,7 +82,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
 
   const funds = useContractRead({
     address: add,
-    abi: fundFacet.abi,
+    abi: diamondAbi,
     functionName: 'getFundDetail',
     chainId: chainId,
     args: [pid],

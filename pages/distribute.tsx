@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Lottie from 'react-lottie';
 import axios from 'axios';
 
-import masterFacet from '../abi/masterFacet.json';
+import diamondAbi from '../abi/diamondAbi.json';
 import SectionTitle from '../components/typography/SectionTitle';
 import successAlt from '../data/animations/successAlt.json';
 import { moralisApiConfig } from '../data/moralisApiConfig';
@@ -69,11 +69,11 @@ const Distribute: NextPage = () => {
   const [project, setProject] = useState<any>({});
   const [bookmarks, setBookmarks] = useState([]);
 
-  const [add, setAdd] = useState<string>(diamond.mumbai.masterFacet);
+  const [add, setAdd] = useState<string>(diamond.mumbai);
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
-      setAdd(diamond.mumbai.masterFacet)
+      setAdd(diamond.mumbai)
     }
   }, []);
 
@@ -102,7 +102,7 @@ const Distribute: NextPage = () => {
 
   const { config } = usePrepareContractWrite({
     address: add,
-    abi: masterFacet.abi,
+    abi: diamondAbi,
     chainId: chainId,
     functionName: 'distribute',
     args: [identifier],
@@ -116,7 +116,7 @@ const Distribute: NextPage = () => {
 
   useContractEvent({
     address: add,
-    abi: masterFacet.abi,
+    abi: diamondAbi,
     chainId: chainId,
     eventName: 'DistributionAccomplished',
     listener: (event) => handleListener(event),

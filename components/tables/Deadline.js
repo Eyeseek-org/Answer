@@ -7,6 +7,9 @@ const Container = styled.div`
     justify-content: center;
     position: absolute;
     top: -5px;
+    @media (max-width: 768px) {
+        display: none;
+    }
 `
 
 const Deadline = ({ deadline }) => {
