@@ -39,6 +39,7 @@
     "react-is": "^18.2.0",
     "react-lite-youtube-embed": "^2.3.52",
     "react-lottie": "^1.2.3",
+    "react-markdown": "^8.0.4",
     "react-modal": "^3.16.1",
     "react-moralis": "^1.4.2",
     "react-motion": "^0.5.2",

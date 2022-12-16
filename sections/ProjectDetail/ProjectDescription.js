@@ -2,7 +2,7 @@ import styled from "styled-components"
 import {useContractRead} from 'wagmi'
 import Subtitle from "../../components/typography/Subtitle"
 import ProgressBar from "../../components/ProgressBar"
-import fundFacet from '../../abi/fundFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { BodyBox } from "../../components/format/Box";
 
 
@@ -25,13 +25,14 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
   
     const funds = useContractRead({
       address: add,
-      abi: fundFacet.abi,
+      abi: diamondAbi,
       functionName: 'getFundDetail',
       chainId: chainId,
       args: [pid]
     });
   
     if (funds.data) {
+      console.log(funds.data)
       // Get fund balance
       bal = Number(funds.data.balance.toString()) / 1000000;
   
@@ -52,7 +53,7 @@ const ProjectDescription = ({descM, pid, add, chainId}) => {
 
     return <BodyBox>
         <Subtitle text='Project milestones'/>
-        <ProgressBar ratio={ratio} bal={bal} max={max} secRatio={usdcRatio} terRatio={usdtRatio} quaRatio={daiRatio}/>
+        <ProgressBar ratio={ratio} bal={bal} max={max} secRatio={usdcRatio} terRatio={usdtRatio} />
         <DescriptionBox>      {descM}</DescriptionBox>
   
     </BodyBox>

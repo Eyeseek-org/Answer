@@ -67,8 +67,7 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const { write } = useContractWrite(config)
 
     const handleApprove = async () => {
-        await write?.()
-        console.log(tokenContract, spender)
+        write?.()
         setLoading(true)
     }
 

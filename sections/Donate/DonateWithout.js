@@ -7,7 +7,7 @@ import { DonateSchema } from '../../util/validator';
 import { useApp } from '../utils/appContext';
 import InputRow from '../../components/form/InputRow';
 import DonateWrapper from './DonateWrapper';
-import fundFacet from '../../abi/fundFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { AbsoluteRight, MainContainer } from '../../components/format/Box';
 import Subtitle from '../../components/typography/Subtitle';
 import { DonateIcon } from '../../components/icons/Project';
@@ -38,10 +38,11 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
   const [conn, setConn] = useState('');
   const { appState, setAppState } = useApp();
   const { rewMAmount, rewDAmount } = appState;
+  const [add, setAdd] = useState(diamond.mumbai);
 
   const outcome = useContractRead({
-    address: diamond.mumbai.fundFacet,
-    abi: fundFacet.abi,
+    address: add,
+    abi: diamondAbi,
     functionName: 'calcOutcome',
     chainId: home,
     args: [pid, rewDAmount],
@@ -49,8 +50,8 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
   });
 
   const connections = useContractRead({
-    address: diamond.mumbai.fundFacet,
-    abi: fundFacet.abi,
+    address: add,
+    abi: diamondAbi,
     functionName: 'calcInvolvedMicros',
     chainId: home,
     args: [pid, rewDAmount],
@@ -58,6 +59,9 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
   });
 
   useEffect(() => {
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai)
+    }
     setMulti((outcome.data ?? '').toString());
     setConn((connections.data ?? '').toString());
   }, [rewDAmount]);

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useContractWrite, useContractEvent } from 'wagmi';
-import donation from '../../abi/donation.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
@@ -54,7 +54,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
   const {write} = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: add,
-    abi: donation.abi,
+    abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
     args: [pid, cap, total, tokenAddress, 1],

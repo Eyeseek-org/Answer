@@ -7,7 +7,7 @@ import ImgSkeleton from '../../components/skeletons/ImgSkeleton';
 import { VerifiedIcon, NonVerifiedIcon, UrlIcon, UrlSocialsIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
 import ProjectDetailRight from './ProjectDetailRight';
-import ProjectDescription from './ProjectDescription';
+import Markdown from '../../components/Markdown';
 import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing';
 import { AbsoluteLeft, MainContainer } from '../../components/format/Box';
 import {ProjectDesc} from '../../components/typography/Descriptions'
@@ -112,7 +112,8 @@ const ProjectDetail = ({objectId, pid, title, description,category,subcategory,i
             />
           )}
         </DetailBox>
-        {pType !== 'Stream' && <ProjectDescription descM={descM} pid={pid} chainId={chainId} />}
+        {/* {pType !== 'Stream' && <ProjectDescription descM={descM} pid={pid} chainId={chainId} />} */}
+        {/* <Markdown text={'ahoj'}/> */}
       </MainContainer>
     </>
   );

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {useState, useEffect} from 'react';
-import fundFacet from '../../abi/fundFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { useContractRead } from 'wagmi';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -29,11 +29,11 @@ const AbsoluteShareIt = styled.div`
 
 const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId }) => {
   const router = useRouter();
-  const [add, setAdd] = useState(diamond.mumbai.fundFacet);
+  const [add, setAdd] = useState(diamond.mumbai);
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
-      setAdd(diamond.mumbai.fundFacet)
+      setAdd(diamond.mumbai)
     }
   },[])
 
@@ -47,7 +47,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
 
   const funds = useContractRead({
     address: add,
-    abi: fundFacet.abi,
+    abi: diamondAbi,
     functionName: 'getFundDetail',
     chainId: chainId,
     args: [pid],
@@ -96,7 +96,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
 
   const micros = useContractRead({
     address: add,
-    abi: fundFacet.abi,
+    abi: diamondAbi,
     functionName: 'getConnectedMicroFunds',
     chainId: chainId,
     args: [pid],

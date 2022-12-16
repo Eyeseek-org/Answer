@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useContractWrite, useContractEvent } from 'wagmi';
-import donation from '../../abi/donation.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import multi from '../../abi/multi.json';
 import ApproveNftUniversal from '../../components/buttons/ApproveNftUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
@@ -58,7 +58,7 @@ const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) =
   const {write, error} = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: add,
-    abi: donation.abi,
+    abi: diamondAbi,
     chainId: home,
     functionName: 'createNftReward',
     args: [pid, cap, tokenAddress, nftId, 1],

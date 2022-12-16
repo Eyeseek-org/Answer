@@ -5,7 +5,7 @@ import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent';
 import ApprovedComponent from '../../components/functional/ApprovedComponent';
-import masterFacet from '../../abi/masterFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
@@ -60,7 +60,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   const sum = (parseInt(rewMAmount) + parseInt(rewDAmount)) * 1000000;
   const router = useRouter();
   const { objectId } = router.query;
-  const [spender, setSpender] = useState(diamond.mumbai.core);
+  const [spender, setSpender] = useState(diamond.mumbai);
   const [donateTooltip, setDonateTooltip] = useState(false);
   const dispatch = useDispatch() 
 
@@ -71,7 +71,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
-      setSpender(diamond.mumbai.core)
+      setSpender(diamond.mumbai)
     }
   }, []);
 
@@ -82,7 +82,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
     abi: token.abi,
     functionName: 'allowance',
     chainId: home,
-    args: [address, diamond.mumbai.core],
+    args: [address, spender],
     watch: true,
   });
 
@@ -101,8 +101,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   };
 
   useContractEvent({
-    address: diamond.mumbai.masterFacet,
-    abi: masterFacet.abi,
+    address: spender,
+    abi: diamondAbi,
     chainId: home,
     eventName: 'Donated',
     listener: (event) => useEv(event),
@@ -110,8 +110,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   });
 
   useContractEvent({
-    address: diamond.mumbai.masterFacet,
-    abi: masterFacet.abi,
+    address: spender,
+    abi: diamondAbi,
     chainId: home,
     eventName: 'MicroCreated',
     listener: (event) => useEv(event),
@@ -123,8 +123,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
  
   const {write} = useContractWrite({
     mode: 'recklesslyUnprepared',
-    address: diamond.mumbai.masterFacet,
-    abi: masterFacet.abi,
+    address: spender,
+    abi: diamondAbi,
     chainId: home,
     functionName: 'contribute',
     args: [sixMicro, sixDonate, pid, curr, rewId],

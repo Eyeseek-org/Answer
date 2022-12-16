@@ -43,7 +43,7 @@ const Balance = styled.div`
     margin-top: -10px;
 `
 
-const ProgressBar = ({ratio, bal, max, secRatio, terRatio, quaRatio}) => {
+const ProgressBar = ({ratio, bal, max, secRatio}) => {
 
     return <>
         <ProgressContainer>
@@ -54,8 +54,6 @@ const ProgressBar = ({ratio, bal, max, secRatio, terRatio, quaRatio}) => {
                 </ProgressFilter> : <FullFilter/>}
                 <RowStart>
                     {secRatio && <SecondaryFilter color={'blue'} ratio={secRatio}/>}  
-                    {/* {terRatio && <SecondaryFilter color={'green'} ratio={terRatio}/>}  
-                    {quaRatio && <SecondaryFilter color={'yellow'} ratio={quaRatio}/>}   */}
                 </RowStart>
         </ProgressContainer>
         <BetweenRow>

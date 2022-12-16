@@ -1,5 +1,5 @@
 import { useContractWrite } from 'wagmi';
-import donation from '../../abi/donation.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { RowEnd, ColRight } from '../../components/format/Row';
 import { useReward } from '../utils/rewardContext';
@@ -18,7 +18,7 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
   const {write} = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: add,
-    abi: donation.abi,
+    abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
     args: [pid, cap, 1, "0x0000000000000000000000000000000000000000", 0],

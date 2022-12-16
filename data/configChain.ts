@@ -1,4 +1,3 @@
-
 import {Chain} from '@rainbow-me/rainbowkit'
 
 export const mumbai: Chain = {

@@ -8,7 +8,7 @@ import {useTheme} from 'styled-components';
 import { diamond } from '../../data/contracts/core';
 
 const ApprovedComponent = ({ address, currencyAddress }) => {
-  const [add, setAdd] = useState(diamond.mumbai.core);
+  const [add, setAdd] = useState(diamond.mumbai);
   const [showTooltip, setShowTooltip] = useState(false);
   const { chain } = useNetwork();
   const theme = useTheme()
@@ -17,7 +17,7 @@ const ApprovedComponent = ({ address, currencyAddress }) => {
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
-      setAdd(diamond.mumbai.core)
+      setAdd(diamond.mumbai)
     }
   }, []);
 

@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useContractWrite, useContractEvent, usePrepareContractWrite } from 'wagmi';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import masterFacet from '../../abi/masterFacet.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { diamond } from '../../data/contracts';
 
 const CancelFund = () => {
@@ -12,14 +12,14 @@ const CancelFund = () => {
 
     useEffect(() => {
       if (process.env.PROD !== 'something'){
-        setAdd(diamond.mumbai.masterFacet)
+        setAdd(diamond.mumbai)
       }
     }, []);
   
   
     const { config } = usePrepareContractWrite({
       address: add,
-      abi: masterFacet.abi,
+      abi: diamondAbi,
       functionName: 'cancelFund',
       chainId: chainId,
       args: [pid],
@@ -34,7 +34,7 @@ const CancelFund = () => {
   
     useContractEvent({
       address: add,
-      abi: masterFacet.abi,
+      abi: diamondAbi,
       chainId: chainId,
       eventName: 'Cancelled',
       listener: (e) => useEv(e),
