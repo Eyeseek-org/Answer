@@ -207,7 +207,12 @@ const Donate: NextPage = () => {
         break;
       case 'DAI':
         setCurrency('DAI');
-        setCurr(3);
+        setCurr(2);
+        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
+        break;
+      case 'BUSD':
+        setCurrency('BUSD');
+        setCurr(2);
         setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
         break;
     }

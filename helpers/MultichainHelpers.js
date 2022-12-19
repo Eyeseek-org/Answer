@@ -98,6 +98,27 @@ export const CurrAddress = (curr, chain) => {
   }
  }
 
+ export const handleDec = async(cur) => {  
+  switch(cur) {
+    case stable.bnb.busd: return 18;
+    case stable.bnb.usdc: return 6;
+    case stable.bnbTestnet.usdc: return 6;
+    case stable.bnbTestnet.usdt: return 6;
+    case stable.ftm.usdc: return 6;
+    case stable.ftm.dai: return 18;
+    case stable.ftmTestnet.usdc: return 6;
+    case stable.ftmTestnet.usdt: return 6;
+    case stable.mumbai.usdc: return 6;
+    case stable.mumbai.usdt: return 6;
+    case stable.polygon.usdc: return 6;
+    case stable.polygon.usdt: return 6;
+    case stable.optimismTestnet.usdc: return 6;
+    case stable.optimismTestnet.usdt: return 6;
+    case stable.optimism.usdc: return 6;
+    case stable.optimism.usdt: return 6;
+    default : return 18;
+  }
+}
 
 export const ChainExplorer = (chain) => {
     if (chain === 80001 || chain === 137) {
