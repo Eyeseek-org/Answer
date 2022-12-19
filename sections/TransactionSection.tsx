@@ -5,12 +5,6 @@ import Subtitle from '../components/typography/Subtitle';
 import {Cell, Loading} from '../components/tables/TableStyles';
 import TransactionTable from './Tables/DonationTable';
 
-const AddressCell = styled(Cell)`
-  width: 100px;
-  @media (max-width: 768px) {
-    width: 50px;
-  }
-`;
 
 const Sub = styled.div`
   display: flex;

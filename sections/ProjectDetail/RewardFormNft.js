@@ -63,7 +63,7 @@ const RewardFormNft = ({dType}) => {
         label={'Token name'}
         placeholder={'EYE'}
         description={'Symbol/Name of the reward token you will offer to backers'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, tokenName: e.value }))}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, tokenName: e.target.value }))}
         type={'text'}
     />
     <InputContainer
@@ -78,7 +78,7 @@ const RewardFormNft = ({dType}) => {
      <InputContainer
         label={'Token ID'}
         placeholder={'1561891981'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, nftId: e.value }))}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, nftId: e.target.value }))}
         description={<>ERC1155 token id defining the asset</>}
         type={'number'}
     />
@@ -86,7 +86,7 @@ const RewardFormNft = ({dType}) => {
         label={'Capacity'}
         placeholder={'10'}
         description={'Number of claimable rewards'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, cap: e.value }))}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, cap: e.target.value }))}
         type={'number'}
     />
 </>

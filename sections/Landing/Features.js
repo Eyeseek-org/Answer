@@ -20,6 +20,18 @@ import { P, B, F, G, R, O } from '../../components/typography/ColoredTexts';
 import Carousel from 'nuka-carousel/lib/carousel';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
+import eye167 from '../../public/eye167.png';
+
+
+const ImageBox = styled.div`
+  position: absolute;
+  right: 0;
+  opacity: 0.5;
+  border-radius: 50%;
+  padding-right: 10%;
+`
+
+
 
 const Container = styled.div`
   position: relative;
@@ -66,7 +78,7 @@ const Features = () => {
 
   return (
     <Container>
-
+      <ImageBox><Image src={eye167} alt='eye' width={200} height={150}/></ImageBox>
       <SectionTitle title="Key concepts" subtitle="How is Eyeseek different" />
       <ContentBox>
         <Carousel animation='zoom' enableKeyboardControls>

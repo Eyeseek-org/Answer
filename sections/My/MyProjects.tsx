@@ -65,7 +65,7 @@ const MyProjects = () => {
                     <RewardCreate
                         objectId={project?.objectId}
                         bookmarks={project?.rewards}
-                        home={project?.chain}
+                        home={project?.chainId}
                         pid={project?.pid}
                         owner={project?.owner}
                     /></TabBox>}

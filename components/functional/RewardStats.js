@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { RewardAnimatedBox } from '../format/BoxAnimated';
+import { RewardAnimatedBox } from '../format/RewardAnimatedBox';
 import { BetweenRow } from '../format/Row';
 import { ArrowDown, ArrowUp } from '../icons/TableIcons';
 import { ImageHover } from '../tables/TableStyles';

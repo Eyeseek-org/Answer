@@ -25,7 +25,7 @@ const Menu = styled.div`
     padding: 1%;
     padding-left: 3%;
     padding-right: 8%;
-    gap: 12%;
+    gap: 10%;
 `
 
 const Inactive = styled.div`

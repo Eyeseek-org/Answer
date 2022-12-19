@@ -20,6 +20,7 @@ export const AbsoluteRight = styled.div`
 export const Absolute = styled.div`
   position: absolute;
   top: 0;
+  z-index: 150;
 `
 
 export const AbsoluteRightDown = styled.div`

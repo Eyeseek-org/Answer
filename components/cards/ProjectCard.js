@@ -30,7 +30,7 @@ const A = styled(Link)`
 `;
 
 const Container = styled(motion.div)`
-  background: ${(props) => props.theme.colors.projectCard};
+  background: ${(props) => props.theme.colors.cardGradient};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
