@@ -24,11 +24,15 @@ const nextConfig = {
         port: '2053',
         pathname: '/**',
       },
-    ],
-    remotePatterns: [
       {
         protocol: 'https',
         hostname: 'ipfs.io',
+        port: '2053',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
         port: '2053',
         pathname: '/**',
       },

@@ -27,6 +27,8 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
   const [backerFilter, setBackerFilter] = useState<boolean>(false);
   const theme = useTheme()
 
+  console.log(data);
+
   const columns = useMemo<ColumnDef<Reward, string>[]>(
     () => [
       {
@@ -78,8 +80,8 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         accessorKey: 'tokenContract',
         cell: (props) => (
           <>
-           {props.row.original.tokenAddress !== '0x0000000000000000000000000000000000000000' 
-           ?  <TokenStats address={props.row.original.tokenAddress} amount={props.row.original.tokenAmount} name={undefined}  /> 
+           {props.row.original.tokenContract !== '0x0000000000000000000000000000000000000000' 
+           ?  <TokenStats address={props.row.original.tokenContract} amount={props.row.original.amount} chain={props.row.original.chainId} />
            : <XIcon width={30} height={30} color={'#FF4D4D'}/>}
           </>
         ),
@@ -94,9 +96,9 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
         ),
         accessorKey: 'rewardType',
         cell: (props) => <>
-          {props.row.original.rType == 0 && 'Classic'}
-          {props.row.original.rType == 1 && 'ERC20'}
-          {props.row.original.rType == 2 && 'NFT'}
+          {props.row.original.rewardType == 0 && 'Classic'}
+          {props.row.original.rewardType == 1 && 'ERC20'}
+          {props.row.original.rewardType == 2 && 'NFT'}
         </>,
         enableSorting: true,
         enableColumnFilter: false,

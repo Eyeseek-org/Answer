@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components';
-import {useAccount, useContractEvent} from 'wagmi'
+import {useAccount, useContractEvent, useNetwork, useSwitchNetwork} from 'wagmi'
 import { useReward } from '../utils/rewardContext';
 import { RewardDesc, TabRow } from "../start_project/Styles";
 import diamondAbi from "../../abi/diamondAbi.json"
 import Tab from "../../components/form/Tab";
-import { BetweenRow } from "../../components/format/Row";
+import { BetweenRow, Row } from "../../components/format/Row";
 import {MainMilestoneContainer, MilestoneContainer,MainContainer } from '../../components/form/InputWrappers'
 import ErrText from "../../components/typography/ErrText";
 import { moralisApiConfig } from '../../data/moralisApiConfig';
@@ -25,8 +25,7 @@ import Socials from '../../components/buttons/Socials';
 import TabImage from '../../components/form/TabImage';
 import { pushDiscordReward } from '../../data/discord/projectData';
 import { diamond } from '../../data/contracts/core';
-
-
+import ButtonErr from '../../components/buttons/ButtonErr';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -40,9 +39,18 @@ const Summary = styled.div`
     }
 `
 
+const Label = styled.div`
+    font-family: 'Montserrat';
+    width: 28%;
+    font-weight: 400;
+    @media (max-width: 768px) {
+      width: 100%;
+      padding-bottom: 5px;
+    }
+`
+
 const DescBox = styled.div`
     display: flex;
-    margin-left: 10%;
 `
 
 const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
@@ -56,6 +64,8 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId, delivery, estimation, loading } = rewardState;
     const [rewardId, setRewardId] = useState(0)
     const [apiError, setApiError] = useState(false)
+    const {chain} = useNetwork()
+    const { switchNetwork } =useSwitchNetwork()
 
     useEffect (() => {
         if (process.env.PROD !== 'something'){
@@ -126,14 +136,14 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     }
 
     const handleChangeTokenType = async(c) => {
-        await setTokenType(c);
+        setTokenType(c);
         //Clear specific form rows
         if (c === 'Classic'){
-            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0 })
+            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0, cap: 0 })
         } else if (c === 'ERC1155'){
-            console.log('NFT transmission')
+            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0, cap: 0  })
         } else if (c === 'ERC20'){
-            setRewardState({ ...rewardState, nftId: 0 })
+            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0,  cap: 0  })
         }
     }
 
@@ -152,7 +162,8 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
         }
       }
     return <MainContainer>
-         <Subtitle text='Create new Reward' />
+         <Subtitle text='Create new Reward' /> 
+         {chain && chain.id == home  ? 
             <MainMilestoneContainer>
             {!success && !apiError && <>
                 <BetweenRow>
@@ -169,19 +180,19 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                 </BetweenRow>
                 <MilestoneContainer>
                     <TabRow> 
-                        {pType === 'Standard' && <Tab active={dType} o1={'Microfund'} o2={'Donate'} change1={() => { setdType('Microfund') }} change2={() => { setdType('Donate') }} />}
                         <DescBox>
                             {dType === 'Microfund' && <RewardDesc>Microfund creators will get rewards for setting specific maximum cap, even though total amount does not have to be completely transferred to your project at the end. Higher number of microfunds positively impacts following donations.</RewardDesc>}
                             {dType === 'Donate' && <RewardDesc>Fixed pledge given by direct donation. Standard Kickstarter-like backing experience with no extra magic around. With reward for direct donation backer knows for certain, how much value will be spend at the end for this reward.</RewardDesc>}
                         </DescBox>
                     </TabRow>
+                    {pType === 'Standard' && <Row><Label>Pledge type</Label><Tab active={dType} o1={'Microfund'} o2={'Donate'} change1={() => { setdType('Microfund') }} change2={() => { setdType('Donate') }} /></Row>}
                         {tokenType === 'ERC20' && <RewardFormToken dType={dType}/>}
                         {tokenType === 'ERC1155' && <RewardFormNft dType={dType}/>}
                         {tokenType === 'Classic' && address === owner && <RewardFormClassic dType={dType}/>}
                     <Summary>
                         {dType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
                         {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
-                        {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b>$<Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
+                        {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b><Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
                     </Summary>
                 {cap > 0 ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
@@ -196,7 +207,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                         <Socials title={'I have added some juice rewards for participation in this crowdfunding project, check it out!!!'}/>
                         <SuccessDisButton onClick={()=>{setSuccess(false)}} width={'100%'} text="Success: Reward was created (click for new reward)"/>
                     </MainContainer>}
-            </MainMilestoneContainer>
+            </MainMilestoneContainer> : <ButtonErr text="Wrong network" onClick={() => switchNetwork(home)} width={'150px'} />}
     </MainContainer>
 }
 

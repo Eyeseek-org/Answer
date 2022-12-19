@@ -8,14 +8,18 @@ export interface Reward {
     project: string;
     tokenName: string;
     tokenAddress: string;
+    tokenContract: string;
     tokenAmount: number;
+    amount: number;
     requiredPledge: number;
     nftId: number;
     rType: number;
+    rewardType: number;
     rewardId: number;
     donors: object;
     owner: string;
     updatedAt: string;
     createdAt: string;
+    chainId: number;
   }
   

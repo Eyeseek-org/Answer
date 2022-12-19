@@ -8,6 +8,7 @@ import eyemain from '../../public/eyemain.png';
 const Container = styled.div`
   position: relative;
 `;
+
 const Explainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -269,7 +270,6 @@ const LandingMain = ({ width, height }) => {
         <HeadDesc>by web3</HeadDesc>
          <ImageBox><Image src={eyemain} alt='eyeseek' fill/> <AbsoluteAnim><Eyeballs/></AbsoluteAnim></ImageBox>
       </TitleBox>
-
       <svg width={width} height={height} viewBox="0 0 2077 1250" fill="none" xmlns="http://www.w3.org/2000/svg">
         <MPath
           onClick={() => {

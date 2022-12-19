@@ -90,14 +90,24 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
     all = Number(allowance.data.toString()) / 1000000;
   }
 
+  const useMicroEv = async(ev) => {
+    setSuccess(true);
+    updateBookmark(bookmarks);
+    if (rewEligible > 0 && ready){
+      await updateReward(rewDonors);
+    }
+    setReady(false)
+    noti("Amount donate, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+  };
+
   const useEv = async(ev) => {
     setSuccess(true);
     updateBookmark(bookmarks);
-    setReady(false)
-    if (rewEligible > 0){
+    if (rewEligible > 0 && ready){
       await updateReward(rewDonors);
     }
-    noti("It worked, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+    setReady(false)
+    noti("Microfund created, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
   };
 
   useContractEvent({
@@ -114,14 +124,14 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
     abi: diamondAbi,
     chainId: home,
     eventName: 'MicroCreated',
-    listener: (event) => useEv(event),
+    listener: (event) => useMicroEv(event),
     once: true,
   });
 
   const sixDonate = rewDAmount * 1000000; 
   const sixMicro = rewMAmount * 1000000; 
  
-  const {write} = useContractWrite({
+  const {error, write} = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: spender,
     abi: diamondAbi,
@@ -185,9 +195,9 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
                     {sum === 0 ? null :                 
                   <Row onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
                     {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
-                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>} /> }
-                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>}  /> }
-                    {ready && <LoaderSmall/>}
+                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<Row> {ready && !error && <LoaderSmall/>}<div><DonateFormIcon width={30}/></div></Row>} /> }
+                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<Row> {ready && !error && <LoaderSmall/>}<div><DonateFormIcon width={30}/></div></Row>} /> }
+                 
                   </Row> }
                 </> }
               </>

@@ -7,8 +7,7 @@ import { E } from "../typography/ColoredTexts"
 const Outer = styled(motion.div)`
     position: relative;
     background: ${props => props.theme.colors.black};
-    box-shadow: 0px 5px 30px rgba(255, 255, 255, 0.25);
-    z-index: 1;
+    box-shadow: 0px 5px 30px rgba(255, 255, 255, 0.15);
 `
 
 const Container = styled.div`
@@ -43,7 +42,7 @@ const DescBox = styled.div`
     margin-bottom: 5%;
 `
 
-export const RewardAnimatedBox = ({text, delivery, estimation, title}) => {
+export const RewardAnimatedBox = ({text, delivery, estimation, title, pledge}) => {
     return <>
     {text === '' ? null : 
     <Outer
@@ -54,7 +53,7 @@ export const RewardAnimatedBox = ({text, delivery, estimation, title}) => {
             scale: [0, 1, 0.5, 1],
           }}>
         <Container>
-            <TitleBox>{title}</TitleBox>
+            <TitleBox>{title} (${pledge})</TitleBox>
             <DescBox>{text}</DescBox>
             <RewardDesc><Col><E>Includes</E><li>{delivery}</li></Col></RewardDesc> 
             <RewardDesc><Col><E>Estimated delivery</E><li>{estimation}</li></Col></RewardDesc> 

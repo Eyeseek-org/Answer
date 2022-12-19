@@ -4,6 +4,7 @@ import InputContainer from "../../components/form/InputContainer";
 import { Row } from "../../components/format/Row";
 import { G, R } from '../../components/typography/ColoredTexts';
 import { stable } from '../../data/contracts/stablecoins';
+import {ethers} from 'ethers'
 
 const RewardFormToken = ({dType}) => {
     const { setRewardState } = useReward();
@@ -63,7 +64,7 @@ const RewardFormToken = ({dType}) => {
         label={'Token name'}
         placeholder={'EYE'}
         description={'Symbol/Name of the reward token you will offer to backers'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, tokenName: e.value }))}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, tokenName: e.target.value }))}
         type={'text'}
     />
     <InputContainer
@@ -78,7 +79,7 @@ const RewardFormToken = ({dType}) => {
      <InputContainer
         label={'Amount/Backer'}
         placeholder={'1000000'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, tokenAmount: e.value }))}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, tokenAmount: e.target.value }))}
         description={<>        
             Amount of tokens eligible for reward for each backer (wei units)</>}
         type={'number'}
@@ -87,7 +88,7 @@ const RewardFormToken = ({dType}) => {
         label={'Capacity'}
         placeholder={'10'}
         description={'Number of claimable rewards'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, cap: e.value }))}
+        onChange={(e) => setRewardState((prev) => ({ ...prev, cap: e.target.value }))}
         type={'number'}
     />
 </>

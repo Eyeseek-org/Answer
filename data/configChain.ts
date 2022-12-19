@@ -39,8 +39,7 @@ export const mumbai: Chain = {
     id: 97,
     name: 'BNB testnet',
     network: 'binance',
-    iconUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp3V39J47tWfwxjHVbPUjMdZf-ZsiLLHkcZx6vi9Y&s',
-    iconBackground: '#000000',
+    iconUrl: `/icons/binance.png`,
     nativeCurrency: {
       decimals: 18,
       name: 'Binanace Coin',

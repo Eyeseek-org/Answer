@@ -14,11 +14,17 @@ import { useTheme } from 'styled-components';
 export const ConnectWithNotifications = () => {
   const { address } = useAccount();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const theme = useTheme();
   
   const query = `/classes/Notification?where={"user":"${address}"}`
-  const { data: unreadNotis } = useQuery(['notis'], () => UniService.getDataAll(query),{   });
+  const { data: unreadNotis } = useQuery(['notis'], () => UniService.getDataAll(query),{ 
+      onSuccess: (data) => {
+        setUnreadCount(data.filter((n:any) => n.read === false).length)
+      }
+    });
+
 
   const handleOpenSettings = (b:boolean) => {
     setNotificationsOpen(false);
@@ -37,7 +43,7 @@ export const ConnectWithNotifications = () => {
         {address && <>
           <IconFrame onClick={() => handleOpenNotis(!notificationsOpen)}>
             {!notificationsOpen ? <BellIcon /> : <CloseIcon width={20} height={20} />}
-            {unreadNotis && unreadNotis.length > 0 && (
+            {unreadNotis && unreadCount > 0 && (
               <Notis
                 animate={{
                   scale: [1, 2, 2, 1, 1],
@@ -45,7 +51,7 @@ export const ConnectWithNotifications = () => {
                   borderRadius: ['20%', '20%', '50%', '50%', '20%'],
                 }}
               >
-                {unreadNotis.length}
+                {unreadCount}
               </Notis>
             )}
           </IconFrame>

@@ -8,16 +8,20 @@ import { useApp } from '../utils/appContext';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
-import {RewardAnimatedBox} from '../../components/format/BoxAnimated';
+import {RewardAnimatedBox} from '../../components/format/RewardAnimatedBox';
 import styled, {useTheme} from 'styled-components';
 import Modal from 'react-modal';
 import { CloseIcon } from '../../components/icons/Notifications';
-import { AbsoluteRight } from '../../components/format/Box';
+import { Absolute, AbsoluteRight } from '../../components/format/Box';
 
 const MutipleRewards = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+`
+
+const Wrapper = styled.div`
+  z-index: 100;
 `
 
 const RewardList = ({ oid, chain }) => {
@@ -26,6 +30,7 @@ const RewardList = ({ oid, chain }) => {
   const [desc, setDesc] = useState('');
   const [delivery, setDelivery] = useState('');
   const [title, setTitle] = useState('');
+  const [pledge, setPledge] = useState('');
   const [estimation, setEstimation] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
@@ -63,7 +68,7 @@ const RewardList = ({ oid, chain }) => {
     setDelivery(delivery)
     setEstimation(estimation)
     setTitle(title)
-    console.log(title)
+    setPledge(rewAmount)
     if (type === 'Microfund') {
       setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors  }));
     } else if (type === 'Donate') {
@@ -104,7 +109,7 @@ const RewardList = ({ oid, chain }) => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       <Col>
         <Row>
           {rewards && rewards.length > 0 ? (
@@ -139,7 +144,7 @@ const RewardList = ({ oid, chain }) => {
                       reward.objectId, 
                       reward.donors,
                       reward.estimation,
-                      reward.delivery
+                      reward.delivery,
                       )}
                   /> :  <RewardDepletedCard
                     key={reward.objectId}
@@ -165,18 +170,18 @@ const RewardList = ({ oid, chain }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-         <Modal
-            isOpen={modalIsOpen}
-            onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-           <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > <CloseIcon width={15} height={15} /></AbsoluteRight>
-          <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title}/>
-      </Modal>
+          <Modal
+              isOpen={modalIsOpen}
+              onAfterOpen={afterOpenModal}
+              onRequestClose={closeModal}
+              style={customStyles}
+              contentLabel="Example Modal"
+            >
+            <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > <CloseIcon width={15} height={15} /></AbsoluteRight>
+            <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge}/>
+        </Modal>
       </Col>
-    </>
+    </Wrapper>
   );
 };
 

@@ -2,9 +2,6 @@ import styled, {useTheme} from 'styled-components';
 import { MicrofundIcon } from '../../components/icons/Landing';
 import { DonateIcon, Erc20Icon, NftIcon } from '../../components/icons/Project';
 import Address from '../../components/functional/Address';
-import Tooltip from '../Tooltip';
-import { useState } from 'react';
-import NFTDisplay from '../functional/NftDisplay';
 import { RewardTitle } from '../typography/Titles';
 import { ProjectAmount } from '../typography/Amounts';
 import { BetweenRow} from '../format/Row';
@@ -35,10 +32,6 @@ const TokenRow = styled.div`
   max-width: 100px;
 `
 
-const ToolBox = styled.div`
-  position: absolute;
-  top: -25px;
-`;
 
 const RewardCard = ({
   key,
@@ -57,7 +50,6 @@ const RewardCard = ({
   rType,
   chain,
 }) => {
-  const [typeTooltip, setTypeTooltip] = useState(false);
   const theme = useTheme();
 
   return (
@@ -66,17 +58,10 @@ const RewardCard = ({
         {rType === 1 && <Erc20Icon width={20} height={20}  color={theme.colors.icon}/>}
         {rType === 2 && <NftIcon width={20} height={20}  color={theme.colors.icon}/>}
       </IconBox>
-      {typeTooltip && 
-        <ToolBox>
-          <Tooltip text={`Requires ${type} $ ${pledge} to be eligible for ${tokenAmount}x ${tokenName}`} />
-        </ToolBox>
-      }
         <RewardBox
             whileHover={{ scale: 1.05 }}
             color={selected !== objectId ? '#3c3c3c' : '#B0F6FF'}
             onClick={onClick}
-            onMouseEnter={() => { setTypeTooltip(true)}}
-            onMouseLeave={() => { setTypeTooltip(false)}}
           >
           <BetweenRow>
             <RewardTitle>{title}</RewardTitle>
