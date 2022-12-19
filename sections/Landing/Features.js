@@ -88,8 +88,8 @@ const Features = () => {
               icon={<BlockchainIcon width={55} />}
               title={Texts.title1}
               description={<LiteYouTubeEmbed 
-                id="Y2KwMnhJzaM"
-                title="Ho ho hoooo"
+                id="mpXaFMT1rFM"
+                title="Settlement explained"
             />}
             />
           ) : (
