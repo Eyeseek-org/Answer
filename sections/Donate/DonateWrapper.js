@@ -5,11 +5,10 @@ import { useApp } from '../../sections/utils/appContext';
 import axios from 'axios';
 import BalanceComponent from '../../components/functional/BalanceComponent';
 import ApprovedComponent from '../../components/functional/ApprovedComponent';
-import donation from '../../abi/donation.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import token from '../../abi/token.json';
 import { useRouter } from 'next/router';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { Row, RowCenter} from '../../components/format/Row';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ErrText from '../../components/typography/ErrText';
@@ -21,6 +20,7 @@ import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import Socials from '../../components/buttons/Socials';
 import LoaderSmall from '../../components/animated/LoaderSmall'
+import { diamond } from '../../data/contracts/core';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ const Metrics = styled.div`
   }
 `;
 
-const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => {
+const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   const { address } = useAccount();
   const [apiError, setApiError] = useState(false)
   const [success, setSuccess] = useState(false);
@@ -60,7 +60,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   const sum = (parseInt(rewMAmount) + parseInt(rewDAmount)) * 1000000;
   const router = useRouter();
   const { objectId } = router.query;
-  const [spender, setSpender] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
+  const [spender, setSpender] = useState(diamond.mumbai);
   const [donateTooltip, setDonateTooltip] = useState(false);
   const dispatch = useDispatch() 
 
@@ -70,7 +70,9 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   }
 
   useEffect(() => {
-    setSpender(GetProjectFundingAddress(home));
+    if (process.env.PROD !== 'something'){
+      setSpender(diamond.mumbai)
+    }
   }, []);
 
   var all = 0;
@@ -80,7 +82,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     abi: token.abi,
     functionName: 'allowance',
     chainId: home,
-    args: [address, add],
+    args: [address, spender],
     watch: true,
   });
 
@@ -88,19 +90,29 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
     all = Number(allowance.data.toString()) / 1000000;
   }
 
+  const useMicroEv = async(ev) => {
+    setSuccess(true);
+    updateBookmark(bookmarks);
+    if (rewEligible > 0 && ready){
+      await updateReward(rewDonors);
+    }
+    setReady(false)
+    noti("Amount donate, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+  };
+
   const useEv = async(ev) => {
     setSuccess(true);
     updateBookmark(bookmarks);
-    setReady(false)
-    if (rewEligible > 0){
+    if (rewEligible > 0 && ready){
       await updateReward(rewDonors);
     }
-    noti("It worked, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+    setReady(false)
+    noti("Microfund created, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
   };
 
   useContractEvent({
-    address: add,
-    abi: donation.abi,
+    address: spender,
+    abi: diamondAbi,
     chainId: home,
     eventName: 'Donated',
     listener: (event) => useEv(event),
@@ -108,21 +120,21 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
   });
 
   useContractEvent({
-    address: add,
-    abi: donation.abi,
+    address: spender,
+    abi: diamondAbi,
     chainId: home,
     eventName: 'MicroCreated',
-    listener: (event) => useEv(event),
+    listener: (event) => useMicroEv(event),
     once: true,
   });
 
   const sixDonate = rewDAmount * 1000000; 
   const sixMicro = rewMAmount * 1000000; 
  
-  const {write} = useContractWrite({
+  const {error, write} = useContractWrite({
     mode: 'recklesslyUnprepared',
-    address: add,
-    abi: donation.abi,
+    address: spender,
+    abi: diamondAbi,
     chainId: home,
     functionName: 'contribute',
     args: [sixMicro, sixDonate, pid, curr, rewId],
@@ -170,8 +182,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
                   {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
                 </Metrics>
               )}
-             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6} />}
-             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6}/>}
+             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender}  />}
+             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} />}
             </>
           )}
           <div>
@@ -183,9 +195,9 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, add, home }) => 
                     {sum === 0 ? null :                 
                   <Row onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
                     {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
-                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>} /> }
-                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<><DonateFormIcon width={30}/></>}  /> }
-                    {ready && <LoaderSmall/>}
+                    {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<Row> {ready && !error && <LoaderSmall/>}<div><DonateFormIcon width={30}/></div></Row>} /> }
+                    {rewId > 0 && <ButtonAlt onClick={() => handleSubmit()} text={<Row> {ready && !error && <LoaderSmall/>}<div><DonateFormIcon width={30}/></div></Row>} /> }
+                 
                   </Row> }
                 </> }
               </>

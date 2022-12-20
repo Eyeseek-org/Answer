@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const Container = styled.div`
   display: flex;
@@ -89,7 +90,7 @@ const InputContainer = ({ label, name, placeholder, onChange, description, type,
           />
         )}
         {type === 'textArea' && (
-          <textarea
+          <TextareaAutosize 
             name={name}
             className="input_style"
             type="text"

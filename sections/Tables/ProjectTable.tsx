@@ -1,41 +1,26 @@
-import {
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-  getGroupedRowModel,
-  getFacetedUniqueValues,
-  ColumnDef,
-  PaginationState,
-  getPaginationRowModel,
-  getFilteredRowModel,
-  ColumnFiltersState,
-  FilterFn,
-  Header as HeaderProps,
-} from '@tanstack/react-table';
-import Address from '../functional/Address';
+import { ColumnDef, FilterFn} from '@tanstack/react-table';
+import Address from '../../components/functional/Address';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
-import { Table, Tr, Cell, HeadRow, AddCol, HeaderCell, ImageHover, Header, ActionCol, TableWrapper } from './TableStyles';
-import { InfoIcon, NonVerifiedIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../icons/Common';
-import { ArrowUp, ArrowDown, FilterIcon } from '../icons/TableIcons';
+import { AddCol, ImageHover, ActionCol, TableWrapper } from '../../components/tables/TableStyles';
+import { InfoIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../../components/icons/Common';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
-import { DetailIcon, WebIcon } from '../icons/Project';
-import RewardTable from './RewardTable';
-import { Col, BetweenRowSm, RowCenter } from '../format/Row';
+import { DetailIcon, WebIcon } from '../../components/icons/Project';
+import RewardTable from '../../components/tables/RewardTable';
+import { Col, BetweenRowSm, RowCenter } from '../../components/format/Row';
 import { useTheme } from 'styled-components';
-import { SubcatPick } from '../functional/CatPicks';
-import TableSkeleton from '../skeletons/TableSkeleton';
+import { SubcatPick } from '../../components/functional/CatPicks';
+import TableSkeleton from '../../components/skeletons/TableSkeleton';
 import { Project } from '../../types/project';
-import { TablePagination } from './TablePagination';
 import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
-import { FilterInput } from './DonationTable';
-import BalanceProjectSmall from '../functional/BalanceProjectSmall';
-import Tooltip from '../Tooltip';
+import BalanceProjectSmall from '../../components/functional/BalanceProjectSmall';
+import Tooltip from '../../components/Tooltip';
+import { AbsoluteLeft, AbsoluteRight } from '../../components/format/Box';
+import TableComponent from '../../components/tables/TableComponent';
+import Deadline from '../../components/tables/Deadline';
 
-const PAGE_SIZE = 10;
 
 declare module '@tanstack/table-core' {
   interface ColumnMeta<TData extends unknown, TValue> {
@@ -45,40 +30,12 @@ declare module '@tanstack/table-core' {
 
 const filterChains: FilterFn<Project> = (row, columnId, value) => row.getValue(columnId).toString().includes(value);
 
-const MyHeader = ({ header }: { header: HeaderProps<Project, unknown> }): JSX.Element => {
-  const [showFilter, setShowFilter] = useState(false);
-  const theme = useTheme();
-
-  return (
-    <>
-      <HeaderCell>
-        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-        {header.column.getCanFilter() && (
-          <ImageHover onClick={() => setShowFilter(!showFilter)}>
-            <FilterIcon height={13} width={13} color={theme.colors.icon}/>
-          </ImageHover>
-        )}
-      </HeaderCell>
-      {{
-        asc: <ArrowDown height={10} width={10} />,
-        desc: <ArrowUp height={10} width={10} />,
-      }[header.column.getIsSorted() as string] ?? null}
-      {header.column.getCanFilter() && showFilter && <FilterInput column={header.column} />}
-    </>
-  );
-};
-
 const ProjectTable = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
-  const [sorting, setSorting] = useState([]);
   const [projectId, setProjectId] = useState<string | undefined>();
   const theme = useTheme();
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  });
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
 
   const handleTooltip = (text: string) => {
     setShowTooltip(true);
@@ -103,6 +60,17 @@ const ProjectTable = () => {
       {
         accessorKey: 'title',
         header: 'Project',
+        cell: (props) => (
+          <RowCenter>
+            {props.getValue()}
+            <AbsoluteRight>
+              {props.row.original.verified && <VerifiedIcon height={15} width={15} color={theme.colors.icon} />}
+            </AbsoluteRight>
+            <AbsoluteLeft>
+              {props.row.original.softDeadline && <Deadline deadline={props.row.original.softDeadline} />}
+            </AbsoluteLeft>
+          </RowCenter>
+        ),
         enableColumnFilter: true,
         enableSorting: false,
       },
@@ -125,7 +93,7 @@ const ProjectTable = () => {
           <div onMouseEnter={() => { handleTooltip('Project goal, d = donated, m = microfunds created') }} onMouseLeave={() => { setShowTooltip(false) }}>Goal</div>
           <BetweenRowSm><div>d</div><div>m</div></BetweenRowSm>
         </Col>,
-        enableSorting: true,
+        enableSorting: false,
         enableColumnFilter: false,
       },
       {
@@ -145,13 +113,6 @@ const ProjectTable = () => {
           filter: 'select',
         },
         enableSorting: false,
-      },
-      {
-        accessorKey: 'verified',
-        cell: (props) => <>{props.getValue() ? <VerifiedIcon height={30} color={theme.colors.icon} width={30} /> : <NonVerifiedIcon width={40} height={40} color={theme.colors.icon} />}</>,
-        header: 'Verified',
-        enableSorting: true,
-        enableColumnFilter: false,
       },
       {
         accessorKey: 'objectId',
@@ -184,10 +145,10 @@ const ProjectTable = () => {
     []
   );
 
-  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll('/classes/Project?where={"state": 1, "type": "Standard"}'), {
+  const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll(`/classes/Project?where={"state": 1, "type": "Standard"}`), {
     onError: (err) => {
       console.log('err', err);
-    },
+    }
   });
 
   const { data: projectRewards } = useQuery(
@@ -205,28 +166,6 @@ const ProjectTable = () => {
     setProjectId(id);
   };
 
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      pagination,
-      columnFilters,
-    },
-    filterFns: {
-      chains: filterChains,
-    },
-    enableGrouping: true,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getGroupedRowModel: getGroupedRowModel(),
-    onPaginationChange: setPagination,
-  });
 
   return (
     <TableWrapper>
@@ -235,29 +174,7 @@ const ProjectTable = () => {
       ) : (
         <Col>
           {showTooltip && <Tooltip margin={undefined} text={tooltipText} />}
-          <Table>
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <HeadRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <Header {...{ onClick: header.column.getToggleSortingHandler() }} colSpan={header.colSpan} key={header.id}>
-                      <MyHeader header={header} />
-                    </Header>
-                  ))}
-                </HeadRow>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <Tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <Cell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Cell>
-                  ))}
-                </Tr>
-              ))}
-            </tbody>
-          </Table>
-          <TablePagination<Project> table={table} />
+          <TableComponent type={'project'} columns={columns} data={data}/>
         </Col>
       )}
       {projectRewards && <RewardTable data={projectRewards}  projectId={projectId} />}

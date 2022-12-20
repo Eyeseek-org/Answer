@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import {motion} from 'framer-motion'
+import { Tooltip } from 'react-tooltip'
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   position: absolute;
   top: ${(props) => (props.margin ? `${props.margin}` : '-30px')};
   background: ${(props) => props.theme.colors.black};
@@ -22,8 +24,14 @@ const Container = styled.div`
   }
 `;
 
-const Tooltip = ({ text, margin }) => {
-  return <Container margin={margin}>{text}</Container>;
+const MyTooltip = ({ text, margin }) => {
+  return <Container margin={margin} id="tooltip" data-tooltip-content={text}
+    initial={{ x: -100 }}
+    animate={{
+        x: -20,
+    }}
+  transition={{  duration: 0.3 }}
+    ><Tooltip anchorId="tooltip" /></Container>;
 };
 
-export default Tooltip;
+export default MyTooltip;

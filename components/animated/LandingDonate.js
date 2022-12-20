@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useContractEvent, useNetwork } from 'wagmi';
-import donation from '../../abi/donation.json';
-import { GetFundingAddress } from '../../helpers/GetContractAddress';
+import { useContractEvent } from 'wagmi';
+import diamondAbi from '../../abi/diamondAbi.json';
+import { diamond } from '../../data/contracts/core';
 
 const Container = styled.div`
   margin-top: 50px;
@@ -20,8 +20,7 @@ const Tag = styled(motion.div)`
 
 const LandingDonate = () => {
   const [showDonate, setShowDonate] = useState(false);
-  const [add, setAdd] = useState(process.env.NEXT_PUBLIC_AD_DONATOR);
-  const { chain } = useNetwork();
+  const [add, setAdd] = useState(diamond.mumbai);
 
   const handleContractListener = () => {
     setShowDonate(!showDonate);
@@ -32,14 +31,16 @@ const LandingDonate = () => {
 
   useContractEvent({
     address: add,
-    abi: donation.abi,
+    abi: diamondAbi,
     eventName: 'Donated',
     listener: (_event) => handleContractListener(),
     once: false,
   });
 
   useEffect(() => {
-    setAdd(GetFundingAddress(chain));
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai)
+    }
   }, []);
 
   /// Use it for rewards

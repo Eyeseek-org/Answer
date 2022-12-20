@@ -6,8 +6,8 @@ export const BodyBox = styled.div`
   margin-left: 17%;
   margin-right: 17%;
   @media (max-width: 768px) {
-        padding-left: 2%;
-        padding-right: 2%;
+     margin-left: 2%;
+     margin-right: 2%;
     }
 `
 
@@ -20,6 +20,7 @@ export const AbsoluteRight = styled.div`
 export const Absolute = styled.div`
   position: absolute;
   top: 0;
+  z-index: 150;
 `
 
 export const AbsoluteRightDown = styled.div`
@@ -57,7 +58,7 @@ export const Wrapper = styled.div`
 
 export const MainContainer = styled.div`
   position: relative;
-  padding-top: 5%;
+  padding-top: 3%;
   margin-bottom: 8%;
   width: 100%;
   animation: fadeIn 0.7s;
@@ -114,5 +115,15 @@ export const SpacingBox = styled.div`
     padding-left: 2%;
     padding-right: 2%;
   }
+    @media (min-width: 1968px) {
+    padding-left: 30%;
+    padding-right: 30%;
+  }
 `
-
+export const TabBox = styled.div`
+  margin-top: 3%;
+  margin-bottom: 3%;
+  padding-left: 16%;
+  padding-right: 16%;
+  font-size: 1.1em;
+`;

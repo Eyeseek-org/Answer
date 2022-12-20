@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useMoralisCloudFunction } from "react-moralis";
 import { useSigner } from 'wagmi';
-
+import NFTDisplay from '../components/functional/NftDisplay';
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +32,7 @@ const Cloud = () => {
     <Container>
         <h1>Cloud</h1>
         <button onClick={cloudCall}>Make Cloud Call</button>
+        <NFTDisplay address={'0x2F33B8870f86B319258380377076147a59E29135'} tokenId={24}/>
     </Container>
   );
 };

@@ -7,10 +7,22 @@ import SectionTitle from '../../components/typography/SectionTitle';
 import Carousel from 'nuka-carousel/lib/carousel';
 import { cats } from '../../data/cats';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
+import eye180 from '../../public/eye180.png';
+import Image from 'next/image';
 
 const Container = styled.div`
+  position: relative;
   margin-top: 5%;
 `;
+
+const LeftImage = styled.div`
+  position: absolute;
+  left: 0;
+  top: 20%;
+  opacity: 0.8;
+  border-radius: 50%;
+  padding-left: 5%;
+`
 
 const ProjectBox = styled.div`
   display: flex;
@@ -113,6 +125,8 @@ const LatestProjects = ({ my }) => {
   const filteredThird = data.slice(14, 20);
   return (
     <Container>
+
+  <LeftImage><Image src={eye180} alt='eye180' width={180} height={200} /> </LeftImage>
       {my ? (
         <></>
       ) : (

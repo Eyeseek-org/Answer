@@ -26,7 +26,9 @@ declare module 'styled-components' {
             projectCard:  string,
             icon:  string,
             redPastel:  string,
-            darkRed:  string
+            darkRed:  string,
+            cardGradient: string,
+            landing: string
         };
     }
 }

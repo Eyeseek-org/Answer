@@ -8,9 +8,11 @@ import { useApp } from '../utils/appContext';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
-import {RewardAnimatedBox} from '../../components/format/BoxAnimated';
-import Subtitle from '../../components/typography/Subtitle';
-import styled from 'styled-components';
+import {RewardAnimatedBox} from '../../components/format/RewardAnimatedBox';
+import styled, {useTheme} from 'styled-components';
+import Modal from 'react-modal';
+import { CloseIcon } from '../../components/icons/Notifications';
+import { AbsoluteRight } from '../../components/format/Box';
 
 const MutipleRewards = styled.div`
   display: flex;
@@ -18,6 +20,9 @@ const MutipleRewards = styled.div`
   flex-wrap: wrap;
 `
 
+const Wrapper = styled.div`
+  z-index: 100;
+`
 
 const RewardList = ({ oid, chain }) => {
   const { setAppState } = useApp();
@@ -25,12 +30,32 @@ const RewardList = ({ oid, chain }) => {
   const [desc, setDesc] = useState('');
   const [delivery, setDelivery] = useState('');
   const [title, setTitle] = useState('');
+  const [pledge, setPledge] = useState('');
   const [estimation, setEstimation] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
-  const [showDesc, setShowDesc] = useState(false);
-
-  // Dummy data
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
+  const theme = useTheme();
+
+
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translate(-50%, -50%)',
+      background: theme.colors.body,
+      border: theme.colors.border
+    },
+    overlay: {
+      background: 'rgba(0, 0, 0, 0.5)',
+    }
+  };
+  
+  const [modalIsOpen, setIsOpen] = useState(false)
+  function afterOpenModal() {}
+  function closeModal() {setIsOpen(false)}
+
 
   // Extract image json.image, display it
   const query = `/classes/Reward?where={"project":"${oid}"}`
@@ -38,12 +63,12 @@ const RewardList = ({ oid, chain }) => {
   estimation
   const handleRewardClick = (title, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors, estimation, delivery) => {
     setDesc(rewDesc)
-    setShowDesc(!showDesc)
+    setIsOpen(true);
     setSelected(rewObjectId);
     setDelivery(delivery)
     setEstimation(estimation)
     setTitle(title)
-    console.log(title)
+    setPledge(rewAmount)
     if (type === 'Microfund') {
       setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors  }));
     } else if (type === 'Donate') {
@@ -84,9 +109,8 @@ const RewardList = ({ oid, chain }) => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       <Col>
-        <Subtitle text="List of rewards" />
         <Row>
           {rewards && rewards.length > 0 ? (
             <>
@@ -120,7 +144,7 @@ const RewardList = ({ oid, chain }) => {
                       reward.objectId, 
                       reward.donors,
                       reward.estimation,
-                      reward.delivery
+                      reward.delivery,
                       )}
                   /> :  <RewardDepletedCard
                     key={reward.objectId}
@@ -146,9 +170,18 @@ const RewardList = ({ oid, chain }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-         {showDesc &&  <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title}/>}
+          <Modal
+              isOpen={modalIsOpen}
+              onAfterOpen={afterOpenModal}
+              onRequestClose={closeModal}
+              style={customStyles}
+              contentLabel="Example Modal"
+            >
+            <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > <CloseIcon width={15} height={15} /></AbsoluteRight>
+            <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge}/>
+        </Modal>
       </Col>
-    </>
+    </Wrapper>
   );
 };
 

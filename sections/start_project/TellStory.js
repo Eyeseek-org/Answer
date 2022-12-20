@@ -47,7 +47,6 @@ const FormStyle = styled.form`
 
 const TellStory = ({ setStep }) => {
   const { setAppState } = useApp();
-  const [image, setImage] = useState(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -106,30 +105,12 @@ const TellStory = ({ setStep }) => {
   const handleBack = () => {
     setStep((prev) => (prev -= 1));
   };
-
-  // const handleFileUpload = async (event) => {
-  //   const newImage = event.target.files[0];
-  //   const moralisFileInstance = new Moralis.File(newImage.name, newImage);
-  //   const moralisIPFSImage = await moralisFileInstance.saveIPFS({ useMasterKey: true });
-  //   if (moralisIPFSImage) {
-  //     setAppState((prev) => ({ ...prev, pImageUrl: moralisIPFSImage._url }));
-  //     setImage(moralisIPFSImage._url);
-  //   }
-  // };
-
+  
   return ( <MainContainer>
     <SectionTitle title="Define your story" subtitle={'Describe your project and references'} />
     <Wrapper>
     <RewardDesc>Project detail cannot be changed after creation. Please make sure all information is correct.</RewardDesc>
         <FormStyle method="post" action="" enctype="multipart/form-data">
-          {/* <label className="custom-file-upload">
-            <input className="input-file" type="file" id="file" onChange={handleFileUpload} />
-            {image ? (
-              <Image src={image} width={'400px'} height={'300px'} alt="Project image" />
-            ) : (
-              <span className="input-span">Upload project image</span>
-            )}
-          </label> */}
           {story_form.map((sf) => {
             const { title, name, description, text_field, p, maxLength } = sf;
             return (

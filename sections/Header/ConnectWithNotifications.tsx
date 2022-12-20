@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi';
 import Rainbow from '../../components/buttons/Rainbow';
 import { SettingIcon } from '../../components/icons/Common';
 import { BellIcon } from '../../components/icons/Landing';
-import { CloseIcon } from '../../components/icons/Notifications';
+import { CloseIcon, WriteIcon } from '../../components/icons/Notifications';
 import { UniService } from '../../services/DapAPIService';
 import Notifications from './Notifications';
 import Settings from './Settings'
@@ -14,11 +14,17 @@ import { useTheme } from 'styled-components';
 export const ConnectWithNotifications = () => {
   const { address } = useAccount();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const theme = useTheme();
   
-  const query = `/classes/Notification?where={"user":"${address}", "isRead":false}`
-  const { data: unreadNotis } = useQuery(['notis-unread'], () => UniService.getDataAll(query),{   });
+  const query = `/classes/Notification?where={"user":"${address}"}`
+  const { data: unreadNotis } = useQuery(['notis'], () => UniService.getDataAll(query),{ 
+      onSuccess: (data) => {
+        setUnreadCount(data.filter((n:any) => n.read === false).length)
+      }
+    });
+
 
   const handleOpenSettings = (b:boolean) => {
     setNotificationsOpen(false);
@@ -37,7 +43,7 @@ export const ConnectWithNotifications = () => {
         {address && <>
           <IconFrame onClick={() => handleOpenNotis(!notificationsOpen)}>
             {!notificationsOpen ? <BellIcon /> : <CloseIcon width={20} height={20} />}
-            {unreadNotis && unreadNotis.length > 0 && (
+            {unreadNotis && unreadCount > 0 && (
               <Notis
                 animate={{
                   scale: [1, 2, 2, 1, 1],
@@ -45,17 +51,17 @@ export const ConnectWithNotifications = () => {
                   borderRadius: ['20%', '20%', '50%', '50%', '20%'],
                 }}
               >
-                {unreadNotis.length}
+                {unreadCount}
               </Notis>
             )}
           </IconFrame>
           <IconFrame onClick={() => handleOpenSettings(!settingsOpen)}>
-             {!settingsOpen ? <SettingIcon width={25} height={25} color={theme.colors.primary} /> : <CloseIcon width={20} height={20} />}
+             {!settingsOpen ? <WriteIcon width={25} height={25} color={theme.colors.primary} /> : <CloseIcon width={20} height={20} />}
           </IconFrame>
         </>}
       </ConnectWalletBox>
       {settingsOpen && <Settings />}
-      {notificationsOpen  && <Notifications notis={unreadNotis.slice(0, 20)} address={address} />}
+      {notificationsOpen  && <Notifications notis={unreadNotis} address={address} />}
     </>
   );
 };

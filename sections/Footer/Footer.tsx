@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Container, FooterItem, FooterSection, FooterTitle } from './Footer.styles';
-import { socialLinks, refLinks, docLinks } from './footerLinks';
+import { socialLinks, docLinks } from './footerLinks';
 
 
 const Footer = (): JSX.Element => {
@@ -24,21 +24,6 @@ const Footer = (): JSX.Element => {
       <FooterSection>
         <FooterTitle>Contact</FooterTitle>
         {socialLinks.map(({ href, text, icon, target }) => {
-          return (
-              <FooterItem>
-                <Link href={href} target={target} rel="noopener noreferrer">
-                  <div>
-                    {icon}
-                    {text}
-                  </div>
-                </Link>
-              </FooterItem>
-          );
-        })}
-      </FooterSection>
-      <FooterSection>
-       <FooterTitle>References</FooterTitle>
-        {refLinks.map(({ href, text, icon, target }) => {
           return (
               <FooterItem>
                 <Link href={href} target={target} rel="noopener noreferrer">

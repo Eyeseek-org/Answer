@@ -2,17 +2,18 @@ import {useEffect, useState} from 'react';
 import { B, G } from '../typography/ColoredTexts';
 import Amount from './Amount';
 import { useContractRead } from 'wagmi';
-import donation from '../../abi/donation.json';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
+import diamondAbi from '../../abi/diamondAbi.json';
 import { Col, BetweenRowSm } from '../format/Row';
+import { diamond } from '../../data/contracts/core';
 
 
 const BalanceProjectSmall = ({pid, chainId}) => {
   const [add, setAdd] = useState();
 
     useEffect(() => {
-      const res = GetProjectFundingAddress(chainId);
-      setAdd(res);
+      if (process.env.PROD !== 'something'){
+        setAdd(diamond.mumbai)
+      }
     }, []);
 
 
@@ -22,8 +23,8 @@ const BalanceProjectSmall = ({pid, chainId}) => {
   
     const funds = useContractRead({
       address: add,
-      abi: donation.abi,
-      functionName: 'funds',
+      abi: diamondAbi,
+      functionName: 'getFundDetail',
       chainId: chainId,
       args: [pid],
       watch: false,
@@ -31,7 +32,7 @@ const BalanceProjectSmall = ({pid, chainId}) => {
 
     const micros = useContractRead({
       address: add,
-      abi: donation.abi,
+      abi: diamondAbi,
       functionName: 'getConnectedMicroFunds',
       chainId: chainId,
       args: [pid],

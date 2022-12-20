@@ -19,7 +19,7 @@ export const Buttons = styled.div`
   font-family: 'Neucha';
   font-style: italic;
   font-weight: 400;
-  padding-right: 15px;
+  padding-right: 10px;
   letter-spacing: 0.2px;
   font-size: 1.2em;
   color: #b0f6ff;
@@ -33,7 +33,7 @@ export const Buttons = styled.div`
 `;
 
 export const NotiTabWrapper = styled.div`
-  font-size: 0.7em;
+  font-size: 0.8em;
 `
 
 export const NotiBox = styled.div`

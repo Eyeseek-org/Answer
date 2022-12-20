@@ -6,7 +6,7 @@ import { YouTubeIcon } from '../icons/Socials';
 
 const Card = styled(motion.div)`
   position: relative;
-  background: ${(props) => props.theme.colors.projectCard};
+  background: ${(props) => props.theme.colors.cardGradient};
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 15px;
   padding-left: 2em;
@@ -17,7 +17,6 @@ const Card = styled(motion.div)`
   margin: 2em;
   transition: 0.2s;
   &:hover {
-    background: rgba(5, 0, 0, 0.4);
     cursor: pointer;
   }
   @media (max-width: 768px) {

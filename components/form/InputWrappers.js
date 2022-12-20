@@ -28,7 +28,7 @@ export const MilestoneContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  margin-top: 20px;
+  margin-top: 2%;
 `;
 
 export const RewardContainer = styled.div`

@@ -25,18 +25,18 @@ export const Navigation = () => {
   return (
     <NavigationMenuBox>
       {headerNavigationLinks.map(({ title, url, auth }, index) => {
-        return <>
+        return <div key={index}>
          {!auth && <NavItem bold={active === title} key={index}>
             <Link href={url}>
-              <a>{title}</a>
+              <span>{title}</span>
             </Link>
           </NavItem> }
          {auth && address && <NavItem bold={active === title} key={index}>
             <Link href={url}>
-              <a>{title}</a>
+              <span>{title}</span>
             </Link>
           </NavItem> }
-          </>
+          </div>
       })}
     </NavigationMenuBox>
   );

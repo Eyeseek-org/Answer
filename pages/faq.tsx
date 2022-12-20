@@ -53,6 +53,10 @@ const FaqContainer = styled.div`
     padding-left: 3%;
     padding-right: 3%;
   }
+  @media (min-width: 1968px) {
+    padding-left: 25%;
+    padding-right: 25%;
+  }
 `;
 
 const Question = styled.div`

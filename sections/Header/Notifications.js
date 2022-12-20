@@ -15,7 +15,7 @@ import { RewardActiveIcon } from '../../components/icons/Project';
 import {Buttons, ButtonRow, NotiTabWrapper, NotiBox} from '../../components/notifications/Styles';
 import { RewardDesc, MiniDesc } from '../../components/typography/Descriptions';
 import { useQuery } from '@tanstack/react-query';
-import Tab from '../../components/form/Tab';
+import TabImage from '../../components/form/TabImage';
 
 TimeAgo.addDefaultLocale(en);
 
@@ -112,9 +112,13 @@ const ImageBox = styled.div`
 `;
 
 const Counter = styled.div`
+  display: flex;
   font-family: 'Gemunu Libre';
   font-size: 0.8em;
   color: ${(props) => props.theme.colors.font};
+  width: 100%;
+  min-width: 100px;
+  
 `
 
 const Notifications = ({ notis, address}) => {
@@ -128,11 +132,6 @@ const Notifications = ({ notis, address}) => {
     mutationFn: (id) => DapAPIService.updateReadNotifications(id),
   });
 
-  const query = `/classes/Notification?where={"user":"${address}", "isRead":true}`
-  const { data: readNotis } = useQuery(['notis-read'], () => UniService.getDataAll(query),{  });
-
-  const unreadQuery = `/classes/Notification?where={"user":"${address}", "isRead":false}`
-  const { data: unreadNotis } = useQuery(['notis-unread'], () => UniService.getDataAll(unreadQuery),{ });
 
   const updateQuery = `/classes/Notification?where={"user":"${address}", "type": "projectUpdate"}`
   const { data: updateNotis } = useQuery(['notis-updates'], () => UniService.getDataAll(updateQuery),{});
@@ -144,14 +143,9 @@ const Notifications = ({ notis, address}) => {
     confirmRead();
   }, []);
 
-  const handleRead = () => {
-    setActive('Read')
-    setData(readNotis)
-  }
-
-  const handleUnread = () => {
-    setActive('Unread')
-    setData(unreadNotis)
+  const handleNotis = () => {
+    setActive('Notifications')
+    setData(notis)
   }
 
   const handleUpdate = () => {
@@ -184,6 +178,7 @@ const Notifications = ({ notis, address}) => {
       <NotiBox>
         {data &&
           data
+            .slice(0, 20)
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((noti, index) => (
               <NotiItem key={index}>
@@ -198,6 +193,8 @@ const Notifications = ({ notis, address}) => {
                     <Col>
                       <Desc expand={expand}>{noti.title}</Desc>
                      {expand ?  <RewardDesc>{noti.description}</RewardDesc> : <MiniDesc>{noti.description}</MiniDesc>}
+                     <Desc expand={expand}>{noti.sender}</Desc>
+                     {expand ?  <RewardDesc>{noti.message}</RewardDesc> : <MiniDesc>{noti.message}</MiniDesc>}
                       <Ago>
                         <ReactTimeAgo date={noti.createdAt} locale="en-US" />
                       </Ago>
@@ -217,8 +214,8 @@ const Notifications = ({ notis, address}) => {
         <Buttons>
           <Col>
              <NotiTabWrapper>
-                <Tab active={active} o1={'Unread'} o2={'Read'} o3={'Updates'} o4={'Messages'} change1={()=>{handleUnread()}} change2={()=>{handleRead()}} change3={()=>{handleUpdate()}} change4={()=>{handleMessages()}}/>
-                <Counter>({unreadNotis ? unreadNotis.length : null} / {readNotis ? readNotis.length : null} / {updateNotis ? updateNotis.length : null} / {messages ? messages.length : null})</Counter>
+                <TabImage active={active} o1={'Notifications'} o2={'Updates'} o3={'Messages'} change1={()=>{handleNotis()}} change2={()=>{handleUpdate()}} change3={()=>{handleMessages()}} />
+                <Counter>({notis ? notis.length : null} / {updateNotis ? updateNotis.length : null} / {messages ? messages.length : null})</Counter>
              </NotiTabWrapper>
      
         </Col>

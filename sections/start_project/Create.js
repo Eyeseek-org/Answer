@@ -5,14 +5,13 @@ import { usePrepareContractWrite, useContractEvent, useContractWrite, useNetwork
 import axios from 'axios';
 import {useTheme} from 'styled-components';
 import SectionTitle from '../../components/typography/SectionTitle';
-import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, Err, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
+import { RulesContainer, RulesTitle, WarningBox, Li, Row, ImageBox, Summary, SumTitle, SumValue, SumHalf, SumRow, SumHead, EyeBox} from './StylesCreate';
 import FaqCard from '../../components/cards/FaqCard';
 import { BookIcon } from '../../components/icons/Common';
-import donation from '../../abi/donation.json';
+import diamondAbi from '../../abi/diamondAbi.json';
 import Eye10 from '../../public/Eye10.png';
 import Rainbow from '../../components/buttons/Rainbow';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
-import { GetProjectFundingAddress } from '../../helpers/GetContractAddress';
 import { BetweenRow, Col, RowEnd } from '../../components/format/Row';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
 import { MainContainer } from '../../components/format/Box';
@@ -21,6 +20,9 @@ import { ChainName } from '../../helpers/MultichainHelpers';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import {pushDiscordProject} from '../../data/discord/projectData'
+import { diamond } from '../../data/contracts/core';
+import { RewardDesc } from './Styles';
+import { R } from '../../components/typography/ColoredTexts';
 
 const texts = [
   {
@@ -46,7 +48,7 @@ const Create = ({ setStep }) => {
   const [oid, setOid] = useState(null);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
-  const [add, setAdd] = useState("");
+  const [add, setAdd] = useState(diamond.mumbai);
   const theme = useTheme()
   const dispatch = useDispatch() 
 
@@ -61,9 +63,8 @@ const Create = ({ setStep }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    const res = GetProjectFundingAddress(pChain);
-    if (res){
-      setAdd(res)
+    if (process.env.PROD !== 'something'){
+      setAdd(diamond.mumbai)
     }
   
     if (!chainName){
@@ -111,7 +112,7 @@ const Create = ({ setStep }) => {
 
   const { config, isError } = usePrepareContractWrite({
     address: add,
-    abi: donation.abi,
+    abi: diamondAbi,
     functionName: 'createFund',
     chainId: pChain,
     args: [Six]
@@ -173,7 +174,7 @@ const Create = ({ setStep }) => {
 
   useContractEvent({
     address: add,
-    abi: donation.abi,
+    abi: diamondAbi,
     eventName: 'FundCreated',
     chainId: pChain,
     listener: (event) => useEv(event),
@@ -245,7 +246,7 @@ const Create = ({ setStep }) => {
             {pType === 'Stream' ? (
                <LogResult apiError={apiError} type={'Stream project initialized'}/>
             ) : (
-              <LogResult ev={ev} err={error} apiError={apiError} success={success} type={'Project creation initiated'} data={data}/>
+              <LogResult ev={ev} error={error} apiError={apiError} success={success} type={'Project creation initiated'} data={data}/>
             )}
           </>
         )}
@@ -254,8 +255,8 @@ const Create = ({ setStep }) => {
             <ButtonAlt text="Back to homepage" onClick={() => window.location.href = `/`}/> 
             <ButtonAlt text="Go to project" onClick={() => window.location.href = `/project/${oid}`}/>
          </RowEnd>}
-        
-        {isError && pType !== 'Stream' && <Err>Smart contract error, check if all your data inputs are valid</Err>}
+        {error && error.message.startsWith('user rejected') && <><RewardDesc>Transaction rejected in wallet</RewardDesc> <ButtonAlt onClick={handleSubmit} text='Retry'/></>}
+        {isError && pType !== 'Stream' && <RewardDesc><R>Smart contract error, check if all your data inputs are valid</R></RewardDesc>}
       </RulesContainer>
     </MainContainer>
   );

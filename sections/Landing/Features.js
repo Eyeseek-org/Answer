@@ -20,6 +20,18 @@ import { P, B, F, G, R, O } from '../../components/typography/ColoredTexts';
 import Carousel from 'nuka-carousel/lib/carousel';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
+import eye167 from '../../public/eye167.png';
+
+
+const ImageBox = styled.div`
+  position: absolute;
+  right: 0;
+  opacity: 0.5;
+  border-radius: 50%;
+  padding-right: 10%;
+`
+
+
 
 const Container = styled.div`
   position: relative;
@@ -66,7 +78,7 @@ const Features = () => {
 
   return (
     <Container>
-
+      <ImageBox><Image src={eye167} alt='eye' width={200} height={150}/></ImageBox>
       <SectionTitle title="Key concepts" subtitle="How is Eyeseek different" />
       <ContentBox>
         <Carousel animation='zoom' enableKeyboardControls>
@@ -76,8 +88,8 @@ const Features = () => {
               icon={<BlockchainIcon width={55} />}
               title={Texts.title1}
               description={<LiteYouTubeEmbed 
-                id="Y2KwMnhJzaM"
-                title="Ho ho hoooo"
+                id="mpXaFMT1rFM"
+                title="Settlement explained"
             />}
             />
           ) : (
@@ -115,7 +127,10 @@ const Features = () => {
             <FeatureCard
               icon={<RewardLandingIcon width={5} />}
               title={Texts.title5}
-              description={<Image unoptimized={true} src={fee} width={500} height={300} />}
+              description={<LiteYouTubeEmbed 
+                id="1iUu2oLOMnM"
+                title="Rewards"
+            />}
             />
           ) : (
             <FeatureCard
@@ -123,6 +138,9 @@ const Features = () => {
               anim={<RewardAnim width={180} />}
               title={Texts.title5}
               description={Texts.description5}
+              onClick={() => {
+                setDemoReward(!demoReward);
+              }}
             />
           )}
           {demoStream ? (

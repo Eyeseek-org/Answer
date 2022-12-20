@@ -6,6 +6,7 @@ import optimism from '../public/icons/optimism.png';
 import {useState, useEffect} from 'react';
 import { ExpandIcon } from '../components/icons/Notifications';
 import {useTheme} from 'styled-components';
+import { stable } from '../data/contracts/stablecoins';
 
 export const ChainIconComponent = ({ch}) => {
   const [chainIcon, setChainIcon] = useState(<Image src={polygon} alt={'matic'} width={30} height={30} />);
@@ -27,13 +28,13 @@ export const ExplorerReference = ({ch, tx}) => {
 }
 
 export const ChainIcon = (chain) => {
-    if (chain === 80001) {
+    if (chain === 80001 || chain === 137) {
         return <Image src={polygon} alt={'matic'} width={30} height={30} />
-    } else if (chain === 97) {
+    } else if (chain === 97 || chain === 56) {
         return <Image src={binance} alt={'bnb'} width={30} height={30} />
-    } else if (chain === 4002) {
+    } else if (chain === 4002 || chain === 250) {
         return <Image src={fantom} alt={'ftm'} width={30} height={30} />
-    } else if (chain === 420) {
+    } else if (chain === 420 || chain === 10) {
       return <Image src={optimism} alt={'optimism'} width={30} height={30} />
     } else if (chain === undefined){
       return <></>
@@ -52,13 +53,13 @@ export const ChainSmallIconComponent = ({ch}) => {
 }
 
 export const ChainSmallIcon = (chain) => {
-  if (chain === 80001) {
+  if (chain === 80001 || chain === 137) {
       return <Image src={polygon} alt={'matic'} width={15} height={15} />
-  } else if (chain === 97) {
+  } else if (chain === 97 || chain === 56) {
       return <Image src={binance} alt={'bnb'} width={15} height={15} />
-  } else if (chain === 4002) {
+  } else if (chain === 4002 || chain === 250) {
       return <Image src={fantom} alt={'ftm'} width={15} height={15} />
-  } else if (chain === 420) {
+  } else if (chain === 420 || chain === 10) {
     return <Image src={optimism} alt={'optimism'} width={15} height={15} />
   } else if (chain === undefined){
     return <></>
@@ -71,64 +72,74 @@ export const ChainSmallIcon = (chain) => {
 export const CurrAddress = (curr, chain) => {
   switch(chain) {
     case 80001:
-    if (curr === 'USDC') {
-      return process.env.NEXT_PUBLIC_AD_USDC;
-    } else if (curr === 'USDT') {
-      return process.env.NEXT_PUBLIC_AD_USDT;
-    } else if (curr === 'DAI') {
-      return process.env.NEXT_PUBLIC_AD_DAI;
-    }
+    if (curr === 'USDC') { return stable.mumbai.usdc} else if (curr === 'USDT') { return stable.mumbai.usdt} 
     break;
-    case 97:
-      if (curr === 'USDC') {
-        return process.env.NEXT_PUBLIC_AD_USDC_BNB;
-      } else if (curr === 'USDT') {
-        return process.env.NEXT_PUBLIC_AD_USDT_BNB;
-      } else if (curr === 'DAI') {
-        return process.env.NEXT_PUBLIC_AD_DAI_BNB;
-      }
-      break;
+    case 137:
+    if (curr === 'USDC') { return stable.polygon.usdc} else if (curr === 'USDT') { return stable.polygon.usdt} 
+    break;
+    case 97: 
+    if (curr === 'BUSD') {return stable.bnbTestnet.usdc} else if (curr === 'USDT') {return stable.bnbTestnet.usdt}
+    break;
+    case 56: 
+    if (curr === 'BUSD') {return stable.bnb.busd} else if (curr === 'USDT') {return stable.bnb.usdc}
+    break;
     case 4002:
-        if (curr === 'USDC') {
-          return process.env.NEXT_PUBLIC_AD_USDC_FTM;
-        } else if (curr === 'USDT') {
-          return process.env.NEXT_PUBLIC_AD_USDT_FTM;
-        } else if (curr === 'DAI') {
-          return process.env.NEXT_PUBLIC_AD_DAI_FTM;
-        }
-      break;
-    case 420:
-        if (curr === 'USDC') {
-          return process.env.NEXT_PUBLIC_AD_USDC_OPTIMISM;
-        } else if (curr === 'USDT') {
-          return process.env.NEXT_PUBLIC_AD_USDT_OPTIMISM;
-        } else if (curr === 'DAI') {
-          return process.env.NEXT_PUBLIC_AD_DAI_OPTIMISM;
-        }
+    if (curr === 'USDC') { return stable.ftmTestnet.usdc} else if (curr === 'USDT') {return stable.ftmTestnet.usdt} 
+    break;
+    case 250:
+    if (curr === 'USDC') { return stable.ftm.usdc} else if (curr === 'DAI') {return stable.ftm.dai} 
+    break;
+    case 420: 
+    if (curr === 'USDC') {return stable.optimismTestnet.usdc} else if (curr === 'USDT') {return stable.optimismTestnet.usdt} 
+    break;
+    case 10: 
+    if (curr === 'USDC') {return stable.optimism.usdc} else if (curr === 'USDT') {return stable.optimism.usdt} 
     break;
   }
  }
 
+ export const handleDec = async(cur) => {  
+  switch(cur) {
+    case stable.bnb.busd: return 18;
+    case stable.bnb.usdc: return 6;
+    case stable.bnbTestnet.usdc: return 6;
+    case stable.bnbTestnet.usdt: return 6;
+    case stable.ftm.usdc: return 6;
+    case stable.ftm.dai: return 18;
+    case stable.ftmTestnet.usdc: return 6;
+    case stable.ftmTestnet.usdt: return 6;
+    case stable.mumbai.usdc: return 6;
+    case stable.mumbai.usdt: return 6;
+    case stable.polygon.usdc: return 6;
+    case stable.polygon.usdt: return 6;
+    case stable.optimismTestnet.usdc: return 6;
+    case stable.optimismTestnet.usdt: return 6;
+    case stable.optimism.usdc: return 6;
+    case stable.optimism.usdt: return 6;
+    default : return 18;
+  }
+}
+
 export const ChainExplorer = (chain) => {
-    if (chain === 80001) {
+    if (chain === 80001 || chain === 137) {
         return 'https://mumbai.polygonscan.com/tx/';
-      } else if (chain === 97) {
+      } else if (chain === 97 || chain === 56) {
         return  'https://bscscan.com/tx/';
-      } else if (chain === 4002) {
+      } else if (chain === 4002 || chain === 250) {
         return 'https://testnet.ftmscan.com/tx';
-      } else if (chain === 420) {
+      } else if (chain === 420 || chain === 10) {
         return 'https://optimistic.etherscan.io/tx/';
       } 
 }
 
 export const ChainName = (chain) => {
-    if (chain === 80001) {
+    if (chain === 80001 || chain === 137) {
         return 'Polygon Mumbai';
-      } else if (chain === 97) {
+      } else if (chain === 97 || chain === 56) {
         return  'Binance testnet';
-      } else if (chain === 4002) {
+      } else if (chain === 4002 || chain === 250) {
         return 'Fantom testnet';
-      } else if (chain === 420) {
+      } else if (chain === 420 || chain === 10) {
         return 'Optimism testnet';
       } else {
         return 'Polygon';

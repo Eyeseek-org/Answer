@@ -1,10 +1,11 @@
 import styled, {useTheme} from 'styled-components';
-import { BookmarkFilledIcon, BookmarkIcon } from '../icons/Common'
+import { BookmarkFilledIcon, BookmarkIcon, MessageIcon, MessageOpenIcon, UpdateActiveIcon, UpdateIcon, UserIcon } from '../icons/Common'
 import { StreamIcon } from '../icons/Landing'
 import { DonateActiveIcon, DonateIcon, ProjectActiveIcon, ProjectIcon,  Erc20ActiveIcon, Erc20Icon, NftActiveIcon, NftIcon, RewardActiveIcon } from '../icons/Project'
 import { RewardIcon } from '../icons/Common'
 import Tooltip from '../Tooltip'
 import {useState} from 'react'
+import { ImageHover } from '../tables/TableStyles';
 
 const Container = styled.div`
   display: flex;
@@ -20,10 +21,11 @@ const Container = styled.div`
 const Menu = styled.div`
     display: flex;
     flex-direction: row;
+    position: relative;
     padding: 1%;
     padding-left: 3%;
     padding-right: 8%;
-    gap: 5%;
+    gap: 10%;
 `
 
 const Inactive = styled.div`
@@ -33,7 +35,7 @@ const Inactive = styled.div`
     cursor: pointer;
     transition: 0.2s;
     &:hover{
-        opacity: 0.7;
+        opacity: 0.9;
     }
     @media (min-width: 1768px) {
         font-size: 1.1em;
@@ -68,11 +70,18 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
 
     const [showTooltip, setShowTooltip] = useState(false)
     const [tooltipText, setTooltipText] = useState('')
+    const [showNotiTooltip, setShowNotiTooltip] = useState(false)
+    const [notiTooltipText, setNotiTooltipText] = useState('')
     const theme = useTheme()
 
     const handleTooltip = (text) => {
         setShowTooltip(true)
         setTooltipText(text)
+    }
+
+    const handleNotiTooltip = (text) => {
+        setShowNotiTooltip(true)
+        setNotiTooltipText(text)
     }
 
 
@@ -89,8 +98,21 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <Erc20ActiveIcon width={60} height={60}  /></ActBox>}
                 {text === 'ERC1155' && <ActBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <NftActiveIcon width={60} height={60}  color={theme.colors.icon} /></ActBox>}
+                {text === 'Notifications' &&   
+                <ImageHover onMouseEnter={()=>handleNotiTooltip('All notifications')} onMouseLeave={()=>setShowNotiTooltip(false)}>
+                    <MessageOpenIcon width={20} height={17}  color={theme.colors.primary}/>
+                </ImageHover>}
+                {text === 'Updates' && 
+                <ImageHover onMouseEnter={()=>handleNotiTooltip('Project updates')} onMouseLeave={()=>setShowNotiTooltip(false)}>
+                    <UpdateActiveIcon width={20} height={20}  color={theme.colors.primary}/>
+                </ImageHover>}
+                {text === 'Messages' &&
+                <ImageHover onMouseEnter={()=>handleNotiTooltip('Direct messages')} onMouseLeave={()=>setShowNotiTooltip(false)}>
+                    <UserIcon width={20} height={20}  color={theme.colors.primary}/>
+                </ImageHover>}
             </Active> : 
             <Inactive onClick={onClick}>
+              
                 {text === 'Projects' && <ColBetween><ProjectIcon width={50}  color={theme.colors.icon}/><div>{text}</div></ColBetween>} 
                 {text === 'Donates' && <ColBetween><DonateIcon width={50}  color={theme.colors.icon} /><div>{text}</div></ColBetween>}
                 {text === 'Bookmarks' && <ColBetween><BookmarkIcon width={50} color={theme.colors.icon} /><div>{text}</div></ColBetween>}
@@ -101,12 +123,25 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <Erc20Icon width={60} height={60}  color={theme.colors.icon} /></IconBox>}
                 {text === 'ERC1155' && <IconBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <NftIcon width={60}  height={60}  color={theme.colors.icon}/></IconBox>}
+                {text === 'Notifications' &&   
+                <ImageHover onMouseEnter={()=>handleNotiTooltip('All notifications')} onMouseLeave={()=>setShowNotiTooltip(false)}>
+                    <MessageIcon width={20} height={20}  color={theme.colors.icon}/>
+                </ImageHover>}
+                {text === 'Updates' && 
+                <ImageHover onMouseEnter={()=>handleNotiTooltip('Project updates')} onMouseLeave={()=>setShowNotiTooltip(false)}>
+                    <UpdateIcon width={20} height={20}  color={theme.colors.icon}/>
+                </ImageHover>}
+                {text === 'Messages' &&
+                <ImageHover onMouseEnter={()=>handleNotiTooltip('Direct messages')} onMouseLeave={()=>setShowNotiTooltip(false)}>
+                    <UserIcon width={20} height={20}  color={theme.colors.icon}/>
+                </ImageHover>}
             </Inactive>
         }</>
     }
     return <Container>
      {showTooltip && <Tooltip text={tooltipText} margin={'-50px'}/>}
     <Menu>
+       {showNotiTooltip && <Tooltip text={notiTooltipText} margin={'25px'}/>}
         <Item act={o1} text={o1} onClick={change1} />
         <Item act={o2} text={o2} onClick={change2} />
 

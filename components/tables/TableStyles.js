@@ -9,14 +9,21 @@ export const Table = styled.table`
   text-align: center;
   background: ${(props) => props.theme.colors.tableGradient};
   box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
-  margin-bottom: 2%;
+  margin-bottom: 5%;
   border: 1px solid grey;
 `;
 
 export const Header = styled.th`
+  position: relative;
   border-right: 1px solid grey;
   padding: 1% 16px;
   font-family: 'Roboto';
+  letter-spacing: 0.7px;
+  padding-bottom: 30px;
+  color: ${(props) => props.theme.colors.primary};
+  @media (min-width: 1568px) {
+    font-size: 1.1em;
+  }
 `;
 
 export const Tr = styled.tr`
@@ -30,10 +37,12 @@ export const Tr = styled.tr`
 
 export const HeadRow = styled(Tr)`
   background: ${(props) => props.theme.colors.gradient};
+  cursor: default;
 `;
 
 export const Cell = styled.td`
-  padding: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
   font-family: 'Neucha';
   border-right: 1px solid grey;
 `;
@@ -73,7 +82,6 @@ export const PaginationContainer = styled.div`
 `;
 
 export const MyInput = styled.input`
-  background: {props => props.theme.colors.transparent};
   padding: 2px;
   padding-left: 5px;
   padding-right: 5px;
@@ -91,4 +99,15 @@ export const ActionCol = styled.div`
 
 export const TableWrapper = styled.div`
   position: relative;
+`
+
+export const AbsoluteFilter = styled.div`
+  position: absolute;
+  bottom: 7px;
+`
+
+export const ToggleBox = styled.div`
+  position: absolute;
+  top: -80px;
+  right: 0;
 `

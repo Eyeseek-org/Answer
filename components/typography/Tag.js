@@ -8,6 +8,7 @@ const Box = styled.div`
   border-radius: 45px;
   padding-left: 15px;
   padding-right: 15px;
+  color: 'white';
 `;
 
 const Text = styled.div`

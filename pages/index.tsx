@@ -39,7 +39,7 @@ const Home: NextPage = () => {
           <meta name="title" content="Blockchain crowdfunding application powered by Moralis" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <LandingMain width={'100%'} height={'100%'} />
+        <LandingMain width={'60%'} height={'50%'} />
         <Features />
         <LatestProjects my={false} />
         <EyeSevenBox>

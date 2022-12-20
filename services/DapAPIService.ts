@@ -53,6 +53,14 @@ export class DapAPIService {
     });
   }
 
+  static async sendMessage({ sender, recipient, message}){
+    return await DapAxiosInstance.post('/classes/Message', {
+      sender: sender,
+      recipient: recipient,
+      message: message
+    });
+  }
+
   static async updateReadNotifications(notificationId: string) {
     return await DapAxiosInstance.put(`/classes/Notification/${notificationId}`, { isRead: true });
   }

@@ -31,6 +31,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                       delaySpeed={40000}
                     />
                 </LogRow>
+                {error && error.message.startsWith('user rejected') ? null : <>
                 <LogRow>
                   <InfoTag>Info</InfoTag> 
                   <Typewriter
@@ -41,6 +42,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                       delaySpeed={40000}
                     />
                 </LogRow>
+
                 {!ev && <LogRow><O>Please stay on page until transactions is confirmed</O></LogRow>}
                 <LogRow>
                     <InfoTag>Blockchain: </InfoTag>
@@ -63,6 +65,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                     />
                     </Err>}
                 </LogRow>
+                </>}
                 {error && <LogRow>
                     <InfoTag><R>Error</R></InfoTag><>
                     <Typewriter

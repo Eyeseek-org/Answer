@@ -13,6 +13,7 @@ export const darkTheme: DefaultTheme  = {
         gradient: "linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%)",
         errGradient: "linear-gradient(132.28deg, rgba(168, 8, 8, 0.25)  -21.57%, rgba(168, 8, 8, 0.161) 100%)",
         tableGradient: "linear-gradient(132.28deg, rgba(47, 47, 47, 0.3) -21.57%, rgba(0, 0, 0, 0.261) 100%)",
+        cardGradient: "linear-gradient(146.4deg, rgba(48, 79, 73, 0.75) -54.69%, rgba(0, 0, 0, 0) 80.04%), linear-gradient(189.39deg, rgba(255, 255, 255, 0.1) -125.34%, rgba(40, 29, 29, 0) 92.91%), #101216",
         border: '#4e4e4e',
         progressBorder: 'rgba(0, 224, 255, 0.15)',
         transparent: 'rgba(0, 0, 0, 0.3)',
@@ -25,7 +26,8 @@ export const darkTheme: DefaultTheme  = {
         projectCard: 'rgba(0, 0, 0, 0.3)',
         icon: 'white',
         redPastel: '#8d0000',
-        darkRed: 'rgba(9, 0, 0)'
+        darkRed: 'rgba(9, 0, 0)',
+        landing: 'white'
     }
   };
 
@@ -41,6 +43,7 @@ export const lightTheme: DefaultTheme = {
         black: "white",
         gradient: "linear-gradient(100.57deg, #D6D6D6 -35.34%, rgba(169, 169, 169, 0) 94.16%)",
         errGradient: "linear-gradient(132.28deg, rgba(168, 8, 8, 0.25)  -21.57%, rgba(168, 8, 8, 0.161) 100%)",
+        cardGradient: 'rgba(242, 255, 254, 0.9)',
         tableGradient: "#d8e3df",
         border: 'black',
         progressBorder: '#003D2E',
@@ -54,6 +57,7 @@ export const lightTheme: DefaultTheme = {
         projectCard: 'rgba(242, 255, 254, 0.9)',
         icon: '#283B41',
         redPastel: '#ff9393',
-        darkRed: '#ff9393'
+        darkRed: '#ff9393',
+        landing: 'black'
     }
   };
