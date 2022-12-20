@@ -19,17 +19,17 @@ const Settings = () => {
             <Buttons>
             <Col>
                 <NotiTabWrapper>
-                    <Tab active={active} o1={'Pref'} o2={'Message'} change1={()=>{setActive('Pref')}} change2={()=>{setActive('Message')}}  />
+                    <Tab active={active} o1={'Direct message'} o2={'Group message'} change1={()=>{setActive('Direct message')}} change2={()=>{setActive('Group message')}}  />
                 </NotiTabWrapper>
             </Col>
             </Buttons>
             <Buttons onClick={() => setExpand(!expand)}>
             {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} />}
         </Buttons>
-         {active === 'Preferences' &&  <Preferences/>}
         </ButtonRow>
         <NotiBox>
-           {active === 'Message' && <PrivateMessage/>}
+          {/* {active === 'Preferences' &&  <Preferences/>} */}
+           {active === 'Direct message' && <PrivateMessage/>}
         </NotiBox>
     </AnimatedModal>
 }

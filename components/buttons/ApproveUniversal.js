@@ -8,6 +8,8 @@ import ButtonAlt from './ButtonAlt'
 import {okAnim, loadingAnim} from '../animated/Animations';
 import { AbsoluteLeft } from '../format/Box'
 import { Col } from '../format/Row'
+import { handleDec } from '../../helpers/MultichainHelpers'
+
 
 const Container = styled.div`
     position: relative;
@@ -39,8 +41,8 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
         setLoading(false)
     }
 
-      useEffect (async() => {
-        const dec = await handleDesc(tokenContract)
+      useEffect (() => {
+        const dec = handleDec(tokenContract)
         switch (dec) {
             case 6: setD(1000000); break; // Stablecoins USDT, USDCT
             case 18: setD(1000000000000000000); break;  // Standard ERC20 tokens, DAI, BUSD

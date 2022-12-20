@@ -6,8 +6,8 @@ export const BodyBox = styled.div`
   margin-left: 17%;
   margin-right: 17%;
   @media (max-width: 768px) {
-        padding-left: 2%;
-        padding-right: 2%;
+     margin-left: 2%;
+     margin-right: 2%;
     }
 `
 

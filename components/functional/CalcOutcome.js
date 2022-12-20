@@ -6,6 +6,9 @@ import styled,{useTheme} from 'styled-components';
 
 const Container = styled.div`
   min-width: 100px;
+  @media (max-width: 1168px) {
+    display: none;
+  }
 `
 
 const CalcOutcome = ({ conn, multi }) => {

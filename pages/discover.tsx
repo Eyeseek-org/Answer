@@ -15,6 +15,9 @@ const Container = styled.div`
   margin-right: 15%;
   margin-top: 5%;
   margin-bottom: 10%;
+  @media (max-width: 1168px) {
+    margin: 2%;
+  }
 `;
 
 const TabWrapper = styled.div`

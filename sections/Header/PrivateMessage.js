@@ -90,7 +90,7 @@ const PrivateMessage = () => {
       {!success ? <Col>
         <ButtonAlt text='Send message' width={'100%'} />
         <Divider />
-        <RewardDesc>Message is not encrypted, serves purely to help settle rewards between you and opposite</RewardDesc>
+        <RewardDesc>Message is not encrypted, serves purely to help with rewards settlement between you and the opposite</RewardDesc>
       </Col> : <Lottie height={100} width={100} options={okAnim} />}
       {error && <Lottie height={100} width={100} options={errAnim} />}
       <Divider />

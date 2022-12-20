@@ -105,6 +105,9 @@ const ImageBox = styled.div`
   box-sizing: static;
   width: 200px;
   height: 300px;
+  @media (max-width: 1180px) {
+    display: none;
+  }
 `
 
 const AbsoluteAnim = styled.div`
