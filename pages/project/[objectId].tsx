@@ -103,9 +103,7 @@ const Project: NextPage = () => {
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 
               <SpacingBox>
                    <AnimatedLeftPanel title={'Reward list'} component={<RewardList oid={objectId} chain={project.chainId} />}/>
-                {address === project.owner && (
                   <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} owner={project.owner} />
-                )}
               </SpacingBox> : null
             }
             {project && mode === 'Updates' && (

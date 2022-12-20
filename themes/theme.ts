@@ -26,7 +26,8 @@ export const darkTheme: DefaultTheme  = {
         projectCard: 'rgba(0, 0, 0, 0.3)',
         icon: 'white',
         redPastel: '#8d0000',
-        darkRed: 'rgba(9, 0, 0)'
+        darkRed: 'rgba(9, 0, 0)',
+        landing: 'white'
     }
   };
 
@@ -56,6 +57,7 @@ export const lightTheme: DefaultTheme = {
         projectCard: 'rgba(242, 255, 254, 0.9)',
         icon: '#283B41',
         redPastel: '#ff9393',
-        darkRed: '#ff9393'
+        darkRed: '#ff9393',
+        landing: 'black'
     }
   };

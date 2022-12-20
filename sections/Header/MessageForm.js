@@ -2,16 +2,18 @@ import InputContainer from "../../components/form/InputContainer"
 import styled, { useTheme } from 'styled-components'
 import { RewardDesc } from "../../components/typography/Descriptions"
 import ButtonAlt from "../../components/buttons/ButtonAlt"
+import ButtonSec from "../../components/buttons/ButtonSec"
 import { useFormik } from "formik"
 import * as Yup from 'yup';
-import { useAccount } from "wagmi"
+import { useAccount, useQuery } from "wagmi"
 import axios from "axios"
 import { moralisApiConfig } from "../../data/moralisApiConfig"
 import Lottie from 'react-lottie'
 import { useState } from 'react'
 import { errAnim, okAnim } from "../../components/animated/Animations"
 import { G, R } from "../../components/typography/ColoredTexts"
-import { Col, RowCenter} from "../../components/format/Row"
+import { Col, Row, RowCenter} from "../../components/format/Row"
+import { UniService } from "../../services/DapAPIService"
 
 const Container = styled.div`
     display: flex;
@@ -24,10 +26,15 @@ const Divider = styled.div`
   height: 20px;
 `
 
-const PrivateMessage = () => {
+const MessageForm = ({type}) => {
+  const theme = useTheme()
   const { address } = useAccount()
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [recipients, setRecipients] = useState([])
+  const [activeRecipients, setActiveRecipients] = useState([])
+  const [activeButtonCol, setActiveButtonCol] = useState(theme.colors.primary)
+  const [secondButtonCol, setSecondButtonCol] = useState(theme.colors.secondary)
 
   const addRegex = /^0x[a-fA-F0-9]{40}$/
 
@@ -43,7 +50,11 @@ const PrivateMessage = () => {
       address: Yup.string().required('Address is required field').matches(addRegex, 'EVM address in invalid format'),
     }),
     onSubmit: (values) => {
-      sendMessage(address, values.address, values.message);
+      if (type === 'direct') {
+        sendMessage(address, values.address, values.message);
+      } else if (type === 'group') {
+        groupSendMessage(address, recipients, values.message);
+      }
     },
   });
 
@@ -61,8 +72,44 @@ const PrivateMessage = () => {
     catch (e) { setError(true) }
   }
 
+  const groupSendMessage = async (sender, recipients, message) => {
+    for (const recipient of recipients) {
+      try {
+        await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Message`, {
+          sender: sender,
+          recipient: recipient,
+          message: message,
+        }, moralisApiConfig)
+      }
+      catch (e) { setError(true) }
+    }
+    setError(false)
+    setSuccess(true)
+  }
+
+  const { data: active } = useQuery(
+    ['active-project'],
+    () => UniService.getDataSingle(`/classes/Project?where={"owner":"${address}", "state": 1}`),
+    {
+      onSuccess: (data) => {
+        if (data.length > 0) {
+          setActiveRecipients(data.bookmarks)
+        }
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+  
   return <Container>
-    <RewardDesc>Send message to another user</RewardDesc>
+    <RewardDesc>
+     {type === 'private' ? <>Send message to another user</> : <>Send message to a group</>}
+    </RewardDesc>
+    {type === 'group' && <Row>
+      {active && <ButtonSec color={activeButtonCol} text={`Active project ${activeRecipients.length}`} width={'40%'} onClick={() => setRecipients(activeRecipients)} /> }
+      <ButtonSec color={secondButtonCol} text={`Active project ${activeRecipients.length}`} width={'40%'} onClick={() => setRecipients(activeRecipients)} /> 
+    </Row>}
     <form onSubmit={formik.handleSubmit}>
       <InputContainer
         key={'message'}
@@ -90,7 +137,7 @@ const PrivateMessage = () => {
       {!success ? <Col>
         <ButtonAlt text='Send message' width={'100%'} />
         <Divider />
-        <RewardDesc>Message is not encrypted, serves purely to help with rewards settlement between you and the opposite</RewardDesc>
+        <RewardDesc>Message is not encrypted, serves purely to help with rewards settlement between you and the opposites</RewardDesc>
       </Col> : <Lottie height={100} width={100} options={okAnim} />}
       {error && <Lottie height={100} width={100} options={errAnim} />}
       <Divider />
@@ -102,4 +149,4 @@ const PrivateMessage = () => {
   </Container>
 }
 
-export default PrivateMessage
+export default MessageForm

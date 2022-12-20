@@ -7,19 +7,19 @@ import { ButtonRow, Buttons, NotiBox, NotiTabWrapper } from "../../components/no
 import { Col } from "../../components/format/Row";
 import Tab from "../../components/form/Tab";
 import { ExpandIcon, ShrinkIcon } from "../../components/icons/Notifications";
-import PrivateMessage from "./PrivateMessage";
+import MessageForm from "./MessageForm";
 
 
 const Settings = () => {
     const theme = useTheme();
-    const [active, setActive] = useState('Pref');
+    const [active, setActive] = useState('Direct');
     const [expand, setExpand] = useState(false);
     return <AnimatedModal expand={expand ? true : undefined}>
         <ButtonRow>
             <Buttons>
             <Col>
                 <NotiTabWrapper>
-                    <Tab active={active} o1={'Direct message'} o2={'Group message'} change1={()=>{setActive('Direct message')}} change2={()=>{setActive('Group message')}}  />
+                    <Tab active={active} o1={'Direct'} o2={'Group'} change1={()=>{setActive('Direct')}} change2={()=>{setActive('Group')}}  />
                 </NotiTabWrapper>
             </Col>
             </Buttons>
@@ -29,7 +29,8 @@ const Settings = () => {
         </ButtonRow>
         <NotiBox>
           {/* {active === 'Preferences' &&  <Preferences/>} */}
-           {active === 'Direct message' && <PrivateMessage/>}
+           {active === 'Direct' && <MessageForm type='private'/>}
+           {active === 'Group' && <MessageForm type='group'/>}
         </NotiBox>
     </AnimatedModal>
 }

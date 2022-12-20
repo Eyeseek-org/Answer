@@ -13,8 +13,38 @@ import usdt from '../../public/icons/usdt.png';
 import { BetweenRow, Row } from '../../components/format/Row';
 import { G } from '../../components/typography/ColoredTexts';
 import StatRow from '../../components/StatRow';
-import { RightPart, SmallBal } from '../../components/cards/CardStyles';
+import { SmallBal } from '../../components/cards/CardStyles';
 import { diamond } from '../../data/contracts/core';
+
+const ProgressFilter = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 2px;
+    max-width: 100%;
+    width: ${props => props.ratio}%;
+    border-radius: inherit;
+    text-align: right;
+    background: ${props => props.theme.colors.secondary};
+    font-family: 'Gemunu Libre';
+`
+
+const RightPart = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top: 3px solid #b0f6ff;
+  width: 50%;
+  margin-left: 3%;
+  margin-top: 2%;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+`;
 
 const ButtonBox = styled.div`
   margin-top: 4%;
@@ -121,6 +151,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
 
   return (
     <RightPart>
+      <ProgressFilter ratio={bal / max * 100} />
       {pType !== 'Stream' ? (
         <div>
           <StatRow

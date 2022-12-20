@@ -12,7 +12,7 @@ import {RewardAnimatedBox} from '../../components/format/RewardAnimatedBox';
 import styled, {useTheme} from 'styled-components';
 import Modal from 'react-modal';
 import { CloseIcon } from '../../components/icons/Notifications';
-import { Absolute, AbsoluteRight } from '../../components/format/Box';
+import { AbsoluteRight } from '../../components/format/Box';
 
 const MutipleRewards = styled.div`
   display: flex;
