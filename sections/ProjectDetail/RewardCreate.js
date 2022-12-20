@@ -168,7 +168,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
             {!success && !apiError && <>
                 <BetweenRow>
                     <Subtitle text={<>
-                        {tokenType === 'Classic' && address === owner && <>Classic crowdfunding reward</>}
+                        {tokenType === 'Classic' &&  <>Classic crowdfunding reward</>}
                         {tokenType === 'ERC20' && <>Fungible token reward</>}
                         {tokenType === 'ERC1155' && <>ERC1155 NFT reward</>}
                     </>}/>
@@ -188,7 +188,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                     {pType === 'Standard' && <Row><Label>Pledge type</Label><Tab active={dType} o1={'Microfund'} o2={'Donate'} change1={() => { setdType('Microfund') }} change2={() => { setdType('Donate') }} /></Row>}
                         {tokenType === 'ERC20' && <RewardFormToken dType={dType}/>}
                         {tokenType === 'ERC1155' && <RewardFormNft dType={dType}/>}
-                        {tokenType === 'Classic' && address === owner && <RewardFormClassic dType={dType}/>}
+                        {tokenType === 'Classic' && <RewardFormClassic dType={dType}/>}
                     <Summary>
                         {dType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
                         {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
@@ -197,7 +197,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                 {cap > 0 ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
-                    {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} />}
+                    {tokenType === 'Classic' && address === owner ? <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} /> : <ErrText text="Only project owner can create classic rewards"/>}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>

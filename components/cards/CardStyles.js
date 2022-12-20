@@ -54,7 +54,7 @@ export const ProjectType = styled.div`
 `;
 
 export const Categories = styled.div`
-  margin-top: 2px;
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -65,6 +65,7 @@ export const LeftPart = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  padding-top: 2%;
   width: 50%;
   @media (max-width: 768px) {
     width: 100%;
@@ -81,6 +82,7 @@ export const ActionPanel = styled.div`
   top: 10px;
   right: 4%;
 `;
+
 
 export const RightPart = styled.div`
   position: relative;

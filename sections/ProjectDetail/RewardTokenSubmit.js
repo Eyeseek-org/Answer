@@ -67,8 +67,8 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
   return (
     <ColRight>
       <ButtonBox>
-        <ApprovedComponent address={add} tokenAddress={tokenAddress} dec={1} />
-        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={1} />
+        <ApprovedComponent address={add} tokenAddress={tokenAddress}  />
+        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total}  />
         {!loading ? <ButtonAlt
           text={'Create reward'}
           onClick={() => {

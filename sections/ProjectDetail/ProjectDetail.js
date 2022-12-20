@@ -7,7 +7,6 @@ import ImgSkeleton from '../../components/skeletons/ImgSkeleton';
 import { VerifiedIcon, NonVerifiedIcon, UrlIcon, UrlSocialsIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
 import ProjectDetailRight from './ProjectDetailRight';
-import Markdown from '../../components/Markdown';
 import { BlockchainIcon, StreamIcon } from '../../components/icons/Landing';
 import { AbsoluteLeft, MainContainer } from '../../components/format/Box';
 import {ProjectDesc} from '../../components/typography/Descriptions'
@@ -15,6 +14,7 @@ import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import {IconWrapper, Inactive, DetailBox, ProjectType, Categories, LeftPart, ActionPanel} from '../../components/cards/CardStyles'
+import { FeatureTitle } from '../../components/typography/Titles';
 
 const ProjectDetail = ({objectId, pid, title, description,category,subcategory,imageUrl,bookmarks,verified,state,pType,owner,chainId,urlSocial,urlProject,descM,youtube}) => {
 
@@ -97,6 +97,7 @@ const ProjectDetail = ({objectId, pid, title, description,category,subcategory,i
               )}
               {subcategory && <Tag tag={subcategory} color={'#035201'} />}
             </Categories>
+            <FeatureTitle>{title}</FeatureTitle>
             <ProjectDesc>{description}</ProjectDesc>
           </LeftPart>
           {state === 4 ? (

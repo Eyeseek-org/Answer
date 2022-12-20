@@ -72,68 +72,53 @@ export const ChainSmallIcon = (chain) => {
 export const CurrAddress = (curr, chain) => {
   switch(chain) {
     case 80001:
-    if (curr === 'USDC') {
-      return stable.mumbai.usdc;
-    } else if (curr === 'USDT') {
-      return stable.mumbai.usdt;
-    } 
+    if (curr === 'USDC') { return stable.mumbai.usdc} else if (curr === 'USDT') { return stable.mumbai.usdt} 
     break;
-    case 97:
-      if (curr === 'USDC') {
-        return stable.bnbTestnet.usdc;
-      } else if (curr === 'USDT') {
-        return stable.bnbTestnet.usdt;
-      }
-      break;
+    case 137:
+    if (curr === 'USDC') { return stable.polygon.usdc} else if (curr === 'USDT') { return stable.polygon.usdt} 
+    break;
+    case 97: 
+    if (curr === 'BUSD') {return stable.bnbTestnet.usdc} else if (curr === 'USDT') {return stable.bnbTestnet.usdt}
+    break;
+    case 56: 
+    if (curr === 'BUSD') {return stable.bnb.busd} else if (curr === 'USDT') {return stable.bnb.usdc}
+    break;
     case 4002:
-        if (curr === 'USDC') {
-          return stable.ftmTestnet.usdc;
-        } else if (curr === 'USDT') {
-          return stable.ftmTestnet.usdt;
-        } 
-      break;
-    case 420:
-        if (curr === 'USDC') {
-          return stable.optimismTestnet.usdc;
-        } else if (curr === 'USDT') {
-          return stable.optimismTestnet.usdt;
-        } 
+    if (curr === 'USDC') { return stable.ftmTestnet.usdc} else if (curr === 'USDT') {return stable.ftmTestnet.usdt} 
+    break;
+    case 250:
+    if (curr === 'USDC') { return stable.ftm.usdc} else if (curr === 'DAI') {return stable.ftm.dai} 
+    break;
+    case 420: 
+    if (curr === 'USDC') {return stable.optimismTestnet.usdc} else if (curr === 'USDT') {return stable.optimismTestnet.usdt} 
+    break;
+    case 10: 
+    if (curr === 'USDC') {return stable.optimism.usdc} else if (curr === 'USDT') {return stable.optimism.usdt} 
     break;
   }
  }
 
- export const CurrProdAddress = (curr, chain) => {
-  switch(chain) {
-    case 137:
-    if (curr === 'USDC') {
-      return stable.mumbai.usdc;
-    } else if (curr === 'USDT') {
-      return stable.mumbai.usdt;
-    } 
-    break;
-    case 56:
-      if (curr === 'USDC') {
-        return stable.bnbTestnet.usdc;
-      } else if (curr === 'USDT') {
-        return stable.bnbTestnet.usdt;
-      }
-      break;
-    case 250:
-        if (curr === 'USDC') {
-          return stable.ftmTestnet.usdc;
-        } else if (curr === 'USDT') {
-          return stable.ftmTestnet.usdt;
-        } 
-      break;
-    case 10:
-        if (curr === 'USDC') {
-          return stable.optimismTestnet.usdc;
-        } else if (curr === 'USDT') {
-          return stable.optimismTestnet.usdt;
-        } 
-    break;
+ export const handleDec = async(cur) => {  
+  switch(cur) {
+    case stable.bnb.busd: return 18;
+    case stable.bnb.usdc: return 6;
+    case stable.bnbTestnet.usdc: return 6;
+    case stable.bnbTestnet.usdt: return 6;
+    case stable.ftm.usdc: return 6;
+    case stable.ftm.dai: return 18;
+    case stable.ftmTestnet.usdc: return 6;
+    case stable.ftmTestnet.usdt: return 6;
+    case stable.mumbai.usdc: return 6;
+    case stable.mumbai.usdt: return 6;
+    case stable.polygon.usdc: return 6;
+    case stable.polygon.usdt: return 6;
+    case stable.optimismTestnet.usdc: return 6;
+    case stable.optimismTestnet.usdt: return 6;
+    case stable.optimism.usdc: return 6;
+    case stable.optimism.usdt: return 6;
+    default : return 18;
   }
- }
+}
 
 export const ChainExplorer = (chain) => {
     if (chain === 80001 || chain === 137) {

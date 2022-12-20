@@ -10,6 +10,9 @@ const Container = styled.div`
     top: 100px;
     left: 70%;
     z-index: 80;
+    @media (max-width: 1168px) {
+      display: none;
+    }
 `
 
 const Icons = styled(motion.div)`

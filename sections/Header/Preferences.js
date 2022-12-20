@@ -13,7 +13,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-top: 70px;
   padding-left: 2%;
 `;
 
@@ -71,12 +70,10 @@ const Label = styled.label`
     `}
 `;
 
-/// TBD update does not work correctly
-
 const Preferences = () => {
 
   const { address } = useAccount();
-  const [ref, setPref] = useState(defaultProfile);
+  const [pref, setPref] = useState(defaultProfile);
 
   const query = `/classes/_User?where={"ethAddress":"${address.toLowerCase()}"}`
 
@@ -107,9 +104,9 @@ const Preferences = () => {
   useEffect(() => {
     const localProfile = localStorage.getItem('localProfile');
     if (localProfile) {
-   //   setPref(JSON.parse(localProfile));
+      setPref(JSON.parse(localProfile));
     } else {
-   //   localStorage.setItem('localProfile', JSON.stringify(profile));
+     localStorage.setItem('localProfile', JSON.stringify(defaultProfile));
     }
   }, []);
 

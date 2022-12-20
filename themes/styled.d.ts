@@ -27,7 +27,8 @@ declare module 'styled-components' {
             icon:  string,
             redPastel:  string,
             darkRed:  string,
-            cardGradient: string
+            cardGradient: string,
+            landing: string
         };
     }
 }

@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi';
 import Rainbow from '../../components/buttons/Rainbow';
 import { SettingIcon } from '../../components/icons/Common';
 import { BellIcon } from '../../components/icons/Landing';
-import { CloseIcon } from '../../components/icons/Notifications';
+import { CloseIcon, WriteIcon } from '../../components/icons/Notifications';
 import { UniService } from '../../services/DapAPIService';
 import Notifications from './Notifications';
 import Settings from './Settings'
@@ -56,7 +56,7 @@ export const ConnectWithNotifications = () => {
             )}
           </IconFrame>
           <IconFrame onClick={() => handleOpenSettings(!settingsOpen)}>
-             {!settingsOpen ? <SettingIcon width={25} height={25} color={theme.colors.primary} /> : <CloseIcon width={20} height={20} />}
+             {!settingsOpen ? <WriteIcon width={25} height={25} color={theme.colors.primary} /> : <CloseIcon width={20} height={20} />}
           </IconFrame>
         </>}
       </ConnectWalletBox>
