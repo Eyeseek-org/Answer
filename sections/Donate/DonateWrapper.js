@@ -107,7 +107,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
       await updateReward(rewDonors);
     }
     setReady(false)
-    noti("Microfund created, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+    noti("Microfund created, wonderful!... now you can spam it to increase project chances :)", "success")
   };
 
   useContractEvent({

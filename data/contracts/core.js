@@ -5,7 +5,6 @@ export const testChains = {
   polygonUsdtToken: stable.mumbai.usdt,
   polygonUsdcFaucet: '0xb6AD0f79e22Ed4F99927CE0c4B094D9eD43d2cfe',
   polygonUsdtFaucet: '0x8648ADd108723844a327731750d72DfbC21B7A4A',
-  
 
   bnbUsdcToken: stable.bnbTestnet.usdc,
   bnbUsdtToken: stable.bnbTestnet.usdt,

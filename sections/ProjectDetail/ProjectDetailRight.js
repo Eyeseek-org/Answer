@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import {useState, useEffect} from 'react';
 import diamondAbi from '../../abi/diamondAbi.json';
 import { useContractRead } from 'wagmi';

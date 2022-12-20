@@ -220,7 +220,7 @@ const Create = ({ setStep }) => {
         ) : (
           <Rainbow />
         )}
-        {!ready ? (
+        {!ready && address ? (
           <>
             {chain && pChain === chain.id ? (
               <BetweenRow>
