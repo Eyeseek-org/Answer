@@ -31,8 +31,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
   const noti = (text, type) => {
     dispatch(notify(text, type))
   }
-
-
+  
   var total = cap * tokenAmount;
 
   const listened = async () => {
@@ -62,8 +61,6 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     functionName: 'createReward',
     args: [pid, cap, total, tokenAddress, 1],
   })
-
-
 
   return (
     <ColRight>

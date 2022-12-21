@@ -6,8 +6,7 @@ import { E } from "../typography/ColoredTexts"
 
 const Outer = styled(motion.div)`
     position: relative;
-    background: ${props => props.theme.colors.black};
-    box-shadow: 0px 5px 30px rgba(255, 255, 255, 0.15);
+
 `
 
 const Container = styled.div`

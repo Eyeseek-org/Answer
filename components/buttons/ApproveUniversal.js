@@ -8,8 +8,6 @@ import ButtonAlt from './ButtonAlt'
 import {okAnim, loadingAnim} from '../animated/Animations';
 import { AbsoluteLeft } from '../format/Box'
 import { Col } from '../format/Row'
-import { handleDec } from '../../helpers/MultichainHelpers'
-
 
 const Container = styled.div`
     position: relative;
@@ -33,7 +31,7 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
     const [d, setD] = useState(1000000)
-    const [appAmount, setAppAmount] = useState(0)
+    const [appAmount, setAppAmount] = useState(1000000)
 
 
     const listened = async() => {
@@ -49,7 +47,7 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
             default: setD(6);
         }
         setAppAmount(amount * d)
-    },[])
+    },[amount])
 
     const { config, error } = usePrepareContractWrite({
         address: tokenContract,
@@ -71,7 +69,6 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const handleApprove = async () => {
         write?.()
         setLoading(true)
-        console.log(appAmount)
     }
 
 

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import {AnimatePresence, motion} from 'framer-motion'
+import { RewardAnimatedBox } from '../format/RewardAnimatedBox'
+import { motion } from 'framer-motion'
 
 const Container = styled(motion.div)`
     position: fixed;
@@ -12,19 +13,17 @@ const Container = styled(motion.div)`
 `
 
 
-const CustomModal = ({openModal}) => {
+const CustomModal = ({openModal, desc, delivery, estimation, title, pledge}) => {
     
-    return <AnimatePresence>
-   {openModal &&  <Container
-        initial={{  width: 100, height: 50 }} 
-        key={'image'}
-        animate={{ width: 500, height: 250}}
-        transition={{ duration: 0.3}}
-        exit={{ width: 100, height: 50 , opacity: 0.5, transition: { duration: 0.5 } }}
-    >
-
+    return <>
+    {openModal &&  <Container
+            initial={{  width: 100, height: 50 }} 
+            animate={{ width: 500, height: 250}}
+            transition={{ duration: 0.3}}
+        >
+          <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
     </Container>}
-    </AnimatePresence>
+    </>
 }
 
 export default CustomModal

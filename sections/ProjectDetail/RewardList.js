@@ -34,6 +34,14 @@ const CloseModal = styled(motion.div)`
     cursor: pointer;
 `
 
+const CloseReactModal = styled.div`
+    background: black;
+    border-radius: 50%;
+    z-index: 1000;
+    border: 1px solid ${(props) => props.theme.colors.border};
+    cursor: pointer;
+`
+
 const ModalWrapper = styled.div`
   position: relative;
   display: flex;
@@ -65,7 +73,7 @@ const RewardList = ({ oid, chain, type }) => {
       right: 'auto',
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
-      background: theme.colors.body,
+      background: theme.colors.cardGradient,
       border: theme.colors.border
     },
     overlay: {
@@ -191,24 +199,29 @@ const RewardList = ({ oid, chain, type }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-        {type !== 'donate' ? <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > <CloseIcon width={15} height={15} /></AbsoluteRight>
-          <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
-        </Modal> : null}
       </Col>
-      <button onClick={() => setOpenModal(!openModal)}>Switch modal</button>
-    {openModal && <ModalWrapper>
-       <CustomModal openModal={openModal} />
-        <CloseModal onClick={() => {setOpenModal(false) }} whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }}>
-          <CloseIcon width={15} />
-        </CloseModal>
-      </ModalWrapper>}
+        {type !== 'donate' ? 
+        <Modal
+            isOpen={modalIsOpen}
+            onAfterOpen={afterOpenModal}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+          <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > 
+            <CloseReactModal>
+              <CloseIcon width={15} height={15} />
+              </CloseReactModal>
+            </AbsoluteRight>
+            <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
+          </Modal> 
+          : 
+        <>{modalIsOpen && <ModalWrapper >
+        <CustomModal openModal={modalIsOpen} text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge}  />
+          <CloseModal onClick={() => {setIsOpen(false) }} whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }}>
+            <CloseIcon width={15} />
+          </CloseModal>
+        </ModalWrapper>}</>}
     </Wrapper>
   );
 };
