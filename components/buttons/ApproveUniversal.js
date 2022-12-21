@@ -28,7 +28,7 @@ const Wrapper = styled.div`
     position: relative;
 `
 
-const ApproveUniversal = ({tokenContract, spender, amount}) => {
+const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -42,12 +42,11 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
     }
 
       useEffect (() => {
-        const dec = handleDec(tokenContract)
         switch (dec) {
             case 6: setD(1000000); break; // Stablecoins USDT, USDCT
             case 18: setD(1000000000000000000); break;  // Standard ERC20 tokens, DAI, BUSD
             case 1: setD(1); break; 
-            default: setD(1);
+            default: setD(6);
         }
     },[])
 
@@ -71,6 +70,7 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
     const handleApprove = async () => {
         write?.()
         setLoading(true)
+        console.log(appAmount)
     }
 
 

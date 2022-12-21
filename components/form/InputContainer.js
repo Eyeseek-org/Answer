@@ -6,6 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 15%;
+  margin-top: 5px;
   font-family: 'Montserrat';
   @media (min-width: 1980px) {
     font-size: 1.2em;

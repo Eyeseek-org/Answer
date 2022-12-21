@@ -105,17 +105,18 @@ const Create = ({ setStep }) => {
     // if (Array.isArray(event)) {
     //     const pid = parseInt(event[2] && event[2]) - 1;
     // }
-    await setEv(true);
+    setEv(true);
   };
 
   const Six = pm1 * 1000000;
-
+  //@param amount: amount of tokens to be sent, multiplied by decimals
+  //@param deadline: deadline in days 
   const { config, isError } = usePrepareContractWrite({
     address: add,
     abi: diamondAbi,
     functionName: 'createFund',
     chainId: pChain,
-    args: [Six]
+    args: [Six, 30]
   });
 
   const { write, error, data } = useContractWrite(config);
@@ -187,11 +188,6 @@ const Create = ({ setStep }) => {
       <RulesContainer>
         <RulesTitle>Conditions and rules</RulesTitle>
         <WarningBox> 
-          <Li>
-            If any of your goals are not met in 30 days of crowdfunding period, collected resources will be returned back to the backers. No
-            fees will be collected by Eyeseek.
-          </Li>
-          <Li>If your project is sucessfully funded, Eyeseek will collect 1% fee from the funding total.</Li>
           <Row>
             <ImageBox>
               <BookIcon width={150} color={theme.colors.icon} />
@@ -214,7 +210,9 @@ const Create = ({ setStep }) => {
               <EyeBox>
                 <Image src={Eye10} alt="Eye" width={'200px'} height={'150px'} />{' '}
               </EyeBox>
-              <SumHalf align={'right'}></SumHalf>
+              <SumHalf align={'right'}>
+                <Col><SumTitle>Deadline</SumTitle><SumValue>30 days</SumValue></Col>
+              </SumHalf>
             </SumRow>
           </Summary>
         ) : (
