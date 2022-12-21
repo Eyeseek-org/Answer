@@ -33,8 +33,8 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
     const [d, setD] = useState(1000000)
+    const [appAmount, setAppAmount] = useState(0)
 
-    const appAmount = amount * d
 
     const listened = async() => {
         setEv(true)
@@ -48,6 +48,7 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
             case 1: setD(1); break; 
             default: setD(6);
         }
+        setAppAmount(amount * d)
     },[])
 
     const { config, error } = usePrepareContractWrite({

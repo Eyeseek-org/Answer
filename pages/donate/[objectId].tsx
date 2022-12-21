@@ -312,7 +312,7 @@ const Donate: NextPage = () => {
         {/* @ts-ignore */}
         {showRewards ? (
           <>
-            <RewardList chain={chain} oid={objectId} />
+            <RewardList chain={chain} oid={objectId} type='donate' />
             <DonateWrapper
               pid={projectDetail?.pid}
               bookmarks={projectDetail?.bookmarks}

@@ -5,13 +5,14 @@ import diamondAbi from '../../abi/diamondAbi.json';
 import token from '../../abi/token.json';
 import ApproveUniversal from '../../components/buttons/ApproveUniversal';
 import ButtonAlt from '../../components/buttons/ButtonAlt';
-import { ColRight } from '../../components/format/Row';
+import { ColRight, Row } from '../../components/format/Row';
 import { useReward } from '../utils/rewardContext';
 import { notify } from 'reapop'
 import { useDispatch } from 'react-redux'
-import { loadingAnim } from '../../components/animated/Animations';
+import { errAnim, loadingAnim } from '../../components/animated/Animations';
 import Lottie from 'react-lottie';
 import ApprovedComponent from '../../components/functional/ApprovedComponent';
+import { AbsoluteRight } from '../../components/format/Box';
 
 
 const ButtonBox = styled.div`
@@ -53,7 +54,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     once: true,
   });
 
-  const { write } = useContractWrite({
+  const { write, error } = useContractWrite({
     mode: 'recklesslyUnprepared',
     address: add,
     abi: diamondAbi,
@@ -68,7 +69,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     <ColRight>
       <ButtonBox>
         <ApprovedComponent address={add} tokenAddress={tokenAddress}  />
-        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={1} />
+        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={6} />
         {!loading ? <ButtonAlt
           text={'Create reward'}
           onClick={() => {
@@ -77,7 +78,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
         /> : <ButtonAlt text={
           <div>
             {error ? <Row>Repeat request  <Lottie height={50} width={50} options={errAnim} /></Row> :
-              <Row>Waiting for blockchain...  <Lottie height={50} width={50} options={loadingAnim} /></Row>}
+              <Row>Waiting for blockchain...  <AbsoluteRight><Lottie height={50} width={50} options={loadingAnim} /></AbsoluteRight></Row>}
           </div>}
           onClick={() => { handleSubmit() }}
           disabled={true} />}
