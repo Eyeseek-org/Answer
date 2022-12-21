@@ -107,7 +107,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
       await updateReward(rewDonors);
     }
     setReady(false)
-    noti("Microfund created, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+    noti("Microfund created, wonderful!... now you can spam it to increase project chances :)", "success")
   };
 
   useContractEvent({
@@ -182,8 +182,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
                   {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
                 </Metrics>
               )}
-             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender}  />}
-             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} />}
+             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6}  />}
+             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6} />}
             </>
           )}
           <div>

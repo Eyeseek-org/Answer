@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-
 import Eye7 from '../public/Eye7.png';
 import Footer from '../sections/Footer/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
@@ -24,13 +23,14 @@ import {
   VideoIcon,
   WearablesIcon,
 } from '../components/icons/Categories';
-import FaqCard from '../components/cards/FaqCard';
+
 import Subtitle from '../components/typography/Subtitle';
 import { motion } from 'framer-motion';
 import { YouTubeIcon } from '../components/icons/Socials';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import { PiggyIcon } from '../components/icons/Landing';
+import FaqSection from '../sections/FaqSection'
 
 const Row = styled.div`
   display: flex;
@@ -56,33 +56,6 @@ const FaqContainer = styled.div`
   @media (min-width: 1968px) {
     padding-left: 25%;
     padding-right: 25%;
-  }
-`;
-
-const Question = styled.div`
-  font-family: 'Neucha';
-  font-style: normal;
-  text-align: center;
-  font-weight: 400;
-  letter-spacing: 0.3;
-  font-size: 1.2em;
-  line-height: 43px;
-  min-width: 30%;
-  color: #b0f6ff;
-  @media (max-width: 1168px) {
-    line-height: 20px;
-  }
-  @media (min-width: 1780px) {
-    font-size: 1.8em;
-  }
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const ImageBox = styled.div`
-  @media (max-width: 968px) {
-    display: none;
   }
 `;
 
@@ -292,11 +265,7 @@ const Faq: NextPage = () => {
           const isEven = index % 2 === 0;
           return (
             <Row reverse={isEven} key={index}>
-              <FaqCard answer={answer} points={points} />
-              <Question>
-                <div>{question}</div>
-                <ImageBox>{Image}</ImageBox>
-              </Question>
+              <FaqSection answer={answer} image={Image} points={points} question={question}/>
             </Row>
           );
         })}

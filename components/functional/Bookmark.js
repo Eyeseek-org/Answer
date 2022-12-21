@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BookmarkIcon, BookmarkFilledIcon } from '../icons/Common';
 import { useAccount } from 'wagmi';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
+import MyTooltip from '../Tooltip';
 
 const Bkmrk = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ const Bkmrk = styled.div`
 const Bookmark = ({ objectId, bookmarks }) => {
   const [marked, setMarked] = useState(false);
   const { address, isDisconnected } = useAccount();
+  const [showTooltip, setShowTooltip] = useState(false);
   const theme = useTheme();
 
   const updateBookmark = async (oid, newBookmarks) => {
@@ -53,11 +55,8 @@ const Bookmark = ({ objectId, bookmarks }) => {
       {isDisconnected ? (
         <></>
       ) : (
-        <Bkmrk
-          onClick={() => {
-            handleBookmark();
-          }}
-        >
+        <Bkmrk onClick={() => { handleBookmark()}} onMouseEnter={()=>{setShowTooltip(true)}} onMouseLeave={()=>{setShowTooltip(false)}}>
+          {showTooltip && <MyTooltip text={marked ? 'Remove bookmark' : 'Bookmark'} />}
           {!marked ? <BookmarkIcon color={theme.colors.icon} width={20} /> : <BookmarkFilledIcon width={20} />}
         </Bkmrk>
       )}

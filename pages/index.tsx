@@ -36,7 +36,7 @@ const Home: NextPage = () => {
       <Container>
         <Head>
           <title>Eyeseek Funding</title>
-          <meta name="title" content="Blockchain crowdfunding application powered by Moralis" />
+          <meta property="og:title" content="Eyeseek Funding" key="title" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <LandingMain width={'60%'} height={'50%'} />

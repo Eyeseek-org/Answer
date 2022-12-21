@@ -22,7 +22,7 @@ declare module '@tanstack/table-core' {
   }
 }
 
-const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
+const DonationTable = ({ data }: ITransactionTable): JSX.Element => {
   const [backerFilter, setBackerFilter] = useState<boolean>(false);
   const theme = useTheme();
 
@@ -139,4 +139,4 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   );
 };
 
-export default TransactionTable;
+export default DonationTable;

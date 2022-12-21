@@ -12,7 +12,7 @@ import Tooltip from '../../components/Tooltip';
 import Warning from '../../components/animated/Warning';
 import ButtonErr from '../../components/buttons/ButtonErr';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
-import { currencies } from '../../data/currencies';
+import { polygonCurrencies } from '../../data/currencies';
 import { testChains } from '../../data/contracts/core';
 import NativeFaucet from '../../sections/Donate/NativeFaucet';
 import Faucet from '../../components/buttons/Faucet';
@@ -137,6 +137,7 @@ const Donate: NextPage = () => {
   const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet);
   const [currencyAddress, setCurrencyAddress] = useState<string>('USDC');
   const [curr, setCurr] = useState(1);
+  const [filteredCur, setFilteredCur] = useState(['USDC', 'USDT']);
 
   const [active, setActive] = useState('No reward');
   // @ts-ignore
@@ -218,9 +219,10 @@ const Donate: NextPage = () => {
     }
   };
 
-  const RenderCurrency = () => {
+  const RenderCurrency = (chain: number) => {
+
     return <>
-        {currencies.map((c, index) => {
+        {polygonCurrencies.map((c, index) => {
           const { logo, title } = c;
           return (
             <Option key={index}>
@@ -286,7 +288,7 @@ const Donate: NextPage = () => {
             <DonateOptionSub>Choose donate currency</DonateOptionSub>
           </DonateOptionTitle>
           <OptionItemWrapper>
-            <RenderCurrency />
+           {chain ? <RenderCurrency chain={chain?.id} /> : <>Currency not found for this chain</>}
           </OptionItemWrapper>
         </DonateOption>
         <DonateOption>
@@ -310,7 +312,7 @@ const Donate: NextPage = () => {
         {/* @ts-ignore */}
         {showRewards ? (
           <>
-            <RewardList chain={chain} oid={objectId} />
+            <RewardList chain={chain} oid={objectId} type='donate' />
             <DonateWrapper
               pid={projectDetail?.pid}
               bookmarks={projectDetail?.bookmarks}

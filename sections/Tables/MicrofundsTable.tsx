@@ -29,7 +29,7 @@ const currenciesIdMapping = {
 };
 
 
-const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
+const MicrofundsTable = ({ data }: ITransactionTable): JSX.Element => {
   const [backerFilter, setBackerFilter] = useState<boolean>(false)
   const theme = useTheme();
   const columns: ColumnDef<Microfund, string>[] = [
@@ -97,4 +97,4 @@ const TransactionTable = ({ data }: ITransactionTable): JSX.Element => {
   );
 };
 
-export default TransactionTable;
+export default MicrofundsTable;

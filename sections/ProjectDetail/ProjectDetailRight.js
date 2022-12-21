@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import {useState, useEffect} from 'react';
 import diamondAbi from '../../abi/diamondAbi.json';
 import { useContractRead } from 'wagmi';
@@ -21,8 +21,8 @@ const ProgressFilter = styled.div`
     flex-direction: column;
     justify-content: space-between;
     height: 2px;
-    max-width: 100%;
     width: ${props => props.ratio}%;
+    max-width: 100%;
     border-radius: inherit;
     text-align: right;
     background: ${props => props.theme.colors.secondary};
@@ -98,6 +98,10 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
     const diffInDays = diffInTime / (1000 * 3600 * 24);
     days = Math.trunc(diffInDays);
 
+    // Number of deployed microfunds, number of backers
+    microInvolved = funds.data.micros.toString();
+    backing = funds.data.backerNumber.toString();
+
     // Get fund cap
 
     max = Number(funds.data.level1.toString()) / 1000000;
@@ -124,19 +128,6 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
   //   backing = backers.data.toString();
   // }
 
-  const micros = useContractRead({
-    address: add,
-    abi: diamondAbi,
-    functionName: 'getConnectedMicroFunds',
-    chainId: chainId,
-    args: [pid],
-    watch: false,
-  });
-
-  if (micros.data) {
-    microInvolved = micros.data.toString();
-  }
-
   const Balances = () => {
     return (
       <Row>
@@ -161,7 +152,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
             right={<Bookmark objectId={objectId} bookmarks={bookmarks} />}
           />
           <StatRow title={backing} desc={'backers'} color="white" />
-          <StatRow title={microInvolved} desc={`microfunds active`} color="white" />
+          <StatRow title={microInvolved} desc={`microfunds`} color="white" />
           <BetweenRow>
             <StatRow title={days} desc={`days to go`} color="white" />
             <AbsoluteShareIt><G>Share it</G></AbsoluteShareIt>

@@ -194,10 +194,11 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                         {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
                         {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b><Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
                     </Summary>
-                {cap > 0 ?  <> 
+                {cap > 0 && title && desc && delivery && estimation ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
-                    {tokenType === 'Classic' && address === owner ? <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} /> : <ErrText text="Only project owner can create classic rewards"/>}
+                    {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} /> }
+                    {tokenType === 'Classic' && address === !owner && <ErrText text="Only project owner can create classic rewards"/>}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>

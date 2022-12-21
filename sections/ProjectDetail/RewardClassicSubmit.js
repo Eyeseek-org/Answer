@@ -5,6 +5,7 @@ import { RowEnd, ColRight, Row } from '../../components/format/Row';
 import { useReward } from '../utils/rewardContext';
 import { errAnim, loadingAnim } from '../../components/animated/Animations';
 import Lottie from 'react-lottie';
+import { AbsoluteRight } from '../../components/format/Box';
 
 const RewardClassicSubmit = ({ add, home, pid, cap }) => {
   const { rewardState, setRewardState } = useReward();
@@ -35,7 +36,7 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
         /> : <ButtonAlt text={
           <div>
             {error ? <Row>Repeat request  <Lottie height={50} width={50} options={errAnim} /></Row> :
-              <Row>Waiting for blockchain...  <Lottie height={50} width={50} options={loadingAnim} /></Row>}
+              <Row>Waiting for blockchain...  <AbsoluteRight><Lottie height={50} width={50} options={loadingAnim} /></AbsoluteRight></Row>}
           </div>}
           onClick={() => { handleSubmit() }}
           disabled={true} />}

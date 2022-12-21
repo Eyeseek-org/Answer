@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import styled from "styled-components"
 import { WarningIcons } from "../icons/Common"
-import {motion} from 'framer-motion'
+import {AnimatePresence, motion} from 'framer-motion'
 import { B, R } from '../typography/ColoredTexts'
 import { ProjectTitle } from '../typography/Titles'
 
@@ -55,9 +55,12 @@ const Warning = () => {
                scale: 1.1
             }}
           transition={{  duration: 0.3 }}  onMouseEnter={()=>{setShow(true)}} onMouseLeave={()=>{setShow(false)}}><WarningIcons width={80}/></Icons>
+      <AnimatePresence>
       {show && 
         <WarningBox
            initial={{ scale: 0.8, x: 200 }}
+           key="warning"
+           exit={{ scale: 0.8, x: 200, opacity: 0, transition: { duration: 1 } }}
            animate={{
                x: 0,
             }}
@@ -67,8 +70,9 @@ const Warning = () => {
         <B>Project founders are not obligated to verify their identities to the Eyeseek</B>. Backing is provided on your own risk, it is
        recommended to verify project validity on project website and socials. <R>Do not trust projects without any reference</R> to Eyeseeek funding.
          </div>
-    </WarningBox>}
-    
+    </WarningBox> 
+    }
+     </AnimatePresence>
     </Container>
 }
 

@@ -14,8 +14,6 @@ const ApprovedComponent = ({ address, currencyAddress, dec }) => {
   const theme = useTheme()
   const [d, setD] = useState(1000000) // Stablecoins USDT, USDCT
 
-  dec = 6
-
   useEffect (() => {
     if (dec === 6){
         setD(1000000) // Stablecoins USDT, USDCT
@@ -45,8 +43,8 @@ const ApprovedComponent = ({ address, currencyAddress, dec }) => {
     watch: true,
   });
 
-  if (data && dec === 6) {
-    fullValue = data / 1000000;
+  if (data) {
+    fullValue = data / d;
   }
 
   return (

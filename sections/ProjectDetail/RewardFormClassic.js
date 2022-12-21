@@ -8,6 +8,7 @@ const RewardFormClassic = ({dType}) => {
     return <> 
     <InputContainer
         label={'Title'}
+        maxLength={20}
         placeholder={'Godspeed'}
         description={'Create a unique title for your reward'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, title: e.target.value }))}
@@ -15,6 +16,7 @@ const RewardFormClassic = ({dType}) => {
     />
     <InputContainer
         label={'Specify delivery'}
+        maxLength={120}
         placeholder={'Token + Autograph'}
         description={'Shortly and specifically what backer will receive'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, delivery: e.target.value  }))}
@@ -22,6 +24,7 @@ const RewardFormClassic = ({dType}) => {
     />
     <InputContainer
         label={'Description'}
+        maxLength={250}
         placeholder={'Backer receives autographed copy of the book'}
         description={'Describe briefly benefit of this reward'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, desc: e.target.value  }))}
@@ -29,6 +32,7 @@ const RewardFormClassic = ({dType}) => {
     />
     <InputContainer
         label={'Estimated delivery'}
+        maxLength={20}
         placeholder={'October 2055'}
         description={'Estimate time of delivery'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, estimation: e.target.value  }))}
@@ -36,6 +40,7 @@ const RewardFormClassic = ({dType}) => {
     />
     <InputContainer
         label={'Pledge'}
+        maxLength={10}
         placeholder={'1000'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, pledge:  e.target.value  }))}
         type={'number'}
@@ -47,6 +52,7 @@ const RewardFormClassic = ({dType}) => {
      />
     <InputContainer
         label={'Capacity'}
+        maxLength={4}
         placeholder={'10'}
         description={'Number of claimable rewards'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, cap:  e.target.value  }))}

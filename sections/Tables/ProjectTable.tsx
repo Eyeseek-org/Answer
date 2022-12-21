@@ -4,11 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
 import { AddCol, ImageHover, ActionCol, TableWrapper } from '../../components/tables/TableStyles';
-import { InfoIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../../components/icons/Common';
+import {  RewardIcon, VerifiedIcon } from '../../components/icons/Common';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
-import { DetailIcon, WebIcon } from '../../components/icons/Project';
 import RewardTable from '../../components/tables/RewardTable';
-import { Col, BetweenRowSm, RowCenter } from '../../components/format/Row';
+import { Col, RowCenter } from '../../components/format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../../components/functional/CatPicks';
 import TableSkeleton from '../../components/skeletons/TableSkeleton';
@@ -20,6 +19,7 @@ import Tooltip from '../../components/Tooltip';
 import { AbsoluteLeft, AbsoluteRight } from '../../components/format/Box';
 import TableComponent from '../../components/tables/TableComponent';
 import Deadline from '../../components/tables/Deadline';
+import ProjectActions from '../../components/tables/ProjectActions';
 
 
 declare module '@tanstack/table-core' {
@@ -90,8 +90,7 @@ const ProjectTable = () => {
         cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={props.row.original.chainId} />,
         //@ts-ignore
         header: <Col>
-          <div onMouseEnter={() => { handleTooltip('Project goal, d = donated, m = microfunds created') }} onMouseLeave={() => { setShowTooltip(false) }}>Goal</div>
-          <BetweenRowSm><div>d</div><div>m</div></BetweenRowSm>
+          <>Goal</>
         </Col>,
         enableSorting: false,
         enableColumnFilter: false,
@@ -118,26 +117,14 @@ const ProjectTable = () => {
         accessorKey: 'objectId',
         cell: (props) => (
           <RowCenter>
-            <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
-              <DetailIcon width={30}  color={theme.colors.icon} height={30} />
-            </a>
-            <ImageHover
-              onClick={() => {handleReward(props.getValue())}}
-            >
+            <ProjectActions project={props.row.original.objectId} website={props.row.original.urlProject} socials={props.row.original.urlSocials}/>
+            <ImageHover onClick={() => {handleReward(props.getValue())}}>            
               <RewardIcon height={30} color={theme.colors.icon} width={20} />
             </ImageHover>
-            <a href={props.row.original.urlProject} rel="noopener noreferrer" target="_blank">
-              <WebIcon color={theme.colors.icon} width={30} height={30}/>
-            </a>
-            <a href={props.row.original.urlSocials} rel="noopener noreferrer" target="_blank">
-              <UrlSocialsIcon color={theme.colors.icon} height={30} width={30} />
-            </a>
           </RowCenter>
         ),
          //@ts-ignore
-        header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>
-                      Actions <ImageHover><InfoIcon  width={15} color={theme.colors.icon} /></ImageHover>
-                </ActionCol>,
+        header: <ActionCol>Actions</ActionCol>,
         enableColumnFilter: false,
         enableSorting: false,
       },

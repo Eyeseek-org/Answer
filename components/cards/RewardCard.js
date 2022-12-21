@@ -15,6 +15,9 @@ const TypeBox = styled.div`
 
 const NumberBox = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   left: 5px;
   font-size: 0.8em;
   bottom: 10px;
@@ -68,13 +71,20 @@ const RewardCard = ({
             {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30}  color={theme.colors.icon}/>}
           </BetweenRow>
           {/* <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} /> */}
-          {tokenName && tokenAddress && tokenAddress !== "0x0000000000000000000000000000000000000000" && (
-              <TokenRow><Address address={tokenAddress} /></TokenRow>
-          )}
+
           <NumberBox>
-            {eligibleActual} of {cap}{' '}
+            <div>{eligibleActual} of {cap}{' '}</div>
+
+            {tokenName && tokenAddress && tokenAddress !== "0x0000000000000000000000000000000000000000" && (
+              <TokenRow><Address address={tokenAddress} /></TokenRow>
+            )}
           </NumberBox>
-          <TypeBox>{type === 'Donate' ? <DonateIcon width={30} /> : <MicrofundIcon width={30} />}</TypeBox>
+          <TypeBox>
+            {type === 'Donate' ? 
+          <DonateIcon width={30} /> 
+          : 
+          <MicrofundIcon width={30} />}
+          </TypeBox>
         </RewardBox>
     </MainContainer>
   );
