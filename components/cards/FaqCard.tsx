@@ -3,15 +3,17 @@ import { IFAQ } from '../../pages/faq';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const Card = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 2%;
-  padding-left: 17px;
   background: ${(props) => props.theme.colors.black};
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 25px;
   max-height: 250px;
-  min-width: 500px;
+  width: 600px;
   letter-spacing: 0.7px;
-  @media (max-width: 1268px) {
+  @media (max-width: 1368px) {
     max-height: 200px;
     width: 100%;
     flex-wrap: wrap;
@@ -19,7 +21,6 @@ const Card = styled(motion.div)`
   }
 `;
 const Answer = styled.div`
-  margin-top: 2%;
   font-family: 'Neucha';
   margin-bottom: 4%;
   @media (min-width: 1780px) {
@@ -43,22 +44,23 @@ const Point = styled(motion.li)`
 const FaqCard = ({ answer, points }: Omit<IFAQ, 'question' | 'image'>): JSX.Element => {
   return <>
      
- {points ?    <Card className='card' initial={{  height: 50 }}  animate={{ height: 500}}   transition={{ duration: 1}} key={'card'} >
+ {points ?    <Card className='card' initial={{  height: 90 }}  animate={{ height: 500}}   transition={{ duration: 1}} key={'card'} >
  <AnimatePresence> 
       <Answer>{answer}</Answer>
-      {points && points.map((point, index) => {
-        return   <Point 
-          initial={{  opacity: 0.1 }} 
-          animate={{ opacity: 1}}
-          exit={{  opacity: 0, transition: { duration: 0.7 } }} 
-          transition={{ duration: 0.5}}
-          key={index}>{point}
-        </Point>
-       
-      })}
+      <div>
+        {points && points.map((point, index) => {
+          return   <Point 
+            initial={{  opacity: 0.1 }} 
+            animate={{ opacity: 1}}
+            exit={{  opacity: 0, transition: { duration: 0.7 } }} 
+            transition={{ duration: 0.5}}
+            key={index}>{point}
+          </Point>
+          })}
+      </div>
           </AnimatePresence>
     </Card> : 
-    <Card className='empty' initial={{  height: 500 }}  animate={{ height: 70}}  transition={{ duration: 1}}>  
+    <Card className='empty' initial={{  height: 500 }}  animate={{ height: 90}}  transition={{ duration: 1}}>  
       <Answer>{answer}</Answer>
     </Card>}
     </>
