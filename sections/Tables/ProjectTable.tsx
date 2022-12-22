@@ -19,6 +19,7 @@ import Tooltip from '../../components/Tooltip';
 import { AbsoluteRight } from '../../components/format/Box';
 import TableComponent from '../../components/tables/TableComponent';
 import ProjectActions from '../../components/tables/ProjectActions';
+import TableHeader from '../../components/tables/TableHeader';
 
 
 declare module '@tanstack/table-core' {
@@ -33,6 +34,10 @@ const ProjectTable = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
   const [projectId, setProjectId] = useState<string | undefined>();
+  const [numberWeb3, setNumberWeb3] = useState<number | undefined>();
+  const [numberWeb2, setNumberWeb2] = useState<number | undefined>();
+  const [verifiedWeb3, setVerifiedWeb3] = useState<boolean | undefined>();
+  const [verifiedWeb2, setVerifiedWeb2] = useState<boolean | undefined>();
   const theme = useTheme();
 
 
@@ -131,6 +136,12 @@ const ProjectTable = () => {
   const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll(`/classes/Project?where={"state": 1, "type": "Standard"}`), {
     onError: (err) => {
       console.log('err', err);
+    },
+    onSuccess: (data) => {
+      setNumberWeb2(data.filter((item) => item.subcategory === "OpenSource").length);
+      setNumberWeb3(data.filter((item) => item.subcategory === "web2").length);
+      setVerifiedWeb2(data.filter((item) => item.subcategory === "web3" && item.verified === true).length);
+      setVerifiedWeb3(data.filter((item) => item.subcategory === "web2" && item.verified === true).length);
     }
   });
 
@@ -152,6 +163,13 @@ const ProjectTable = () => {
 
   return (
     <TableWrapper>
+      <TableHeader text={'Active projects'} 
+        numberOneFull={numberWeb2} 
+        numberTwoFull={numberWeb3} 
+        numberOneVerified={verifiedWeb3} 
+        numberTwoVerified={verifiedWeb2} 
+        all={data?.length}
+      />
       {isLoading ? (
         <TableSkeleton/>
       ) : (
