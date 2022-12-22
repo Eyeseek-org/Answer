@@ -276,7 +276,7 @@ const Donate: NextPage = () => {
             <DonateOptionSub>Choose donate currency</DonateOptionSub>
           </DonateOptionTitle>
           <OptionItemWrapper>
-           {chain ? <RenderCurrency chain={chain?.id} /> : <>Currency not found for this chain</>}
+           {chain ? <RenderCurrency /> : <>Currency not found for this chain</>}
           </OptionItemWrapper>
         </DonateOption>
         <DonateOption>

@@ -36,8 +36,8 @@ const ProjectTable = () => {
   const [projectId, setProjectId] = useState<string | undefined>();
   const [numberWeb3, setNumberWeb3] = useState<number | undefined>();
   const [numberWeb2, setNumberWeb2] = useState<number | undefined>();
-  const [verifiedWeb3, setVerifiedWeb3] = useState<boolean | undefined>();
-  const [verifiedWeb2, setVerifiedWeb2] = useState<boolean | undefined>();
+  const [verifiedWeb3, setVerifiedWeb3] = useState<number | undefined>();
+  const [verifiedWeb2, setVerifiedWeb2] = useState<number | undefined>();
   const theme = useTheme();
 
 
