@@ -11,7 +11,7 @@ export interface Reward {
     tokenContract: string;
     tokenAmount: number;
     amount: number;
-    requiredPledge: number;
+    requiredPledge: string;
     nftId: number;
     rType: number;
     rewardType: number;
@@ -21,5 +21,8 @@ export interface Reward {
     updatedAt: string;
     createdAt: string;
     chainId: number;
+    objectId: string;
+    delivery: string;
+    estimation: string;
   }
   

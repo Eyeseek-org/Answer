@@ -23,11 +23,11 @@ export const stable = {
     },
     bnb: {
       usdc: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d", 
-      busd: "0x55d398326f99059fF775485246999027B3197955"
+      usdt: "0x55d398326f99059fF775485246999027B3197955"
     },
     ftm: {
       usdc: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75", 
-      dai: "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E"
+      usdt: "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E"
     },
     optimism: {
       usdc: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607", 

@@ -59,8 +59,8 @@ const RewardList = ({ oid, chain, type }) => {
   const [title, setTitle] = useState('');
   const [pledge, setPledge] = useState('');
   const [estimation, setEstimation] = useState('');
+  const [rType, setRType] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
   const theme = useTheme();
 
@@ -90,14 +90,15 @@ const RewardList = ({ oid, chain, type }) => {
   const query = `/classes/Reward?where={"project":"${oid}"}`
   const { data: rewards, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
   estimation
-  const handleRewardClick = (title, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors, estimation, delivery) => {
+  const handleRewardClick = (title, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors, estimation, reward) => {
     setDesc(rewDesc)
     setIsOpen(true);
     setSelected(rewObjectId);
-    setDelivery(delivery)
+    setDelivery(reward?.delivery)
     setEstimation(estimation)
     setTitle(title)
     setPledge(rewAmount)
+    setRType(reward?.rType)
     if (type === 'Microfund') {
       setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors }));
     } else if (type === 'Donate') {
@@ -147,22 +148,9 @@ const RewardList = ({ oid, chain, type }) => {
                 return <MutipleRewards>
                   {reward.eligibleActual > 0 ?
                     <RewardCard
+                      reward={reward}
                       key={reward.objectId}
-                      objectId={reward.objectId}
-                      rid={reward.rewardId}
-                      title={reward.title}
-                      pledge={reward.requiredPledge}
-                      description={reward.description}
-                      eligibleActual={reward.eligibleActual}
-                      type={reward.type}
-                      cap={reward.cap}
-                      tokenAddress={reward.tokenAddress}
-                      nftId={reward.nftId}
-                      tokenName={reward.tokenName}
-                      tokenAmount={reward.tokenAmount}
                       selected={selected}
-                      chain={chain}
-                      rType={reward.rType}
                       onClick={() => handleRewardClick(
                         reward.title,
                         reward.description,
@@ -173,7 +161,7 @@ const RewardList = ({ oid, chain, type }) => {
                         reward.objectId,
                         reward.donors,
                         reward.estimation,
-                        reward.delivery,
+                        reward
                       )}
                     /> : <RewardDepletedCard
                       key={reward.objectId}
@@ -210,16 +198,16 @@ const RewardList = ({ oid, chain, type }) => {
           >
           <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > 
             <CloseReactModal>
-              <CloseIcon width={15} height={15} />
+              <CloseIcon width={15} height={15} color={theme.colors.primary}  />
               </CloseReactModal>
             </AbsoluteRight>
             <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
           </Modal> 
           : 
         <>{modalIsOpen && <ModalWrapper >
-        <CustomModal openModal={modalIsOpen} text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge}  />
+        <CustomModal openModal={modalIsOpen} text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} rType={rType}  />
           <CloseModal onClick={() => {setIsOpen(false) }} whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }}>
-            <CloseIcon width={15} />
+            <CloseIcon width={15} color={theme.colors.primary} />
           </CloseModal>
         </ModalWrapper>}</>}
     </Wrapper>

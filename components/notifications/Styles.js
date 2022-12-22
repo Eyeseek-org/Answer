@@ -6,7 +6,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  background: ${(props) => props.theme.colors.black};
+  background: ${(props) => props.theme.colors.tableGradient};
   padding: 2%;
   padding-right: 5%;
 `;
@@ -41,5 +41,6 @@ export const NotiBox = styled.div`
   position: relative;
   z-index: 80;
   background: ${(props) => props.theme.colors.body};
+  height: 100%;
 `;
 

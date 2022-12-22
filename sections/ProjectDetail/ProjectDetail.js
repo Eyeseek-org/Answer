@@ -56,7 +56,7 @@ const ProjectDetail = ({objectId, pid, title, description,category,subcategory,i
               </IconWrapper>
             ) : (
               <IconWrapper onMouseEnter={() => {setStandardTypeTooltip(true)}} onMouseLeave={() => {setStandardTypeTooltip(false) }}>
-                <BlockchainIcon color={theme.colors.icon} width={30} />
+                <BlockchainIcon color={theme.colors.primary}  width={30} />
               </IconWrapper>
             )}
               <IconWrapper onMouseEnter={() => {setChainTooltip(true)}} onMouseLeave={() => {setChainTooltip(false) }} >

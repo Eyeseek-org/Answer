@@ -59,10 +59,11 @@ export const Wrapper = styled.div`
 export const MainContainer = styled.div`
   position: relative;
   padding-top: 3%;
-  margin-bottom: 8%;
+  padding-bottom: 8%;
   width: 100%;
-  animation: fadeIn 0.7s;
+  scroll-behavior: smooth;
   z-index: 1;
+  animation: fadeIn 0.7s;
   @keyframes fadeIn {
     0% {
       opacity: 0;

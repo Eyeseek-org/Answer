@@ -60,6 +60,7 @@ const AbsoluteShareIt = styled.div`
 const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId }) => {
   const router = useRouter();
   const [add, setAdd] = useState(diamond.mumbai);
+  const theme = useTheme();
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
@@ -131,7 +132,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
   const Balances = () => {
     return (
       <Row>
-        {bal}
+        <b>{bal}</b>
         <SmallBal>
           <div>{usdcBalance} <Image src={usdc} alt="usdc" width={20} height={20} /></div>
           <div>{usdtBalance} <Image src={usdt} alt="usdt" width={20} height={20} /></div>
@@ -148,13 +149,13 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
           <StatRow
             title={<Balances />}
             desc={`pledged of ${max} goal`}
-            color="#00FFA3"
+            color={theme.colors.secondary}
             right={<Bookmark objectId={objectId} bookmarks={bookmarks} />}
           />
-          <StatRow title={backing} desc={'backers'} color="white" />
-          <StatRow title={microInvolved} desc={`microfunds`} color="white" />
+          <StatRow title={backing} desc={'backers'} color={theme.colors.font} />
+          <StatRow title={microInvolved} desc={`microfunds`}  color={theme.colors.font}/>
           <BetweenRow>
-            <StatRow title={days} desc={`days to go`} color="white" />
+            <StatRow title={days} desc={`days to go`}  color={theme.colors.font}/>
             <AbsoluteShareIt><G>Share it</G></AbsoluteShareIt>
             <Socials title={'Check out my project on Eyeseek, crowdfunding started and time is ticking!'}/>
           </BetweenRow>

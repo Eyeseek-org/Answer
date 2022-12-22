@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAccount } from 'wagmi';
@@ -9,6 +9,8 @@ import { cats } from '../../data/cats';
 import { moralisApiConfig } from '../../data/moralisApiConfig';
 import eye180 from '../../public/eye180.png';
 import Image from 'next/image';
+import { LeftArrow, RightArrow } from '../../components/icons/Actions';
+import ViewFade from '../../components/animated/ViewFade';
 
 const Container = styled.div`
   position: relative;
@@ -75,6 +77,20 @@ const LatestProjects = ({ my }) => {
   const { address } = useAccount();
   const [data, setData] = useState([]);
   const [category, setCategory] = useState(initialCategory);
+  const theme = useTheme();
+
+  const carouselButtonStyles = {
+    "background": theme.colors.primary,
+    "borderRadius": "50%",
+  }
+
+  const carouselConfig = {
+    nextButtonStyle: carouselButtonStyles, 
+    nextButtonText: <RightArrow width={20} color={theme.colors.black} />,
+    prevButtonText: <LeftArrow width={20} color={theme.colors.black} />, 
+    prevButtonStyle: carouselButtonStyles, 
+    pagingDotsStyle: {"display":"none"}
+  }
 
   useEffect(() => {
     if (my) {
@@ -154,7 +170,10 @@ const LatestProjects = ({ my }) => {
           </div>
         ))}
       </Categories>
-      <Carousel animation='zoom' enableKeyboardControls>
+    <ViewFade comp={<Carousel 
+        animation='zoom' 
+        enableKeyboardControls 
+        defaultControlsConfig={carouselConfig}>
         <ProjectBox>
           {filteredFirst.map((project, index) => {
             return (
@@ -221,7 +240,7 @@ const LatestProjects = ({ my }) => {
             );
           })}
         </ProjectBox>
-      </Carousel>
+      </Carousel>}/>
     </Container>
   );
 };

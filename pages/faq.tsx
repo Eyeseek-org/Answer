@@ -1,8 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import type { NextPage } from 'next';
-import Image from 'next/image';
-import Eye7 from '../public/Eye7.png';
+import type { NextPage } from 'next'; 
 import Footer from '../sections/Footer/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
@@ -23,14 +21,12 @@ import {
   VideoIcon,
   WearablesIcon,
 } from '../components/icons/Categories';
-
 import Subtitle from '../components/typography/Subtitle';
 import { motion } from 'framer-motion';
-import { YouTubeIcon } from '../components/icons/Socials';
-import {notify} from 'reapop'
-import {useDispatch} from 'react-redux'
 import { PiggyIcon } from '../components/icons/Landing';
 import FaqSection from '../sections/FaqSection'
+import { MainContainer } from '../components/format/Box';
+import FooterEyes from '../components/animated/FooterEyes';
 
 const Row = styled.div`
   display: flex;
@@ -92,10 +88,6 @@ const CatDesc = styled(motion.div)`
   border-radius: 5px;
 `;
 
-const YtLink = styled.span`
-  text-decoration: underline;
-  margin-right: 5%;
-`;
 
 export interface IFAQ {
   question: string;
@@ -151,12 +143,7 @@ const Faq: NextPage = () => {
     {
       //@ts-ignore
       question: (
-        <>
-          <a href="https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg" rel="noopener noreferrer" target="_blank">
-            <YtLink>How does it work?</YtLink>
-            <YouTubeIcon width={25} height={25} />
-          </a>
-        </>
+        'How does it work?'
       ),
       answer: 'Creators can set up project in 5 simple steps',
       points: [
@@ -252,13 +239,9 @@ const Faq: NextPage = () => {
     );
   };
 
-  const dispatch = useDispatch() 
-    const noti = (text) => {
-      dispatch(notify(text, 'info'))
-  }
 
   return (
-    <>
+    <MainContainer>
       <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
       <FaqContainer>
         {FAQS.map(({ answer, image: Image, points, question }, index) => {
@@ -291,12 +274,9 @@ const Faq: NextPage = () => {
           </CatIcons>
         </CatBox>
       </FaqContainer>
-
-      <EyeSevenBox>
-        <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
-      </EyeSevenBox>
+       <FooterEyes/>
       <Footer />
-    </>
+    </MainContainer>
   );
 };
 

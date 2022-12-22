@@ -11,10 +11,10 @@ export const AnimatedModal = styled(motion.div)`
   right: 0;
   z-index: 80;
   top: 15%;
-  transition: all 0.7s ease-in-out;
+  transition: all 0.5s ease-in-out;
   height: 500px;
-  width: ${(props) => (props.expand ? '600px' : '300px')};
-  background: linear-gradient(155.74deg, #1c1c1c 0%, #000000 120.65%);
+  width: ${(props) => (props.expand ? '700px' : '300px')};
+  background: ${(props) => props.theme.colors.body};
   border-radius: 10px;
   border: 1px solid #4e4e4e;
   overflow-y: scroll;

@@ -19,7 +19,8 @@ import AnimatedLeftPanel from '../../components/animated/AnimatedLeftPanel';
 
 const Container = styled.div`
   margin-top: 5%;
-  margin-bottom: 5%;
+  padding-bottom: 5%;
+  scroll-behavior: smooth;
 `;
 
 const TabBox = styled.div`

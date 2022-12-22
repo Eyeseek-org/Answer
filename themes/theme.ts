@@ -49,7 +49,7 @@ export const lightTheme: DefaultTheme = {
         progressBorder: '#003D2E',
         transparent: 'rgba(0, 0, 0, 0.2)',
         transparentCard: 'rgba(110, 110, 110, 0.3)',
-        invisible: 'rgba(255, 255, 255, 0.85)',
+        invisible: 'rgba(242, 255, 254, 0.9)',
         red: 'rgba(9, 0, 0)',
         input: 'rgba(107, 255, 255, 0.05)',
         darkGreen: '#008B0E',

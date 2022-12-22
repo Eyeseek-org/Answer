@@ -31,7 +31,7 @@ export const NavItem = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;
-  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.invisible};
+  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.cardGradient};
   letter-spacing: 1px;
   transition: 0.3s;
   &:hover {
@@ -98,17 +98,4 @@ export const Notis = styled(motion.div)`
   background: ${(props) => props.theme.colors.redPastel};
   right: -10%;
   top: -20%;
-`;
-
-export const HeaderBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  color: ${(props) => props.theme.colors.primary};
-  padding: 2%;
-  z-index: 100;
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
 `;

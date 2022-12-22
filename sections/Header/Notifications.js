@@ -1,7 +1,7 @@
 import styled, {useTheme} from 'styled-components';
 import { useState, useEffect } from 'react';
 import { CanceledIcon, ExpandIcon, NewsIcon, ShrinkIcon } from '../../components/icons/Notifications';
-import { SuccessIcon } from '../../components/icons/Common';
+import { MessageIcon, SuccessIcon } from '../../components/icons/Common';
 import ReactTimeAgo from 'react-time-ago';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
@@ -16,9 +16,11 @@ import {Buttons, ButtonRow, NotiTabWrapper, NotiBox} from '../../components/noti
 import { RewardDesc, MiniDesc } from '../../components/typography/Descriptions';
 import { useQuery } from '@tanstack/react-query';
 import TabImage from '../../components/form/TabImage';
+import { AnimatePresence } from 'framer-motion';
+import Address from '../../components/functional/Address';
+import { BetweenRow } from '../../components/format/Row';
 
 TimeAgo.addDefaultLocale(en);
-
 
 const NotiItem = styled.div`
   display: flex;
@@ -55,6 +57,7 @@ const Desc = styled.div`
   font-family: 'Arial';
   font-weight: 300;
   transition: 0.5s;
+  padding-right: 5px;
   letter-spacing: 0.2px;
   font-size: ${(props) => (props.expand ? '1.1em' : '0.8em')};
   color: ${(props) => props.theme.colors.font};
@@ -122,7 +125,7 @@ const Counter = styled.div`
 `
 
 const Notifications = ({ notis, address}) => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(true);
   const queryClient = useQueryClient();
   const theme = useTheme();
   const [active, setActive] = useState('Unread');
@@ -132,11 +135,14 @@ const Notifications = ({ notis, address}) => {
     mutationFn: (id) => DapAPIService.updateReadNotifications(id),
   });
 
+  const { mutate: updateMessage } = useMutation({
+    mutationFn: (id) => DapAPIService.updateReadMessages(id),
+  });
 
   const updateQuery = `/classes/Notification?where={"user":"${address}", "type": "projectUpdate"}`
   const { data: updateNotis } = useQuery(['notis-updates'], () => UniService.getDataAll(updateQuery),{});
 
-  const messageQuery = `/classes/Message?where={"user":"${address}"}`
+  const messageQuery = `/classes/Message?where={"recipient":"${address}"}`
   const { data: messages } = useQuery(['messages'], () => UniService.getDataAll(messageQuery),{});
 
   useEffect(() => {
@@ -156,8 +162,22 @@ const Notifications = ({ notis, address}) => {
   const handleMessages = () => {
     setActive('Messages')
     setData(messages)
+    confirmMessageRead();
   }
 
+  const confirmMessageRead = () => {
+    if (messages) {
+      messages.forEach((message) => {
+        if (message.isRead === false) {
+          updateMessage(message.objectId, {
+            onSuccess: () => {
+              queryClient.refetchQueries({ queryKey: ['messages'] });
+            },
+          });
+        }
+      });
+    }
+  }
 
   const confirmRead = () => {
     if (data) {
@@ -173,8 +193,15 @@ const Notifications = ({ notis, address}) => {
     }
   };
 
-  return (
-    <AnimatedModal expand={expand}>
+  return <AnimatePresence>
+    <AnimatedModal expand={expand}  
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.1 }}
+      exit={{ opacity: 0, transition: { duration: 1 } }}
+      key="notifications"
+    >
+     <Counter>({notis ? notis.length : null} / {updateNotis ? updateNotis.length : null} / {messages ? messages.length : null})</Counter>
       <NotiBox>
         {data &&
           data
@@ -182,18 +209,19 @@ const Notifications = ({ notis, address}) => {
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((noti, index) => (
               <NotiItem key={index}>
-                <Link href={`/project/${noti.project}`}>
+                <Link href={`/project/${noti.project}`}>    </Link>
                   <Row>
                     <IconWrapper>
-                      {noti.type === 'projectCanceled' && <CanceledIcon width={30} height={30} />}
-                      {noti.type === 'projectUpdate' && <NewsIcon width={30} height={30} />}
-                      {noti.type === 'projectFunded' && <SuccessIcon width={30} height={30} />}
-                      {noti.type === 'rewardAdded' && <RewardActiveIcon width={30} height={30} />}
+                      {noti.type === 'projectCanceled' && <CanceledIcon width={30} height={30} color={theme.colors.primary}  />}
+                      {noti.type === 'projectUpdate' && <NewsIcon width={30} height={30} color={theme.colors.primary}  />}
+                      {noti.type === 'projectFunded' && <SuccessIcon width={30} height={30} color={theme.colors.primary}  />}
+                      {noti.type === 'rewardAdded' && <RewardActiveIcon width={30} height={30} color={theme.colors.primary}  />}
+                      {noti.title === 'Direct message' && <MessageIcon width={30} height={30} color={theme.colors.primary} />}
+                      {noti.title === 'Group message' && <MessageIcon width={30} height={30} color={theme.colors.primary} />}
                     </IconWrapper>
                     <Col>
-                      <Desc expand={expand}>{noti.title}</Desc>
+                      <BetweenRow><Desc expand={expand}>{noti.title}</Desc> {expand && noti?.sender && <Address address={noti.sender}/>}</BetweenRow>
                      {expand ?  <RewardDesc>{noti.description}</RewardDesc> : <MiniDesc>{noti.description}</MiniDesc>}
-                     <Desc expand={expand}>{noti.sender}</Desc>
                      {expand ?  <RewardDesc>{noti.message}</RewardDesc> : <MiniDesc>{noti.message}</MiniDesc>}
                       <Ago>
                         <ReactTimeAgo date={noti.createdAt} locale="en-US" />
@@ -201,7 +229,6 @@ const Notifications = ({ notis, address}) => {
                     </Col>
                     <Col>{noti.isRead === false ? <Unread>New</Unread> : <HidUnread></HidUnread>}</Col>
                   </Row>
-                </Link>
               </NotiItem>
             ))}
         {expand && (
@@ -212,20 +239,16 @@ const Notifications = ({ notis, address}) => {
       </NotiBox>
       <ButtonRow>
         <Buttons>
-          <Col>
              <NotiTabWrapper>
                 <TabImage active={active} o1={'Notifications'} o2={'Updates'} o3={'Messages'} change1={()=>{handleNotis()}} change2={()=>{handleUpdate()}} change3={()=>{handleMessages()}} />
-                <Counter>({notis ? notis.length : null} / {updateNotis ? updateNotis.length : null} / {messages ? messages.length : null})</Counter>
              </NotiTabWrapper>
-     
-        </Col>
         </Buttons>
         <Buttons onClick={() => setExpand(!expand)}>
-          {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} />}
+          {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} color={theme.colors.primary} />}
         </Buttons>
       </ButtonRow>
     </AnimatedModal>
-  );
+    </AnimatePresence>
 };
 
 export default Notifications;

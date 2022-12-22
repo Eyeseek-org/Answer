@@ -134,10 +134,10 @@ const RewardModal = ({ showMe, rewardId, backers,owner, projectId }) => {
             <Buttons>Reward list</Buttons>
                 <ActionIcons>
                     <Button onClick={() => setExpand(!expand)}>
-                        {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} />}
+                        {!expand ? <ExpandIcon width={20} height={20} color={theme.colors.primary} /> : <ShrinkIcon width={20} height={20} color={theme.colors.primary}  />}
                     </Button>
                     <Button onClick={() => setDisplay(!display)}>
-                    <CloseIcon width={20} height={20} /> 
+                    <CloseIcon width={20} height={20} color={theme.colors.primary} /> 
                     </Button>
                 </ActionIcons>  
             </ButtonRow>
