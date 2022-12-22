@@ -25,6 +25,7 @@ const Container = styled.div`
 `;
 
 const TabWrapper = styled.div`
+  position: relative;
   margin-bottom: 5%;
   padding-left: 2%;
 `
