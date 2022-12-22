@@ -61,7 +61,7 @@ const MyProjects = () => {
                         youtube={project.youtube}
                     />}
                   {active === 'Rewards' && <TabBox>            
-                    <RewardList oid={project?.objectId} chain={project?.chainId} />
+                    <RewardList oid={project?.objectId} chain={project?.chainId} type='project'/>
                     <RewardCreate
                         objectId={project?.objectId}
                         bookmarks={project?.rewards}

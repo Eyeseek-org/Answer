@@ -8,8 +8,6 @@ import ButtonAlt from './ButtonAlt'
 import {okAnim, loadingAnim} from '../animated/Animations';
 import { AbsoluteLeft } from '../format/Box'
 import { Col } from '../format/Row'
-import { handleDec } from '../../helpers/MultichainHelpers'
-
 
 const Container = styled.div`
     position: relative;
@@ -28,13 +26,13 @@ const Wrapper = styled.div`
     position: relative;
 `
 
-const ApproveUniversal = ({tokenContract, spender, amount}) => {
+const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
     const [d, setD] = useState(1000000)
+    const [appAmount, setAppAmount] = useState(1000000)
 
-    const appAmount = amount * d
 
     const listened = async() => {
         setEv(true)
@@ -42,14 +40,14 @@ const ApproveUniversal = ({tokenContract, spender, amount}) => {
     }
 
       useEffect (() => {
-        const dec = handleDec(tokenContract)
         switch (dec) {
             case 6: setD(1000000); break; // Stablecoins USDT, USDCT
             case 18: setD(1000000000000000000); break;  // Standard ERC20 tokens, DAI, BUSD
             case 1: setD(1); break; 
-            default: setD(1);
+            default: setD(6);
         }
-    },[])
+        setAppAmount(amount * d)
+    },[amount])
 
     const { config, error } = usePrepareContractWrite({
         address: tokenContract,

@@ -21,6 +21,7 @@ import Carousel from 'nuka-carousel/lib/carousel';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import eye167 from '../../public/eye167.png';
+import { LeftArrow, RightArrow } from '../../components/icons/Actions';
 
 
 const ImageBox = styled.div`
@@ -73,15 +74,30 @@ const Features = () => {
   const [demoFee, setDemoFee] = useState(false);
   const [demoStream, setDemoStream] = useState(false);
   const [demoReward, setDemoReward] = useState(false);
-
   const theme = useTheme()
+
+  const carouselButtonStyles = {
+    "background": theme.colors.primary,
+    "borderRadius": "50%",
+  }
+
+  const carouselConfig = {
+    nextButtonStyle: carouselButtonStyles, 
+    nextButtonText: <RightArrow width={20} color={theme.colors.black} />,
+    prevButtonText: <LeftArrow width={20} color={theme.colors.black} />, 
+    prevButtonStyle: carouselButtonStyles, 
+    pagingDotsStyle: {"display":"none"}
+  }
 
   return (
     <Container>
       <ImageBox><Image src={eye167} alt='eye' width={200} height={150}/></ImageBox>
       <SectionTitle title="Key concepts" subtitle="How is Eyeseek different" />
       <ContentBox>
-        <Carousel animation='zoom' enableKeyboardControls>
+        <Carousel 
+          animation='zoom' 
+          enableKeyboardControls 
+          defaultControlsConfig={carouselConfig}>
         <Row>
           {demoMicro ? (
             <FeatureCard

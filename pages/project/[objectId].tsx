@@ -19,7 +19,8 @@ import AnimatedLeftPanel from '../../components/animated/AnimatedLeftPanel';
 
 const Container = styled.div`
   margin-top: 5%;
-  margin-bottom: 5%;
+  padding-bottom: 5%;
+  scroll-behavior: smooth;
 `;
 
 const TabBox = styled.div`
@@ -102,7 +103,7 @@ const Project: NextPage = () => {
             )}
             {project && mode === 'Rewards' && project.type !== 'Stream' ? 
               <SpacingBox>
-                   <AnimatedLeftPanel title={'Reward list'} component={<RewardList oid={objectId} chain={project.chainId} />}/>
+                   <AnimatedLeftPanel title={'Reward list'} component={<RewardList oid={objectId} chain={project.chainId} type='project' />}/>
                   <RewardCreate objectId={objectId} bookmarks={project.bookmarks} pid={project.pid} home={project.chainId} owner={project.owner} />
               </SpacingBox> : null
             }

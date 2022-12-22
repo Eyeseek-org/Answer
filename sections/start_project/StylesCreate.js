@@ -30,7 +30,7 @@ export const WarningBox = styled.div`
   background: rgba(9, 0, 0, 0.3);
   border: 1px solid #500000;
   border-radius: 5px;
-  padding: 4%;
+  padding: 2%;
   color: ${(props) => props.theme.colors.font};
 `;
 

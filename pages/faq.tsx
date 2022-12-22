@@ -1,9 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import type { NextPage } from 'next';
-import Image from 'next/image';
-
-import Eye7 from '../public/Eye7.png';
+import type { NextPage } from 'next'; 
 import Footer from '../sections/Footer/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
@@ -24,13 +21,12 @@ import {
   VideoIcon,
   WearablesIcon,
 } from '../components/icons/Categories';
-import FaqCard from '../components/cards/FaqCard';
 import Subtitle from '../components/typography/Subtitle';
 import { motion } from 'framer-motion';
-import { YouTubeIcon } from '../components/icons/Socials';
-import {notify} from 'reapop'
-import {useDispatch} from 'react-redux'
 import { PiggyIcon } from '../components/icons/Landing';
+import FaqSection from '../sections/FaqSection'
+import { MainContainer } from '../components/format/Box';
+import FooterEyes from '../components/animated/FooterEyes';
 
 const Row = styled.div`
   display: flex;
@@ -56,33 +52,6 @@ const FaqContainer = styled.div`
   @media (min-width: 1968px) {
     padding-left: 25%;
     padding-right: 25%;
-  }
-`;
-
-const Question = styled.div`
-  font-family: 'Neucha';
-  font-style: normal;
-  text-align: center;
-  font-weight: 400;
-  letter-spacing: 0.3;
-  font-size: 1.2em;
-  line-height: 43px;
-  min-width: 30%;
-  color: #b0f6ff;
-  @media (max-width: 1168px) {
-    line-height: 20px;
-  }
-  @media (min-width: 1780px) {
-    font-size: 1.8em;
-  }
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const ImageBox = styled.div`
-  @media (max-width: 968px) {
-    display: none;
   }
 `;
 
@@ -119,10 +88,6 @@ const CatDesc = styled(motion.div)`
   border-radius: 5px;
 `;
 
-const YtLink = styled.span`
-  text-decoration: underline;
-  margin-right: 5%;
-`;
 
 export interface IFAQ {
   question: string;
@@ -178,12 +143,7 @@ const Faq: NextPage = () => {
     {
       //@ts-ignore
       question: (
-        <>
-          <a href="https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg" rel="noopener noreferrer" target="_blank">
-            <YtLink>How does it work?</YtLink>
-            <YouTubeIcon width={25} height={25} />
-          </a>
-        </>
+        'How does it work?'
       ),
       answer: 'Creators can set up project in 5 simple steps',
       points: [
@@ -279,24 +239,16 @@ const Faq: NextPage = () => {
     );
   };
 
-  const dispatch = useDispatch() 
-    const noti = (text) => {
-      dispatch(notify(text, 'info'))
-  }
 
   return (
-    <>
+    <MainContainer>
       <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
       <FaqContainer>
         {FAQS.map(({ answer, image: Image, points, question }, index) => {
           const isEven = index % 2 === 0;
           return (
             <Row reverse={isEven} key={index}>
-              <FaqCard answer={answer} points={points} />
-              <Question>
-                <div>{question}</div>
-                <ImageBox>{Image}</ImageBox>
-              </Question>
+              <FaqSection answer={answer} image={Image} points={points} question={question}/>
             </Row>
           );
         })}
@@ -322,12 +274,9 @@ const Faq: NextPage = () => {
           </CatIcons>
         </CatBox>
       </FaqContainer>
-
-      <EyeSevenBox>
-        <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
-      </EyeSevenBox>
+       <FooterEyes/>
       <Footer />
-    </>
+    </MainContainer>
   );
 };
 

@@ -65,6 +65,10 @@ export class DapAPIService {
     return await DapAxiosInstance.put(`/classes/Notification/${notificationId}`, { isRead: true });
   }
 
+  static async updateReadMessages(messageId: string) {
+    return await DapAxiosInstance.put(`/classes/Notification/${messageId}`, { isRead: true });
+  }
+
   static async getBatchProjectsById(ids: string[]) {
     return await Promise.all<Project>(
       ids.map((id) => {

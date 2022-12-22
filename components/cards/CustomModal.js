@@ -1,0 +1,44 @@
+import styled, {useTheme} from 'styled-components'
+import { RewardAnimatedBox } from '../format/RewardAnimatedBox'
+import { motion } from 'framer-motion'
+import { Erc20Icon, NftIcon } from '../icons/Project'
+
+const Container = styled(motion.div)`
+    position: fixed;
+    top: 100px;
+    background: ${(props) => props.theme.colors.cardGradient};
+    width: 100px;
+    height: 100px;
+    left: 30%;
+    z-index: 1000;
+    border-radius: 10px;
+    border: 1px solid ${(props) => props.theme.colors.border};
+`
+
+const IconBox = styled.div`
+  position: absolute;
+  z-index: 150;
+  right: 15px;
+  bottom: 15px;
+`
+
+
+const CustomModal = ({openModal, desc, delivery, estimation, title, pledge, rType}) => {
+    const theme = useTheme()
+    
+    return <>
+    {openModal &&  <Container
+            initial={{  width: 100, height: 50 }} 
+            animate={{ width: 500, height: 250}}
+            transition={{ duration: 0.3}}
+        >
+        <IconBox>
+            {rType === 1 && <Erc20Icon width={50} height={50}  color={theme.colors.icon}/>}
+            {rType === 2 && <NftIcon width={50} height={50}  color={theme.colors.icon}/>}
+        </IconBox>
+          <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
+    </Container>}
+    </>
+}
+
+export default CustomModal

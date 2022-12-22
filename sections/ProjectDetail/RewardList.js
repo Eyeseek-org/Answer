@@ -8,11 +8,13 @@ import { useApp } from '../utils/appContext';
 import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { Col, Row } from '../../components/format/Row';
-import {RewardAnimatedBox} from '../../components/format/RewardAnimatedBox';
-import styled, {useTheme} from 'styled-components';
+import { RewardAnimatedBox } from '../../components/format/RewardAnimatedBox';
+import styled, { useTheme } from 'styled-components';
 import Modal from 'react-modal';
 import { CloseIcon } from '../../components/icons/Notifications';
 import { AbsoluteRight } from '../../components/format/Box';
+import CustomModal from '../../components/cards/CustomModal';
+import {motion} from 'framer-motion'
 
 const MutipleRewards = styled.div`
   display: flex;
@@ -20,11 +22,36 @@ const MutipleRewards = styled.div`
   flex-wrap: wrap;
 `
 
+const CloseModal = styled(motion.div)`
+    position: fixed;
+    top: 100px;
+    background: black;
+    border-radius: 50%;
+    padding: 15px;
+    left: 27%;
+    z-index: 1000;
+    border: 1px solid ${(props) => props.theme.colors.border};
+    cursor: pointer;
+`
+
+const CloseReactModal = styled.div`
+    background: black;
+    border-radius: 50%;
+    z-index: 1000;
+    border: 1px solid ${(props) => props.theme.colors.border};
+    cursor: pointer;
+`
+
+const ModalWrapper = styled.div`
+  position: relative;
+  display: flex;
+`
+
 const Wrapper = styled.div`
   z-index: 100;
 `
 
-const RewardList = ({ oid, chain }) => {
+const RewardList = ({ oid, chain, type }) => {
   const { setAppState } = useApp();
   const [selected, setSelected] = useState('');
   const [desc, setDesc] = useState('');
@@ -32,10 +59,12 @@ const RewardList = ({ oid, chain }) => {
   const [title, setTitle] = useState('');
   const [pledge, setPledge] = useState('');
   const [estimation, setEstimation] = useState('');
+  const [rType, setRType] = useState('');
   const [isRewardLoading, setRewardLoading] = useState(false);
   const [ipfsUri, setIpfsUri] = useState('https://ipfs.moralis.io:2053/ipfs/QmYdN8u9Wvay3uJxxVBgedZAPhndBYMUZYsysSsVqzfCQR/5000.json');
   const theme = useTheme();
 
+  Modal.setAppElement(document.getElementById('root'));
 
   const customStyles = {
     content: {
@@ -44,33 +73,34 @@ const RewardList = ({ oid, chain }) => {
       right: 'auto',
       bottom: 'auto',
       transform: 'translate(-50%, -50%)',
-      background: theme.colors.body,
+      background: theme.colors.cardGradient,
       border: theme.colors.border
     },
     overlay: {
       background: 'rgba(0, 0, 0, 0.5)',
     }
   };
-  
+
   const [modalIsOpen, setIsOpen] = useState(false)
-  function afterOpenModal() {}
-  function closeModal() {setIsOpen(false)}
+  function afterOpenModal() { }
+  function closeModal() { setIsOpen(false) }
 
 
   // Extract image json.image, display it
   const query = `/classes/Reward?where={"project":"${oid}"}`
   const { data: rewards, error: rewardError } = useQuery(['rewards'], () => UniService.getDataAll(query), {});
   estimation
-  const handleRewardClick = (title, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors, estimation, delivery) => {
+  const handleRewardClick = (title, rewDesc, rewAmount, type, rid, rewEligible, rewObjectId, rewDonors, estimation, reward) => {
     setDesc(rewDesc)
     setIsOpen(true);
     setSelected(rewObjectId);
-    setDelivery(delivery)
+    setDelivery(reward?.delivery)
     setEstimation(estimation)
     setTitle(title)
     setPledge(rewAmount)
+    setRType(reward?.rType)
     if (type === 'Microfund') {
-      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors  }));
+      setAppState((prev) => ({ ...prev, rewMAmount: rewAmount, rewDAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors }));
     } else if (type === 'Donate') {
       setAppState((prev) => ({ ...prev, rewDAmount: rewAmount, rewMAmount: 0, rewId: rid, rewEligible: rewEligible, rewObjectId: rewObjectId, rewDonors: rewDonors }));
     }
@@ -116,52 +146,39 @@ const RewardList = ({ oid, chain }) => {
             <>
               {rewards.map((reward) => {
                 return <MutipleRewards>
-                {reward.eligibleActual > 0 ? 
-                  <RewardCard
-                    key={reward.objectId}
-                    objectId={reward.objectId}
-                    rid={reward.rewardId}
-                    title={reward.title}
-                    pledge={reward.requiredPledge}
-                    description={reward.description}
-                    eligibleActual={reward.eligibleActual}
-                    type={reward.type}
-                    cap={reward.cap}
-                    tokenAddress={reward.tokenAddress}
-                    nftId={reward.nftId}
-                    tokenName={reward.tokenName}
-                    tokenAmount={reward.tokenAmount}
-                    selected={selected}
-                    chain={chain}
-                    rType={reward.rType}
-                    onClick={() => handleRewardClick(
-                      reward.title, 
-                      reward.description, 
-                      reward.requiredPledge, 
-                      reward.type, 
-                      reward.rewardId, 
-                      reward.eligibleActual, 
-                      reward.objectId, 
-                      reward.donors,
-                      reward.estimation,
-                      reward.delivery,
+                  {reward.eligibleActual > 0 ?
+                    <RewardCard
+                      reward={reward}
+                      key={reward.objectId}
+                      selected={selected}
+                      onClick={() => handleRewardClick(
+                        reward.title,
+                        reward.description,
+                        reward.requiredPledge,
+                        reward.type,
+                        reward.rewardId,
+                        reward.eligibleActual,
+                        reward.objectId,
+                        reward.donors,
+                        reward.estimation,
+                        reward
                       )}
-                  /> :  <RewardDepletedCard
-                    key={reward.objectId}
-                    rid={reward.rewardId}
-                    title={reward.title}
-                    pledge={reward.requiredPledge}
-                    description={reward.description}
-                    eligibleActual={reward.eligibleActual}
-                    type={reward.type}
-                    cap={reward.cap}
-                    tokenAddress={reward.tokenAddress}
-                    tokenAmount={reward.tokenAmount}
-                    rType={reward.rType}
-                    nftId={reward.nftId}
-                    tokenName={reward.tokenName}
-                    chain={chain}
-                />}
+                    /> : <RewardDepletedCard
+                      key={reward.objectId}
+                      rid={reward.rewardId}
+                      title={reward.title}
+                      pledge={reward.requiredPledge}
+                      description={reward.description}
+                      eligibleActual={reward.eligibleActual}
+                      type={reward.type}
+                      cap={reward.cap}
+                      tokenAddress={reward.tokenAddress}
+                      tokenAmount={reward.tokenAmount}
+                      rType={reward.rType}
+                      nftId={reward.nftId}
+                      tokenName={reward.tokenName}
+                      chain={chain}
+                    />}
                 </MutipleRewards>
               })}
             </>
@@ -170,17 +187,29 @@ const RewardList = ({ oid, chain }) => {
           )}
           {rewardError && <ErrText text={'Communication error - please try again later'} />}
         </Row>
-          <Modal
-              isOpen={modalIsOpen}
-              onAfterOpen={afterOpenModal}
-              onRequestClose={closeModal}
-              style={customStyles}
-              contentLabel="Example Modal"
-            >
-            <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > <CloseIcon width={15} height={15} /></AbsoluteRight>
-            <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge}/>
-        </Modal>
       </Col>
+        {type !== 'donate' ? 
+        <Modal
+            isOpen={modalIsOpen}
+            onAfterOpen={afterOpenModal}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+          <AbsoluteRight onClick={closeModal} style={{ cursor: 'pointer' }} > 
+            <CloseReactModal>
+              <CloseIcon width={15} height={15} color={theme.colors.primary}  />
+              </CloseReactModal>
+            </AbsoluteRight>
+            <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
+          </Modal> 
+          : 
+        <>{modalIsOpen && <ModalWrapper >
+        <CustomModal openModal={modalIsOpen} text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} rType={rType}  />
+          <CloseModal onClick={() => {setIsOpen(false) }} whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }}>
+            <CloseIcon width={15} color={theme.colors.primary} />
+          </CloseModal>
+        </ModalWrapper>}</>}
     </Wrapper>
   );
 };

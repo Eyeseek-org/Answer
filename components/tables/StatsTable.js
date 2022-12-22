@@ -6,10 +6,12 @@ import Loading from '../Loading';
 import Subtitle from '../typography/Subtitle';
 import { RewardDesc } from '../typography/Descriptions';
 import optimism from '../../public/icons/optimism.png'
+import DonationTable from '../../sections/Tables/DonationTable';
+import MicrofundsTable from '../../sections/Tables/MicrofundsTable';
 
 const Container = styled.div`
   padding-bottom: 2%;
-  padding-top: 5%;
+  padding-top: 3%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,7 +23,6 @@ const Container = styled.div`
     padding-right: 3%;
   }
 `;
-
 
 const Sub = styled.div`
   display: flex;
@@ -106,7 +107,7 @@ const StatsTable = ({ pid, chain }) => {
         <Sub>
           <Subtitle text="Deployed Microfunds" />
         </Sub>
-        {!loading && filteredMicroCreatedLogs.length > 0 &&  <MicrofundsTable data={filteredTransactionLogs}/>}
+        {!loading && filteredMicroCreatedLogs.length > 0 &&  <MicrofundsTable data={filteredMicroCreatedLogs}/>}
         {!loading && filteredMicroCreatedLogs.length === 0 && <p>No transactions found in recent history</p>}
       </Container>}
       <NoOptimism>

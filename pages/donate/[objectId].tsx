@@ -12,7 +12,7 @@ import Tooltip from '../../components/Tooltip';
 import Warning from '../../components/animated/Warning';
 import ButtonErr from '../../components/buttons/ButtonErr';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
-import { currencies } from '../../data/currencies';
+import { polygonCurrencies } from '../../data/currencies';
 import { testChains } from '../../data/contracts/core';
 import NativeFaucet from '../../sections/Donate/NativeFaucet';
 import Faucet from '../../components/buttons/Faucet';
@@ -205,22 +205,12 @@ const Donate: NextPage = () => {
         setCurr(2);
         setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
         break;
-      case 'DAI':
-        setCurrency('DAI');
-        setCurr(2);
-        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
-        break;
-      case 'BUSD':
-        setCurrency('BUSD');
-        setCurr(2);
-        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
-        break;
     }
   };
 
   const RenderCurrency = () => {
     return <>
-        {currencies.map((c, index) => {
+        {polygonCurrencies.map((c, index) => {
           const { logo, title } = c;
           return (
             <Option key={index}>
@@ -286,7 +276,7 @@ const Donate: NextPage = () => {
             <DonateOptionSub>Choose donate currency</DonateOptionSub>
           </DonateOptionTitle>
           <OptionItemWrapper>
-            <RenderCurrency />
+           {chain ? <RenderCurrency /> : <>Currency not found for this chain</>}
           </OptionItemWrapper>
         </DonateOption>
         <DonateOption>
@@ -310,7 +300,7 @@ const Donate: NextPage = () => {
         {/* @ts-ignore */}
         {showRewards ? (
           <>
-            <RewardList chain={chain} oid={objectId} />
+            <RewardList chain={chain} oid={objectId} type='donate' />
             <DonateWrapper
               pid={projectDetail?.pid}
               bookmarks={projectDetail?.bookmarks}

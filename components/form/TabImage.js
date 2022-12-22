@@ -100,15 +100,15 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <NftActiveIcon width={60} height={60}  color={theme.colors.icon} /></ActBox>}
                 {text === 'Notifications' &&   
                 <ImageHover onMouseEnter={()=>handleNotiTooltip('All notifications')} onMouseLeave={()=>setShowNotiTooltip(false)}>
-                    <MessageOpenIcon width={20} height={17}  color={theme.colors.primary}/>
+                    <MessageOpenIcon width={30} height={30}  color={theme.colors.primary}/>
                 </ImageHover>}
                 {text === 'Updates' && 
                 <ImageHover onMouseEnter={()=>handleNotiTooltip('Project updates')} onMouseLeave={()=>setShowNotiTooltip(false)}>
-                    <UpdateActiveIcon width={20} height={20}  color={theme.colors.primary}/>
+                    <UpdateActiveIcon width={30} height={30}  color={theme.colors.primary}/>
                 </ImageHover>}
                 {text === 'Messages' &&
                 <ImageHover onMouseEnter={()=>handleNotiTooltip('Direct messages')} onMouseLeave={()=>setShowNotiTooltip(false)}>
-                    <UserIcon width={20} height={20}  color={theme.colors.primary}/>
+                    <UserIcon width={30} height={30}  color={theme.colors.primary}/>
                 </ImageHover>}
             </Active> : 
             <Inactive onClick={onClick}>
@@ -125,15 +125,15 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                     <NftIcon width={60}  height={60}  color={theme.colors.icon}/></IconBox>}
                 {text === 'Notifications' &&   
                 <ImageHover onMouseEnter={()=>handleNotiTooltip('All notifications')} onMouseLeave={()=>setShowNotiTooltip(false)}>
-                    <MessageIcon width={20} height={20}  color={theme.colors.icon}/>
+                    <MessageIcon width={30} height={30}  color={theme.colors.icon}/>
                 </ImageHover>}
                 {text === 'Updates' && 
                 <ImageHover onMouseEnter={()=>handleNotiTooltip('Project updates')} onMouseLeave={()=>setShowNotiTooltip(false)}>
-                    <UpdateIcon width={20} height={20}  color={theme.colors.icon}/>
+                    <UpdateIcon width={30} height={30}  color={theme.colors.icon}/>
                 </ImageHover>}
                 {text === 'Messages' &&
                 <ImageHover onMouseEnter={()=>handleNotiTooltip('Direct messages')} onMouseLeave={()=>setShowNotiTooltip(false)}>
-                    <UserIcon width={20} height={20}  color={theme.colors.icon}/>
+                    <UserIcon width={30} height={30}  color={theme.colors.icon}/>
                 </ImageHover>}
             </Inactive>
         }</>
@@ -141,7 +141,7 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
     return <Container>
      {showTooltip && <Tooltip text={tooltipText} margin={'-50px'}/>}
     <Menu>
-       {showNotiTooltip && <Tooltip text={notiTooltipText} margin={'25px'}/>}
+       {showNotiTooltip && <Tooltip text={notiTooltipText} margin={'45px'}/>}
         <Item act={o1} text={o1} onClick={change1} />
         <Item act={o2} text={o2} onClick={change2} />
 

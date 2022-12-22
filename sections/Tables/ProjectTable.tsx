@@ -4,11 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
 import { AddCol, ImageHover, ActionCol, TableWrapper } from '../../components/tables/TableStyles';
-import { InfoIcon, RewardIcon, UrlSocialsIcon, VerifiedIcon } from '../../components/icons/Common';
+import {  RewardIcon, VerifiedIcon } from '../../components/icons/Common';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
-import { DetailIcon, WebIcon } from '../../components/icons/Project';
 import RewardTable from '../../components/tables/RewardTable';
-import { Col, BetweenRowSm, RowCenter } from '../../components/format/Row';
+import { Col, RowCenter } from '../../components/format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../../components/functional/CatPicks';
 import TableSkeleton from '../../components/skeletons/TableSkeleton';
@@ -17,9 +16,10 @@ import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
 import BalanceProjectSmall from '../../components/functional/BalanceProjectSmall';
 import Tooltip from '../../components/Tooltip';
-import { AbsoluteLeft, AbsoluteRight } from '../../components/format/Box';
+import { AbsoluteRight } from '../../components/format/Box';
 import TableComponent from '../../components/tables/TableComponent';
-import Deadline from '../../components/tables/Deadline';
+import ProjectActions from '../../components/tables/ProjectActions';
+import TableHeader from '../../components/tables/TableHeader';
 
 
 declare module '@tanstack/table-core' {
@@ -34,6 +34,10 @@ const ProjectTable = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
   const [projectId, setProjectId] = useState<string | undefined>();
+  const [numberWeb3, setNumberWeb3] = useState<number | undefined>();
+  const [numberWeb2, setNumberWeb2] = useState<number | undefined>();
+  const [verifiedWeb3, setVerifiedWeb3] = useState<number | undefined>();
+  const [verifiedWeb2, setVerifiedWeb2] = useState<number | undefined>();
   const theme = useTheme();
 
 
@@ -62,13 +66,10 @@ const ProjectTable = () => {
         header: 'Project',
         cell: (props) => (
           <RowCenter>
-            {props.getValue()}
+            <b>{props.getValue()}</b>
             <AbsoluteRight>
               {props.row.original.verified && <VerifiedIcon height={15} width={15} color={theme.colors.icon} />}
             </AbsoluteRight>
-            <AbsoluteLeft>
-              {props.row.original.softDeadline && <Deadline deadline={props.row.original.softDeadline} />}
-            </AbsoluteLeft>
           </RowCenter>
         ),
         enableColumnFilter: true,
@@ -90,8 +91,7 @@ const ProjectTable = () => {
         cell: (props) => <BalanceProjectSmall pid={props.getValue()} chainId={props.row.original.chainId} />,
         //@ts-ignore
         header: <Col>
-          <div onMouseEnter={() => { handleTooltip('Project goal, d = donated, m = microfunds created') }} onMouseLeave={() => { setShowTooltip(false) }}>Goal</div>
-          <BetweenRowSm><div>d</div><div>m</div></BetweenRowSm>
+          <>Goal</>
         </Col>,
         enableSorting: false,
         enableColumnFilter: false,
@@ -118,26 +118,14 @@ const ProjectTable = () => {
         accessorKey: 'objectId',
         cell: (props) => (
           <RowCenter>
-            <a href={`/project/${props.getValue()}`} rel="noopener noreferrer" target="_blank">
-              <DetailIcon width={30}  color={theme.colors.icon} height={30} />
-            </a>
-            <ImageHover
-              onClick={() => {handleReward(props.getValue())}}
-            >
+            <ProjectActions project={props.row.original.objectId} website={props.row.original.urlProject} socials={props.row.original.urlSocials}/>
+            <ImageHover onClick={() => {handleReward(props.getValue())}}>            
               <RewardIcon height={30} color={theme.colors.icon} width={20} />
             </ImageHover>
-            <a href={props.row.original.urlProject} rel="noopener noreferrer" target="_blank">
-              <WebIcon color={theme.colors.icon} width={30} height={30}/>
-            </a>
-            <a href={props.row.original.urlSocials} rel="noopener noreferrer" target="_blank">
-              <UrlSocialsIcon color={theme.colors.icon} height={30} width={30} />
-            </a>
           </RowCenter>
         ),
          //@ts-ignore
-        header: <ActionCol onMouseEnter={() => { handleTooltip('Project detail, Reward list, Website, Socials') }} onMouseLeave={() => { setShowTooltip(false) }}>
-                      Actions <ImageHover><InfoIcon  width={15} color={theme.colors.icon} /></ImageHover>
-                </ActionCol>,
+        header: <ActionCol>Actions</ActionCol>,
         enableColumnFilter: false,
         enableSorting: false,
       },
@@ -148,6 +136,12 @@ const ProjectTable = () => {
   const { data, isLoading } = useQuery<Project[]>(['projects'], () => UniService.getDataAll(`/classes/Project?where={"state": 1, "type": "Standard"}`), {
     onError: (err) => {
       console.log('err', err);
+    },
+    onSuccess: (data) => {
+      setNumberWeb2(data.filter((item) => item.subcategory === "OpenSource").length);
+      setNumberWeb3(data.filter((item) => item.subcategory === "web2").length);
+      setVerifiedWeb2(data.filter((item) => item.subcategory === "web3" && item.verified === true).length);
+      setVerifiedWeb3(data.filter((item) => item.subcategory === "web2" && item.verified === true).length);
     }
   });
 
@@ -169,6 +163,13 @@ const ProjectTable = () => {
 
   return (
     <TableWrapper>
+      <TableHeader text={'Active projects'} 
+        numberOneFull={numberWeb2} 
+        numberTwoFull={numberWeb3} 
+        numberOneVerified={verifiedWeb3} 
+        numberTwoVerified={verifiedWeb2} 
+        all={data?.length}
+      />
       {isLoading ? (
         <TableSkeleton/>
       ) : (

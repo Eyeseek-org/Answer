@@ -71,30 +71,14 @@ export const ChainSmallIcon = (chain) => {
 
 export const CurrAddress = (curr, chain) => {
   switch(chain) {
-    case 80001:
-    if (curr === 'USDC') { return stable.mumbai.usdc} else if (curr === 'USDT') { return stable.mumbai.usdt} 
-    break;
-    case 137:
-    if (curr === 'USDC') { return stable.polygon.usdc} else if (curr === 'USDT') { return stable.polygon.usdt} 
-    break;
-    case 97: 
-    if (curr === 'BUSD') {return stable.bnbTestnet.usdc} else if (curr === 'USDT') {return stable.bnbTestnet.usdt}
-    break;
-    case 56: 
-    if (curr === 'BUSD') {return stable.bnb.busd} else if (curr === 'USDT') {return stable.bnb.usdc}
-    break;
-    case 4002:
-    if (curr === 'USDC') { return stable.ftmTestnet.usdc} else if (curr === 'USDT') {return stable.ftmTestnet.usdt} 
-    break;
-    case 250:
-    if (curr === 'USDC') { return stable.ftm.usdc} else if (curr === 'DAI') {return stable.ftm.dai} 
-    break;
-    case 420: 
-    if (curr === 'USDC') {return stable.optimismTestnet.usdc} else if (curr === 'USDT') {return stable.optimismTestnet.usdt} 
-    break;
-    case 10: 
-    if (curr === 'USDC') {return stable.optimism.usdc} else if (curr === 'USDT') {return stable.optimism.usdt} 
-    break;
+    case 80001: if (curr === 'USDC') { return stable.mumbai.usdc} else if (curr === 'USDT') { return stable.mumbai.usdt}  break;
+    case 137:if (curr === 'USDC') { return stable.polygon.usdc} else if (curr === 'USDT') { return stable.polygon.usdt}  break;
+    case 97:  if (curr === 'USDC') {return stable.bnbTestnet.usdc} else if (curr === 'USDT') {return stable.bnbTestnet.usdt} break;
+    case 56:  if (curr === 'USDC') {return stable.bnb.usdc} else if (curr === 'USDT') {return stable.bnb.usdt}break;
+    case 4002: if (curr === 'USDC') { return stable.ftmTestnet.usdc} else if (curr === 'USDT') {return stable.ftmTestnet.usdt}  break;
+    case 250:if (curr === 'USDC') { return stable.ftm.usdc} else if (curr === 'USDT') {return stable.ftm.usdt} break;
+    case 420:  if (curr === 'USDC') {return stable.optimismTestnet.usdc} else if (curr === 'USDT') {return stable.optimismTestnet.usdt}  break;
+    case 10:  if (curr === 'USDC') {return stable.optimism.usdc} else if (curr === 'USDT') {return stable.optimism.usdt}  break;
   }
  }
 
@@ -145,3 +129,4 @@ export const ChainName = (chain) => {
         return 'Polygon';
       }
 }
+
