@@ -29,6 +29,7 @@ const Inactive = styled.div`
     padding: 2%;
     cursor: pointer;
     background: ${(props) => props.theme.colors.invisible};
+    border-radius: 5px;
     border-bottom: 1px solid ${(props) => props.theme.colors.border};
     transition: 0.1s;
     box-shadow: 0px 0px 0px 0px ${(props) => props.theme.colors.font};

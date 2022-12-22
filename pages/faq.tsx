@@ -1,8 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import type { NextPage } from 'next';
-import Image from 'next/image';
-import Eye7 from '../public/Eye7.png';
+import type { NextPage } from 'next'; 
 import Footer from '../sections/Footer/Footer';
 import SectionTitle from '../components/typography/SectionTitle';
 import { BookIcon, DeniedIcon, KeyIcon, WorkIcon } from '../components/icons/Common';
@@ -23,14 +21,12 @@ import {
   VideoIcon,
   WearablesIcon,
 } from '../components/icons/Categories';
-
 import Subtitle from '../components/typography/Subtitle';
 import { motion } from 'framer-motion';
-import {notify} from 'reapop'
-import {useDispatch} from 'react-redux'
 import { PiggyIcon } from '../components/icons/Landing';
 import FaqSection from '../sections/FaqSection'
 import { MainContainer } from '../components/format/Box';
+import FooterEyes from '../components/animated/FooterEyes';
 
 const Row = styled.div`
   display: flex;
@@ -243,10 +239,6 @@ const Faq: NextPage = () => {
     );
   };
 
-  const dispatch = useDispatch() 
-    const noti = (text) => {
-      dispatch(notify(text, 'info'))
-  }
 
   return (
     <MainContainer>
@@ -282,10 +274,7 @@ const Faq: NextPage = () => {
           </CatIcons>
         </CatBox>
       </FaqContainer>
-
-      <EyeSevenBox>
-        <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
-      </EyeSevenBox>
+       <FooterEyes/>
       <Footer />
     </MainContainer>
   );

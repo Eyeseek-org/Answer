@@ -20,7 +20,7 @@ const Card = styled(motion.div)`
     min-width: 300px;
   }
 `;
-const Answer = styled.div`
+const Answer = styled(motion.div)`
   font-family: 'Neucha';
   margin-bottom: 4%;
   @media (min-width: 1780px) {
@@ -44,24 +44,22 @@ const Point = styled(motion.li)`
 const FaqCard = ({ answer, points }: Omit<IFAQ, 'question' | 'image'>): JSX.Element => {
   return <>
      
- {points ?    <Card className='card' initial={{  height: 90 }}  animate={{ height: 500}}   transition={{ duration: 1}} key={'card'} >
+ {points ?    <Card className='card' initial={{  height: 50 }}  animate={{ height: 500}}   transition={{ duration: 1}} key={'card'} >
  <AnimatePresence> 
       <Answer>{answer}</Answer>
-      <div>
         {points && points.map((point, index) => {
           return   <Point 
-            initial={{  opacity: 0.1 }} 
+            initial={{  opacity: 0 }} 
             animate={{ opacity: 1}}
             exit={{  opacity: 0, transition: { duration: 0.7 } }} 
-            transition={{ duration: 0.5}}
+            transition={{ duration: 0.5, delay: 0.7}}
             key={index}>{point}
           </Point>
           })}
-      </div>
           </AnimatePresence>
     </Card> : 
     <Card className='empty' initial={{  height: 500 }}  animate={{ height: 90}}  transition={{ duration: 1}}>  
-      <Answer>{answer}</Answer>
+      <Answer >{answer}</Answer>
     </Card>}
     </>
 };

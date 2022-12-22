@@ -137,7 +137,6 @@ const Donate: NextPage = () => {
   const [usdtFaucet, setUsdtFaucet] = useState(testChains.polygonUsdtFaucet);
   const [currencyAddress, setCurrencyAddress] = useState<string>('USDC');
   const [curr, setCurr] = useState(1);
-  const [filteredCur, setFilteredCur] = useState(['USDC', 'USDT']);
 
   const [active, setActive] = useState('No reward');
   // @ts-ignore
@@ -206,10 +205,10 @@ const Donate: NextPage = () => {
         setCurr(2);
         setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
         break;
+    }
   };
 
   const RenderCurrency = () => {
-
     return <>
         {polygonCurrencies.map((c, index) => {
           const { logo, title } = c;

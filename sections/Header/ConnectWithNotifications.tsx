@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 import Rainbow from '../../components/buttons/Rainbow';
-import { SettingIcon } from '../../components/icons/Common';
 import { BellIcon } from '../../components/icons/Landing';
 import { CloseIcon, WriteIcon } from '../../components/icons/Notifications';
 import { UniService } from '../../services/DapAPIService';
@@ -42,7 +41,7 @@ export const ConnectWithNotifications = () => {
         <Rainbow />
         {address && <>
           <IconFrame onClick={() => handleOpenNotis(!notificationsOpen)}>
-            {!notificationsOpen ? <BellIcon /> : <CloseIcon width={20} height={20} />}
+            {!notificationsOpen ? <BellIcon /> : <CloseIcon width={20} height={20} color={theme.colors.primary}  />}
             {unreadNotis && unreadCount > 0 && (
               <Notis
                 animate={{
@@ -56,7 +55,7 @@ export const ConnectWithNotifications = () => {
             )}
           </IconFrame>
           <IconFrame onClick={() => handleOpenSettings(!settingsOpen)}>
-             {!settingsOpen ? <WriteIcon width={25} height={25} color={theme.colors.primary} /> : <CloseIcon width={20} height={20} />}
+             {!settingsOpen ? <WriteIcon width={25} height={25} color={theme.colors.primary} /> : <CloseIcon width={20} height={20} color={theme.colors.primary} />}
           </IconFrame>
         </>}
       </ConnectWalletBox>

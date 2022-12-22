@@ -26,8 +26,9 @@ const NumberBox = styled.div`
 
 const IconBox = styled.div`
   position: absolute;
-  z-index: 20;
-  top: 5px;
+  z-index: 150;
+  top: -5px;
+  left: -5px;
 `
 
 const TokenRow = styled.div`
@@ -36,51 +37,36 @@ const TokenRow = styled.div`
 `
 
 
-const RewardCard = ({
-  key,
-  pledge,
-  title,
-  eligibleActual,
-  type,
-  cap,
-  onClick,
-  nftId,
-  tokenName,
-  tokenAddress,
-  tokenAmount,
-  selected,
-  objectId,
-  rType,
-  chain,
-}) => {
+const RewardCard = ({reward, key, onClick, selected}) => {
   const theme = useTheme();
+
 
   return (
     <MainContainer key={key}>
            <IconBox>
-        {rType === 1 && <Erc20Icon width={20} height={20}  color={theme.colors.icon}/>}
-        {rType === 2 && <NftIcon width={20} height={20}  color={theme.colors.icon}/>}
+        {reward?.rType === 1 && <Erc20Icon width={30} height={30}  color={theme.colors.icon}/>}
+        {reward?.rType === 2 && <NftIcon width={30} height={30}  color={theme.colors.icon}/>}
       </IconBox>
         <RewardBox
             whileHover={{ scale: 1.05 }}
-            color={selected !== objectId ? '#3c3c3c' : '#B0F6FF'}
+            color={selected !== reward?.objectId ? '#3c3c3c' : '#B0F6FF'}
             onClick={onClick}
           >
           <BetweenRow>
-            <RewardTitle>{title}</RewardTitle>
-            {nftId === 0 ? <ProjectAmount>${pledge}</ProjectAmount> : <NftIcon width={30}  color={theme.colors.icon}/>}
+            <RewardTitle>{reward?.title}</RewardTitle>
+            {reward?.nftId === 0 ? <ProjectAmount>${reward?.requiredPledge}</ProjectAmount> : <NftIcon width={30} color={theme.colors.icon}/>}
           </BetweenRow>
           {/* <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} /> */}
 
           <NumberBox>
-            <div>{eligibleActual} of {cap}{' '}</div>
+            <div>{reward?.eligibleActual} of {reward?.cap}{' '}</div>
 
-            {tokenName && tokenAddress && tokenAddress !== "0x0000000000000000000000000000000000000000" && (
-              <TokenRow><Address address={tokenAddress} /></TokenRow>
+            {reward?.tokenName && reward?.tokenAddress && reward?.tokenAddress !== "0x0000000000000000000000000000000000000000" && (
+              <TokenRow><Address address={reward?.tokenAddress} /></TokenRow>
             )}
           </NumberBox>
           <TypeBox>
-            {type === 'Donate' ? 
+            {reward?.type === 'Donate' ? 
           <DonateIcon width={30} /> 
           : 
           <MicrofundIcon width={30} />}

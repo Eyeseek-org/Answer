@@ -41,8 +41,7 @@ const ImageBox = styled(motion.div)`
 `;
 
 const Block = styled.div`
-    width: 20px;
-    height: 20px;
+
 `
 
 const FaqSection = ({ answer, image, points, question }) => {
@@ -61,7 +60,7 @@ const FaqSection = ({ answer, image, points, question }) => {
             key={'image'}
             animate={{ y: 0}}
             transition={{ duration: 0.5}}
-            exit={{  x: - 200, opacity: 0, transition: { duration: 0.5 } }}
+            exit={{ opacity: 0, transition: { duration: 0.5 } }}
             >{image}</ImageBox> : <Block />}
         </AnimatePresence>
         </Question>
