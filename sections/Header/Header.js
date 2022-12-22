@@ -2,7 +2,7 @@ import { Navigation } from './Navigation';
 import { LogoComponent } from './Logo';
 import { ConnectWithNotifications } from './ConnectWithNotifications';
 import Reapop from '../../components/notifications/Reapop'
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { motion } from 'framer-motion'
 
 const HeaderBox = styled(motion.div)`
@@ -18,9 +18,10 @@ const HeaderBox = styled(motion.div)`
   }
 `
 
+const Header = () => {
+  const theme = useTheme()
 
-const Header = () => (
-  <HeaderBox      
+  return <HeaderBox      
     initial={{ opacity: 0, y: -180 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{
@@ -28,11 +29,11 @@ const Header = () => (
       duration: 1,
       delay: 0.6,
     }}>
-    <LogoComponent />
+    <LogoComponent color={theme.colors.primary} />
     <Navigation />
     <ConnectWithNotifications />
     <Reapop/>
   </HeaderBox>
-);
+}
 
 export default Header;

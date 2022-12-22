@@ -31,7 +31,7 @@ export const NavItem = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;
-  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.invisible};
+  box-shadow: 0px 0px 8px 0px ${(props) => props.theme.colors.cardGradient};
   letter-spacing: 1px;
   transition: 0.3s;
   &:hover {

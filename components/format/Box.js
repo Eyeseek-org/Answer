@@ -59,7 +59,7 @@ export const Wrapper = styled.div`
 export const MainContainer = styled.div`
   position: relative;
   padding-top: 3%;
-  margin-bottom: 8%;
+  padding-bottom: 8%;
   width: 100%;
   scroll-behavior: smooth;
   z-index: 1;

@@ -13,7 +13,7 @@ const Question = styled.div`
   font-size: 1.4em;
   line-height: 43px;
   min-width: 30%;
-  color: #b0f6ff;
+  color: ${(props) => props.theme.colors.primary};
   @media (max-width: 1168px) {
     line-height: 20px;
   }

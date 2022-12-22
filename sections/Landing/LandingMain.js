@@ -109,7 +109,7 @@ const ImageBox = styled.div`
   box-sizing: static;
   width: 200px;
   height: 300px;
-  @media (max-width: 1180px) {
+  @media (max-width: 880px) {
     display: none;
   }
 `
@@ -159,7 +159,7 @@ const LandingMain = ({ width, height }) => {
 
   const showBinance = () => {
     setUrl('https://www.binance.org/en');
-    setExpTitle('Binance');
+    setExpTitle('BNB Chain');
     setExpDesc(d.bnb);
     setFanColor(lightGray);
     setBnbColor('#F3BA2F');
@@ -217,10 +217,10 @@ const LandingMain = ({ width, height }) => {
   useEffect(() => {
     setTimeout(() => {
       setTimeout(() => { showPolygon() }, 1000)
-      setTimeout(() => { showFantom() }, 2000)
-      setTimeout(() => { showBinance() }, 3000)
-      setTimeout(() => { showOptimism() }, 4000)
-      setTimeout(() => { clean() }, 5000)
+      setTimeout(() => { showFantom() }, 3000)
+      setTimeout(() => { showBinance() }, 5000)
+      setTimeout(() => { showOptimism() }, 7000)
+      setTimeout(() => { clean() }, 9000)
     }, 5000)
   }, []);
 

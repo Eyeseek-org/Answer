@@ -1,16 +1,13 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { ImageBox, NavItem } from './styles';
-import Logo from '../../public/Logo.png';
+import { Logo } from '../../components/icons/Common';
 
-export const LogoComponent = () => (
+export const LogoComponent = ({color}) => (
   <ImageBox>
     <NavItem>
       <Link href="/">
-        <span>
-          <Image src={Logo} alt="Logo" width={'110%'} height={'50%'} />
-        </span>
+        <Logo width={100} height={50} color={color} />
       </Link>
     </NavItem>
   </ImageBox>

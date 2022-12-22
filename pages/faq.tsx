@@ -26,7 +26,6 @@ import {
 
 import Subtitle from '../components/typography/Subtitle';
 import { motion } from 'framer-motion';
-import { YouTubeIcon } from '../components/icons/Socials';
 import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import { PiggyIcon } from '../components/icons/Landing';
@@ -93,10 +92,6 @@ const CatDesc = styled(motion.div)`
   border-radius: 5px;
 `;
 
-const YtLink = styled.span`
-  text-decoration: underline;
-  margin-right: 5%;
-`;
 
 export interface IFAQ {
   question: string;
@@ -152,12 +147,7 @@ const Faq: NextPage = () => {
     {
       //@ts-ignore
       question: (
-        <>
-          <a href="https://www.youtube.com/channel/UCc6H1w6MZUqaa9FYVZUqcfg" rel="noopener noreferrer" target="_blank">
-            <YtLink>How does it work?</YtLink>
-            <YouTubeIcon width={25} height={25} />
-          </a>
-        </>
+        'How does it work?'
       ),
       answer: 'Creators can set up project in 5 simple steps',
       points: [

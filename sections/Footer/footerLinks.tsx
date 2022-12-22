@@ -1,5 +1,6 @@
 import { HTMLAttributeAnchorTarget } from 'react';
-import { DiscordIcon, EmailIcon, MediumIcon } from '../../components/icons/Socials';
+import { MessageOpenIcon } from '../../components/icons/Common';
+import { DiscordIcon, MediumIcon } from '../../components/icons/Socials';
 
 interface IFooterLinks {
   href: string;
@@ -12,18 +13,18 @@ export const socialLinks: IFooterLinks[] = [
   {
     href: 'mailto: eyeseek@proton.me',
     text: 'Email',
-    icon: <EmailIcon width={30} height={10} />,
+    icon: <MessageOpenIcon width={30} height={10} color={'#003D2E'} />,
   },
   {
     href: 'https://discord.gg/JnTgUEZvtR',
     text: 'Discord',
-    icon: <DiscordIcon width={30} height={10} />,
+    icon: <DiscordIcon width={30} height={10} color={'#003D2E'}/>,
     target: '_blank',
   },
   {
     href: 'https://medium.com/eyeseek',
     text: 'Medium',
-    icon: <MediumIcon width={30} height={10} />,
+    icon: <MediumIcon width={30} height={10} color={'#003D2E'}/>,
     target: '_blank',
   }
 ];
