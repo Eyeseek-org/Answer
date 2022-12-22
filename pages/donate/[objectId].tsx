@@ -206,20 +206,9 @@ const Donate: NextPage = () => {
         setCurr(2);
         setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
         break;
-      case 'DAI':
-        setCurrency('DAI');
-        setCurr(2);
-        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
-        break;
-      case 'BUSD':
-        setCurrency('BUSD');
-        setCurr(2);
-        setCurrencyAddress(CurrAddress(c, projectDetail?.chainId));
-        break;
-    }
   };
 
-  const RenderCurrency = (chain: number) => {
+  const RenderCurrency = () => {
 
     return <>
         {polygonCurrencies.map((c, index) => {

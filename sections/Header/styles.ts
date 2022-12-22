@@ -99,16 +99,3 @@ export const Notis = styled(motion.div)`
   right: -10%;
   top: -20%;
 `;
-
-export const HeaderBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  color: ${(props) => props.theme.colors.primary};
-  padding: 2%;
-  z-index: 100;
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`;

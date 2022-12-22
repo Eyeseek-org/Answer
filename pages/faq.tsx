@@ -31,6 +31,7 @@ import {notify} from 'reapop'
 import {useDispatch} from 'react-redux'
 import { PiggyIcon } from '../components/icons/Landing';
 import FaqSection from '../sections/FaqSection'
+import { MainContainer } from '../components/format/Box';
 
 const Row = styled.div`
   display: flex;
@@ -258,7 +259,7 @@ const Faq: NextPage = () => {
   }
 
   return (
-    <>
+    <MainContainer>
       <SectionTitle title="FAQ" subtitle="Learn more about Eyeseek Funding" />
       <FaqContainer>
         {FAQS.map(({ answer, image: Image, points, question }, index) => {
@@ -296,7 +297,7 @@ const Faq: NextPage = () => {
         <Image src={Eye7} alt="Eye7" width={'400%'} height={'40%'} />
       </EyeSevenBox>
       <Footer />
-    </>
+    </MainContainer>
   );
 };
 

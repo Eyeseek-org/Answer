@@ -5,17 +5,20 @@ import styled from 'styled-components';
 import Eye7 from '../public/Eye7.png';
 import { useEffect } from 'react';
 import Footer from '../sections/Footer/Footer';
-
 import LandingMain from '../sections/Landing/LandingMain';
 import LatestProjects from '../sections/Landing/LatestProjects';
 import Features from '../sections/Landing/Features';
+import Partners from '../sections/Landing/Partners';
 import Script from 'next/script';
+import {motion, useScroll} from "framer-motion"
+import ViewFade from '../components/animated/ViewFade';
 
 const Container = styled.div`
   position: relative;
   margin-top: 1%;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
 `;
 
 const EyeSevenBox = styled.div`
@@ -24,8 +27,16 @@ const EyeSevenBox = styled.div`
   position: relative;
 `;
 
+const ProgressLine = styled(motion.div)`
+  height: 0.5px;
+  background: ${({ theme }) => theme.colors.border};
+  width: 100%;
+`
+
+
 
 const Home: NextPage = () => {
+  const { scrollYProgress } = useScroll();
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, []);
@@ -40,12 +51,11 @@ const Home: NextPage = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <LandingMain width={'60%'} height={'50%'} />
-        <Features />
+        <ViewFade comp={<Features/>}/>
+        <ProgressLine style={{ scaleX: scrollYProgress }} />  
         <LatestProjects my={false} />
-        <EyeSevenBox>
-          <Image src={Eye7} alt="Eye7" width={'350px'} height={'30px'} />
-        </EyeSevenBox>
-        <Footer />
+        <ViewFade comp={<EyeSevenBox><Image src={Eye7} alt="Eye7" width={'350px'} height={'30px'} /></EyeSevenBox>}/>
+        <ViewFade comp={<Footer/>}/>
         <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-WV83C9F" strategy="afterInteractive" />
       </Container>
     </>
