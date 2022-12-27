@@ -2,6 +2,8 @@ import styled, {useTheme} from 'styled-components'
 import { RewardAnimatedBox } from '../format/RewardAnimatedBox'
 import { motion } from 'framer-motion'
 import { Erc20Icon, NftIcon } from '../icons/Project'
+import { Row } from '../format/Row'
+import Address from '../functional/Address'
 
 const Container = styled(motion.div)`
     position: fixed;
@@ -23,20 +25,23 @@ const IconBox = styled.div`
 `
 
 
-const CustomModal = ({openModal, desc, delivery, estimation, title, pledge, rType}) => {
+const CustomModal = ({openModal, rType, reward}) => {
     const theme = useTheme()
     
     return <>
-    {openModal &&  <Container
+    {openModal && reward &&  <Container
             initial={{  width: 100, height: 50 }} 
             animate={{ width: 500, height: 250}}
             transition={{ duration: 0.3}}
         >
         <IconBox>
-            {rType === 1 && <Erc20Icon width={50} height={50}  color={theme.colors.icon}/>}
-            {rType === 2 && <NftIcon width={50} height={50}  color={theme.colors.icon}/>}
+            <Row>
+                <Address address={reward.tokenAddress} />
+                {rType === 1 && <Erc20Icon width={50} height={50}  color={theme.colors.icon}/>}
+                {rType === 2 && <NftIcon width={50} height={50}  color={theme.colors.icon}/>}
+            </Row>
         </IconBox>
-          <RewardAnimatedBox text={desc} delivery={delivery} estimation={estimation} title={title} pledge={pledge} />
+          <RewardAnimatedBox reward={reward} />
     </Container>}
     </>
 }

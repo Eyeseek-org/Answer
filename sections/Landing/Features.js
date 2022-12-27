@@ -120,7 +120,7 @@ const Features = () => {
 
           {demoFunding ? (
             <FeatureCard
-              icon={<MicrofundIcon width={55} />}
+              icon={<MicrofundIcon width={55} color={theme.colors.icon}/>}
               title={Texts.title2}
               description={<LiteYouTubeEmbed 
                 id="SFRd49ifn2A"
@@ -128,7 +128,7 @@ const Features = () => {
             />
           ) : (
             <FeatureCard
-              icon={<MicrofundIcon width={55} />}
+              icon={<MicrofundIcon width={55} color={theme.colors.icon} />}
               anim={<LightAnim width={200} />}
               title={Texts.title2}
               description={Texts.description2}

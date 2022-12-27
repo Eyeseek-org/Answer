@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import { useContractRead } from 'wagmi';
 import CalcOutcome from '../../components/functional/CalcOutcome';
 import { DonateSchema } from '../../util/validator';
@@ -39,6 +39,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
   const { appState, setAppState } = useApp();
   const { rewMAmount, rewDAmount } = appState;
   const [add, setAdd] = useState(diamond.mumbai);
+  const theme = useTheme()
 
   const outcome = useContractRead({
     address: add,
@@ -57,6 +58,9 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
     args: [pid, rewDAmount],
     watch: true
   });
+
+
+
 
   useEffect(() => {
     if (process.env.PROD !== 'something'){
@@ -101,7 +105,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
       <RowCenter>
         <InputRow
           id="microfund"
-          name={<><MicrofundIcon width={50}/></>}
+          name={<><MicrofundIcon width={50} color={theme.colors.icon}/></>}
           min={0}
           placeholder="1000"
           onChange={handleChangeM}

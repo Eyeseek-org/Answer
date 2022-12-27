@@ -3,12 +3,10 @@ import React from 'react';
 import { ImageBox, NavItem } from './styles';
 import { Logo } from '../../components/icons/Common';
 
-export const LogoComponent = ({color}) => (
-  <ImageBox>
+export const LogoComponent = ({ color }) => (
+  <Link href="/">
     <NavItem>
-      <Link href="/">
-        <Logo width={100} height={50} color={color} />
-      </Link>
+      <Logo width={100} height={50} color={color} />
     </NavItem>
-  </ImageBox>
+  </Link>
 );

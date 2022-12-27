@@ -49,17 +49,7 @@ export const NavItem = styled.div`
 `;
 
 export const ImageBox = styled.div`
-  display: block;
-  @media (max-width: 768px) {
-    font-size: 0.8em;
-    flex-wrap: wrap;
-    padding-right: 10%;
-    right: 0;
-  }
 
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 export const ConnectWalletBox = styled.div`

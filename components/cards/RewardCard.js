@@ -1,7 +1,6 @@
 import styled, {useTheme} from 'styled-components';
 import { MicrofundIcon } from '../../components/icons/Landing';
 import { DonateIcon, Erc20Icon, NftIcon } from '../../components/icons/Project';
-import Address from '../../components/functional/Address';
 import { RewardTitle } from '../typography/Titles';
 import { ProjectAmount } from '../typography/Amounts';
 import { BetweenRow} from '../format/Row';
@@ -31,11 +30,6 @@ const IconBox = styled.div`
   left: -5px;
 `
 
-const TokenRow = styled.div`
-  font-size: 0.8em;
-  max-width: 100px;
-`
-
 
 const RewardCard = ({reward, key, onClick, selected}) => {
   const theme = useTheme();
@@ -54,22 +48,18 @@ const RewardCard = ({reward, key, onClick, selected}) => {
           >
           <BetweenRow>
             <RewardTitle>{reward?.title}</RewardTitle>
-            {reward?.nftId === 0 ? <ProjectAmount>${reward?.requiredPledge}</ProjectAmount> : <NftIcon width={30} color={theme.colors.icon}/>}
+            {reward?.nftId === 0 ? <ProjectAmount>${reward?.requiredPledge / 1000000}</ProjectAmount> : <NftIcon width={30} color={theme.colors.icon}/>}
           </BetweenRow>
           {/* <NFTDisplay address={tokenAddress} tokenId={nftId} chain={chain} /> */}
 
           <NumberBox>
             <div>{reward?.eligibleActual} of {reward?.cap}{' '}</div>
-
-            {reward?.tokenName && reward?.tokenAddress && reward?.tokenAddress !== "0x0000000000000000000000000000000000000000" && (
-              <TokenRow><Address address={reward?.tokenAddress} /></TokenRow>
-            )}
           </NumberBox>
           <TypeBox>
             {reward?.type === 'Donate' ? 
           <DonateIcon width={30} /> 
           : 
-          <MicrofundIcon width={30} />}
+          <MicrofundIcon width={30} color={theme.colors.icon}/>}
           </TypeBox>
         </RewardBox>
     </MainContainer>
