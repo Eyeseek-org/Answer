@@ -23,7 +23,7 @@ export const testChains = {
 };
 
 export const diamond = {
-  mumbai: "0x663A132c195fDDcf0d74fE7518Be773727DF314d",
+  mumbai: "0x2c5DD11DC6ff714A478ae1072C62b1f6e02Bd778",
   bnbTestnet: "0x7efb53548Cc090881c7bF8657f2e3c771C07Dea9",
   ftmTestnet: "0x56684CA97e6E35d12B5b35c50E1F53Dd8C7F15Ed",
   optimismTestnet: "0x56684CA97e6E35d12B5b35c50E1F53Dd8C7F15Ed",

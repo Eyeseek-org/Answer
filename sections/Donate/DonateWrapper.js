@@ -128,8 +128,8 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
     once: true,
   });
 
-  const sixDonate = rewDAmount * 1000000; 
-  const sixMicro = rewMAmount * 1000000; 
+  const sixDonate = rewDAmount; 
+  const sixMicro = rewMAmount; 
  
   const {error, write} = useContractWrite({
     mode: 'recklesslyUnprepared',
@@ -182,6 +182,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
                   {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
                 </Metrics>
               )}
+              {sixDonate}
              {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6}  />}
              {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6} />}
             </>
