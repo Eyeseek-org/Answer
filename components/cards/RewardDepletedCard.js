@@ -57,7 +57,7 @@ const RewardCard = ({
           <NumberBox>
             <ErrText text={<>{eligibleActual} of {cap}{' '}</>}/>
           </NumberBox>
-          <TypeBox>{type === 'Donate' ? <DonateIcon width={30} /> : <MicrofundIcon width={30} />}</TypeBox>
+          <TypeBox>{type === 'Donate' ? <DonateIcon width={30} /> : <MicrofundIcon width={30} color={theme.colors.primary} />}</TypeBox>
         </RewardBox>
     </MainContainer>
   );

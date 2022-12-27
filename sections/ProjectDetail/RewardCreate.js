@@ -26,6 +26,7 @@ import TabImage from '../../components/form/TabImage';
 import { pushDiscordReward } from '../../data/discord/projectData';
 import { diamond } from '../../data/contracts/core';
 import ButtonErr from '../../components/buttons/ButtonErr';
+import ApprovedReward from '../../components/functional/ApprovedReward';
 
 const Summary = styled.div`
     margin-top: 1%;
@@ -83,15 +84,15 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
 
     const listened = async(event) => {
         const parse = parseInt(event)
-        setRewardId(parse + 1)
-        await handleSaveReward(objectId)
+        setRewardId(parse - 1)
+        await handleSaveReward(parse - 1)
         setRewardState((prev) => ({ ...prev, loading: false }))
         if (process.env.NEXT_PUBLIC_ENV === "production") {
             pushDiscordReward(title, desc, pledge, cap, delivery, estimation, address );
         }
       }    
 
-    const handleCreateReward = async (rType, n) => {
+    const handleCreateReward = async (rType, n, rid) => {
         try {
           await axios.post(`${process.env.NEXT_PUBLIC_DAPP}/classes/Reward`, {
             "title": title,
@@ -106,14 +107,13 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
             "tokenName": n,
             "tokenAddress": tokenAddress,
             "tokenAmount": Number(tokenAmount),
-            "requiredPledge": Number(pledge),
+            "requiredPledge": Number(pledge * 1000000),
             "nftId": Number(nftId),
             "rType": rType,
-            "rewardId": rewardId,
+            "rewardId": rid,
             "owner": address,
             "donors": []
           }, moralisApiConfig)
-        
           setApiError(false)
           setSuccess(true)
         } catch (error) {
@@ -122,15 +122,15 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
         }
       }
     
-    const handleSaveReward = async () => {
+    const handleSaveReward = async (rid) => {
         if (tokenType === 'ERC20') {
-            await handleCreateReward(1,'')
+            await handleCreateReward(1,'',rid)
             await handleRewardNotifications('ERC20')
         } else if (tokenType === 'ERC1155') {
-            await handleCreateReward(2,tokenName)
+            await handleCreateReward(2,tokenName,rid)
             await handleRewardNotifications('ERC1155')
         } else if (tokenType === 'Classic') {
-            await handleCreateReward(0,tokenName)
+            await handleCreateReward(0,tokenName,rid)
             await handleRewardNotifications('Classic')
         }
     }
@@ -193,6 +193,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                         {dType === 'Donate' && <SumRow><SumTitle>You will receive if fully claimed =  <b>$<Amount value={Number(cap)*Number(pledge)}/></b></SumTitle></SumRow>}
                         {dType === 'Microfund' && <SumRow><SumTitle>Microfund impact on final collected amount is never same</SumTitle></SumRow>}
                         {tokenType === 'ERC20' && <SumRow><SumTitle>Number of ERC20 you have to lock = <b><Amount value={Number(cap)*Number(tokenAmount)}/></b></SumTitle></SumRow>}
+                        {tokenType === 'ERC20' && tokenAddress && <SumRow><SumTitle>Approved ERC20: <b><ApprovedReward address={address} currencyAddress={tokenAddress} dec={1}/></b></SumTitle></SumRow> }
                     </Summary>
                 {cap > 0 && title && desc && delivery && estimation ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}

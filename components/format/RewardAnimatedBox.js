@@ -41,9 +41,9 @@ const DescBox = styled.div`
     margin-bottom: 5%;
 `
 
-export const RewardAnimatedBox = ({text, delivery, estimation, title, pledge}) => {
+export const RewardAnimatedBox = ({reward}) => {
     return <>
-    {text === '' ? null : 
+    {!reward ? null : 
     <Outer
           initial={ { x: -100, opacity: 0 }}
           animate={{ x: 0 ,opacity: 1 }}
@@ -52,10 +52,10 @@ export const RewardAnimatedBox = ({text, delivery, estimation, title, pledge}) =
             scale: [0, 1, 0.5, 1],
           }}>
         <Container>
-            <TitleBox>{title} (${pledge})</TitleBox>
-            <DescBox>{text}</DescBox>
-            <RewardDesc><Col><E>Includes</E><li>{delivery}</li></Col></RewardDesc> 
-            <RewardDesc><Col><E>Estimated delivery</E><li>{estimation}</li></Col></RewardDesc> 
+            <TitleBox>{reward?.title} (${reward.requiredPledge / 1000000})</TitleBox>
+            <DescBox>{reward.text}</DescBox>
+            <RewardDesc><Col><E>Includes</E><li>{reward.delivery}</li></Col></RewardDesc> 
+            <RewardDesc><Col><E>Estimated delivery</E><li>{reward.estimation}</li></Col></RewardDesc> 
         </Container>
     </Outer>}
     </>

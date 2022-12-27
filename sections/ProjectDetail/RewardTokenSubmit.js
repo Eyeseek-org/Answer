@@ -31,8 +31,6 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
   const noti = (text, type) => {
     dispatch(notify(text, type))
   }
-  
-  var total = cap * tokenAmount;
 
   const listened = async () => {
     setEv(true);
@@ -59,14 +57,14 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
-    args: [pid, cap, total, tokenAddress, 1],
+    args: [pid, cap, tokenAmount * 1000000, tokenAddress, 1],
   })
 
   return (
     <ColRight>
       <ButtonBox>
         <ApprovedComponent address={add} tokenAddress={tokenAddress}  />
-        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={total} dec={6} />
+        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={tokenAmount} dec={6} />
         {!loading ? <ButtonAlt
           text={'Create reward'}
           onClick={() => {
