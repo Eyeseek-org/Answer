@@ -32,6 +32,8 @@ export const RowCenter = styled.div`
   flex-direction: row;
   gap: 4%;
   justify-content: center;
+  // If there is props, color red, else color blue
+  background: ${(props) => props.active ? props.theme.colors.border : 'inherit'};
 `
 
 export const RowEnd = styled.div`

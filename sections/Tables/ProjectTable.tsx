@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { AddCol, ImageHover, ActionCol, TableWrapper } from '../../components/tables/TableStyles';
 import {  RewardIcon, VerifiedIcon } from '../../components/icons/Common';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
-import RewardTable from '../../components/tables/RewardTable';
+import RewardTable from './RewardTable';
 import { Col, RowCenter } from '../../components/format/Row';
 import { useTheme } from 'styled-components';
 import { SubcatPick } from '../../components/functional/CatPicks';
@@ -20,6 +20,7 @@ import { AbsoluteRight } from '../../components/format/Box';
 import TableComponent from '../../components/tables/TableComponent';
 import ProjectActions from '../../components/tables/ProjectActions';
 import TableHeader from '../../components/tables/TableHeader';
+import Subtitle from '../../components/typography/Subtitle';
 
 
 declare module '@tanstack/table-core' {
@@ -38,6 +39,7 @@ const ProjectTable = () => {
   const [numberWeb2, setNumberWeb2] = useState<number | undefined>();
   const [verifiedWeb3, setVerifiedWeb3] = useState<number | undefined>();
   const [verifiedWeb2, setVerifiedWeb2] = useState<number | undefined>();
+  const [title, setTitle] = useState<string | undefined>();
   const theme = useTheme();
 
 
@@ -119,7 +121,7 @@ const ProjectTable = () => {
         cell: (props) => (
           <RowCenter>
             <ProjectActions project={props.row.original.objectId} website={props.row.original.urlProject} socials={props.row.original.urlSocials}/>
-            <ImageHover onClick={() => {handleReward(props.getValue())}}>            
+            <ImageHover onClick={() => {handleReward(props.getValue(), props.row.original.title)}}>            
               <RewardIcon height={30} color={theme.colors.icon} width={20} />
             </ImageHover>
           </RowCenter>
@@ -156,8 +158,9 @@ const ProjectTable = () => {
     }
   );
 
-  const handleReward = (id: string) => {
+  const handleReward = (id: string, title: string) => {
     setProjectId(id);
+    setTitle(title)
   };
 
 
@@ -178,7 +181,11 @@ const ProjectTable = () => {
           <TableComponent type={'project'} columns={columns} data={data}/>
         </Col>
       )}
-      {projectRewards && <RewardTable data={projectRewards}  projectId={projectId} />}
+      {projectRewards && <>
+        <Subtitle text={title}/>
+        <RewardTable data={projectRewards}  projectId={projectId} />
+      </>
+      }
     </TableWrapper>
   );
 };

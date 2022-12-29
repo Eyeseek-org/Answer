@@ -27,7 +27,6 @@ const RewardAllTable = ({ data }: ITable): JSX.Element => {
   const [backerFilter, setBackerFilter] = useState<boolean>(false);
   const theme = useTheme()
 
-  console.log(data);
 
   const columns = useMemo<ColumnDef<Reward, string>[]>(
     () => [

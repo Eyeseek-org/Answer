@@ -57,7 +57,6 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   const { appState } = useApp();
   const { rewMAmount, rewDAmount, rewEligible, rewObjectId, rewId, rewDonors } = appState;
   const sumWei  = (parseInt(rewMAmount) + parseInt(rewDAmount))
-  const sum = (parseInt(rewMAmount) + parseInt(rewDAmount)) * 1000000;
   const router = useRouter();
   const { objectId } = router.query;
   const [spender, setSpender] = useState(diamond.mumbai);
@@ -87,7 +86,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   });
 
   if (allowance.data) {
-    all = Number(allowance.data.toString()) / 1000000;
+    all = Number(allowance.data.toString());
   }
 
   const useMicroEv = async(ev) => {
@@ -97,7 +96,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
       await updateReward(rewDonors);
     }
     setReady(false)
-    noti("Amount donate, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
+    noti("Microfund created, wonderful!... now you can spam it to increase project chances :)", "success")
   };
 
   const useEv = async(ev) => {
@@ -107,7 +106,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
       await updateReward(rewDonors);
     }
     setReady(false)
-    noti("Microfund created, wonderful!... now you can spam it to increase project chances :)", "success")
+    noti("Amount donate, GREAT JOB!!... now you can spam it to increase project chances :)", "success")
   };
 
   useContractEvent({
@@ -128,8 +127,6 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
     once: true,
   });
 
-  const sixDonate = rewDAmount; 
-  const sixMicro = rewMAmount; 
  
   const {error, write} = useContractWrite({
     mode: 'recklesslyUnprepared',
@@ -137,7 +134,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
     abi: diamondAbi,
     chainId: home,
     functionName: 'contribute',
-    args: [sixMicro, sixDonate, pid, curr, rewId],
+    args: [rewMAmount, rewDAmount, pid, curr, rewId],
   })
 
   const handleSubmit = async () => {
@@ -177,14 +174,13 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
             <>
               {address && (
                 <Metrics>
-                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress}  /></Row>
-                  <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} /></Row>
+                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress} dec={1000000000000}  /></Row>
+                  <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} dec={6} /></Row>
                   {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
                 </Metrics>
               )}
-              {sixDonate}
-             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6}  />}
-             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={6} />}
+             {rewId === 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={1000000}  />}
+             {rewId > 0 && <ApproveUniversal amount={sumWei} tokenContract={currencyAddress} spender={spender} dec={1000000} />}
             </>
           )}
           <div>
@@ -193,7 +189,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
                 {all && all < sumWei ? (
                   <ButtonAlt text={<><DonateErrIcon width={30}/></>}  onClick={() => handleSubmit()} />
                 ) : <>
-                    {sum === 0 ? null :                 
+                    {sumWei === 0 ? null :                 
                   <Row onMouseEnter={()=>{setDonateTooltip(true)}} onMouseLeave={()=>{setDonateTooltip(false)}}>
                     {donateTooltip && <Tooltip text='Donate to this project' margin={'-40px'} /> }
                     {rewId === 0 && <ButtonAlt onClick={() => handleSubmit()} text={<Row> {ready && !error && <LoaderSmall/>}<div><DonateFormIcon width={30}/></div></Row>} /> }

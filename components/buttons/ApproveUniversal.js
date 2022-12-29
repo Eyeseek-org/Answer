@@ -30,30 +30,18 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
     const { address } = useAccount()
     const [ev, setEv] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [d, setD] = useState(1000000)
-    const [appAmount, setAppAmount] = useState(1000000)
-
 
     const listened = async() => {
         setEv(true)
         setLoading(false)
     }
 
-      useEffect (() => {
-        switch (dec) {
-            case 6: setD(1000000); break; // Stablecoins USDT, USDCT
-            case 18: setD(1000000000000000000); break;  // Standard ERC20 tokens, DAI, BUSD
-            case 1: setD(1); break; 
-            default: setD(6);
-        }
-        setAppAmount(amount * d)
-    },[amount])
 
     const { config, error } = usePrepareContractWrite({
         address: tokenContract,
         abi: token.abi,
         functionName: 'approve',
-        args: [spender, appAmount],
+        args: [spender, amount],
     })
 
     useContractEvent({
@@ -83,7 +71,7 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
             <ButtonAlt 
                 width={'200px'} 
                 onClick={() => handleApprove()} 
-                text={<Col><div>Approve</div><Amount>{amount}</Amount></Col>} />
+                text={<Col><div>Approve</div><Amount><>{amount / dec}</></Amount></Col>} />
                 : 
             <ButtonAlt width={'200px'} text={'Approve again'} onClick={() => handleApprove()}  />}
          </Wrapper>}
