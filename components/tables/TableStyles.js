@@ -11,7 +11,7 @@ export const Table = styled.table`
   box-shadow: 1px 1px 15px 1px rgba(0, 0, 0, 0.85);
   margin-bottom: 5%;
   border: 1px solid grey;
-    animation: fadeIn 0.7s;
+  animation: fadeIn 0.7s;
   @keyframes fadeIn {
     0% {
       opacity: 0;

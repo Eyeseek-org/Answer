@@ -28,7 +28,7 @@ const CalcOutcome = ({ conn, multi }) => {
       {multi ? 
         <RewardTitle onMouseEnter={()=>{setImpactTooltip(true)}} onMouseLeave={()=>{setImpactTooltip(false)}}>
         {impactTooltip && <Tooltip text={'Total impact of this donation'} margin={'-50px'}/>}
-          ${multi}
+          ${multi / 1000000}
           <InfoIcon width={15} color={theme.colors.icon}/>
         </RewardTitle>
       : null}

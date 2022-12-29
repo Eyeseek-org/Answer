@@ -198,7 +198,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                 {cap > 0 && title && desc && delivery && estimation ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
                     {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
-                    {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} /> }
+                    {/* {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} /> } */}
                     {tokenType === 'Classic' && address === !owner && <ErrText text="Only project owner can create classic rewards"/>}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
                     </> : <ErrText text="All fields are mandatory"/>}

@@ -5,7 +5,7 @@ import Tab from '../components/form/Tab';
 import { useState } from 'react';
 import Transactions from '../sections/Tables/Transactions';
 import ProjectTable from '../sections/Tables/ProjectTable';
-import RewardsAll from '../components/tables/RewardsAll';
+import RewardsAll from '../sections/Tables/RewardsAll';
 
 const Container = styled.div`
   display: flex;

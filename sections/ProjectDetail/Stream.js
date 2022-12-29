@@ -253,7 +253,7 @@ const Stream = ({ objectId, recipient, chainId }) => {
           </ValueRow>
 
          <BetweenRow>
-            <ApproveUniversal tokenContract={superTokenAddress} spender={superContract} amount={flowRate} dec={6} />
+            <ApproveUniversal tokenContract={superTokenAddress} spender={superContract} amount={flowRate} dec={1000000} />
             {address && <ButtonAlt width={'100px'} text='Start' onClick={() => (startStream())} />}
             </BetweenRow>
           {apiError && <ErrorBox>Insufficient funds or allowance</ErrorBox>}

@@ -71,11 +71,11 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
   }, [rewDAmount]);
 
   const handleChangeD = (e) => {
-    setAppState(appState => ({ ...appState, rewDAmount: e.target.value }));
+    setAppState(appState => ({ ...appState, rewDAmount: e.target.value * 1000000 }));
   };
 
   const handleChangeM = (e) => {
-    setAppState(appState => ({ ...appState, rewMAmount: e.target.value }));
+    setAppState(appState => ({ ...appState, rewMAmount: e.target.value * 1000000 }));
   };
 
   const formik = useFormik({

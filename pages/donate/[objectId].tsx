@@ -11,9 +11,9 @@ import { InfoIcon } from '../../components/icons/Common';
 import Tooltip from '../../components/Tooltip';
 import Warning from '../../components/animated/Warning';
 import ButtonErr from '../../components/buttons/ButtonErr';
-import { useNetwork, useSwitchNetwork, useContractEvent } from 'wagmi';
+import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { polygonCurrencies } from '../../data/currencies';
-import { diamond, testChains } from '../../data/contracts/core';
+import { testChains } from '../../data/contracts/core';
 import NativeFaucet from '../../sections/Donate/NativeFaucet';
 import Faucet from '../../components/buttons/Faucet';
 import LandingDonate from '../../components/animated/LandingDonate';
@@ -25,7 +25,6 @@ import { useQuery } from '@tanstack/react-query';
 import { BodyBox, MainContainer } from '../../components/format/Box';
 import {ChainIconComponent, CurrAddress} from '../../helpers/MultichainHelpers'
 import ErrText from '../../components/typography/ErrText';
-import diamondAbi from '../../abi/diamondAbi.json'
 
 const DonateOption = styled.div`
   position: relative;
@@ -265,13 +264,13 @@ const Donate: NextPage = () => {
             </Row>
         </DonateOption>
         <DonateOption>
-          <FaucetBox>
+         {process.env.NEXT_PUBLIC_ENV === 'dev' &&  <FaucetBox>
             Test purpose:
             <Faucet currency={'USDC'} address={usdcFaucet} />
             <Faucet currency={'USDT'} address={usdtFaucet} />
             <NativeFaucet />
             <LandingDonate />
-          </FaucetBox>
+          </FaucetBox>}
           <DonateOptionTitle>
             <Row>Currency</Row>
             <DonateOptionSub>Choose donate currency</DonateOptionSub>

@@ -1,12 +1,15 @@
 import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getGroupedRowModel, getFacetedUniqueValues } from '@tanstack/react-table';
 import { useState } from 'react';
-import {Table, Header, Tr, Cell, HeadRow, HeaderCell, ImageHover } from './TableStyles';
-import { NonVerifiedIcon, UsersIcon, VerifiedIcon } from '../icons/Common';
-import {ArrowUp, ArrowDown} from '../icons/TableIcons'
-import RewardModal from '../../sections/RewardModal'
+import {Table, Header, Tr, Cell, HeadRow, HeaderCell, ImageHover } from '../../components/tables/TableStyles';
+import { NonVerifiedIcon, UsersIcon, VerifiedIcon } from '../../components/icons/Common';
+import {ArrowUp, ArrowDown} from '../../components/icons/TableIcons'
+import RewardModal from '../RewardModal'
 import {useTheme} from 'styled-components';
-import { RewardDesc } from '../typography/Descriptions';
-import RewardStats from '../functional/RewardStats';
+import { RewardDesc } from '../../components/typography/Descriptions';
+import RewardStats from '../../components/functional/RewardStats';
+import { Erc20Icon, NftIcon } from '../../components/icons/Project';
+import Address from '../../components/functional/Address';
+import { RowCenter, RowStart } from '../../components/format/Row';
 
 const RewardTable = ({data, projectId}) => {
   const [sorting, setSorting] = useState([]);
@@ -24,22 +27,24 @@ const RewardTable = ({data, projectId}) => {
 
   const columns = [
     {
+      accessorKey: 'rewardId',
+      cell: (props) => (
+        <>{props.row.original.rewardId}</>
+      ),
+      header: <HeaderCell>id</HeaderCell>,
+    },
+    {
       accessorKey: 'title',
       cell: (props) => (
-        <RewardStats 
-          desc={props.row.original.description}  
-          delivery={props.row.original.delivery} 
-          estimation={props.row.original.estimation}  
-          title={props.row.original.title}
-        />
+        <RewardStats reward={props.row.original} />
       ),
-      header: 'Project'
+      header: 'Reward title'
     },
     {
         accessorKey: 'requiredPledge',
         cell: (props) => (
           <>
-           ${props.getValue()}
+          ${props.row.original.requiredPledge / 1000000}
           </>
         ),
         header: <HeaderCell>Pledge</HeaderCell>,
@@ -48,19 +53,22 @@ const RewardTable = ({data, projectId}) => {
       accessorKey: 'cap',
       cell: (props) => (
         <>
-         {props.getValue()}
+          {props.row.original.eligibleActual} of {props.row.original.cap}
         </>
       ),
-      header: <HeaderCell># Rewards</HeaderCell>,
+      header: <HeaderCell>Available</HeaderCell>,
     },
     {
-      accessorKey: 'eligibleActual',
+      accessorKey: 'rType',
       cell: (props) => (
-        <>
-         {props.getValue()}
-        </>
+        <RowCenter>
+          {props.getValue() === 0 && <>Classic</>}
+          {props.getValue() === 1 && <Erc20Icon width={20} color={theme.colors.icon}/>}
+          {props.getValue() === 2 && <NftIcon width={20} color={theme.colors.icon}/>}
+          {props.getValue() > 0 && <><Address address={props.row.original.tokenAddress}/></>}       
+        </RowCenter>
       ),
-      header: <HeaderCell># Free</HeaderCell>,
+      header: <HeaderCell>Type</HeaderCell>,
     },
     {
       accessorKey: 'active',
@@ -72,7 +80,7 @@ const RewardTable = ({data, projectId}) => {
       header: <HeaderCell>Active</HeaderCell>,
     },
     {
-        accessorKey: 'rewardId',
+        accessorKey: 'objectId',
         cell: (props) => (
           <ImageHover onClick={()=>{handleRewardList(props.row.original.donors, props.row.original.owner, props.row.original.objectId)}}>
             <UsersIcon color={theme.colors.icon} width={20}/>

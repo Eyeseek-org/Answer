@@ -11,6 +11,7 @@ import { RewardDesc } from '../components/typography/Descriptions';
 import CircleButton from '../components/buttons/CircleButton'
 import ClickableIcon from '../components/animated/ClickableIcon'
 import { B } from '../components/typography/ColoredTexts';
+import { useAccount } from 'wagmi';
 
 const Button = styled.button`
     background-color: transparent;
@@ -55,6 +56,7 @@ const Index = styled.div`
 const RewardModal = ({ showMe, rewardId, backers,owner, projectId }) => {
     const [display, setDisplay] = useState(showMe);
     const [expand, setExpand] = useState(false);
+    const address = useAccount()
     const theme = useTheme();
     // TBD Notifikace - zamyslet se nad custom message -> Nebo švihnout něco default 
     // Zamyslet se, jestli má smysl při projektu, nebo až pak po ukončení
@@ -110,17 +112,17 @@ const RewardModal = ({ showMe, rewardId, backers,owner, projectId }) => {
             <BackerList key={index}>
                 <BetweenRow>
                   {!expand ? <><Address address={backer.address}/>
-                  {owner && <>
+                   <>
                        {backer.state === 1 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<ClickableIcon type={'handshake'}/>}/>}
                        {backer.state === 2 &&  <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<ClickableIcon type={'back'}/>}/>}
                         <CircleButton onClick={()=>{handleRewardNotification(backer.address)}} icon={<ClickableIcon type={'remind'}/>} />
-                   </>}
+                   </>
                   </> :  <><Index>{index+1}</Index><RewardDesc>{backer.address}</RewardDesc>
-                  {owner &&   <>
+                 <>
                        {backer.state === 1 && <CircleButton onClick={()=>{updateRewardState(backer.id, 2)}} icon={<Row>Resolve<ClickableIcon type={'handshake'}/></Row>}/>}
                       {backer.state === 2 &&   <CircleButton onClick={()=>{updateRewardState(backer.id, 1)}} icon={<Row>Unresolve<ClickableIcon type={'back'}/></Row>} />}
                         <CircleButton onClick={()=>{handleRewardNotification(backer.address)}} icon={<Row>Notify one<ClickableIcon type={'remind'}/></Row>}/>
-                       </>}
+                       </>
                   </>
                   }
                 </BetweenRow>
@@ -129,7 +131,7 @@ const RewardModal = ({ showMe, rewardId, backers,owner, projectId }) => {
     })
 
     return  <> 
-       {display &&  <AnimatedModal expand={expand}>
+       {display && owner === address && <AnimatedModal expand={expand}>
               <ButtonRow>
             <Buttons>Reward list</Buttons>
                 <ActionIcons>
@@ -142,10 +144,10 @@ const RewardModal = ({ showMe, rewardId, backers,owner, projectId }) => {
                 </ActionIcons>  
             </ButtonRow>
         <div>  
-         {owner && <HeadRow>
+        <HeadRow>
               <RewardDesc>Notify backers about updates</RewardDesc>
               <CircleButton onClick={()=>{handleRewardNotifications()}} icon={ <>{expand ? <Row><B>Notify all</B> <ClickableIcon type={'notifyAll'}/></Row> : <ClickableIcon type={'notifyAll'}/>}</>} />
-          </HeadRow>}
+          </HeadRow>
             {backerList}
         </div>
         </AnimatedModal> }

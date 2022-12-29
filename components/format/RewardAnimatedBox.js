@@ -10,6 +10,7 @@ const Outer = styled(motion.div)`
 `
 
 const Container = styled.div`
+    text-align: left;
     min-width: 300px;
     min-height: 150px;
     padding: 5%;

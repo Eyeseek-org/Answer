@@ -5,6 +5,7 @@ import { RewardTitle } from '../typography/Titles';
 import { ProjectAmount } from '../typography/Amounts';
 import { BetweenRow} from '../format/Row';
 import { MainContainer, RewardBox } from '../format/Box';
+import { R } from '../typography/ColoredTexts';
 
 const TypeBox = styled.div`
   position: absolute;
@@ -41,6 +42,7 @@ const RewardCard = ({reward, key, onClick, selected}) => {
         {reward?.rType === 1 && <Erc20Icon width={30} height={30}  color={theme.colors.icon}/>}
         {reward?.rType === 2 && <NftIcon width={30} height={30}  color={theme.colors.icon}/>}
       </IconBox>
+       {reward.eligibleActual > 0 ? 
         <RewardBox
             whileHover={{ scale: 1.05 }}
             color={selected !== reward?.objectId ? '#3c3c3c' : '#B0F6FF'}
@@ -61,7 +63,22 @@ const RewardCard = ({reward, key, onClick, selected}) => {
           : 
           <MicrofundIcon width={30} color={theme.colors.icon}/>}
           </TypeBox>
-        </RewardBox>
+        </RewardBox> :         
+        <RewardBox color={theme.colors.redPastel}>
+          <BetweenRow>
+            <RewardTitle>{reward?.title}</RewardTitle>
+            {reward?.nftId === 0 ? <ProjectAmount>${reward?.requiredPledge / 1000000}</ProjectAmount> : <NftIcon width={30} color={theme.colors.icon}/>}
+          </BetweenRow>
+          <NumberBox>
+            <R>{reward?.eligibleActual} of {reward?.cap}{' '}</R>
+          </NumberBox>
+          <TypeBox>
+            {reward?.type === 'Donate' ? 
+          <DonateIcon width={30} /> 
+          : 
+          <MicrofundIcon width={30} color={theme.colors.icon}/>}
+          </TypeBox>
+        </RewardBox>}
     </MainContainer>
   );
 };

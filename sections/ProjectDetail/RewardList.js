@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import RewardCard from '../../components/cards/RewardCard';
-import RewardDepletedCard from '../../components/cards/RewardDepletedCard';
 import ErrText from '../../components/typography/ErrText';
 import NoFound from '../../components/typography/NoFound';
 import { useApp } from '../utils/appContext';
@@ -139,37 +138,12 @@ const RewardList = ({ oid, chain, type }) => {
             <>
               {rewards.map((reward) => {
                 return <MutipleRewards>
-                  {reward.eligibleActual > 0 ?
                     <RewardCard
                       reward={reward}
                       key={reward.objectId}
                       selected={selected}
-                      onClick={() => handleRewardClick(
-                        reward.requiredPledge,
-                        reward.type,
-                        reward.rewardId,
-                        reward.eligibleActual,
-                        reward.objectId,
-                        reward.donors,
-                        reward.estimation,
-                        reward
-                      )}
-                    /> : <RewardDepletedCard
-                      key={reward.objectId}
-                      rid={reward.rewardId}
-                      title={reward.title}
-                      pledge={reward.requiredPledge}
-                      description={reward.description}
-                      eligibleActual={reward.eligibleActual}
-                      type={reward.type}
-                      cap={reward.cap}
-                      tokenAddress={reward.tokenAddress}
-                      tokenAmount={reward.tokenAmount}
-                      rType={reward.rType}
-                      nftId={reward.nftId}
-                      tokenName={reward.tokenName}
-                      chain={chain}
-                    />}
+                      onClick={() => handleRewardClick( reward.requiredPledge,reward.type,reward.rewardId,reward.eligibleActual, reward.objectId,reward.donors,reward.estimation, reward )}
+                     /> 
                 </MutipleRewards>
               })}
             </>
@@ -196,7 +170,7 @@ const RewardList = ({ oid, chain, type }) => {
           </Modal> 
           : 
         <>{modalIsOpen && <ModalWrapper >
-        <CustomModal openModal={modalIsOpen} rType={rType} reward={actReward} />
+        <CustomModal openModal={modalIsOpen}  reward={actReward} />
           <CloseModal onClick={() => {setIsOpen(false) }} whileHover={{ scale: 1.05 }} transition={{ type: 'spring', stiffness: 500, damping: 3 }}>
             <CloseIcon width={15} color={theme.colors.primary} />
           </CloseModal>

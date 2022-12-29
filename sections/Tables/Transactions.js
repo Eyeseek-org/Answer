@@ -3,11 +3,11 @@ import { getLatestBlockHeight, getLogEvents} from '../../pages/api/covalent';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import Subtitle from '../../components/typography/Subtitle';
-import {Loading} from '../../components/tables/TableStyles'
 import { RewardDesc } from '../../components/typography/Descriptions';
 import optimism from '../../public/icons/optimism.png'
 import TransactionTable from './DonationTable';
 import MicrofundsTable from './MicrofundsTable';
+import TableSkeleton from '../../components/skeletons/TableSkeleton';
 
 const Sub = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const Transactions = () => {
         <Sub>
           <Subtitle text="Donations" />
         </Sub>
-        {loading && <Loading />}
+        {loading && <TableSkeleton/>}
         {!loading && transactionLogs.length > 0 && <TransactionTable data={transactionLogs}/>}
         {!loading && transactionLogs.length === 0 && <RewardDesc>No transactions found in recent history</RewardDesc>}
         <Sub>

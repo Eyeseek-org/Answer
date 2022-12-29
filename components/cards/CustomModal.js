@@ -25,7 +25,7 @@ const IconBox = styled.div`
 `
 
 
-const CustomModal = ({openModal, rType, reward}) => {
+const CustomModal = ({openModal, reward}) => {
     const theme = useTheme()
     
     return <>
@@ -36,9 +36,9 @@ const CustomModal = ({openModal, rType, reward}) => {
         >
         <IconBox>
             <Row>
-                <Address address={reward.tokenAddress} />
-                {rType === 1 && <Erc20Icon width={50} height={50}  color={theme.colors.icon}/>}
-                {rType === 2 && <NftIcon width={50} height={50}  color={theme.colors.icon}/>}
+                {reward?.rType >= 1 && <Address address={reward.tokenAddress} />}
+                {reward?.rType  === 1 && <Erc20Icon width={50} height={50}  color={theme.colors.icon}/>}
+                {reward?.rType  === 2 && <NftIcon width={50} height={50}  color={theme.colors.icon}/>}
             </Row>
         </IconBox>
           <RewardAnimatedBox reward={reward} />

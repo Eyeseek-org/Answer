@@ -3,11 +3,11 @@ import { getLatestBlockHeight } from '../../pages/api/covalent';
 import { getRewardEvents} from '../../pages/api/rewards';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
-import Subtitle from '../typography/Subtitle';
-import {Loading} from './TableStyles'
-import { RewardDesc } from '../typography/Descriptions';
+import Subtitle from '../../components/typography/Subtitle';
+import { RewardDesc } from '../../components/typography/Descriptions';
 import optimism from '../../public/icons/optimism.png'
-import RewardAllTable from '../../sections/Tables/RewardAllTable';
+import RewardAllTable from './RewardAllTable';
+import TableSkeleton from '../../components/skeletons/TableSkeleton';
 
 const Sub = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const RewardsAll = () => {
         <Sub>
           <Subtitle text="All rewards" />
         </Sub>
-        {loading && <Loading />}
+        {loading && <TableSkeleton/>}
         {!loading && rewardLogs.length > 0 && <RewardAllTable data={rewardLogs}/>}
         {!loading && rewardLogs.length === 0 && <RewardDesc>No transactions found in recent history</RewardDesc>}
       <NoOptimism>

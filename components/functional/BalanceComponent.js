@@ -32,8 +32,8 @@ const BalanceComponent = ({ token, address, dec }) => {
 
   return (
     <Container>
-       <div> {!dec ? <Amount value={(Number(data?.formatted) / 1000000)} /> 
-        : <Amount value={(Number(data?.formatted))} /> }</div>
+       <div> {!dec ? <Amount value={(Number(data?.formatted))} /> 
+        : <Amount value={(Number(data?.formatted)) * dec} /> }</div>
        <div> {data?.symbol}</div>
     </Container>
   );
