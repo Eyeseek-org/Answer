@@ -174,7 +174,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
             <>
               {address && (
                 <Metrics>
-                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress} dec={1000000000000}  /></Row>
+                  <Row>Balance: <BalanceComponent address={address} token={currencyAddress} dec={1000000}  /></Row>
                   <Row><div>Approved: </div><ApprovedComponent address={address} currencyAddress={currencyAddress} dec={6} /></Row>
                   {all < sumWei && <ErrText text={'Insufficient allowance'}/> }
                 </Metrics>

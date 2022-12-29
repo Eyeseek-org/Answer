@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {  AddCol, HeaderCell} from '../../components/tables/TableStyles';
-import { ChainIconComponent, ExplorerReference } from '../../helpers/MultichainHelpers';
+import { ExplorerReference } from '../../helpers/MultichainHelpers';
 import { ArrowDown, ArrowUp } from '../../components/icons/TableIcons';
 import { RowCenter } from '../../components/format/Row';
 import Address from '../../components/functional/Address';
@@ -11,6 +11,7 @@ import { currenciesIdMapping } from '../../helpers/TableHelpers';
 import TableComponent from '../../components/tables/TableComponent';
 import { Transaction } from '../../types/transaction';
 import { ColumnDef } from '@tanstack/react-table';
+import ProjectStats from '../../components/functional/ProjectStats';
 
 interface ITransactionTable {
   data: any;
@@ -27,25 +28,20 @@ const DonationTable = ({ data }: ITransactionTable): JSX.Element => {
   const theme = useTheme();
 
   const columns: ColumnDef<Transaction, string>[] = [
-    {
-      //@ts-ignore
+      {
+        //@ts-ignore
       header: (
-        <RowCenter
-          onClick={() => {
-            setBackerFilter(!backerFilter);
-          }}
-        >
-          Chain
-        </RowCenter>
+        <HeaderCell 
+            onClick={() => {
+              setBackerFilter(!backerFilter);
+            }}>
+          Project
+        </HeaderCell>
       ),
-      accessorKey: 'chain',
-      cell: (props) => {
-        return <ChainIconComponent ch={props.getValue()} />;
-      },
-      enableColumnFilter: true,
-      meta: {
-        filter: 'select',
-      },
+      accessorKey: 'fund_id',
+        //@ts-ignore
+      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
+      enableSorting: false,
     },
     {
       //@ts-ignore

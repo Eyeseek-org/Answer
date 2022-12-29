@@ -22,7 +22,7 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
-const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) => {
+const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, pledge }) => {
   const [ev, setEv] = useState(false);
   const { rewardState, setRewardState } = useReward();
   const { loading } = rewardState;
@@ -57,14 +57,14 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, tokenAmount }) =
     abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
-    args: [pid, cap, tokenAmount * 1000000, tokenAddress, 1],
+    args: [pid, cap, pledge * 1000000, tokenAddress, 1],
   })
 
   return (
     <ColRight>
       <ButtonBox>
         <ApprovedComponent address={add} tokenAddress={tokenAddress} dec={1} />
-        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={tokenAmount} dec={1} />
+        <ApproveUniversal tokenContract={tokenAddress} spender={add} amount={pledge} dec={1} />
         {!loading ? <ButtonAlt
           text={'Create reward'}
           onClick={() => {
