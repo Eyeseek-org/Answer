@@ -31,7 +31,7 @@ const CustomModal = ({openModal, reward}) => {
     return <>
     {openModal && reward &&  <Container
             initial={{  width: 100, height: 50 }} 
-            animate={{ width: 500, height: 250}}
+            animate={{ width: 500, height: 270}}
             transition={{ duration: 0.3}}
         >
         <IconBox>

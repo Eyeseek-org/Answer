@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useContractWrite, usePrepareContractWrite, useAccount, useContractEvent } from 'wagmi';
 import styled from 'styled-components';
-import diamondAbi from '../../abi/diamondAbi.json';
+import multi from '../../abi/multi.json';
 import Rainbow from './Rainbow';
 import Lottie from 'react-lottie';
 import ButtonAlt from './ButtonAlt';
@@ -34,20 +34,21 @@ const ApproveNftUniversal = ({ tokenContract, spender, amount }) => {
   const [loading, setLoading] = useState(false);
 
   const listened = async () => {
-    await setEv(true);
-    await setLoading(false);
+    setEv(true);
+    setLoading(false);
   };
+  /// Tohle nebude diamondAbi ale Multitoken
 
   const { config } = usePrepareContractWrite({
     address: tokenContract,
-    abi: diamondAbi,
+    abi: multi.abi,
     functionName: 'setApprovalForAll',
     args: [spender, true],
   });
 
   useContractEvent({
     address: tokenContract,
-    abi: diamondAbi,
+    abi: multi.abi,
     eventName: 'ApprovalForAll',
     listener: (event) => listened(event),
     once: true,

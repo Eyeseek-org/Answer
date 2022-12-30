@@ -28,7 +28,7 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
-const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) => {
+const RewardNftSubmit = ({ add, home, pid, tokenAddress, nftId, cap, pledge }) => {
   const [ev, setEv] = useState(false);
 
   const { rewardState, setRewardState } = useReward();
@@ -40,6 +40,7 @@ const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) =
   }
 
   const handleSubmit = async () => {
+    console.log(add, home, pid, tokenAddress, nftId, cap)
     write?.();
     setRewardState((prev) => ({ ...prev, loading: true }))
   };
@@ -63,8 +64,8 @@ const RewardNftSubmit = ({ add, home, pid, pledge, tokenAddress, nftId, cap }) =
     address: add,
     abi: diamondAbi,
     chainId: home,
-    functionName: 'createNftReward',
-    args: [pid, cap, tokenAddress, nftId, 1],
+    functionName: 'createReward',
+    args: [pid, cap, nftId,tokenAddress, 2],
   })
 
 
