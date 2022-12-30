@@ -102,6 +102,9 @@ const InputContainer = ({ label, name, placeholder, onChange, description, type,
         {type === 'text' && (
           <input name={name} className="input_style" type="text" maxLength={maxLength} placeholder={placeholder} onChange={handleChange} />
         )}
+        {type === 'num' && (
+          <input name={name} className="input_style" type="number" maxLength={maxLength} placeholder={placeholder} onChange={handleChange} />
+        )}
         <div className="input_description_container">
           {isError ? <div className="input_error">{errorText}</div> : <div className="input_description">{description}</div>}
           {maxLength && (

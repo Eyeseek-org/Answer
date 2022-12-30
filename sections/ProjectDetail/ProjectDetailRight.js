@@ -15,6 +15,7 @@ import { G } from '../../components/typography/ColoredTexts';
 import StatRow from '../../components/StatRow';
 import { SmallBal } from '../../components/cards/CardStyles';
 import { diamond } from '../../data/contracts/core';
+import Currency from '../../components/functional/Currency';
 
 const ProgressFilter = styled.div`
     display: flex;
@@ -148,7 +149,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
         <div>
           <StatRow
             title={<Balances />}
-            desc={`pledged of ${max} goal`}
+            desc={<>pledged of  <Currency amount={max}/> goal</>}
             color={theme.colors.secondary}
             right={<Bookmark objectId={objectId} bookmarks={bookmarks} />}
           />

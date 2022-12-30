@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DapAPIService ,UniService} from '../../services/DapAPIService';
 import {AnimatedModal} from '../../components/animated/AnimatedModal';
-import { RewardActiveIcon } from '../../components/icons/Project';
+import { RewardActiveIcon, WebIcon } from '../../components/icons/Project';
 import {Buttons, ButtonRow, NotiTabWrapper, NotiBox} from '../../components/notifications/Styles';
 import { RewardDesc, MiniDesc } from '../../components/typography/Descriptions';
 import { useQuery } from '@tanstack/react-query';
@@ -43,14 +43,10 @@ const Col = styled.div`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 2%;
+  padding: 1%;
   margin-top: 2px;
   margin-bottom: 2px;
   width: 100%;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.9;
-  }
 `;
 
 const Desc = styled.div`
@@ -105,6 +101,10 @@ const IconWrapper = styled.div`
   padding-right: 2%;
   padding-left: 2%;
   padding-top: 2%;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 const ImageBox = styled.div`
@@ -209,16 +209,18 @@ const Notifications = ({ notis, address}) => {
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((noti, index) => (
               <NotiItem key={index}>
-                <Link href={`/project/${noti.project}`}>    </Link>
+
                   <Row>
-                    <IconWrapper>
-                      {noti.type === 'projectCanceled' && <CanceledIcon width={30} height={30} color={theme.colors.primary}  />}
-                      {noti.type === 'projectUpdate' && <NewsIcon width={30} height={30} color={theme.colors.primary}  />}
-                      {noti.type === 'projectFunded' && <SuccessIcon width={30} height={30} color={theme.colors.primary}  />}
-                      {noti.type === 'rewardAdded' && <RewardActiveIcon width={30} height={30} color={theme.colors.primary}  />}
-                      {noti.title === 'Direct message' && <MessageIcon width={30} height={30} color={theme.colors.primary} />}
-                      {noti.title === 'Group message' && <MessageIcon width={30} height={30} color={theme.colors.primary} />}
-                    </IconWrapper>
+                     <Link href={`/project/${noti.project}`}>    
+                      <IconWrapper>
+                        {noti.type === 'projectCanceled' && <CanceledIcon width={30} height={30} color={theme.colors.primary}  />}
+                        {noti.type === 'projectUpdate' && <NewsIcon width={30} height={30} color={theme.colors.primary}  />}
+                        {noti.type === 'projectFunded' && <SuccessIcon width={30} height={30} color={theme.colors.primary}  />}
+                        {noti.type === 'rewardAdded' && <RewardActiveIcon width={30} height={30} color={theme.colors.primary}  />}
+                        {noti.title === 'Direct message' && <MessageIcon width={30} height={30} color={theme.colors.primary} />}
+                        {noti.title === 'Group message' && <MessageIcon width={30} height={30} color={theme.colors.primary} />}
+                      </IconWrapper>
+                    </Link>
                     <Col>
                       <BetweenRow><Desc expand={expand}>{noti.title}</Desc> {expand && noti?.sender && <Address address={noti.sender}/>}</BetweenRow>
                      {expand ?  <RewardDesc>{noti.description}</RewardDesc> : <MiniDesc>{noti.description}</MiniDesc>}

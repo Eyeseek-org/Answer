@@ -1,12 +1,17 @@
 import styled from 'styled-components';
-import {useState} from 'react'
 import { useMoralisCloudFunction } from "react-moralis";
-import { useAccount, useContractRead, useContractWrite, usePrepareContractWrite, useSigner } from 'wagmi';
 import NFTDisplay from '../components/functional/NftDisplay';
-import diamondAbi from '../abi/diamondAbi.json';
-import { diamond } from '../data/contracts/core';
-import { RowCenter } from '../components/format/Row';
-import { useBalance } from 'wagmi'
+import { BetweenRow, Col, RowCenter } from '../components/format/Row';
+import {useState} from 'react'
+import Subtitle from '../components/typography/Subtitle';
+import InputContainer from '../components/form/InputContainer';
+import { RewardTitle } from '../components/typography/Titles';
+import CancelComponent from '../components/admin/CancelComponent';
+import CancelRewComponent from '../components/admin/CancelRewComponent';
+import DistributeComponent from '../components/admin/DistributeComponent';
+import DistributeRewComponent from '../components/admin/DistributeRewComponent';
+import ZeroComponent from '../components/admin/ZeroComponent';
+import ButtonAlt from '../components/buttons/ButtonAlt';
 
 const Container = styled.div`
   display: flex;
@@ -17,42 +22,22 @@ const Container = styled.div`
   margin-top: 5%;
 `;
 
+const AdminWrapper = styled.div`
+  padding-top: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+`
+
 
 const Cloud = () => {
-  const {data: signer} = useSigner();
-  const {address} = useAccount();
-  const [rewId, setRewId] = useState(0);
-  const balance = useBalance({
-    address: "0x3CaA9672A46c0BA5c26cF1343918c43ab78EeF14",
-    token: '0xc454Ad7c7136011BF890d254E3C9702562557a9F',
-    chainId: 80001
-  })
-  const claim = async () => {
-    write?.();
-  }
-
-  const {data} = useContractRead({
-    address: diamond.mumbai,
-    abi: diamondAbi,
-    functionName: 'getRewardItems',
-    chainId: 80001
-  }) 
-
-  if (data){
-    console.log(data)
-    console.log(balance.data?.formatted)
-  }
-
-  const { config, error } = usePrepareContractWrite({
-    address: diamond.mumbai,
-    abi: diamondAbi,
-    functionName: 'claimRewards',
-    chainId: 80001,
-    args: [1, address, 0, rewId]
-  });
-
-  const {write} = useContractWrite(config);
-
+  const [chain, setChain] = useState();
+  const [fundId, setFundId] = useState();
+  const [showCancel, setShowCancel] = useState(false);
+  const [showCancelRew, setShowCancelRew] = useState(false);
+  const [showDistributeRew , setShowDistributeRew] = useState(false);
+  const [showDistribute, setShowDistribute] = useState(false);
+  const [showZero, setShowZero] = useState(false);
 
   const params = { 
     custom: "custom" 
@@ -69,15 +54,40 @@ const Cloud = () => {
       };
   return (
     <Container>
-        <h1>Cloud</h1>
-        <button onClick={cloudCall}>Make Cloud Call</button>
-        <NFTDisplay address={'0x2F33B8870f86B319258380377076147a59E29135'} tokenId={24}/>
-
-        <RowCenter>
-            <button onClick={()=>{setRewId(rewId+1)}}>Next Reward</button>
-            <button onClick={()=>{setRewId(rewId-1)}}>Prev Reward</button>
-            <button onClick={()=>{claim()}}>Claim rewards {rewId}</button>
-        </RowCenter>
+        <Subtitle text='Cloud function'/>
+        <BetweenRow>
+            <ButtonAlt onClick={cloudCall} text={'Make cloud call'} width={'auto'}/>  
+           <NFTDisplay address={'0x2F33B8870f86B319258380377076147a59E29135'} tokenId={24}/>
+        </BetweenRow>
+      
+      <AdminWrapper>
+        <Subtitle text='List of admin functions'/>
+          <Col>
+            <InputContainer
+              label={'Chain'}
+              placeholder={'80001'}
+              description={'Pass chainId needed to admin'}
+              onChange={(e) => setChain(e.target.value)}
+              type={'num'}
+            />
+            <InputContainer
+              label={'FundId'}
+              placeholder={'1'}
+              description={'Pass on-chain project id'}
+              onChange={(e) => setFundId(e.target.value)}
+              type={'num'}
+            />
+          </Col>
+          <RowCenter>
+              {showZero ?  <ZeroComponent ch={chain} /> : <RewardTitle onClick={()=>{setShowZero(true)}}>Zero data</RewardTitle>}
+            </RowCenter>
+            <RowCenter>
+              {showCancel ?  <CancelComponent ch={chain} fundId={fundId} /> : <RewardTitle onClick={()=>{setShowCancel(true)}}>Cancel fund</RewardTitle>}
+              {showCancelRew ?  <CancelRewComponent ch={chain} fundId={fundId} /> : <RewardTitle onClick={()=>{setShowCancelRew(true)}}>Return canceled reward</RewardTitle>}
+              {showDistribute ?  <DistributeComponent ch={chain} fundId={fundId} /> : <RewardTitle onClick={()=>{setShowDistribute(true)}}>Distribute fund</RewardTitle>}
+              {showDistributeRew ?  <DistributeRewComponent ch={chain} fundId={fundId} /> : <RewardTitle onClick={()=>{setShowDistributeRew(true)}}>Distribute rewards</RewardTitle>}
+            </RowCenter>
+      </AdminWrapper>
     </Container>
   );
 };
