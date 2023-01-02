@@ -35,7 +35,7 @@ const LogResult = ({ ev, error, apiError, success, type, data }) => {
                 <LogRow>
                   <InfoTag>Info</InfoTag> 
                   <Typewriter
-                      words={['...Bloockchain confirmation requested (usually in 5-15 seconds)']}
+                      words={['...Bloockchain confirmation requested']}
                       cursor
                       cursorStyle='_'
                       typeSpeed={60}

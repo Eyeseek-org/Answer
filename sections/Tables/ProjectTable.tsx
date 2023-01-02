@@ -141,9 +141,9 @@ const ProjectTable = () => {
     },
     onSuccess: (data) => {
       setNumberWeb2(data.filter((item) => item.subcategory === "OpenSource").length);
-      setNumberWeb3(data.filter((item) => item.subcategory === "web2").length);
-      setVerifiedWeb2(data.filter((item) => item.subcategory === "web3" && item.verified === true).length);
-      setVerifiedWeb3(data.filter((item) => item.subcategory === "web2" && item.verified === true).length);
+      setNumberWeb3(data.filter((item) => item.subcategory === "Defi").length);
+      setVerifiedWeb2(data.filter((item) => item.subcategory === "Web3" && item.verified === false).length);
+      setVerifiedWeb3(data.filter((item) => item.subcategory === "Defi" && item.verified === false).length);
     }
   });
 

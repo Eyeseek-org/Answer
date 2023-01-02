@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import {  ImageHover, AddCol, HeaderCell } from '../../components/tables/TableStyles';
-import { ChainIconComponent, ExplorerReference } from '../../helpers/MultichainHelpers';
-import { ArrowDown, ArrowUp, FilterIcon } from '../../components/icons/TableIcons';
+import { AddCol, HeaderCell } from '../../components/tables/TableStyles';
+import {  ExplorerReference } from '../../helpers/MultichainHelpers';
+import { ArrowDown, ArrowUp } from '../../components/icons/TableIcons';
 import { RowCenter } from '../../components/format/Row';
 import Address from '../../components/functional/Address';
 import {useTheme} from 'styled-components'
 import { Microfund } from '../../types/microfund';
 import TableComponent from '../../components/tables/TableComponent';
 import { ColumnDef } from '@tanstack/react-table';
+import ProjectStats from '../../components/functional/ProjectStats';
 
 interface ITransactionTable {
   data: any;
@@ -33,17 +34,20 @@ const MicrofundsTable = ({ data }: ITransactionTable): JSX.Element => {
   const [backerFilter, setBackerFilter] = useState<boolean>(false)
   const theme = useTheme();
   const columns: ColumnDef<Microfund, string>[] = [
-    {
-      header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Chain </RowCenter>,
-      accessorKey: 'chain',
+      {
+        //@ts-ignore
+      header: (
+        <HeaderCell 
+            onClick={() => {
+              setBackerFilter(!backerFilter);
+            }}>
+          Project
+        </HeaderCell>
+      ),
+      accessorKey: 'fund_id',
+        //@ts-ignore
+      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
       enableSorting: false,
-      cell: (props) => {
-        return <ChainIconComponent ch={props.getValue()} />;
-      },
-      enableColumnFilter: true,
-      meta: {
-        filter: 'select',
-      },
     },
     {
       header: () => <RowCenter onClick={()=>{setBackerFilter(!backerFilter)}}>Backer </RowCenter>,

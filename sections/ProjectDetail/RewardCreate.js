@@ -141,9 +141,9 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
         if (c === 'Classic'){
             setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0, cap: 0 })
         } else if (c === 'ERC1155'){
-            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0, cap: 0  })
+            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0, cap: 0, estimation: "Immediately after crowdfunding finish"  })
         } else if (c === 'ERC20'){
-            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0,  cap: 0  })
+            setRewardState({ ...rewardState, tokenAddress: '', nftId: 0, tokenAmount: 0, pledge: 0,  cap: 0, estimation: "Immediately after crowdfunding finish"  })
         }
     }
 
@@ -197,9 +197,9 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
                     </Summary>
                 {cap > 0 && title && desc && delivery && estimation ?  <> 
                     {tokenType === 'ERC1155' && <RewardNftSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} nftId={nftId} add={add} pledge={pledge}/>}
-                    {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} pledge={pledge} tokenAmount={tokenAmount}/>}
-                    {/* {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} /> } */}
-                    {tokenType === 'Classic' && address === !owner && <ErrText text="Only project owner can create classic rewards"/>}
+                    {tokenType === 'ERC20' && <RewardTokenSubmit home={home} pid={pid} cap={cap} tokenAddress={tokenAddress} add={add} tokenAmount={tokenAmount} pledge={pledge} />}
+                    {tokenType === 'Classic' && address === owner && <RewardClassicSubmit home={home} pid={pid} cap={cap} add={add} pledge={pledge}/> }
+                    {tokenType === 'Classic' && <RewardDesc>Only project owner can create classic rewards</RewardDesc>}
                     {apiError && <ErrText text='Not all fields filled correctly'/>}
                     </> : <ErrText text="All fields are mandatory"/>}
                 </MilestoneContainer>

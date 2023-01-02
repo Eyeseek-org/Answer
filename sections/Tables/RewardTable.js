@@ -9,7 +9,7 @@ import { RewardDesc } from '../../components/typography/Descriptions';
 import RewardStats from '../../components/functional/RewardStats';
 import { Erc20Icon, NftIcon } from '../../components/icons/Project';
 import Address from '../../components/functional/Address';
-import { RowCenter, RowStart } from '../../components/format/Row';
+import { RowCenter } from '../../components/format/Row';
 
 const RewardTable = ({data, projectId}) => {
   const [sorting, setSorting] = useState([]);

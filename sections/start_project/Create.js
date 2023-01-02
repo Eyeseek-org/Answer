@@ -241,11 +241,11 @@ const Create = ({ setStep }) => {
           </>
         ) : (
           <>
-            {pType === 'Stream' ? (
-               <LogResult apiError={apiError} type={'Stream project initialized'}/>
-            ) : (
-              <LogResult ev={ev} error={error} apiError={apiError} success={success} type={'Project creation initiated'} data={data}/>
-            )}
+            {pType === 'Stream' ? <>
+               {address &&  <LogResult apiError={apiError} type={'Stream project initialized'}/>}
+            </> : <>
+             {address && <LogResult ev={ev} error={error} apiError={apiError} success={success} type={'Project creation initiated'} data={data}/>}
+            </>}
           </>
         )}
          {success &&

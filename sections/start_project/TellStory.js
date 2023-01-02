@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useApp } from '../utils/appContext';
 import SectionTitle from '../../components/typography/SectionTitle';
 import InputContainer from '../../components/form/InputContainer';

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import styled, {useTheme} from 'styled-components'
 import { ChainSmallIconComponent } from "../../helpers/MultichainHelpers";
 import { DetailIcon } from "../icons/Project";
-import { BetweenRow, Row, RowCenter } from "../format/Row";
+import { BetweenRow } from "../format/Row";
 import { SubcatPick } from "./CatPicks";
 import IconTooltip from "../buttons/IconTooltip";
 
@@ -30,10 +30,10 @@ const ProjectStats = ({fund, chain}) => {
             <AbsoluteChain><ChainSmallIconComponent ch={chain}/></AbsoluteChain>
            <BetweenRow> 
            <div>  <a href={`/${project.objectId}`} target="_blank" rel="noreferrer">
-            <IconTooltip icon={<DetailIcon width={30} height={30} color={theme.colors.icon}/>} tooltip={"View Project"}/>
+            <IconTooltip icon={<DetailIcon width={20} height={20} color={theme.colors.icon}/>} tooltip={"View Project"}/>
               </a></div>
                    <div> {project.title}</div>
-                    <div><SubcatPick subcat={project.subcategory} width={30}/></div>
+                    <div><SubcatPick subcat={project.subcategory} width={25}/></div>
             </BetweenRow>
         </MiniContainer>}
     </>

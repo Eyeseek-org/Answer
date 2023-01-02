@@ -20,7 +20,7 @@ export const ConnectWithNotifications = () => {
   const query = `/classes/Notification?where={"user":"${address}"}`
   const { data: unreadNotis } = useQuery(['notis'], () => UniService.getDataAll(query),{ 
       onSuccess: (data) => {
-        setUnreadCount(data.filter((n:any) => n.read === false).length)
+        setUnreadCount(data.filter((n:any) => n.isRead === false).length)
       }
     });
 

@@ -17,16 +17,16 @@ const RewardFormClassic = ({dType}) => {
     <InputContainer
         label={'Specify delivery'}
         maxLength={120}
-        placeholder={'Token + Autograph'}
-        description={'Shortly and specifically what backer will receive'}
+        placeholder={'Account trial for 1 month'}
+        description={'Shortly describe what backer will receive for this reward'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, delivery: e.target.value  }))}
         type={'text'}
     />
     <InputContainer
         label={'Description'}
         maxLength={250}
-        placeholder={'Backer receives autographed copy of the book'}
-        description={'Describe briefly benefit of this reward'}
+        placeholder={'User receives same benefits as for group "Premium" + 1 month trial'}
+        description={'Optionally you can describe more detailed benefit of this reward'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, desc: e.target.value  }))}
         type={'textArea'}
     />

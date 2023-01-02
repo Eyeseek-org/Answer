@@ -2,8 +2,9 @@ import { useReward } from '../utils/rewardContext';
 import {useState} from 'react'
 import InputContainer from "../../components/form/InputContainer";
 import { Row } from "../../components/format/Row";
-import { R } from '../../components/typography/ColoredTexts';
+import { R, G } from '../../components/typography/ColoredTexts';
 import { stable } from '../../data/contracts/stablecoins';
+import { ethers } from 'ethers';
 
 const RewardFormNft = ({dType}) => {
     const { setRewardState } = useReward();
@@ -31,7 +32,7 @@ const RewardFormNft = ({dType}) => {
     <InputContainer
         label={'Specify delivery'}
         maxLength={120}
-        placeholder={'Token + Autograph'}
+        placeholder={'Rare in-game item'}
         description={'Shortly and specifically what backer will receive'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, delivery: e.target.value  }))}
         type={'text'}
@@ -39,18 +40,10 @@ const RewardFormNft = ({dType}) => {
     <InputContainer
         label={'Description'}
         maxLength={250}
-        placeholder={'Backer receives autographed copy of the book'}
-        description={'Describe briefly benefit of this reward'}
+        placeholder={'User receives same benefits as for group "Premium" + Rare in-game item'}
+        description={'Optionally you can describe more detailed benefit of this reward'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, desc: e.target.value  }))}
         type={'textArea'}
-    />
-    <InputContainer
-        label={'Estimated delivery'}
-        maxLength={20}
-        placeholder={'October 2055'}
-        description={'Estimate time of delivery'}
-        onChange={(e) => setRewardState((prev) => ({ ...prev, estimation: e.target.value  }))}
-        type={'text'}
     />
     <InputContainer
         label={'Pledge'}
@@ -91,7 +84,7 @@ const RewardFormNft = ({dType}) => {
     />
     <InputContainer
         label={'Capacity'}
-        maxLength={4}
+        maxLength={3}
         placeholder={'10'}
         description={'Number of claimable rewards'}
         onChange={(e) => setRewardState((prev) => ({ ...prev, cap: e.target.value }))}

@@ -14,7 +14,7 @@ const Container = styled.div`
     font-size: 1.2em;
   }
 `;
-const BalanceComponent = ({ token, address, dec }) => {
+const BalanceComponent = ({ token, address }) => {
   const [ch, setCh] = useState(80001);
   const { chain } = useNetwork();
 
@@ -32,8 +32,7 @@ const BalanceComponent = ({ token, address, dec }) => {
 
   return (
     <Container>
-       <div> {!dec ? <Amount value={(Number(data?.formatted))} /> 
-        : <Amount value={(Number(data?.formatted)) * dec} /> }</div>
+       <Amount value={(Number(data?.formatted))} />
        <div> {data?.symbol}</div>
     </Container>
   );

@@ -1,8 +1,8 @@
 import Tooltip from '../Tooltip';
 import { RewardTitle } from '../typography/Titles';
 import  {useState} from 'react'
-import { InfoIcon } from '../icons/Common';
 import styled,{useTheme} from 'styled-components';
+import { RowEnd } from '../format/Row';
 
 const Container = styled.div`
   min-width: 100px;
@@ -18,18 +18,20 @@ const CalcOutcome = ({ conn, multi }) => {
 
   return (
     <Container>
+      <RewardTitle>Impact calculator</RewardTitle>
       {conn ?
         <RewardTitle onMouseEnter={()=>{setMicroTooltip(true)}} onMouseLeave={()=>{setMicroTooltip(false)}}>
           {microTooltip && <Tooltip text={'Multiplier: Number of involved microfunds from other users'} margin={'-70px'}/>}
-          {conn} X 
-          <InfoIcon width={15} color={theme.colors.icon}/>
+          <RowEnd>
+            <div> {conn}</div> 
+            <div>x</div>
+          </RowEnd> 
         </RewardTitle>
        : null}
       {multi ? 
         <RewardTitle onMouseEnter={()=>{setImpactTooltip(true)}} onMouseLeave={()=>{setImpactTooltip(false)}}>
         {impactTooltip && <Tooltip text={'Total impact of this donation'} margin={'-50px'}/>}
           ${multi / 1000000}
-          <InfoIcon width={15} color={theme.colors.icon}/>
         </RewardTitle>
       : null}
     </Container>

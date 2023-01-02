@@ -93,7 +93,7 @@ const TabImage = ({ active, o1, o2, o3, o4, o5, change1, change2, change3, chang
                 {text === 'Bookmarks' && <ColBetween><BookmarkFilledIcon width={50} color={theme.colors.icon}/><div>{text}</div></ColBetween>}
                 {text === 'Streams' && <ColBetween><StreamIcon width={50} /><div>{text}</div></ColBetween>}
                 {text === 'Classic' && <ActBox onMouseEnter={()=>{handleTooltip('Classic reward')}} onMouseLeave={()=>{setShowTooltip(false)}}>
-                    <RewardActiveIcon width={60} height={60} /></ActBox>} 
+                    <RewardActiveIcon width={60} height={60} color={theme.colors.icon}/></ActBox>} 
                 {text === 'ERC20' && <ActBox onMouseEnter={()=>{handleTooltip('ERC20 Fungible token rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>
                     <Erc20ActiveIcon width={60} height={60}  /></ActBox>}
                 {text === 'ERC1155' && <ActBox onMouseEnter={()=>{handleTooltip('ERC1155 NFT rewards')}} onMouseLeave={()=>{setShowTooltip(false)}}>

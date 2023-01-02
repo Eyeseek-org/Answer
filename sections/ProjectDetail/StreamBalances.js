@@ -136,11 +136,11 @@ const StreamBalances = ({address, provider, signer, token, superContract, chainI
        {showTooltip && <Tooltip text={tooltipText}/>}
         <Row>
             <div onMouseEnter={()=>{handleTooltip(Texts.wrappedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}><RowItem>Wrapped balance <InfoIcon color={theme.colors.icon} width={15}/></RowItem> </div> 
-            <BalanceComponent token={token} address={address} dec/>
+            <BalanceComponent token={token} address={address}/>
         </Row>
         <Row>
             <div onMouseEnter={()=>{handleTooltip(Texts.nativeTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}><RowItem>Native balance <InfoIcon color={theme.colors.icon} width={15}/></RowItem> </div> 
-            <BalanceComponent token={native} address={address} dec/>
+            <BalanceComponent token={native} address={address}/>
         </Row>
         <Row>
             <div onMouseEnter={()=>{handleTooltip(Texts.approvedTooltip)}} onMouseLeave={()=>{setShowTooltip(false)}}><RowItem>Approved amount <InfoIcon color={theme.colors.icon} width={15}/></RowItem> </div> 

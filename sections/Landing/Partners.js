@@ -10,6 +10,8 @@ import {
   useAnimationFrame
 } from "framer-motion";
 import { wrap } from "@motionone/utils";
+import Subtitle from '../../components/typography/Subtitle';
+import { RowCenter } from '../../components/format/Row';
 
 
 const Container = styled.div`
@@ -58,21 +60,31 @@ const ParallaxText = ({ children, baseVelocity = 100 }) => {
 }
 
 
-const PartnerCard = styled.span`
+const Card = styled.span`
     background: ${props => props.theme.colors.cardGradient};
+    margin: 1%; 
+    padding: 15px;
+    padding-left: 5%;
+    padding-right: 5%;
+    border-radius: 8px;
 `
 
 const Partners = () => {
+    const PartnerCard = ({name, logo}) => {
+      <Card><RowBetween><div>{name}</div> <div>{logo}</div></RowBetween></Card>
+    }
+    
     return <Container>
+      <RowCenter><Subtitle text='Partners'/></RowCenter>
         <ParallaxText baseVelocity={-5}><MovingRow>
-            <PartnerCard>Partner card </PartnerCard>
-            <PartnerCard>Partner card </PartnerCard>
-            <PartnerCard>Partner card </PartnerCard>
+            <Card>👁️ It could be you 👁️ </Card>
+            <Card>👁️ It could be you 👁️ </Card>
+            <Card>👁️ It could be you 👁️ </Card>
         </MovingRow></ParallaxText>
       <ParallaxText baseVelocity={5}>        <MovingRow>
-            <PartnerCard>Partner card </PartnerCard>
-            <PartnerCard>Partner card </PartnerCard>
-            <PartnerCard>Partner card </PartnerCard>
+            <Card>👁️ It could be you 👁️ </Card>
+            <Card>👁️ It could be you 👁️ </Card>
+            <Card>👁️ It could be you 👁️ </Card>
         </MovingRow></ParallaxText>
     </Container>
 }
