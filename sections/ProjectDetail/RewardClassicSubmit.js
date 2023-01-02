@@ -7,7 +7,7 @@ import { errAnim, loadingAnim } from '../../components/animated/Animations';
 import Lottie from 'react-lottie';
 import { AbsoluteRight } from '../../components/format/Box';
 
-const RewardClassicSubmit = ({ add, home, pid, cap }) => {
+const RewardClassicSubmit = ({ add, home, pid, cap, pledge }) => {
   const { rewardState, setRewardState } = useReward();
   const { loading } = rewardState;
 
@@ -22,7 +22,7 @@ const RewardClassicSubmit = ({ add, home, pid, cap }) => {
     abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
-    args: [pid, cap, 1, "0x0000000000000000000000000000000000000000", 0],
+    args: [pid, cap, 1, pledge, "0x0000000000000000000000000000000000000000", 0],
   })
 
   return (

@@ -1,4 +1,4 @@
-import { BetweenRow } from "../format/Row"
+import { BetweenRow, RowEnd } from "../format/Row"
 import Subtitle from "../typography/Subtitle"
 import styled, {useTheme} from "styled-components"
 import {useState} from 'react'
@@ -10,10 +10,12 @@ const AbsoluteBox = styled.div`
     right: 0;
     top: -70px;
     padding: 5px;
-    background: ${props => props.theme.colors.tableGradient};
 `
 
 const StatsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
     width: 400px;
 `
 
@@ -25,21 +27,18 @@ const Category = styled.div`
     right: -70px;
 `
 
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+const AbsoluteNumber = styled.div`
+    position: absolute;
+    right: 50px;
 `
 
 const StatsComponent = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // Align to the right
     height: 2px;
     width: ${props => props.ratio}%;
     border-radius: 45px;
-    text-align: right;
-    align-items: flex-end;
     background: ${props => props.color};
     font-family: 'Gemunu Libre';
     &:hover {
@@ -68,10 +67,16 @@ const TableHeader = ({ text, numberOneFull, numberTwoFull, numberOneVerified, nu
         <Subtitle text={text} />
         <AbsoluteBox>
             {showTooltip && all && <MyTooltip text={`Total number of projects: ${all}`} margin={'-60px'} />}
-            <StatsWrapper>
-               <Row><CatStats ratio={'100%'} color={theme.colors.primary} full={all} verified={all} /><Category>• Stats TBD</Category></Row> 
-                <CatStats ratio={(numberOneFull/all)*100} full={all} verified={all}> {numberOneFull >= 1 && <CatStats ratio={(numberOneVerified/ all)*100} full={all} verified={all}/>}</CatStats>
-                <CatStats ratio={(numberTwoFull/all)*100} full={all} verified={all}> {numberTwoFull >= 1 && <CatStats ratio={(numberTwoVerified/ all)*100} full={all} verified={all}/>}</CatStats>
+            <StatsWrapper onMouseEnter={()=>{setShowTooltip(true)}} onMouseLeave={()=>{setShowTooltip(false)}} >
+              <RowEnd>
+                <CatStats ratio={'100%'} color={theme.colors.primary} full={all} verified={all} />
+                <Category><AbsoluteNumber>{all}</AbsoluteNumber>All  </Category>
+            </RowEnd> 
+            <RowEnd>
+                <CatStats color={'red'} ratio={`${(numberTwoFull/all)*100}%`}  full={numberTwoFull} verified={all}> {numberTwoVerified >= 1 && <CatStats ratio={(numberOneVerified/ all)*100} full={all} verified={all}/>}</CatStats>
+                <Category><AbsoluteNumber>{numberTwoFull}</AbsoluteNumber>Defi</Category>
+            </RowEnd>
+                <CatStats ratio={`${(numberTwoFull/all)*100}%`} full={numberTwoFull} verified={numberTwoVerified}> {numberTwoFull >= 1 && <CatStats ratio={(numberTwoVerified/ all)*100} full={all} verified={all}/>}</CatStats>
             </StatsWrapper>
         </AbsoluteBox>
     </BetweenRow>

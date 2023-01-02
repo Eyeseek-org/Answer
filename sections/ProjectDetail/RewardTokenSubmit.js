@@ -57,7 +57,7 @@ const RewardTokenSubmit = ({ add, home, pid, tokenAddress, cap, pledge, tokenAmo
     abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
-    args: [pid, cap, tokenAmount, pledge, tokenAddress, 1],
+    args: [pid, cap, tokenAmount, pledge * 1000000, tokenAddress, 1],
   })
 
   return (
