@@ -10,7 +10,7 @@ const CancelRewComponent = ({ch, fundId}) => {
         address: diamond.mumbai,
         abi: diamondAbi,
         functionName: 'distributeRewards',
-        chainId: ch,
+        chainId: 80001,
         args: [fundId]
       });
     

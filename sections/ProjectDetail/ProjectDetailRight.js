@@ -156,7 +156,7 @@ const ProjectDetailRight = ({ pid, objectId, bookmarks, pType, owner, chainId })
           <StatRow title={backing} desc={'backers'} color={theme.colors.font} />
           <StatRow title={microInvolved} desc={`microfunds`}  color={theme.colors.font}/>
           <BetweenRow>
-            <StatRow title={days} desc={`days to go`}  color={theme.colors.font}/>
+           {days > 0 && <StatRow title={days} desc={`days to go`}  color={theme.colors.font}/> }
             <AbsoluteShareIt><G>Share it</G></AbsoluteShareIt>
             <Socials title={'Check out my project on Eyeseek, crowdfunding started and time is ticking!'}/>
           </BetweenRow>

@@ -5,6 +5,7 @@ import { useApp } from '../utils/appContext';
 import blockchainAnimation from '../../data/animations/blockchainAnimation.json';
 import streamAnimation from '../../data/animations/streamAnimation.json';
 import { useState } from 'react';
+import { RewardDesc } from './Styles';
 
 const animOptions = {
   loop: true,
@@ -97,6 +98,14 @@ const Clickable = styled.div`
   }
 `;
 
+const ClickableDisabled = styled(Clickable)`
+  opacity: 0.5;
+  &:hover {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+`
+
 const TypeTitle = styled.div`
   font-size: 1.3em;
   font-family: 'Neucha';
@@ -174,16 +183,12 @@ const ProjectTypeSelection = () => {
           </TextBox>
         </Col>
         <Col color={streamColor}>
-          <Clickable
-            onClick={() => {
-              handleStreamType('Stream');
-            }}
-          >
+          <ClickableDisabled>
             <Lottie height={150} width={150} options={streamOptions} />
             <TypeTitle color={streamTitleColor}>Stream</TypeTitle>
-          </Clickable>
+          </ClickableDisabled>
           <TextBox>
-            <FaqCard answer={projects[1].answer} points={projects[1].points} />
+            <RewardDesc>Streams disabled for now</RewardDesc>
           </TextBox>
         </Col>
       </Row>

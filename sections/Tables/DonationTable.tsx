@@ -40,7 +40,7 @@ const DonationTable = ({ data }: ITransactionTable): JSX.Element => {
       ),
       accessorKey: 'fund_id',
         //@ts-ignore
-      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain}/>,
+      cell: (props) => <ProjectStats fund={props.row.original.fund_id} chain={props.row.original.chain} />,
       enableSorting: false,
     },
     {

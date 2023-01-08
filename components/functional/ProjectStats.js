@@ -1,7 +1,7 @@
 import { UniService } from "../../services/DapAPIService";
 import { useQuery } from "@tanstack/react-query";
 import styled, {useTheme} from 'styled-components'
-import { ChainSmallIconComponent } from "../../helpers/MultichainHelpers";
+import { ChainIconComponent, ChainSmallIconComponent } from "../../helpers/MultichainHelpers";
 import { DetailIcon } from "../icons/Project";
 import { BetweenRow } from "../format/Row";
 import { SubcatPick } from "./CatPicks";
@@ -21,9 +21,8 @@ const AbsoluteChain = styled.div`
 const ProjectStats = ({fund, chain}) => {
 
     const theme = useTheme()
-    const query = `/classes/Project?where={"pid": ${fund}, "chainId": ${chain} }`
+    const query = `/classes/Project?where={"chainId":${chain}}`
     const { data: project } = useQuery(['project-single'], () => UniService.getDataSingle(query),{ });
-
 
     return <>
     {project && <MiniContainer>

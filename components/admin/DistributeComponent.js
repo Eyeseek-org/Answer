@@ -10,7 +10,7 @@ const DistributeComponent = ({ch, fundId}) => {
         address: diamond.mumbai,
         abi: diamondAbi,
         functionName: 'distribute',
-        chainId: ch,
+        chainId: 80001,
         args: [fundId]
       });
     
