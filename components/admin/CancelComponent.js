@@ -10,7 +10,7 @@ const CancelComponent = ({ch, fundId}) => {
         address: diamond.mumbai,
         abi: diamondAbi,
         functionName: 'cancelFund',
-        chainId: ch,
+        chainId: 80001,
         args: [fundId]
       });
     

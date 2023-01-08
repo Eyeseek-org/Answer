@@ -9,13 +9,12 @@ const AbsoluteBox = styled.div`
     position: absolute;
     right: 0;
     top: -70px;
-    padding: 5px;
+
 `
 
 const StatsWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 25px;
     width: 400px;
 `
 
@@ -41,10 +40,6 @@ const StatsComponent = styled(motion.div)`
     border-radius: 45px;
     background: ${props => props.color};
     font-family: 'Gemunu Libre';
-    &:hover {
-        opacity: 0.8;
-        cursor: pointer;
-    }
 `
 
 const TableHeader = ({ text, numberOneFull, numberTwoFull, numberOneVerified, numberTwoVerified, all }) => {
@@ -67,7 +62,7 @@ const TableHeader = ({ text, numberOneFull, numberTwoFull, numberOneVerified, nu
         <Subtitle text={text} />
         <AbsoluteBox>
             {showTooltip && all && <MyTooltip text={`Total number of projects: ${all}`} margin={'-60px'} />}
-            <StatsWrapper onMouseEnter={()=>{setShowTooltip(true)}} onMouseLeave={()=>{setShowTooltip(false)}} >
+            <StatsWrapper>
               <RowEnd>
                 <CatStats ratio={'100%'} color={theme.colors.primary} full={all} verified={all} />
                 <Category><AbsoluteNumber>{all}</AbsoluteNumber>All  </Category>

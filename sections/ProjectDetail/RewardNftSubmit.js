@@ -65,9 +65,8 @@ const RewardNftSubmit = ({ add, home, pid, tokenAddress, nftId, cap, pledge }) =
     abi: diamondAbi,
     chainId: home,
     functionName: 'createReward',
-    args: [pid, cap, nftId, pledge, tokenAddress, 2],
+    args: [pid, cap, nftId, pledge * 1000000, tokenAddress, 2],
   })
-
 
   return (
     <Container>

@@ -14,8 +14,8 @@ export const AppProvider = (props) => {
     pYt: '',
     pm1: 0,
     pm1Desc: 'Some description',
-    category: 'Games',
-    subcategory: 'Board',
+    category: 'Web3',
+    subcategory: 'Defi',
     // Step 1 is default, because step 0 is always prefilled
     stepLock: 1,
     rewMAmount: 0,

@@ -10,7 +10,7 @@ const ZeroComponent = ({ch}) => {
         address: diamond.mumbai,
         abi: diamondAbi,
         functionName: 'createZeroData',
-        chainId: ch
+        chainId: 80001
       });
     
       const { write } = useContractWrite(config);

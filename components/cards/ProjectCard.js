@@ -109,7 +109,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
         {streamTypeTooltip && <Tooltip text={'Funding type: Money streaming'} />}
         {nftTooltip && <Tooltip text={'NFT Rewards offered'} />}
         {erc20Tooltip && <Tooltip text={'ERC20 Rewards offered'} />}
-        {pType !== 'Stream' && <AbsoluteRight>{days}d</AbsoluteRight>}
+        {pType !== 'Stream' && days > 0 && <AbsoluteRight>{days}d</AbsoluteRight>}
         <AbsoluteLeft>
           {pType === 'Stream' ? (
             <IconWrapper onMouseEnter={() => {setStreamTypeTooltip(true);}} onMouseLeave={() => {setStreamTypeTooltip(false);}}>

@@ -27,11 +27,9 @@ const My: NextPage = () => {
           o1={'Projects'}
           o2={'Donates'}
           o3={'Bookmarks'}
-          o4={'Streams'}
           change1={() => handleMode('Projects')}
           change2={() => handleMode('Donates')}
           change3={() => handleMode('Bookmarks')}
-          change4={() => handleMode('Streams')}
         />
       </TabBox>
       {mode === 'Projects' && <MyProjects />}

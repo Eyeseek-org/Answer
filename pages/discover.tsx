@@ -41,14 +41,14 @@ const Discover = () => {
          <Tab 
             active={active} 
             o1={'Projects'} 
-            o2={'Streams'} 
-            o3={'Transactions'}
-            o4={'Rewards'}
+            o4={undefined} 
+            o2={'Transactions'}
+            o3={'Rewards'}
             o5={undefined}
             change1={() => setActive('Projects')} 
-            change2={() => setActive('Streams')} 
-            change3={() => setActive('Transactions')} 
-            change4={() => setActive('Rewards')} 
+            change4={undefined} 
+            change2={() => setActive('Transactions')} 
+            change3={() => setActive('Rewards')} 
             change5={undefined}
           />
         </TabWrapper>

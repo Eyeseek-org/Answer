@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UniService } from '../../services/DapAPIService';
 import { useMemo, useState } from 'react';
 import { AddCol, ImageHover, ActionCol, TableWrapper } from '../../components/tables/TableStyles';
-import {  RewardIcon, VerifiedIcon } from '../../components/icons/Common';
+import {  RewardIcon } from '../../components/icons/Common';
 import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import RewardTable from './RewardTable';
 import { Col, RowCenter } from '../../components/format/Row';
@@ -16,11 +16,11 @@ import { filterInputs } from '../../util/constants';
 import { ArrElement } from '../../types/common';
 import BalanceProjectSmall from '../../components/functional/BalanceProjectSmall';
 import Tooltip from '../../components/Tooltip';
-import { AbsoluteRight } from '../../components/format/Box';
 import TableComponent from '../../components/tables/TableComponent';
 import ProjectActions from '../../components/tables/ProjectActions';
 import TableHeader from '../../components/tables/TableHeader';
 import Subtitle from '../../components/typography/Subtitle';
+import ProjectTitle from '../../components/tables/ProjectTitle'
 
 
 declare module '@tanstack/table-core' {
@@ -68,10 +68,7 @@ const ProjectTable = () => {
         header: 'Project',
         cell: (props) => (
           <RowCenter>
-            <b>{props.getValue()}</b>
-            <AbsoluteRight>
-              {props.row.original.verified && <VerifiedIcon height={15} width={15} color={theme.colors.icon} />}
-            </AbsoluteRight>
+              <ProjectTitle title={props.getValue()} tooltip={props.row.original.pid} verified={props.row.original.verified} />
           </RowCenter>
         ),
         enableColumnFilter: true,
