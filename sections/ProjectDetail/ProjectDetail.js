@@ -15,6 +15,7 @@ import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import {IconWrapper, Inactive, DetailBox, ProjectType, Categories, LeftPart, ActionPanel} from '../../components/cards/CardStyles'
 import { FeatureTitle } from '../../components/typography/Titles';
+import ProjectDescription from './ProjectDescription';
 
 const ProjectDetail = ({objectId, pid, title, description,category,subcategory,imageUrl,bookmarks,verified,state,pType,owner,chainId,urlSocials,urlProject,descM,youtube}) => {
 
@@ -113,7 +114,7 @@ const ProjectDetail = ({objectId, pid, title, description,category,subcategory,i
             />
           )}
         </DetailBox>
-        {/* {pType !== 'Stream' && <ProjectDescription descM={descM} pid={pid} chainId={chainId} />} */}
+        <ProjectDescription desc={descM} />
         {/* <Markdown text={'ahoj'}/> */}
       </MainContainer>
     </>

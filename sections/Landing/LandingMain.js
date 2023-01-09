@@ -244,7 +244,7 @@ const LandingMain = ({ width, height }) => {
           duration: 1,
           delay: 0.6,
         }}>
-        <Testnet>Testnet</Testnet>
+      {process.env.NEXT_PUBLIC_ENV === 'production' ? <></> : <Testnet>Testnet</Testnet>}
         <HeadTitle>Eyeseek Funding</HeadTitle>
         <HeadSub>Next generation of crowdfunding</HeadSub>
         <HeadDesc>by web3</HeadDesc>

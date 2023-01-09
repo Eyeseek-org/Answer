@@ -21,6 +21,7 @@ import { ChainIconComponent } from '../../helpers/MultichainHelpers';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import { diamond } from '../../data/contracts/core';
+import Currency from '../functional/Currency';
 
 const A = styled(Link)`
   &:hover {
@@ -154,7 +155,7 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
           </Row>
           <ProjectAmount>
             {pType === 'Standard' ? (
-              <> {bal} / {max} </>
+              <> <Currency amount={bal}/> / <Currency amount={max}/>  $</>
             ) : (
               <></>
             )}
