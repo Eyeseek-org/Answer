@@ -53,7 +53,7 @@ const MyProjects = () => {
                         chainId={project.chainId}
                         bookmarks={project.bookmarks}
                         verified={project.verified}
-                        urlSocial={project.urlSocial}
+                        urlSocials={project.urlSocials}
                         urlProject={project.urlProject}
                         pType={project.type}
                         owner={project.owner}
