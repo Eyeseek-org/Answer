@@ -60,7 +60,7 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const [tokenType, setTokenType] = useState('Classic')
     const [success, setSuccess] = useState(false)
     const {address} = useAccount()
-    const [add, setAdd] = useState(diamond.mumbai);
+    const [add, setAdd] = useState();
     const { rewardState, setRewardState } = useReward();
     const { title, desc, pledge, cap, tokenName, tokenAddress, tokenAmount, nftId, delivery, estimation, loading } = rewardState;
     const [rewardId, setRewardId] = useState(0)
@@ -69,8 +69,10 @@ const RewardCreate = ({objectId, bookmarks, home, pid, owner}) => {
     const { switchNetwork } =useSwitchNetwork()
 
     useEffect (() => {
-        if (process.env.PROD !== 'something'){
+        if (process.env.NEXT_PUBLIC_ENV !== 'production'){
             setAdd(diamond.mumbai)
+          } else {
+            setAdd(diamond.polygon);
           }
     },[])
 

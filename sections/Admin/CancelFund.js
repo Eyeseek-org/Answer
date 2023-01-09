@@ -11,8 +11,10 @@ const CancelFund = () => {
     const [add, setAdd] = useState();
 
     useEffect(() => {
-      if (process.env.PROD !== 'something'){
+      if (process.env.NEXT_PUBLIC_ENV !== 'production'){
         setAdd(diamond.mumbai)
+      } else {
+        setAdd(diamond.polygon);
       }
     }, []);
   

@@ -15,8 +15,9 @@ import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import {IconWrapper, Inactive, DetailBox, ProjectType, Categories, LeftPart, ActionPanel} from '../../components/cards/CardStyles'
 import { FeatureTitle } from '../../components/typography/Titles';
+import ProjectDescription from './ProjectDescription';
 
-const ProjectDetail = ({objectId, pid, title, description,category,subcategory,imageUrl,bookmarks,verified,state,pType,owner,chainId,urlSocial,urlProject,descM,youtube}) => {
+const ProjectDetail = ({objectId, pid, title, description,category,subcategory,imageUrl,bookmarks,verified,state,pType,owner,chainId,urlSocials,urlProject,descM,youtube}) => {
 
   const [verifiedTooltip, setVerifiedTooltip] = useState(false);
   const [nonVerifiedTooltip, setNonVerifiedTooltip] = useState(false);
@@ -65,10 +66,10 @@ const ProjectDetail = ({objectId, pid, title, description,category,subcategory,i
           </ProjectType>
 
             <ActionPanel>
-              {urlWebTooltip && <Tooltip margin={'-35px'} text="External link to project website" />}
-              {urlSocialsTooltip && <Tooltip margin={'-35px'} text="External link to project primary socials" />}
-          {urlSocial &&  <IconWrapper onMouseEnter={() => {setUrlWebTooltip(true)}} onMouseLeave={() => {setUrlWebTooltip(false)}}>
-                <a href={urlSocial} target="_blank" rel="noreferrer">
+              {urlWebTooltip && <Tooltip margin={'-35px'} text="Go to project website" />}
+              {urlSocialsTooltip && <Tooltip margin={'-35px'} text="Go to project primary socials" />}
+          {urlSocials &&  <IconWrapper onMouseEnter={() => {setUrlWebTooltip(true)}} onMouseLeave={() => {setUrlWebTooltip(false)}}>
+                <a href={urlSocials} target="_blank" rel="noreferrer">
                   <UrlSocialsIcon color={theme.colors.icon} width={30} />{' '}
                 </a>
               </IconWrapper>}
@@ -113,7 +114,7 @@ const ProjectDetail = ({objectId, pid, title, description,category,subcategory,i
             />
           )}
         </DetailBox>
-        {/* {pType !== 'Stream' && <ProjectDescription descM={descM} pid={pid} chainId={chainId} />} */}
+        <ProjectDescription desc={descM} />
         {/* <Markdown text={'ahoj'}/> */}
       </MainContainer>
     </>

@@ -96,7 +96,7 @@ const Project: NextPage = () => {
                 owner={project.owner}
                 chainId={project.chainId}
                 pType={project.type}
-                urlSocial={project.urlSocial}
+                urlSocials={project.urlSocials}
                 urlProject={project.urlProject}
                 youtube={project.youtube}
               />

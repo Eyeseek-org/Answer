@@ -20,7 +20,7 @@ const Tag = styled(motion.div)`
 
 const LandingDonate = () => {
   const [showDonate, setShowDonate] = useState(false);
-  const [add, setAdd] = useState(diamond.mumbai);
+  const [add, setAdd] = useState();
 
   const handleContractListener = () => {
     setShowDonate(!showDonate);
@@ -38,8 +38,10 @@ const LandingDonate = () => {
   });
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
   }, []);
 

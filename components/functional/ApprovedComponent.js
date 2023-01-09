@@ -8,7 +8,7 @@ import {useTheme} from 'styled-components';
 import { diamond } from '../../data/contracts/core';
 
 const ApprovedComponent = ({ address, currencyAddress, dec }) => {
-  const [add, setAdd] = useState(diamond.mumbai);
+  const [add, setAdd] = useState();
   const [showTooltip, setShowTooltip] = useState(false);
   const { chain } = useNetwork();
   const theme = useTheme()
@@ -26,8 +26,10 @@ const ApprovedComponent = ({ address, currencyAddress, dec }) => {
 
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
   }, []);
 

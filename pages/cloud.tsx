@@ -65,17 +65,27 @@ const Cloud = () => {
           <Col>
             <InputContainer
               label={'Chain'}
+              name={'Chain'}
               placeholder={'80001'}
               description={'Pass chainId needed to admin'}
               onChange={(e) => setChain(e.target.value)}
               type={'num'}
+              maxLength={5}
+              errorText={undefined}
+              isError={undefined}
+              min={undefined}
             />
             <InputContainer
               label={'FundId'}
+              name={'FundId'}
               placeholder={'1'}
               description={'Pass on-chain project id'}
               onChange={(e) => setFundId(e.target.value)}
               type={'num'}
+              maxLength={5}
+              errorText={undefined}
+              isError={undefined}
+              min={undefined}
             />
           </Col>
           <RowCenter>

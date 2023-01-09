@@ -59,7 +59,7 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   const sumWei  = (parseInt(rewMAmount) + parseInt(rewDAmount))
   const router = useRouter();
   const { objectId } = router.query;
-  const [spender, setSpender] = useState(diamond.mumbai);
+  const [spender, setSpender] = useState();
   const [donateTooltip, setDonateTooltip] = useState(false);
   const dispatch = useDispatch() 
 
@@ -69,8 +69,10 @@ const DonateWrapper = ({ pid, bookmarks, currencyAddress, curr, home }) => {
   }
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setSpender(diamond.mumbai)
+    } else {
+      setSpender(diamond.polygon);
     }
   }, []);
 

@@ -14,8 +14,10 @@ const BalanceProjectSmall = ({pid, chainId}) => {
   const [t, setT] = useState(t)
 
     useEffect(() => {
-      if (process.env.PROD !== 'something'){
+      if (process.env.NEXT_PUBLIC_ENV !== 'production'){
         setAdd(diamond.mumbai)
+      } else {
+        setAdd(diamond.polygon);
       }
     }, []);
 

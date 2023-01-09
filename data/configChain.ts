@@ -19,7 +19,7 @@ export const mumbai: Chain = {
     id: 4_002,
     name: 'Fantom testnet',
     network: 'fantom',
-    iconUrl: 'https://cryptologos.cc/logos/fantom-ftm-logo.png',
+    iconUrl: '/icons/fantom.png',
     iconBackground: '#000000',
     nativeCurrency: {
       decimals: 18,
@@ -93,7 +93,7 @@ export const mumbai: Chain = {
     id: 56,
     name: 'Binance Smart Chain',
     network: 'binance',
-    iconUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp3V39J47tWfwxjHVbPUjMdZf-ZsiLLHkcZx6vi9Y&s',
+    iconUrl: '/icons/binance.png',
     iconBackground: '#000000',
     nativeCurrency: {
       decimals: 18,
@@ -112,7 +112,7 @@ export const mumbai: Chain = {
     id: 250,
     name: 'Fantom',
     network: 'fantom',
-    iconUrl: 'https://cryptologos.cc/logos/fantom-ftm-logo.png',
+    iconUrl: '/icons/fantom.png',
     iconBackground: '#000000',
     nativeCurrency: {
       decimals: 18,

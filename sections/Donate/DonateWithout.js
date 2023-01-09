@@ -38,7 +38,7 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
   const [conn, setConn] = useState('');
   const { appState, setAppState } = useApp();
   const { rewMAmount, rewDAmount } = appState;
-  const [add, setAdd] = useState(diamond.mumbai);
+  const [add, setAdd] = useState();
   const theme = useTheme()
 
   const outcome = useContractRead({
@@ -63,8 +63,10 @@ const DonateWithout = ({ pid, currency, bookmarks, currencyAddress, curr, home, 
 
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
     setMulti((outcome.data ?? '').toString());
     setConn((connections.data ?? '').toString());

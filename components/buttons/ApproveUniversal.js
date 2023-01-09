@@ -73,7 +73,10 @@ const ApproveUniversal = ({tokenContract, spender, amount, dec}) => {
                 onClick={() => handleApprove()} 
                 text={<Col><div>Approve</div><Amount><>{amount / dec}</></Amount></Col>} />
                 : 
-            <ButtonAlt width={'200px'} text={'Approve again'} onClick={() => handleApprove()}  />}
+            <ButtonAlt 
+                    width={'200px'} 
+                    text={<Col><div>Approve</div><Amount><>{amount / dec}</></Amount></Col>} 
+                    onClick={() => handleApprove()}  />}
          </Wrapper>}
     </Container>
 }
