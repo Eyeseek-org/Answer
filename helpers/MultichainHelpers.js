@@ -118,13 +118,13 @@ export const ChainExplorer = (chain) => {
 
 export const ChainName = (chain) => {
     if (chain === 80001 || chain === 137) {
-        return 'Polygon Mumbai';
+        return 'Polygon';
       } else if (chain === 97 || chain === 56) {
-        return  'Binance testnet';
+        return  'Binance';
       } else if (chain === 4002 || chain === 250) {
-        return 'Fantom testnet';
+        return 'Fantom';
       } else if (chain === 420 || chain === 10) {
-        return 'Optimism testnet';
+        return 'Optimism';
       } else {
         return 'Polygon';
       }

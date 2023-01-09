@@ -6,12 +6,14 @@ import { diamond } from '../../data/contracts/core';
 
 
 const ApprovedReward = ({ address, currencyAddress }) => {
-  const [add, setAdd] = useState(diamond.mumbai);
+  const [add, setAdd] = useState();
   const { chain } = useNetwork();
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
   }, []);
 

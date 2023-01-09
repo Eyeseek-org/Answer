@@ -17,7 +17,7 @@ import SectionTitle from '../../components/typography/SectionTitle';
 import { useSwitchNetwork, useNetwork } from 'wagmi';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { blockchains } from '../../data/blockchains';
+import { blockchains, prodBlockchains } from '../../data/blockchains';
 import { BetweenRow, Col, Row } from '../../components/format/Row';
 import Lottie from 'react-lottie';
 import octa from '../../data/animations/octa.json';
@@ -58,26 +58,50 @@ const RenderBlockchain = () => {
         <BlockchainDesc>Destination for your payoff</BlockchainDesc>
       </Col>
       <Row>
-        {blockchains.map((bc, index) => {
-          const { logo, chainId } = bc;
-          return (
-            <div key={index}>
-              {chain && chain.id === chainId ? (
-                <ImgActiveBox>
-                  <Image src={logo} alt="alt" width={'40'} height={'40'} />
-                </ImgActiveBox>
-              ) : (
-                <ImgBox
-                  onClick={() => {
-                    handleSwitchNetwork(chainId);
-                  }}
-                >
-                  <Image src={logo} alt="alt" width={'40'} height={'40'} />
-                </ImgBox>
-              )}
-            </div>
-          );
-        })}
+        {process.env.NEXT_PUBLIC_ENV === 'production' ?  
+              <> {prodBlockchains.map((bc, index) => {
+                const { logo, chainId } = bc;
+                return (
+                  <div key={index}>
+                    {chain && chain.id === chainId ? (
+                      <ImgActiveBox>
+                        <Image src={logo} alt="alt" width={'40'} height={'40'} />
+                      </ImgActiveBox>
+                    ) : (
+                      <ImgBox
+                        onClick={() => {
+                          handleSwitchNetwork(chainId);
+                        }}
+                      >
+                        <Image src={logo} alt="alt" width={'40'} height={'40'} />
+                      </ImgBox>
+                    )}
+                  </div>
+                );
+              })}</>      
+      :
+     <> {blockchains.map((bc, index) => {
+        const { logo, chainId } = bc;
+        return (
+          <div key={index}>
+            {chain && chain.id === chainId ? (
+              <ImgActiveBox>
+                <Image src={logo} alt="alt" width={'40'} height={'40'} />
+              </ImgActiveBox>
+            ) : (
+              <ImgBox
+                onClick={() => {
+                  handleSwitchNetwork(chainId);
+                }}
+              >
+                <Image src={logo} alt="alt" width={'40'} height={'40'} />
+              </ImgBox>
+            )}
+          </div>
+        );
+      })}</>
+      }
+
       </Row>
     </ImageContainer>
   );

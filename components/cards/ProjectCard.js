@@ -71,8 +71,10 @@ const ProjectCard = ({ title, description, category, subcategory, link, pid, ima
   const theme = useTheme()
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
   }, []);
 

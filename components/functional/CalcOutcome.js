@@ -18,22 +18,20 @@ const CalcOutcome = ({ conn, multi }) => {
 
   return (
     <Container>
-      <RewardTitle>Impact calculator</RewardTitle>
-      {conn ?
+    {conn && conn > 0 &&  <> <RewardTitle>Impact calculator</RewardTitle>
         <RewardTitle onMouseEnter={()=>{setMicroTooltip(true)}} onMouseLeave={()=>{setMicroTooltip(false)}}>
           {microTooltip && <Tooltip text={'Multiplier: Number of involved microfunds from other users'} margin={'-70px'}/>}
           <RowEnd>
-            <div> {conn}</div> 
+            <div>{conn + 1}</div> 
             <div>x</div>
           </RowEnd> 
         </RewardTitle>
-       : null}
       {multi ? 
         <RewardTitle onMouseEnter={()=>{setImpactTooltip(true)}} onMouseLeave={()=>{setImpactTooltip(false)}}>
         {impactTooltip && <Tooltip text={'Total impact of this donation'} margin={'-50px'}/>}
           ${multi / 1000000}
         </RewardTitle>
-      : null}
+      : null} </>}
     </Container>
   );
 };

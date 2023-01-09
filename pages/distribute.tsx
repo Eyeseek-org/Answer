@@ -69,11 +69,13 @@ const Distribute: NextPage = () => {
   const [project, setProject] = useState<any>({});
   const [bookmarks, setBookmarks] = useState([]);
 
-  const [add, setAdd] = useState<string>(diamond.mumbai);
+  const [add, setAdd] = useState<string>();
 
   useEffect(() => {
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
   }, []);
 

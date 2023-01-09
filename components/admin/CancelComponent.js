@@ -5,6 +5,7 @@ import {diamond} from '../../data/contracts/core';
 
 
 const CancelComponent = ({ch, fundId}) => {
+  
 
     const { config, isError } = usePrepareContractWrite({
         address: diamond.mumbai,

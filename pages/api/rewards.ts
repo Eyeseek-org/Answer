@@ -14,7 +14,13 @@ const reward_hash = utils.keccak256(reward_topic);
 
 // GET LOG EVENTS FOR A CONTRACT
 export const getRewardEvents = async (startingBlock: number, chain: number, latest: number): Promise<any> => {
-  const eye_seek_contract_address = diamond.mumbai
+  let eye_seek_contract_address = '';
+  if (process.env.NEXT_PUBLIC_ENV !== 'production'){
+    eye_seek_contract_address = diamond.mumbai
+  } else {
+    eye_seek_contract_address = diamond.polygon
+  }
+  
   try {
     const response = await axios.get(
       `https://api.covalenthq.com/v1/${chain}/events/address/${eye_seek_contract_address}/?starting-block=${startingBlock}&ending-block=${latest}&key=${key}`

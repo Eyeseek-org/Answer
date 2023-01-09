@@ -48,7 +48,7 @@ const Create = ({ setStep }) => {
   const [oid, setOid] = useState(null);
   const [ready, setReady] = useState(false);
   const { switchNetwork } = useSwitchNetwork();
-  const [add, setAdd] = useState(diamond.mumbai);
+  const [add, setAdd] = useState(diamond.polygon);
   const theme = useTheme()
   const dispatch = useDispatch() 
 
@@ -63,8 +63,10 @@ const Create = ({ setStep }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    if (process.env.PROD !== 'something'){
+    if (process.env.NEXT_PUBLIC_ENV !== 'production'){
       setAdd(diamond.mumbai)
+    } else {
+      setAdd(diamond.polygon);
     }
   
     if (!chainName){
@@ -136,8 +138,8 @@ const Create = ({ setStep }) => {
           description: pDesc,
           category: category,
           subcategory: subcategory,
-          urlProject: pSocial,
-          urlSocials: pWeb,
+          urlProject: pWeb,
+          urlSocials: pSocial,
           youtube: pYt,
           goal: Number(pm1),
           descM: pm1Desc,

@@ -40,7 +40,7 @@ const prodProviders = [alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_
 
 
 const { provider, webSocketProvider, chains } = configureChains(
-  testChains, testProviders
+  prodChains, prodProviders
 );
 
 const { connectors } = getDefaultWallets({
