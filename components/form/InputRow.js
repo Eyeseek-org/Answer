@@ -1,7 +1,7 @@
 import styled, {useTheme} from 'styled-components';
 import { useState } from 'react';
 import { InfoIcon } from '../icons/Common';
-import Tooltip from '../../components/Tooltip';
+import Tooltip from '../Tooltip';
 
 
 

@@ -3,8 +3,6 @@ import '../styles/globals.css';
 import {useState} from 'react'
 import styled, { ThemeProvider  } from 'styled-components';
 import { createClient, configureChains, WagmiConfig } from 'wagmi';
-import { AppProvider } from '../sections/utils/appContext';
-import {RewardProvider } from '../sections/utils/rewardContext';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { getDefaultWallets, RainbowKitProvider, Theme } from '@rainbow-me/rainbowkit';
@@ -157,9 +155,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <link rel="apple-touch-icon" href="/apple-icon.png"></link>
                     <meta name="theme-color" content="#317EFB" />
                   </Head>
-                  <AppProvider>
                     <Provider store={store}>
-                      <RewardProvider>
                         <Header />
                         <AbsoluteRight>
                           <ThemeButton onClick={()=>{toggleTheme()}}> 👀</ThemeButton>
@@ -167,9 +163,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                         <Loading>
                           <Component {...pageProps} />
                         </Loading>
-                      </RewardProvider>
                     </Provider>
-                  </AppProvider>
                 </RainbowKitProvider>
             </MoralisProvider>
           </WagmiConfig>

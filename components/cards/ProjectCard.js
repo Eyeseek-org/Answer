@@ -2,7 +2,7 @@ import styled, {useTheme} from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import ImgSkeleton from '../skeletons/ImgSkeleton';
-import Tag from '../../components/typography/Tag';
+import Tag from '../typography/Tag';
 import diamondAbi from '../../abi/diamondAbi.json';
 import { useContractRead } from 'wagmi';
 import { BlockchainIcon, StreamIcon } from '../icons/Landing';
@@ -10,8 +10,8 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import Tooltip from '../Tooltip';
-import { Erc20Icon, NftIcon } from '../../components/icons/Project';
-import {ProjectAmount} from '../../components/typography/Amounts';
+import { Erc20Icon, NftIcon } from '../icons/Project';
+import {ProjectAmount} from '../typography/Amounts';
 import { BetweenRow, Row } from '../format/Row';
 import {ImageBoxSm} from '../format/Images'
 import { ProjectTitle } from '../typography/Titles';

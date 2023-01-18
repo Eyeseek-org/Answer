@@ -2,11 +2,6 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { useEffect } from 'react';
-import Footer from '../sections/Footer/Footer';
-import LandingMain from '../sections/Landing/LandingMain';
-import LatestProjects from '../sections/Landing/LatestProjects';
-import Features from '../sections/Landing/Features';
-import Partners from '../sections/Landing/Partners';
 import Script from 'next/script';
 import {motion, useScroll, useSpring} from "framer-motion"
 import ViewFade from '../components/animated/ViewFade';
@@ -47,14 +42,6 @@ const Home: NextPage = () => {
           <meta property="og:title" content="Eyeseek Funding" key="title" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <LandingMain width={'60%'} height={'50%'} />
-        <ViewFade comp={<Features/>}/>
-        <ProgressLine style={{ scaleX }} />  
-        <LatestProjects my={false} />
-        <ViewFade comp={<Partners/>}/>
-        <FooterEyes/>
-        <ViewFade comp={<Footer/>}/>
-        <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-WV83C9F" strategy="afterInteractive" />
       </Container>
     </>
   );

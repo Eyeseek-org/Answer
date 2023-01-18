@@ -1,6 +1,6 @@
 import styled, {useTheme} from 'styled-components';
-import { MicrofundIcon } from '../../components/icons/Landing';
-import { DonateIcon, Erc20Icon, NftIcon } from '../../components/icons/Project';
+import { MicrofundIcon } from '../icons/Landing';
+import { DonateIcon, Erc20Icon, NftIcon } from '../icons/Project';
 import { RewardTitle } from '../typography/Titles';
 import { ProjectAmount } from '../typography/Amounts';
 import { BetweenRow} from '../format/Row';

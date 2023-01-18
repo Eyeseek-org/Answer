@@ -1,7 +1,8 @@
 export enum PAGE {
   HOME = '/',
-  DISCOVER = '/discover',
-  STARTPROJECT = '/startproject',
+  QUESTS = '/quests',
+  REPUTATION = '/reputation',
+  MAP = '/map',
   FAQ = '/faq',
   MY = '/my'
 }

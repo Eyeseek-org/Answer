@@ -6,9 +6,9 @@ import { NavigationMenuBox, NavItem } from './styles';
 import { useAccount } from 'wagmi';
 
 const headerNavigationLinks: { title: string; url: PAGE, auth: boolean }[] = [
-  { title: 'Discover', url: PAGE.DISCOVER, auth: false },
-  { title: 'Start a project', url: PAGE.STARTPROJECT, auth: false },
-  { title: 'FAQ', url: PAGE.FAQ, auth: false },
+  { title: 'Quests', url: PAGE.QUESTS, auth: false },
+  { title: 'Reputation', url: PAGE.REPUTATION, auth: false },
+  { title: 'Map', url: PAGE.MAP, auth: false },
   { title: 'My', url: PAGE.MY, auth: true },
 ];
 
